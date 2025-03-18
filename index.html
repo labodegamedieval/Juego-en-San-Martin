@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏰 Aventura de Gonzalo</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="images/icon-192.png">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🏰 Aventura de Gonzalo</h1>
+      <div class="music-control">
+        <button class="music-btn" onclick="toggleMusic()">
+          <span class="music-icon">🎵</span> Música
+        </button>
+      </div>
+    </header>
+
+    <section>
+      <div class="carousel">
+        <div class="slide active">
+          <img src="images/portada.jpg" alt="San Martín del Castañar">
+          <p>San Martín del Castañar, un pueblo con historia y una bodega medieval con un mensaje oculto...</p>
+        </div>
+        <div class="slide">
+          <img src="images/gonzalo.jpg" alt="Gonzalo de la Sierra">
+          <p>Gonzalo de la Sierra dejó un mensaje que deberás descifrar explorando el pueblo.</p>
+        </div>
+        <button class="carousel-btn prev-slide">←</button>
+        <button class="carousel-btn next-slide">→</button>
+      </div>
+
+      <h2>Instrucciones</h2>
+      <ol>
+        <li>Activa el GPS y explora las 7 paradas en el mapa.</li>
+        <li>Resuelve retos y recopila los fragmentos del mensaje.</li>
+        <li>Al completar la aventura, visita la bodega para reclamar tu recompensa.</li>
+      </ol>
+
+      <div class="button-group">
+        <button onclick="window.location.href='explorar.html'">Explorar</button>
+        <button onclick="window.location.href='cronica.html'">Crónica</button>
+        <button onclick="window.location.href='guia.html'">Guía Histórica</button>
+      </div>
+    </section>
+
+    <audio id="background-music" loop>
+      <source src="sounds/musica-medieval.mp3" type="audio/mpeg">
+    </audio>
+
+    <footer>
+      <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es">Reserva tu visita</a></p>
+    </footer>
+  </div>
+
+  <script src="scripts/script.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js");
+    }
+  </script>
+</body>
+</html>
