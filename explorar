@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🗺️ Explorar San Martín del Castañar</title>
+  <title>🗺️ Explora San Martín del Castañar</title>
   <link rel="stylesheet" href="styles/style.css">
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
 </head>
@@ -30,13 +30,13 @@
       <div class="map-container">
         <img src="images/mapa-san-martin.jpg" alt="Mapa de San Martín del Castañar">
         <div class="buttons-container">
-          <button class="map-btn" id="btn-castillo" onclick="showInfo('castillo')">🏰 Castillo</button>
-          <button class="map-btn" id="btn-plaza" onclick="showInfo('plaza')">🏟️ Plaza de toros</button>
-          <button class="map-btn" id="btn-iglesia" onclick="showInfo('iglesia')">⛪ Iglesia</button>
-          <button class="map-btn" id="btn-fuente" onclick="showInfo('fuente')">⛲ Fuente y Portalón</button>
-          <button class="map-btn" id="btn-ermita" onclick="showInfo('ermita')">🙏 Ermita</button>
-          <button class="map-btn" id="btn-puente" onclick="showInfo('puente')">🌉 Puente</button>
-          <button class="map-btn" id="btn-bodega" onclick="showInfo('bodega')">🍷 Bodega</button>
+          <button class="map-btn" id="btn-castillo" onclick="goToLocation('castillo')">🏰 Castillo</button>
+          <button class="map-btn" id="btn-plaza" onclick="goToLocation('plaza')">🏟️ Plaza de toros</button>
+          <button class="map-btn" id="btn-iglesia" onclick="goToLocation('iglesia')">⛪ Iglesia</button>
+          <button class="map-btn" id="btn-fuente" onclick="goToLocation('fuente')">⛲ Fuente y Portalón</button>
+          <button class="map-btn" id="btn-ermita" onclick="goToLocation('ermita')">🙏 Ermita</button>
+          <button class="map-btn" id="btn-puente" onclick="goToLocation('puente')">🌉 Puente</button>
+          <button class="map-btn" id="btn-bodega" onclick="goToLocation('bodega')">🍷 Bodega</button>
         </div>
       </div>
 
@@ -67,5 +67,32 @@
   </footer>
 
   <script src="scripts/script.js"></script>
+  <script>
+    function goToLocation(location) {
+      window.location.href = location + ".html";
+    }
+
+    function checkQR() {
+      const qrInput = document.getElementById('qr-input').value.trim().toUpperCase();
+      const validCodes = {
+        "CASTILLO-1834": "castillo",
+        "PLAZA-1523": "plaza",
+        "IGLESIA-1300": "iglesia",
+        "FUENTE-1600": "fuente",
+        "ERMITA-1500": "ermita",
+        "PUENTE-1400": "puente",
+        "BODEGA-1600": "bodega"
+      };
+
+      if (validCodes[qrInput]) {
+        document.getElementById('qr-status').textContent = "✅ Código correcto. Avanzando...";
+        setTimeout(() => {
+          window.location.href = validCodes[qrInput] + ".html";
+        }, 2000);
+      } else {
+        document.getElementById('qr-status').textContent = "❌ Código incorrecto. Intenta de nuevo.";
+      }
+    }
+  </script>
 </body>
 </html>
