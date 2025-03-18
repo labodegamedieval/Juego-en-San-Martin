@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🗺️ Explorar San Martín del Castañar</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🗺️ Explora el Mensaje Oculto de Gonzalo</h1>
+      <div class="music-control">
+        <button class="music-btn" onclick="toggleMusic()">
+          <span class="music-icon">🎵</span> Pausar Música
+        </button>
+      </div>
+    </header>
+
+    <section>
+      <div class="progress-container">
+        <h3>Progreso de la Aventura</h3>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p id="progress-text">Paradas completadas: 0/7</p>
+      </div>
+
+      <div class="map-container">
+        <img src="images/mapa-san-martin.jpg" alt="Mapa de San Martín del Castañar">
+        <div class="buttons-container">
+          <button class="map-btn" id="btn-castillo" onclick="showInfo('castillo')">🏰 Castillo</button>
+          <button class="map-btn" id="btn-plaza" onclick="showInfo('plaza')">🏟️ Plaza de toros</button>
+          <button class="map-btn" id="btn-iglesia" onclick="showInfo('iglesia')">⛪ Iglesia</button>
+          <button class="map-btn" id="btn-fuente" onclick="showInfo('fuente')">⛲ Fuente y Portalón</button>
+          <button class="map-btn" id="btn-ermita" onclick="showInfo('ermita')">🙏 Ermita</button>
+          <button class="map-btn" id="btn-puente" onclick="showInfo('puente')">🌉 Puente</button>
+          <button class="map-btn" id="btn-bodega" onclick="showInfo('bodega')">🍷 Bodega</button>
+        </div>
+      </div>
+
+      <div id="cultural-info" class="cultural-info">
+        <h2>Información</h2>
+        <p>Haz clic en una parada para descubrir más sobre su historia y avanzar en la aventura.</p>
+      </div>
+
+      <div id="qr-section" class="qr-section">
+        <h2>Escanea un Código QR</h2>
+        <input type="text" id="qr-input" placeholder="Introduce el código">
+        <button class="action-btn" onclick="checkQR()">Verificar QR</button>
+        <p id="qr-status"></p>
+      </div>
+
+      <div class="button-group">
+        <button class="action-btn" onclick="window.location.href='index.html'">Inicio</button>
+        <button class="action-btn" onclick="window.location.href='guia.html'">Guía Histórica</button>
+        <button class="action-btn" onclick="window.location.href='cronica.html'">Crónica</button>
+      </div>
+    </section>
+
+    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+  </div>
+
+  <footer>
+    <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
+  </footer>
+
+  <script src="scripts/script.js"></script>
+</body>
+</html>
