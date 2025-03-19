@@ -1,5 +1,5 @@
 body {
-  font-family: 'Georgia', serif;
+  font-family: Arial, sans-serif;
   text-align: center;
   background: #f8f0e3;
   margin: 0;
@@ -14,7 +14,7 @@ body {
 
 .carousel {
   position: relative;
-  max-width: 800px;
+  max-width: 600px;
   margin: auto;
   overflow: hidden;
 }
