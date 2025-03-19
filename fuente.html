@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⛲ Fuente y Portalón</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⛲ Fuente y Portalón</h1>
+      <div class="music-control">
+        <button class="music-btn" onclick="toggleMusic()">
+          <span class="music-icon">🎵</span> Pausar Música
+        </button>
+      </div>
+    </header>
+
+    <section id="content">
+      <div class="stop-icon">⛲</div>
+      <div id="location-check">
+        <h2>Verifica tu ubicación</h2>
+        <p>Acércate a la fuente y toca el portalón para continuar la búsqueda.</p>
+        <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
+        <p>O ingresa el nombre:</p>
+        <input type="text" id="location-input" placeholder="Ej: Fuente y Portalón">
+        <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
+        <p id="location-status"></p>
+        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;">
+      </div>
+
+      <div id="game-content" style="display: none;">
+        <div class="content-wrapper">
+          <div class="carousel">
+            <div class="slide active">
+              <img src="images/portalon.jpg" alt="Portalón de la Fuente">
+              <p><strong>Portalón:</strong> Lugar de encuentro del siglo XVI con inscripciones antiguas.</p>
+            </div>
+            <div class="slide">
+              <img src="images/fuente-detalle.jpg" alt="Fuente Antigua">
+              <p><strong>Fuente:</strong> Construida en el siglo XVI, aún conserva su estructura original.</p>
+            </div>
+            <button class="carousel-btn prev-slide">←</button>
+            <button class="carousel-btn next-slide">→</button>
+          </div>
+
+          <div class="visual-challenge">
+            <h2>Reto del Agua</h2>
+            <p>Debes medir exactamente 4 litros de agua usando los cántaros de 3L y 5L.</p>
+            <div class="water-puzzle">
+              <div class="jug" id="jug-3l" onclick="fillJug(3)">🛢️ 3L</div>
+              <div class="jug" id="jug-5l" onclick="fillJug(5)">🛢️ 5L</div>
+              <button class="action-btn" onclick="transferWater()">Transferir</button>
+              <button class="action-btn" onclick="resetJugs()">Vaciar</button>
+            </div>
+            <p id="water-status"></p>
+          </div>
+        </div>
+
+        <div class="quiz">
+          <h2>Quiz Histórico</h2>
+          <p>1. ¿En qué siglo se construyó esta fuente?</p>
+          <div id="quiz-opciones-1">
+            <button class="action-btn" onclick="checkAnswer('XV', 'XVI', 1)">XV</button>
+            <button class="action-btn" onclick="checkAnswer('XVI', 'XVI', 1)">XVI</button>
+            <button class="action-btn" onclick="checkAnswer('XVII', 'XVI', 1)">XVII</button>
+          </div>
+          <p id="quiz-resultado-1"></p>
+        </div>
+
+        <div id="final-message" style="display: none;">
+          <p><strong>Fragmento del Mensaje:</strong> "bodega..."</p>
+          <button class="action-btn" onclick="window.location.href='felicitaciones.html?stop=fuente'">Continuar búsqueda</button>
+        </div>
+
+        <p class="info">
+          <strong>QR en el pueblo:</strong> FUENTE-1600 (cerca del portalón).<br>
+          <strong>Dato Curioso:</strong> Se dice que los antiguos habitantes de San Martín hacían rituales de agua en esta fuente.
+        </p>
+      </div>
+    </section>
+
+    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+  </div>
+
+  <footer>
+    <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
+  </footer>
+
+  <script src="scripts/script.js"></script>
+</body>
+</html>
