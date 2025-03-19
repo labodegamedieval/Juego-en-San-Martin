@@ -126,4 +126,11 @@ document.addEventListener('DOMContentLoaded', function () {
       sound.play();
     }
   }
+
+  // 🔹 Registro del Service Worker 🔹
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(reg => console.log("Service Worker registrado correctamente", reg))
+      .catch(err => console.log("Error al registrar Service Worker:", err));
+  }
 });
