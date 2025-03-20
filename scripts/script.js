@@ -37,6 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
   showSlide(currentSlide);
 
   // 🔹 Verificación de ubicación con distancia y giroscopio 🔹
+  const locations = {
+    'castillo': { lat: 40.520512, lng: -6.063541 },
+    'fuente': { lat: 40.522185, lng: -6.064564 }
+  };
+
   function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
     const R = 6371000; // Radio de la Tierra en metros
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -91,13 +96,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
 
     arrow.style.transform = `rotate(${angle}deg)`;
+    arrow.style.display = "block";
   }
 
   if (window.DeviceOrientationEvent) {
     window.addEventListener("deviceorientation", function (event) {
       const arrow = document.getElementById('direction-arrow');
       if (arrow) {
-        const compassHeading = event.alpha; 
+        const compassHeading = event.alpha;
         arrow.style.transform = `rotate(${compassHeading}deg)`;
       }
     }, true);
@@ -107,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('location-input').value.trim().toLowerCase();
     const stop = window.location.pathname.split('/').pop().replace('.html', '');
     if (input === stop) {
+      document.getElementById('location-status').textContent = '✅ Ubicación confirmada manualmente.';
       unlockContent();
     } else {
       document.getElementById('location-status').textContent = '❌ Ubicación incorrecta. Intenta de nuevo.';
