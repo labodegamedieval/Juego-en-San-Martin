@@ -54,38 +54,38 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function checkLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          const accuracy = position.coords.accuracy;
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        const accuracy = position.coords.accuracy;
 
-          const stop = window.location.pathname.split('/').pop().replace('.html', '');
-          const targetLocation = locations[stop];
+        const stop = window.location.pathname.split('/').pop().replace('.html', '');
+        const targetLocation = locations[stop];
 
-          if (targetLocation) {
-            const distance = getDistanceFromLatLonInMeters(userLat, userLng, targetLocation.lat, targetLocation.lng);
-            if (distance <= 20) {
-              document.getElementById('location-status').textContent = '✅ Ubicación verificada. Puedes continuar.';
-              unlockContent();
-            } else {
-              document.getElementById('location-status').textContent = `📍 Estás a ${Math.round(distance)} metros del punto exacto. Precisión GPS: ${Math.round(accuracy)}m.`;
-              updateDirection(userLat, userLng, targetLocation.lat, targetLocation.lng);
-            }
+        if (targetLocation) {
+          const distance = getDistanceFromLatLonInMeters(userLat, userLng, targetLocation.lat, targetLocation.lng);
+          if (distance <= 20) {
+            document.getElementById('location-status').textContent = '✅ Ubicación verificada. Puedes continuar.';
+            unlockContent();
           } else {
-            document.getElementById('location-status').textContent = '❌ Ubicación no encontrada.';
+            document.getElementById('location-status').textContent = `📍 Estás a ${Math.round(distance)} metros del punto exacto. Precisión GPS: ${Math.round(accuracy)}m.`;
+            updateDirection(userLat, userLng, targetLocation.lat, targetLocation.lng);
           }
-        },
-        (error) => {
-          document.getElementById('location-status').textContent = '⚠️ Error: ' + error.message;
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
-    } else {
-      document.getElementById('location-status').textContent = '⚠️ Tu navegador no soporta geolocalización.';
-    }
+        } else {
+          document.getElementById('location-status').textContent = '❌ Ubicación no encontrada.';
+        }
+      },
+      (error) => {
+        document.getElementById('location-status').textContent = '⚠️ Error: ' + error.message;
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  } else {
+    document.getElementById('location-status').textContent = '⚠️ Tu navegador no soporta geolocalización.';
   }
+}
 
   function updateDirection(userLat, userLng, targetLat, targetLng) {
     const arrow = document.getElementById('direction-arrow');
