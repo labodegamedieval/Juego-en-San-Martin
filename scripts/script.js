@@ -1,15 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-  let musicPlaying = true;
   const bgMusic = document.getElementById("background-music");
-  const musicIcon = document.getElementById("music-icon");
 
   function toggleMusic() {
     if (bgMusic.paused) {
       bgMusic.play();
-      musicIcon.textContent = "🔊";
     } else {
       bgMusic.pause();
-      musicIcon.textContent = "🔇";
     }
   }
 
@@ -35,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   showSlide(currentSlide);
+});
 
   // 🔹 Verificación de ubicación con distancia y giroscopio 🔹
   const locations = {
