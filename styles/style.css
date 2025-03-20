@@ -42,14 +42,6 @@ body {
   padding: 5px 10px;
 }
 
-.prev-slide {
-  left: 10px;
-}
-
-.next-slide {
-  right: 10px;
-}
-
 .button-group {
   margin-top: 20px;
 }
