@@ -7,37 +7,26 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    .puzzle-board {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3px;
-      width: 300px;
-      height: 300px;
-      margin: 20px auto;
+    .vela-container {
+      text-align: center;
+      margin-top: 20px;
     }
-
-    .puzzle-piece {
-      width: 100px;
-      height: 100px;
-      background-image: url('images/A_small_medieval_stone_chapel_(hermitage)_in_a_pea.png');
-      background-size: 300px 300px;
-      cursor: pointer;
-      box-shadow: 0 0 2px rgba(0,0,0,0.3);
-      border-radius: 4px;
-    }
-
-    .puzzle-piece.empty {
-      background: #f8f0e3;
-      box-shadow: none;
-      cursor: default;
-    }
-
-    .preview-img {
-      width: 150px;
+    .vela-img {
+      width: 80px;
       height: auto;
-      margin: 0 auto 10px;
-      border-radius: 6px;
-      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      transition: transform 0.5s ease;
+    }
+    .vela-grande {
+      transform: scale(1.5);
+    }
+    .vela-btn {
+      background: #8b0000;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -55,7 +44,7 @@
 
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
-        <p>Acércate al pórtico de la ermita para continuar.</p>
+        <p>Acércate a la puerta de la ermita para continuar.</p>
         <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
         <p>O escribe el nombre:</p>
         <input type="text" id="location-input" placeholder="Ej: Ermita" />
@@ -68,28 +57,29 @@
         <div class="carousel">
           <div class="slide active">
             <img src="images/ermita-exterior.jpg" alt="Ermita" />
-            <p><strong>Exterior:</strong> Ermita del siglo XV junto al río Canderuelo, lugar de peregrinación popular.</p>
+            <p><strong>Exterior:</strong> Ermita del siglo XV junto al río Canderuelo, lugar de recogimiento.</p>
           </div>
           <div class="slide">
-            <img src="images/ermita-puerta.jpg" alt="Puerta de la ermita" />
-            <p><strong>Entrada:</strong> De arquitectura sencilla, dedicada a la Virgen del Socorro. <a href="http://www.sanmartindelcastanar.es/" target="_blank">Más info</a></p>
+            <img src="images/ermita-puerta.jpg" alt="Puerta" />
+            <p><strong>Entrada:</strong> En honor a San Sebastián y la Virgen del Socorro. <a href="http://www.sanmartindelcastanar.es/" target="_blank">Más info</a></p>
           </div>
           <button class="carousel-btn prev-slide">←</button>
           <button class="carousel-btn next-slide">→</button>
         </div>
 
-        <div class="quiz">
-          <h2>🧩 Puzzle de la Ermita (modo fácil)</h2>
-          <img src="images/A_small_medieval_stone_chapel_(hermitage)_in_a_pea.png" alt="Vista previa" class="preview-img"/>
-          <p>Haz clic en las piezas para moverlas al hueco y reconstruir la imagen.</p>
-          <div class="puzzle-board" id="puzzle-board"></div>
-          <p id="puzzle-feedback" style="margin-top:10px;"></p>
+        <div class="vela-container">
+          <h2>🕯️ Ritual de la Vela</h2>
+          <p>Mantén pulsado el botón para avivar la llama y revelar el mensaje oculto.</p>
+          <img src="images/vela.png" id="vela-img" class="vela-img" alt="Vela encendida">
+          <br/><br/>
+          <button class="vela-btn" id="vela-btn">Mantén pulsado</button>
+          <p id="vela-status" style="margin-top:10px;"></p>
         </div>
 
         <div class="fragmento-final">
           <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">sin</span></p>
           <p><strong>QR en el pueblo:</strong> ERMITA-1500</p>
-          <p><strong>Dato Curioso:</strong> Los vecinos subían a rezar aquí durante las tormentas para pedir protección al pueblo.</p>
+          <p><strong>Dato Curioso:</strong> En tiempos antiguos, los vecinos subían con velas encendidas a pedir protección frente a tormentas.</p>
         </div>
 
         <div id="continue-button" style="display: none;">
@@ -111,60 +101,51 @@
 
     <script src="scripts/script.js"></script>
     <script>
-      const puzzle = document.getElementById("puzzle-board");
-      let state = [];
+      const velaBtn = document.getElementById("vela-btn");
+      const velaImg = document.getElementById("vela-img");
+      const velaStatus = document.getElementById("vela-status");
+      let holdTimer;
 
-      function initPuzzle() {
-        state = Array.from({ length: 8 }, (_, i) => i);
-        state.push("empty");
-        shuffle(state);
-        renderPuzzle();
-      }
-
-      function shuffle(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-      }
-
-      function renderPuzzle() {
-        puzzle.innerHTML = "";
-        state.forEach((tile, index) => {
-          const div = document.createElement("div");
-          div.className = tile === "empty" ? "puzzle-piece empty" : "puzzle-piece";
-          if (tile !== "empty") {
-            const x = tile % 3;
-            const y = Math.floor(tile / 3);
-            div.style.backgroundPosition = `-${x * 100}px -${y * 100}px`;
-          }
-          div.addEventListener("click", () => tryMove(index));
-          puzzle.appendChild(div);
-        });
-      }
-
-      function tryMove(index) {
-        const emptyIndex = state.indexOf("empty");
-        const validMoves = [index - 1, index + 1, index - 3, index + 3];
-        if (validMoves.includes(emptyIndex)) {
-          [state[index], state[emptyIndex]] = [state[emptyIndex], state[index]];
-          renderPuzzle();
-          checkWin();
-        }
-      }
-
-      function checkWin() {
-        const isSolved = state.slice(0, 8).every((v, i) => v === i);
-        if (isSolved) {
-          document.getElementById("puzzle-feedback").textContent = "✅ ¡Puzzle completado!";
+      velaBtn.addEventListener("mousedown", () => {
+        velaStatus.textContent = "🔥 Avivando la llama...";
+        holdTimer = setTimeout(() => {
+          velaImg.classList.add("vela-grande");
+          velaStatus.textContent = "✅ El mensaje ha sido revelado.";
           document.getElementById("message-piece").style.display = "inline";
           document.getElementById("continue-button").style.display = "block";
-          playSound("cheers-sound");
           localStorage.setItem("ermita-completed", "true");
-        }
-      }
+          playSound("cheers-sound");
+        }, 5000);
+      });
 
-      document.addEventListener("DOMContentLoaded", initPuzzle);
+      velaBtn.addEventListener("mouseup", () => {
+        clearTimeout(holdTimer);
+        if (!velaImg.classList.contains("vela-grande")) {
+          velaStatus.textContent = "❌ Tienes que mantener pulsado más tiempo.";
+          playSound("error-sound");
+        }
+      });
+
+      velaBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        velaStatus.textContent = "🔥 Avivando la llama...";
+        holdTimer = setTimeout(() => {
+          velaImg.classList.add("vela-grande");
+          velaStatus.textContent = "✅ El mensaje ha sido revelado.";
+          document.getElementById("message-piece").style.display = "inline";
+          document.getElementById("continue-button").style.display = "block";
+          localStorage.setItem("ermita-completed", "true");
+          playSound("cheers-sound");
+        }, 5000);
+      });
+
+      velaBtn.addEventListener("touchend", () => {
+        clearTimeout(holdTimer);
+        if (!velaImg.classList.contains("vela-grande")) {
+          velaStatus.textContent = "❌ Tienes que mantener pulsado más tiempo.";
+          playSound("error-sound");
+        }
+      });
     </script>
 </body>
 </html>
