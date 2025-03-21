@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🏰 Castillo de San Martín</title>
-  <link rel="stylesheet" href="styles/style.css">
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🏰 Castillo</title>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>🏰 Castillo de San Martín</h1>
+      <h1>🏰 Castillo de Gonzalo</h1>
       <div class="music-control">
-        <button class="music-btn" onclick="toggleMusic()">
+        <button class="music-btn">
           <span class="music-icon">🎵</span> Pausar Música
         </button>
       </div>
@@ -20,97 +20,106 @@
 
     <section id="content">
       <div class="stop-icon">🏰</div>
+
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
-        <p>Acércate a la torre del homenaje para continuar la búsqueda del mensaje.</p>
+        <p>Dirígete al castillo y acércate a la torre del homenaje para continuar.</p>
         <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
-        <p>O ingresa el nombre:</p>
-        <input type="text" id="location-input" placeholder="Ej: Castillo">
+        <p>O escribe el nombre:</p>
+        <input type="text" id="location-input" placeholder="Ej: Castillo" />
         <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
         <p id="location-status"></p>
+        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
       </div>
 
       <div id="game-content" style="display: none;">
-        <div class="content-wrapper">
-          <div class="carousel">
-            <div class="slide active">
-              <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo">
-              <p><strong>Entrada:</strong> Fortaleza medieval con acceso reformado en el siglo XV.</p>
-            </div>
-            <div class="slide">
-              <img src="images/castillo-torre.jpg" alt="Torre del Homenaje">
-              <p><strong>Torre:</strong> Dañada por un rayo en 1834, hoy es un mirador.</p>
-            </div>
-            <div class="slide">
-              <img src="images/castillo-vista.jpg" alt="Vista desde el castillo">
-              <p><strong>Vistas:</strong> Punto estratégico que dominaba las rutas comerciales.</p>
-            </div>
-            <button class="carousel-btn prev-slide">←</button>
-            <button class="carousel-btn next-slide">→</button>
+        <div class="carousel">
+          <div class="slide active">
+            <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
+            <p><strong>Entrada:</strong> Portal restaurado del castillo del siglo XIII, defensa de la Sierra de Francia.</p>
           </div>
+          <div class="slide">
+            <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
+            <p><strong>Torre:</strong> Desde aquí se domina todo el valle. Un rayo la alcanzó en 1834. <a href="https://sanmartindelcastanar.es/castillo-de-la-biosfera/" target="_blank">Más info</a></p>
+          </div>
+          <div class="slide">
+            <img src="images/castillo-vista.jpg" alt="Vistas desde el castillo" />
+            <p><strong>Vista:</strong> Mirador natural con conexión a la muralla defensiva.</p>
+          </div>
+          <button class="carousel-btn prev-slide">←</button>
+          <button class="carousel-btn next-slide">→</button>
+        </div>
 
-          <div class="visual-challenge">
-            <h2>Reto Visual</h2>
-            <p>1. ¿Qué marcó la torre del homenaje?</p>
-            <div id="visual-opciones-1">
-              <button class="action-btn" onclick="checkVisualAnswer('Incendio', 'Rayo', 1)">Incendio</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Rayo', 'Rayo', 1)">Rayo</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Terremoto', 'Rayo', 1)">Terremoto</button>
-            </div>
-            <p id="visual-resultado-1"></p>
+        <div class="visual-challenge">
+          <h2>Retos Visuales</h2>
+          <p>1. ¿Qué marcó la torre del homenaje?</p>
+          <div id="visual-opciones-1">
+            <button class="action-btn" onclick="checkVisualAnswer('Incendio','Rayo',1)">Incendio</button>
+            <button class="action-btn" onclick="checkVisualAnswer('Rayo','Rayo',1)">Rayo</button>
+            <button class="action-btn" onclick="checkVisualAnswer('Terremoto','Rayo',1)">Terremoto</button>
           </div>
+          <p id="visual-resultado-1"></p>
+
+          <p>2. ¿Qué destaca en la entrada fortificada?</p>
+          <div id="visual-opciones-2">
+            <button class="action-btn" onclick="checkVisualAnswer('Arcos','Muralla',2)">Arcos</button>
+            <button class="action-btn" onclick="checkVisualAnswer('Muralla','Muralla',2)">Muralla</button>
+            <button class="action-btn" onclick="checkVisualAnswer('Torreones','Muralla',2)">Torreones</button>
+          </div>
+          <p id="visual-resultado-2"></p>
         </div>
 
         <div class="quiz">
           <h2>Quiz Histórico</h2>
-          <p>1. ¿En qué siglo se construyó este castillo?</p>
+          <p>1. ¿En qué siglo nació este castillo?</p>
           <div id="quiz-opciones-1">
-            <button class="action-btn" onclick="checkAnswer('XII', 'XIII', 1)">XII</button>
-            <button class="action-btn" onclick="checkAnswer('XIII', 'XIII', 1)">XIII</button>
-            <button class="action-btn" onclick="checkAnswer('XIV', 'XIII', 1)">XIV</button>
+            <button class="action-btn" onclick="checkAnswer('XII','XIII',1)">XII</button>
+            <button class="action-btn" onclick="checkAnswer('XIII','XIII',1)">XIII</button>
+            <button class="action-btn" onclick="checkAnswer('XIV','XIII',1)">XIV</button>
           </div>
           <p id="quiz-resultado-1"></p>
-        </div>
 
-        <div id="memory-game">
-          <h2>Juego de Memoria Visual</h2>
-          <div class="memory-grid">
-            <button class="memory-card" data-symbol="🛡️">?</button>
-            <button class="memory-card" data-symbol="⚔️">?</button>
-            <button class="memory-card" data-symbol="🏰">?</button>
-            <button class="memory-card" data-symbol="🛡️">?</button>
-            <button class="memory-card" data-symbol="⚔️">?</button>
-            <button class="memory-card" data-symbol="🏰">?</button>
+          <p>2. ¿Qué función tuvo el castillo en 1834?</p>
+          <div id="quiz-opciones-2">
+            <button class="action-btn" onclick="checkAnswer('Discoteca','Cementerio',2)">Discoteca</button>
+            <button class="action-btn" onclick="checkAnswer('Cementerio','Cementerio',2)">Cementerio</button>
+            <button class="action-btn" onclick="checkAnswer('Museo','Cementerio',2)">Museo</button>
           </div>
-          <p id="memory-status"></p>
+          <p id="quiz-resultado-2"></p>
+
+          <p>3. ¿Qué alberga hoy el castillo?</p>
+          <div id="quiz-opciones-3">
+            <button class="action-btn" onclick="checkAnswer('Museo','Centro de Interpretación',3)">Museo</button>
+            <button class="action-btn" onclick="checkAnswer('Centro de Interpretación','Centro de Interpretación',3)">Centro de Interpretación</button>
+            <button class="action-btn" onclick="checkAnswer('Biblioteca','Centro de Interpretación',3)">Biblioteca</button>
+          </div>
+          <p id="quiz-resultado-3"></p>
         </div>
 
-        <div id="qr-section">
-          <h2>Escanea el QR para revelar el mensaje</h2>
-          <input type="text" id="qr-input" placeholder="Introduce el código">
-          <button class="action-btn" onclick="checkQR()">Verificar QR</button>
-          <p id="qr-status"></p>
+        <div class="fragmento-final">
+          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">Oculto</span></p>
+          <p><strong>QR en el pueblo:</strong> CASTILLO-1834</p>
+          <p><strong>Dato Curioso:</strong> Aquí se han hallado monedas y cerámicas del siglo XIII.</p>
         </div>
 
-        <div id="final-message" style="display: none;">
-          <p><strong>Fragmento del Mensaje:</strong> "El secreto..."</p>
-          <button class="action-btn" onclick="window.location.href='felicitaciones.html?stop=castillo'">Continuar búsqueda</button>
+        <div id="continue-button" style="display:none;">
+          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=castillo'">Continuar búsqueda</button>
         </div>
-
-        <p class="info">
-          <strong>QR en el pueblo:</strong> CASTILLO-1834 (cerca de la torre).<br>
-          <strong>Dato Curioso:</strong> Este castillo también sirvió como prisión en la época medieval.
-        </p>
       </div>
     </section>
 
+    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
+    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
+    <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
+    <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-  </div>
 
-  <footer>
-    <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
-  </footer>
+    <footer>
+      <p>© 2025 La Bodega Medieval |
+        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
+      </p>
+    </footer>
 
-  <script src="scripts/script.js"></script>
+    <script src="scripts/script.js"></script>
 </body>
 </html>
