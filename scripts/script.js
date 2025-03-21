@@ -151,3 +151,63 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+// ▶️ VALIDAR RESPUESTAS VISUALES
+window.checkVisualAnswer = function (selected, correct, num) {
+  const result = document.getElementById(`visual-resultado-${num}`);
+  if (selected === correct) {
+    result.textContent = "✅ ¡Correcto!";
+    result.style.color = "green";
+    localStorage.setItem(`visual-${stop}-${num}`, "true");
+    playSound("success-sound");
+  } else {
+    result.textContent = "❌ Incorrecto. Intenta de nuevo.";
+    result.style.color = "darkred";
+    playSound("error-sound");
+  }
+  checkIfComplete();
+};
+
+// ▶️ VALIDAR RESPUESTAS QUIZZ
+window.checkAnswer = function (selected, correct, num) {
+  const result = document.getElementById(`quiz-resultado-${num}`);
+  if (selected === correct) {
+    result.textContent = "✅ ¡Correcto!";
+    result.style.color = "green";
+    localStorage.setItem(`quiz-${stop}-${num}`, "true");
+    playSound("success-sound");
+  } else {
+    result.textContent = "❌ Incorrecto. Intenta de nuevo.";
+    result.style.color = "darkred";
+    playSound("error-sound");
+  }
+  checkIfComplete();
+};
+
+// ▶️ MOSTRAR BOTÓN FINAL AL COMPLETAR TODO
+function checkIfComplete() {
+  const visual1 = localStorage.getItem(`visual-${stop}-1`) === "true";
+  const visual2 = localStorage.getItem(`visual-${stop}-2`) === "true";
+  const quiz1 = localStorage.getItem(`quiz-${stop}-1`) === "true";
+  const quiz2 = localStorage.getItem(`quiz-${stop}-2`) === "true";
+  const quiz3 = localStorage.getItem(`quiz-${stop}-3`) === "true";
+
+  if (visual1 && visual2 && quiz1 && quiz2 && quiz3) {
+    const btn = document.getElementById("continue-button");
+    const piece = document.getElementById("message-piece");
+    if (btn && piece) {
+      btn.style.display = "block";
+      piece.style.display = "inline";
+      playSound("cheers-sound");
+    }
+  }
+}
+
+// ▶️ REPRODUCIR SONIDOS
+function playSound(id) {
+  const sound = document.getElementById(id);
+  if (sound) {
+    sound.currentTime = 0;
+    sound.play();
+  }
+}
+
