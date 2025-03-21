@@ -1,21 +1,46 @@
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
+  font-family: "Georgia", serif;
   background: #f8f0e3;
+  color: #3b2f2f;
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 
 .container {
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
   padding: 20px;
 }
 
+header h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #4a2c2a;
+}
+
+.music-control {
+  margin: 10px 0;
+}
+
+.music-btn {
+  font-size: 16px;
+  padding: 8px 16px;
+  border: none;
+  background: #8b4513;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.music-btn:hover {
+  background: #a0522d;
+}
+
 .carousel {
   position: relative;
-  max-width: 600px;
-  margin: auto;
+  max-width: 100%;
+  margin: 20px auto;
   overflow: hidden;
 }
 
@@ -30,32 +55,149 @@ body {
   opacity: 1;
 }
 
+.slide img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
 .carousel-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0,0,0,0.5);
   color: white;
   border: none;
+  font-size: 28px;
   cursor: pointer;
-  font-size: 24px;
-  padding: 5px 10px;
+  padding: 10px;
+  z-index: 2;
+}
+
+.prev-slide {
+  left: 10px;
+}
+.next-slide {
+  right: 10px;
+}
+
+ol {
+  text-align: left;
+  margin: 0 auto;
+  max-width: 700px;
+  padding-left: 20px;
 }
 
 .button-group {
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .action-btn {
-  background: #8b4513;
-  color: white;
-  padding: 10px;
+  background: #6b3e2e;
+  color: #fff;
+  padding: 14px 24px;
+  margin: 10px;
   border: none;
+  border-radius: 6px;
+  font-size: 18px;
   cursor: pointer;
-  margin: 5px;
-  border-radius: 5px;
+  transition: background 0.3s ease;
 }
 
 .action-btn:hover {
-  background: #a0522d;
+  background: #8b4513;
+}
+
+.map-container img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.map-btn {
+  font-size: 16px;
+  padding: 12px 18px;
+  background: #4a2c2a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.map-btn:hover {
+  background: #7b4b39;
+}
+
+.progress-container {
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+.progress-bar {
+  width: 100%;
+  background: #ddd;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #6b3e2e;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+.qr-section input {
+  padding: 10px;
+  font-size: 16px;
+  width: 60%;
+  max-width: 300px;
+  margin-bottom: 10px;
+}
+
+.qr-section button {
+  margin-top: 5px;
+}
+
+#direction-arrow {
+  width: 60px;
+  height: 60px;
+  margin: 15px auto;
+  display: none;
+  transition: transform 0.3s ease;
+}
+
+.visual-challenge,
+.quiz,
+.fragmento-final {
+  margin-top: 30px;
+  text-align: left;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+footer {
+  margin-top: 40px;
+  font-size: 14px;
+  color: #555;
+}
+
+footer a {
+  color: #8b4513;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
