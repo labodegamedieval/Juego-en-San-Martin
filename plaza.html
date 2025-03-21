@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🏟️ Plaza de Toros</title>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🏟️ Plaza de Toros</h1>
+      <div class="music-control">
+        <button class="music-btn"><span class="music-icon">🎵</span> Música</button>
+      </div>
+    </header>
+
+    <section id="content">
+      <div class="stop-icon">🏟️</div>
+
+      <div id="location-check">
+        <h2>Verifica tu ubicación</h2>
+        <p>Acércate a la columna que hay fuera de la plaza para continuar.</p>
+        <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
+        <p>O escribe el nombre:</p>
+        <input type="text" id="location-input" placeholder="Ej: Plaza" />
+        <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
+        <p id="location-status"></p>
+        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
+      </div>
+
+      <div id="game-content" style="display: none;">
+        <div class="carousel">
+          <div class="slide active">
+            <img src="images/interior.jpg" alt="Interior de la Plaza" />
+            <p><strong>Interior:</strong> Plaza integrada en el castillo desde el siglo XVII. <a href="https://sanmartindelcastanar.es/plaza-de-toros/" target="_blank">Más info</a></p>
+          </div>
+          <div class="slide">
+            <img src="images/plaza-gradas.jpeg" alt="Gradas de piedra" />
+            <p><strong>Gradas:</strong> De piedra original, donde aún se celebran capeas en fiestas.</p>
+          </div>
+          <div class="slide">
+            <img src="images/plaza-tradicion.jpg" alt="Tradición taurina" />
+            <p><strong>Tradición:</strong> Uno de los cosos más antiguos del país.</p>
+          </div>
+          <button class="carousel-btn prev-slide">←</button>
+          <button class="carousel-btn next-slide">→</button>
+        </div>
+
+        <div class="quiz">
+          <h2>🎲 El Dado del Destino</h2>
+          <p>Lanza el dado y acepta el reto que te toque:</p>
+          <button class="action-btn" onclick="rollDie()">Lanzar Dado</button>
+          <p id="die-result"></p>
+          <div id="die-challenge" style="margin-top: 20px;"></div>
+          <p id="die-feedback" style="margin-top: 10px;"></p>
+        </div>
+
+        <div class="fragmento-final">
+          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">en</span></p>
+          <p><strong>QR en el pueblo:</strong> PLAZA-1523</p>
+          <p><strong>Dato Curioso:</strong> La plaza fue antes el patio de armas del castillo y escenario de duelos y festejos desde el siglo XVII.</p>
+        </div>
+
+        <div id="continue-button" style="display:none;">
+          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar búsqueda</button>
+        </div>
+      </div>
+    </section>
+
+    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
+    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
+    <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
+    <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+
+    <footer>
+      <p>© 2025 La Bodega Medieval |
+        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
+      </p>
+    </footer>
+
+    <script src="scripts/script.js"></script>
+    <script>
+      const quizSets = [
+        {
+          question: "¿En qué siglo se transformó esta plaza?",
+          options: ["XVI", "XVII", "XVIII"],
+          correct: "XVII"
+        },
+        {
+          question: "¿Qué elemento se encuentra en las gradas?",
+          options: ["Hierro", "Piedra", "Madera"],
+          correct: "Piedra"
+        },
+        {
+          question: "¿Qué tradición se mantiene viva en agosto?",
+          options: ["Procesión", "Capeas", "Mercado"],
+          correct: "Capeas"
+        }
+      ];
+
+      function rollDie() {
+        const result = document.getElementById("die-result");
+        const challenge = document.getElementById("die-challenge");
+        const feedback = document.getElementById("die-feedback");
+
+        const index = Math.floor(Math.random() * quizSets.length);
+        const set = quizSets[index];
+
+        result.textContent = `🎲 Te ha tocado: Reto ${index + 1}`;
+
+        let html = `<p>${set.question}</p>`;
+        set.options.forEach(opt => {
+          html += `<button class="action-btn" onclick="validateDieAnswer('${opt}', '${set.correct}')">${opt}</button>`;
+        });
+
+        challenge.innerHTML = html;
+        feedback.textContent = "";
+      }
+
+      function validateDieAnswer(selected, correct) {
+        const feedback = document.getElementById("die-feedback");
+        if (selected === correct) {
+          feedback.textContent = "✅ ¡Correcto!";
+          feedback.style.color = "green";
+          document.getElementById("message-piece").style.display = "inline";
+          document.getElementById("continue-button").style.display = "block";
+          playSound("cheers-sound");
+          localStorage.setItem("plaza-completed", "true");
+        } else {
+          feedback.textContent = "❌ Incorrecto. Intenta otra vez.";
+          feedback.style.color = "darkred";
+          playSound("error-sound");
+        }
+      }
+    </script>
+</body>
+</html>
