@@ -17,10 +17,10 @@
     }
 
     .puzzle-piece {
-      background-image: url('images/A_small_medieval_stone_chapel_(hermitage)_in_a_pea.png');
-      background-size: 300px 300px;
       width: 100px;
       height: 100px;
+      background-image: url('images/A_small_medieval_stone_chapel_(hermitage)_in_a_pea.png');
+      background-size: 300px 300px;
       cursor: pointer;
       box-shadow: 0 0 2px rgba(0,0,0,0.3);
       border-radius: 4px;
@@ -28,8 +28,16 @@
 
     .puzzle-piece.empty {
       background: #f8f0e3;
-      cursor: default;
       box-shadow: none;
+      cursor: default;
+    }
+
+    .preview-img {
+      width: 150px;
+      height: auto;
+      margin: 0 auto 10px;
+      border-radius: 6px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -60,19 +68,20 @@
         <div class="carousel">
           <div class="slide active">
             <img src="images/ermita-exterior.jpg" alt="Ermita" />
-            <p><strong>Exterior:</strong> Edificio de piedra del siglo XV junto al río Canderuelo.</p>
+            <p><strong>Exterior:</strong> Ermita del siglo XV junto al río Canderuelo, lugar de peregrinación popular.</p>
           </div>
           <div class="slide">
             <img src="images/ermita-puerta.jpg" alt="Puerta de la ermita" />
-            <p><strong>Entrada:</strong> Lugar de oración dedicado a la Virgen del Socorro. <a href="http://www.sanmartindelcastanar.es/" target="_blank">Más info</a></p>
+            <p><strong>Entrada:</strong> De arquitectura sencilla, dedicada a la Virgen del Socorro. <a href="http://www.sanmartindelcastanar.es/" target="_blank">Más info</a></p>
           </div>
           <button class="carousel-btn prev-slide">←</button>
           <button class="carousel-btn next-slide">→</button>
         </div>
 
         <div class="quiz">
-          <h2>🧩 Puzzle de la Ermita</h2>
-          <p>Ordena las piezas hasta recomponer la imagen completa.</p>
+          <h2>🧩 Puzzle de la Ermita (modo fácil)</h2>
+          <img src="images/A_small_medieval_stone_chapel_(hermitage)_in_a_pea.png" alt="Vista previa" class="preview-img"/>
+          <p>Haz clic en las piezas para moverlas al hueco y reconstruir la imagen.</p>
           <div class="puzzle-board" id="puzzle-board"></div>
           <p id="puzzle-feedback" style="margin-top:10px;"></p>
         </div>
@@ -80,7 +89,7 @@
         <div class="fragmento-final">
           <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">sin</span></p>
           <p><strong>QR en el pueblo:</strong> ERMITA-1500</p>
-          <p><strong>Dato Curioso:</strong> En época de sequía, los vecinos llevaban agua bendita desde esta ermita hasta el río.</p>
+          <p><strong>Dato Curioso:</strong> Los vecinos subían a rezar aquí durante las tormentas para pedir protección al pueblo.</p>
         </div>
 
         <div id="continue-button" style="display: none;">
@@ -102,26 +111,26 @@
 
     <script src="scripts/script.js"></script>
     <script>
-      const board = document.getElementById("puzzle-board");
-      let tiles = [];
+      const puzzle = document.getElementById("puzzle-board");
+      let state = [];
 
       function initPuzzle() {
-        tiles = Array.from({ length: 8 }, (_, i) => i);
-        tiles.push("empty");
-        shuffle(tiles);
+        state = Array.from({ length: 8 }, (_, i) => i);
+        state.push("empty");
+        shuffle(state);
         renderPuzzle();
       }
 
-      function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
+      function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
+          [arr[i], arr[j]] = [arr[j], arr[i]];
         }
       }
 
       function renderPuzzle() {
-        board.innerHTML = "";
-        tiles.forEach((tile, index) => {
+        puzzle.innerHTML = "";
+        state.forEach((tile, index) => {
           const div = document.createElement("div");
           div.className = tile === "empty" ? "puzzle-piece empty" : "puzzle-piece";
           if (tile !== "empty") {
@@ -129,30 +138,29 @@
             const y = Math.floor(tile / 3);
             div.style.backgroundPosition = `-${x * 100}px -${y * 100}px`;
           }
-          div.dataset.index = index;
-          div.addEventListener("click", () => moveTile(index));
-          board.appendChild(div);
+          div.addEventListener("click", () => tryMove(index));
+          puzzle.appendChild(div);
         });
       }
 
-      function moveTile(index) {
-        const emptyIndex = tiles.indexOf("empty");
-        const neighbors = [index - 1, index + 1, index - 3, index + 3];
-        if (neighbors.includes(emptyIndex)) {
-          [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
+      function tryMove(index) {
+        const emptyIndex = state.indexOf("empty");
+        const validMoves = [index - 1, index + 1, index - 3, index + 3];
+        if (validMoves.includes(emptyIndex)) {
+          [state[index], state[emptyIndex]] = [state[emptyIndex], state[index]];
           renderPuzzle();
           checkWin();
         }
       }
 
       function checkWin() {
-        const solved = tiles.slice(0, 8).every((val, idx) => val === idx);
-        if (solved) {
-          document.getElementById("puzzle-feedback").textContent = "✅ Puzzle completado correctamente.";
+        const isSolved = state.slice(0, 8).every((v, i) => v === i);
+        if (isSolved) {
+          document.getElementById("puzzle-feedback").textContent = "✅ ¡Puzzle completado!";
           document.getElementById("message-piece").style.display = "inline";
           document.getElementById("continue-button").style.display = "block";
-          localStorage.setItem("ermita-completed", "true");
           playSound("cheers-sound");
+          localStorage.setItem("ermita-completed", "true");
         }
       }
 
