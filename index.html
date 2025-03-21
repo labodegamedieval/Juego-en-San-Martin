@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🏰 Aventura de Gonzalo</title>
-  <link rel="stylesheet" href="styles/style.css">
-  <link rel="icon" type="image/png" href="images/icon-192.png">
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="icon" type="image/png" href="images/icon-192.png"/>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>🏰 Aventura de Gonzalo</h1>
       <div class="music-control">
-        <button class="music-btn" onclick="toggleMusic()">
+        <button class="music-btn">
           <span class="music-icon">🎵</span> Música
         </button>
       </div>
@@ -21,12 +21,25 @@
     <section>
       <div class="carousel">
         <div class="slide active">
-          <img src="images/portada.jpg" alt="San Martín del Castañar">
-          <p>San Martín del Castañar, un pueblo con historia y una bodega medieval con un mensaje oculto...</p>
+          <img src="images/portada.jpg" alt="San Martín del Castañar" />
+          <p>
+            San Martín del Castañar, un pueblo medieval que esconde un secreto
+            que solo los más curiosos pueden descubrir...
+          </p>
         </div>
         <div class="slide">
-          <img src="images/gonzalo.jpg" alt="Gonzalo de la Sierra">
-          <p>Gonzalo de la Sierra dejó un mensaje que deberás descifrar explorando el pueblo.</p>
+          <img src="images/gonzalo.jpg" alt="Gonzalo de la Sierra" />
+          <p>
+            Gonzalo de la Sierra, antiguo bodeguero del siglo XVI, dejó un
+            mensaje oculto entre los rincones del pueblo.
+          </p>
+        </div>
+        <div class="slide">
+          <img src="images/mapa-san-martin.jpg" alt="Mapa del Pueblo" />
+          <p>
+            Visita cada parada, supera los retos, escanea el QR... y desvela el
+            secreto que aguarda en la bodega.
+          </p>
         </div>
         <button class="carousel-btn prev-slide">←</button>
         <button class="carousel-btn next-slide">→</button>
@@ -34,27 +47,38 @@
 
       <h2>Instrucciones</h2>
       <ol>
-        <li>Activa el GPS y explora las 7 paradas en el mapa.</li>
-        <li>Resuelve retos y recopila los fragmentos del mensaje.</li>
-        <li>Al completar la aventura, visita la bodega para reclamar tu recompensa.</li>
+        <li>Activa el GPS y visita las 7 paradas del pueblo.</li>
+        <li>En cada lugar, resuelve retos y responde preguntas.</li>
+        <li>Escanea el QR para revelar un fragmento del mensaje.</li>
+        <li>Completa todas las paradas para desvelar el secreto final.</li>
       </ol>
 
       <div class="button-group">
-        <button onclick="window.location.href='explorar.html'">Explorar</button>
-        <button onclick="window.location.href='cronica.html'">Crónica</button>
-        <button onclick="window.location.href='guia.html'">Guía Histórica</button>
+        <button onclick="window.location.href='explorar.html'">🗺️ Explorar</button>
+        <button onclick="window.location.href='guia.html'">📖 Guía Histórica</button>
+        <button onclick="window.location.href='cronica.html'">📜 Crónica</button>
       </div>
     </section>
 
-    <audio id="background-music" loop>
-      <source src="sounds/musica-medieval.mp3" type="audio/mpeg">
+    <audio id="background-music" loop autoplay>
+      <source src="sounds/musica-medieval.mp3" type="audio/mpeg" />
     </audio>
 
     <footer>
-      <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es">Reserva tu visita</a></p>
+      <p>
+        © 2025 La Bodega Medieval |
+        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
+      </p>
     </footer>
   </div>
 
   <script src="scripts/script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log("✅ Service Worker registrado:", reg.scope))
+        .catch(err => console.warn("⚠️ Error registrando Service Worker:", err));
+    }
+  </script>
 </body>
 </html>
