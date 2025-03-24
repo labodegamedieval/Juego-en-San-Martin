@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎉 Felicitaciones</title>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <style>
+    body {
+      background: url('images/pergamino.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #4a2c2a;
+    }
+
+    .reward-container {
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 700px;
+      margin: 60px auto;
+      background: rgba(255,255,255,0.9);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    .reward-container h1 {
+      font-size: 2em;
+    }
+
+    .reward-container p {
+      font-size: 1.2em;
+      margin-top: 15px;
+    }
+
+    .stars {
+      font-size: 40px;
+      margin: 20px 0;
+      color: gold;
+    }
+
+    .fragmento {
+      font-size: 1.4em;
+      font-style: italic;
+      color: #6b3e2e;
+      margin-top: 20px;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .action-btn {
+      font-size: 18px;
+      padding: 12px 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="reward-container">
+    <h1>🎉 ¡Bien hecho!</h1>
+    <p>Has superado este reto del mensaje oculto de Gonzalo.</p>
+    <div class="stars">⭐ ⭐ ⭐</div>
+    <p id="completion-text">Tu valentía será recordada en San Martín del Castañar...</p>
+    <p class="fragmento" id="fragment-text" style="display: none;"></p>
+    <div class="button-group" id="button-group">
+      <button class="action-btn" onclick="window.location.href='explorar.html'">🗺️ Continuar Búsqueda</button>
+      <button class="action-btn" onclick="window.location.href='guia.html'">📖 Guía Histórica</button>
+      <button class="action-btn" onclick="window.location.href='cronica.html'">📜 Crónica</button>
+    </div>
+  </div>
+
+  <audio id="success-sound" src="sounds/success.mp3" preload="auto" autoplay></audio>
+  <audio id="ambient-sound" src="sounds/musica-medieval.mp3" preload="auto" loop autoplay></audio>
+
+  <script>
+    const stop = new URLSearchParams(window.location.search).get("stop");
+    const fragmentos = {
+      "castillo": "Fragmento: Oculto",
+      "plaza": "Fragmento: en",
+      "iglesia": "Fragmento: la",
+      "fuente": "Fragmento: bodega",
+      "ermita": "Fragmento: sin",
+      "puente": "Fragmento: escudo",
+      "bodega": "Fragmento: desarmado"
+    };
+
+    const completionText = document.getElementById("completion-text");
+    const fragmentText = document.getElementById("fragment-text");
+
+    if (stop === "bodega") {
+      completionText.textContent = "Has llegado al final de la aventura...";
+      fragmentText.textContent = "🧩 Has reunido todos los fragmentos. ¡Dirígete a la bodega para desvelar el secreto!";
+      fragmentText.style.display = "block";
+      document.getElementById("button-group").innerHTML += `
+        <button class="action-btn" onclick="window.location.href='final.html'">🔓 Ver Mensaje Completo</button>
+      `;
+    } else if (fragmentos[stop]) {
+      fragmentText.textContent = fragmentos[stop];
+      fragmentText.style.display = "block";
+    }
+  </script>
+</body>
+</html>
