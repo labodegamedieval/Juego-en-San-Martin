@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🌉 Puente Medieval</title>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <style>
+    .image-zone {
+      position: relative;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    .image-zone img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .hidden-hotspot {
+      position: absolute;
+      width: 10%;
+      height: 15%;
+      top: 55%;
+      left: 45%;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌉 Puente Medieval</h1>
+      <div class="music-control">
+        <button class="music-btn"><span class="music-icon">🎵</span> Música</button>
+      </div>
+    </header>
+
+    <section id="content">
+      <div class="stop-icon">🌉</div>
+
+      <div id="location-check">
+        <h2>Verifica tu ubicación</h2>
+        <p>Acércate al puente de piedra para continuar.</p>
+        <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
+        <p>O escribe el nombre:</p>
+        <input type="text" id="location-input" placeholder="Ej: Puente" />
+        <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
+        <p id="location-status"></p>
+        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
+      </div>
+
+      <div id="game-content" style="display: none;">
+        <div class="carousel">
+          <div class="slide active">
+            <img src="images/A_medieval_stone_bridge_with_a_single_semicircular.png" alt="Puente Medieval" />
+            <p><strong>Vista lateral:</strong> El puente tiene un único arco de medio punto, típico de la Edad Media.</p>
+          </div>
+          <div class="slide">
+            <img src="images/puente-rio.jpg" alt="Río y entorno" />
+            <p><strong>Entorno natural:</strong> Cruza el río Canderuelo rodeado de vegetación. <a href="https://sanmartindelcastanar.es/puente-y-calzada-romana/" target="_blank">Más info</a></p>
+          </div>
+          <button class="carousel-btn prev-slide">←</button>
+          <button class="carousel-btn next-slide">→</button>
+        </div>
+
+        <div class="quiz">
+          <h2>🔍 Encuentra el símbolo oculto</h2>
+          <p>Observa la imagen del puente y toca la zona donde crees que Gonzalo dejó su marca secreta.</p>
+          <div class="image-zone">
+            <img src="images/A_medieval_stone_bridge_with_a_single_semicircular.png" alt="Puente secreto" />
+            <div class="hidden-hotspot" onclick="revealMessage()" title="¡Has dado en el blanco!"></div>
+          </div>
+          <p id="puzzle-feedback" style="margin-top:10px;"></p>
+        </div>
+
+        <div class="fragmento-final">
+          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">escudo</span></p>
+          <p><strong>QR en el pueblo:</strong> PUENTE-1400</p>
+          <p><strong>Dato Curioso:</strong> Este puente resistió una gran crecida del río Canderuelo en 1650.</p>
+        </div>
+
+        <div id="continue-button" style="display: none;">
+          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=puente'">Continuar búsqueda</button>
+        </div>
+      </div>
+    </section>
+
+    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
+    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
+    <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+
+    <footer>
+      <p>© 2025 La Bodega Medieval |
+        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
+      </p>
+    </footer>
+
+    <script src="scripts/script.js"></script>
+    <script>
+      function revealMessage() {
+        const msg = document.getElementById("message-piece");
+        const feedback = document.getElementById("puzzle-feedback");
+        const btn = document.getElementById("continue-button");
+
+        if (msg.style.display !== "inline") {
+          msg.style.display = "inline";
+          feedback.textContent = "✅ ¡Símbolo encontrado! Gonzalo dejó su marca en esa piedra.";
+          btn.style.display = "block";
+          playSound("cheers-sound");
+          localStorage.setItem("puente-completed", "true");
+        }
+      }
+    </script>
+</body>
+</html>
