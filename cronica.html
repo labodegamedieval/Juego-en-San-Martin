@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📜 Crónica del Viaje</title>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <style>
+    body {
+      background: url('images/pergamino.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #4a2c2a;
+    }
+
+    .log-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .log-entry {
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #aaa;
+    }
+
+    .log-entry h3 {
+      font-size: 1.5em;
+      margin-bottom: 5px;
+    }
+
+    .fragment {
+      font-style: italic;
+      color: #6b3e2e;
+    }
+
+    .message-complete {
+      font-size: 1.4em;
+      font-weight: bold;
+      margin-top: 30px;
+      text-align: center;
+      background: #fff7e0;
+      border: 2px dashed #c58a46;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .button-group {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .action-btn {
+      font-size: 18px;
+      padding: 12px 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="log-container">
+    <h1>📜 Crónica del Mensaje Oculto</h1>
+    <div id="log-entries"></div>
+
+    <div id="message-complete" class="message-complete" style="display: none;">
+      <p>Has completado la aventura. El mensaje final es:</p>
+      <p><strong>"El secreto familiar se esconde tras el escudo desarmado."</strong></p>
+      <button class="action-btn" onclick="window.location.href='final.html'">🔓 Ver Mensaje</button>
+    </div>
+
+    <div class="button-group">
+      <button class="action-btn" onclick="window.location.href='explorar.html'">🗺️ Volver a Explorar</button>
+      <button class="action-btn" onclick="window.location.href='index.html'">🏠 Inicio</button>
+    </div>
+  </div>
+
+  <script>
+    const paradas = [
+      {
+        id: "castillo",
+        nombre: "🏰 Castillo",
+        fragmento: "Oculto",
+        curiosidad: "Un rayo marcó su torre en 1834 y aún puede verse la cicatriz.",
+      },
+      {
+        id: "plaza",
+        nombre: "🏟️ Plaza de Toros",
+        fragmento: "en",
+        curiosidad: "Las capeas se celebran desde el siglo XVII en el patio del castillo.",
+      },
+      {
+        id: "iglesia",
+        nombre: "⛪ Iglesia",
+        fragmento: "la",
+        curiosidad: "Oculta pinturas góticas bajo capas de yeso redescubiertas en el siglo XX.",
+      },
+      {
+        id: "fuente",
+        nombre: "⛲ Fuente y Portalón",
+        fragmento: "bodega",
+        curiosidad: "Los pilares tallados con formas geométricas datan del siglo XVI.",
+      },
+      {
+        id: "ermita",
+        nombre: "🙏 Ermita",
+        fragmento: "sin",
+        curiosidad: "Los vecinos rezaban aquí en tormentas para pedir protección divina.",
+      },
+      {
+        id: "puente",
+        nombre: "🌉 Puente",
+        fragmento: "escudo",
+        curiosidad: "Resistió una crecida del Canderuelo en 1650 sin perder ni una piedra.",
+      },
+      {
+        id: "bodega",
+        nombre: "🍷 Bodega",
+        fragmento: "desarmado",
+        curiosidad: "Se rumorea que hay un túnel secreto bajo sus cimientos.",
+      },
+    ];
+
+    const container = document.getElementById("log-entries");
+    let mensajeFinal = [];
+
+    paradas.forEach((p) => {
+      if (localStorage.getItem(`${p.id}-completed`) === "true") {
+        const div = document.createElement("div");
+        div.className = "log-entry";
+        div.innerHTML = `
+          <h3>${p.nombre}</h3>
+          <p class="fragment">🧩 Fragmento: "${p.fragmento}"</p>
+          <p>📖 ${p.curiosidad}</p>
+        `;
+        container.appendChild(div);
+        mensajeFinal.push(p.fragmento);
+      }
+    });
+
+    if (mensajeFinal.length === 7) {
+      document.getElementById("message-complete").style.display = "block";
+    }
+  </script>
+</body>
+</html>
