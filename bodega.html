@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍷 La Bodega Medieval</title>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <style>
+    .lock-combo {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .lock-select {
+      font-size: 18px;
+      padding: 8px;
+    }
+    .final-reveal {
+      background: url('images/pergamino.jpg');
+      background-size: cover;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+      text-align: center;
+    }
+    .final-reveal h2 {
+      margin-bottom: 10px;
+      color: #4a2c2a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🍷 La Bodega Medieval</h1>
+      <div class="music-control">
+        <button class="music-btn"><span class="music-icon">🎵</span> Música</button>
+      </div>
+    </header>
+
+    <section id="content">
+      <div class="stop-icon">🍷</div>
+
+      <div id="location-check">
+        <h2>Verifica tu ubicación</h2>
+        <p>Acércate al escudo tallado sobre la puerta de la bodega para continuar.</p>
+        <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
+        <p>O escribe el nombre:</p>
+        <input type="text" id="location-input" placeholder="Ej: Bodega" />
+        <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
+        <p id="location-status"></p>
+        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
+      </div>
+
+      <div id="game-content" style="display: none;">
+        <div class="carousel">
+          <div class="slide active">
+            <img src="images/A_medieval_wine_cellar_with_stone_walls_and_wooden.png" alt="Interior bodega" />
+            <p><strong>Interior:</strong> Conserva barricas originales y el olor a roble centenario.</p>
+          </div>
+          <div class="slide">
+            <img src="images/bodega-medieval.jpg" alt="Entrada bodega" />
+            <p><strong>Entrada:</strong> El escudo desgastado guarda el secreto de la familia. <a href="https://www.labodegamedieval.es" target="_blank">Más info</a></p>
+          </div>
+          <button class="carousel-btn prev-slide">←</button>
+          <button class="carousel-btn next-slide">→</button>
+        </div>
+
+        <div class="quiz">
+          <h2>🗝️ Abre el Candado</h2>
+          <p>Introduce la combinación correcta para desvelar el mensaje oculto.</p>
+          <div class="lock-combo">
+            <select id="slot1" class="lock-select">
+              <option>Oculto</option><option>El</option><option>escudo</option>
+            </select>
+            <select id="slot2" class="lock-select">
+              <option>desarmado</option><option>se</option><option>esconde</option>
+            </select>
+            <select id="slot3" class="lock-select">
+              <option>tras</option><option>se</option><option>escudo</option>
+            </select>
+          </div>
+          <button class="action-btn" onclick="checkCombination()">Desbloquear</button>
+          <p id="combo-status" style="margin-top:10px;"></p>
+        </div>
+
+        <div class="final-reveal" id="final-reveal" style="display: none;">
+          <h2>🔓 El mensaje oculto completo:</h2>
+          <p style="font-size: 20px;"><em>"El secreto familiar se esconde tras el escudo desarmado."</em></p>
+          <button class="action-btn" onclick="window.location.href='https://www.labodegamedieval.es/reservar'" target="_blank">¡Reserva tu visita!</button>
+        </div>
+
+        <div class="fragmento-final">
+          <p><strong>QR en el pueblo:</strong> BODEGA-1600</p>
+          <p><strong>Dato Curioso:</strong> Algunos dicen que bajo esta bodega hay un túnel sellado desde hace más de 400 años…</p>
+        </div>
+      </div>
+    </section>
+
+    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
+    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
+    <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
+    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+
+    <footer>
+      <p>© 2025 La Bodega Medieval |
+        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
+      </p>
+    </footer>
+
+    <script src="scripts/script.js"></script>
+    <script>
+      function checkCombination() {
+        const s1 = document.getElementById("slot1").value;
+        const s2 = document.getElementById("slot2").value;
+        const s3 = document.getElementById("slot3").value;
+        const status = document.getElementById("combo-status");
+
+        if (s1 === "El" && s2 === "se" && s3 === "esconde") {
+          status.textContent = "✅ ¡Candado abierto! Has desvelado el mensaje.";
+          document.getElementById("final-reveal").style.display = "block";
+          playSound("coins-sound");
+          localStorage.setItem("bodega-completed", "true");
+        } else {
+          status.textContent = "❌ Combinación incorrecta. Intenta de nuevo.";
+          playSound("error-sound");
+        }
+      }
+    </script>
+</body>
+</html>
