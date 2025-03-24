@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎉 Has completado la aventura</title>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <style>
+    body {
+      background: url('images/pergamino.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #4a2c2a;
+    }
+
+    .final-container {
+      text-align: center;
+      padding: 40px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      max-width: 700px;
+      margin: 60px auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    .final-container h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    .final-message {
+      font-size: 1.6em;
+      font-style: italic;
+      color: #6b3e2e;
+      margin-bottom: 30px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .action-btn {
+      font-size: 18px;
+      padding: 12px 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="final-container">
+    <h1>🎉 ¡Felicidades, valiente viajero!</h1>
+    <p class="final-message">"El secreto familiar se esconde tras el escudo desarmado."</p>
+    <p>Has reunido todas las piezas del mensaje oculto de Gonzalo. <br>Pero aún queda un paso más...</p>
+    <div class="button-group" style="margin-top: 30px;">
+      <button class="action-btn" onclick="window.location.href='https://www.labodegamedieval.es/reservar'" target="_blank">🍷 Reserva tu visita</button>
+      <button class="action-btn" onclick="window.location.href='explorar.html'">🗺️ Volver a Explorar</button>
+      <button class="action-btn" onclick="window.location.href='cronica.html'">📜 Ver Crónica</button>
+      <button class="action-btn" onclick="window.location.href='index.html'">🏠 Inicio</button>
+    </div>
+  </div>
+
+  <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto" autoplay></audio>
+</body>
+</html>
