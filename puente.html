@@ -50,29 +50,71 @@
       </div>
 
       <div id="game-content" style="display: none;">
-        <div class="carousel">
-          <div class="slide active">
-            <img src="images/A_medieval_stone_bridge_with_a_single_semicircular.png" alt="Puente Medieval" />
-            <p><strong>Vista lateral:</strong> El puente tiene un único arco de medio punto, típico de la Edad Media.</p>
-          </div>
-          <div class="slide">
-            <img src="images/puente-rio.jpg" alt="Río y entorno" />
-            <p><strong>Entorno natural:</strong> Cruza el río Canderuelo rodeado de vegetación. <a href="https://sanmartindelcastanar.es/puente-y-calzada-romana/" target="_blank">Más info</a></p>
-          </div>
-          <button class="carousel-btn prev-slide">←</button>
-          <button class="carousel-btn next-slide">→</button>
-        </div>
+  <div class="carousel">
+    <div class="slide active">
+      <img src="images/A_medieval_stone_bridge_with_a_single_semicircular.png" alt="Puente Medieval" />
+      <p><strong>Vista lateral:</strong> El puente tiene un único arco de medio punto, típico de la Edad Media.</p>
+    </div>
+    <div class="slide">
+      <img src="images/puente-rio.jpg" alt="Río y entorno" />
+      <p><strong>Entorno natural:</strong> Cruza el río Canderuelo rodeado de vegetación. <a href="https://sanmartindelcastanar.es/puente-y-calzada-romana/" target="_blank">Más info</a></p>
+    </div>
+    <button class="carousel-btn prev-slide">←</button>
+    <button class="carousel-btn next-slide">→</button>
+  </div>
 
-        <div class="quiz">
-          <h2>🔍 Encuentra el símbolo oculto</h2>
-          <p>Observa la imagen del puente y toca la zona donde crees que Gonzalo dejó su marca secreta.</p>
-          <div class="image-zone">
-            <img src="images/A_medieval_stone_bridge_with_a_single_semicircular.png" alt="Puente secreto" />
-            <div class="hidden-hotspot" onclick="revealMessage()" title="¡Has dado en el blanco!"></div>
-          </div>
-          <p id="puzzle-feedback" style="margin-top:10px;"></p>
-        </div>
+  <div class="quiz">
+    <h2>🔍 Encuentra el símbolo oculto</h2>
+    <p>Observa la imagen y toca el arco central del puente.</p>
+    <div class="image-zone" style="position: relative;">
+      <img src="images/A_medieval_stone_bridge_with_a_single_semicircular.png" alt="Puente secreto" />
+      <div class="hidden-hotspot" onclick="revealMessage()" title="¡Has dado en el blanco!" style="
+        position: absolute;
+        width: 20%;
+        height: 15%;
+        top: 55%;
+        left: 40%;
+        cursor: pointer;
+        z-index: 10;
+      "></div>
+    </div>
+    <button class="action-btn" onclick="showHint()">🕯️ Pista</button>
+    <p id="puzzle-feedback" style="margin-top:10px;"></p>
+  </div>
 
+  <div class="fragmento-final">
+    <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">escudo</span></p>
+    <p><strong>QR en el pueblo:</strong> PUENTE-1400</p>
+    <p><strong>Dato Curioso:</strong> Este puente resistió una gran crecida del río Canderuelo en 1650.</p>
+  </div>
+
+  <div id="continue-button" style="display: none;">
+    <button class="action-btn" onclick="location.href='felicitaciones.html?stop=puente'">Continuar búsqueda</button>
+  </div>
+</div>
+
+<script>
+  function revealMessage() {
+    const msg = document.getElementById("message-piece");
+    const feedback = document.getElementById("puzzle-feedback");
+    const btn = document.getElementById("continue-button");
+
+    if (msg.style.display !== "inline") {
+      msg.style.display = "inline";
+      feedback.textContent = "✅ ¡Símbolo encontrado! Estaba en el arco.";
+      btn.style.display = "block";
+      playSound("cheers-sound");
+      localStorage.setItem("puente-completed", "true");
+    }
+  }
+
+  function showHint() {
+    const feedback = document.getElementById("puzzle-feedback");
+    feedback.textContent = "💡 Pista: Está justo en el arco central del puente, cerca de la base.";
+    playSound("success-sound");
+  }
+</script>
+      
         <div class="fragmento-final">
           <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">escudo</span></p>
           <p><strong>QR en el pueblo:</strong> PUENTE-1400</p>
