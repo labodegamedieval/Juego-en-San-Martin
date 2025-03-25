@@ -68,5 +68,17 @@
   </div>
 
   <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto" autoplay></audio>
+
+  <script>
+  // Registrar puntuación en ranking
+  const ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+  const nombre = localStorage.getItem("jugador") || "Anónimo";
+  const puntos = ["castillo","plaza","iglesia","fuente","ermita","puente","bodega"]
+    .filter(s => localStorage.getItem(`${s}-completed`) === "true").length;
+
+  ranking.push({ nombre, puntos });
+  localStorage.setItem("ranking", JSON.stringify(ranking));
+</script>
+  
 </body>
 </html>
