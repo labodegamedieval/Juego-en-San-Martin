@@ -1,1 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🏆 Ranking de Jugadores</title>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
+  <style>
+    body {
+      background: url('images/pergamino.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Georgia, serif;
+      color: #4a2c2a;
+    }
+
+    .ranking-container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    th {
+      background: #eee;
+    }
+
+    .button-group {
+      margin-top: 30px;
+    }
+
+    .action-btn {
+      font-size: 16px;
+      padding: 10px 16px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="ranking-container">
+    <h1>🏆 Clasificación de Aventureros</h1>
+    <p>Estos valientes han seguido los pasos de Gonzalo:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Jugador</th>
+          <th>Paradas Completadas</th>
+        </tr>
+      </thead>
+      <tbody id="ranking-body"></tbody>
+    </table>
+
+    <div class="button-group">
+      <button class="action-btn" onclick="window.location.href='index.html'">🏠 Inicio</button>
+      <button class="action-btn" onclick="window.location.href='explorar.html'">🗺️ Explorar</button>
+      <button class="action-btn" onclick="localStorage.removeItem('ranking'); location.reload();">🧹 Reiniciar Ranking</button>
+    </div>
+  </div>
+
+  <script>
+    const ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+    const tbody = document.getElementById("ranking-body");
+
+    // Ordenar por puntuación descendente
+    ranking.sort((a, b) => b.puntos - a.puntos);
+
+    ranking.forEach(entry => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${entry.nombre}</td><td>${entry.puntos} / 7</td>`;
+      tbody.appendChild(tr);
+    });
+  </script>
+</body>
+</html>
 
