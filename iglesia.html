@@ -7,31 +7,34 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    .memory-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      max-width: 300px;
+    .vitraux-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
       margin: 20px auto;
     }
-    .memory-card {
-      width: 90px;
-      height: 90px;
-      background: #ccc;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
+
+    .vitraux {
+      width: 80px;
+      height: 120px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 3px solid #999;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
       cursor: pointer;
-      user-select: none;
-      background-image: url('images/pergamino.jpg');
-      background-size: cover;
+      transition: all 0.3s ease;
     }
-    .memory-card.matched {
-      background-color: #6b8e23;
-      color: white;
-      pointer-events: none;
+
+    .lit {
+      box-shadow: 0 0 20px 8px yellow;
+      transform: scale(1.1);
+      border-color: gold;
+    }
+
+    .pista {
+      margin-top: 15px;
+      font-style: italic;
+      color: #444;
     }
   </style>
 </head>
@@ -49,7 +52,7 @@
 
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
-        <p>Acércate a la iglesia y observa los arcos de la fachada.</p>
+        <p>Colócate frente a la puerta gótico-mudéjar de la iglesia.</p>
         <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
         <p>O escribe el nombre:</p>
         <input type="text" id="location-input" placeholder="Ej: Iglesia" />
@@ -61,28 +64,32 @@
       <div id="game-content" style="display: none;">
         <div class="carousel">
           <div class="slide active">
-            <img src="images/iglesia.jpg" alt="Fachada Iglesia" />
-            <p><strong>Fachada:</strong> Estilo gótico-mudéjar con detalles de ladrillo y rosetón. <a href="https://www.turismocastillayleon.com/es/patrimonio-cultura/iglesias-ermitas/iglesia-parroquial-san-martin-san-martin-castanar" target="_blank">Más info</a></p>
+            <img src="images/The_interior_of_an_ancient_medieval_church,_dimly_.png" alt="Interior de la Iglesia" />
+            <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos.</p>
           </div>
           <div class="slide">
-            <img src="images/retablo.jpg" alt="Retablo Barroco" />
-            <p><strong>Interior:</strong> Retablos barrocos, arcos apuntados y artesonado de madera. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+            <img src="images/iglesia.jpg" alt="Exterior de la Iglesia" />
+            <p><strong>Fachada:</strong> Entrada en piedra y ladrillo con campanario de cinco campanas.</p>
           </div>
           <button class="carousel-btn prev-slide">←</button>
           <button class="carousel-btn next-slide">→</button>
         </div>
 
-        <div class="quiz">
-          <h2>🧠 Memoria Visual: Arte Mudéjar</h2>
-          <p>Encuentra los pares de símbolos iguales.</p>
-          <div class="memory-grid" id="memory-grid"></div>
-          <p id="memory-feedback" style="margin-top:10px;"></p>
+        <h2>🕯️ Reto: Enciende los vitrales</h2>
+        <p>Ilumina la iglesia tocando los vitrales en el orden que marca la tradición:</p>
+
+        <div class="vitraux-container">
+          <div class="vitraux" id="vitraux-1" onclick="activarVitraux(0)" style="background: rgba(0, 0, 255, 0.4);"></div>
+          <div class="vitraux" id="vitraux-2" onclick="activarVitraux(1)" style="background: rgba(255, 0, 0, 0.4);"></div>
+          <div class="vitraux" id="vitraux-3" onclick="activarVitraux(2)" style="background: rgba(255, 215, 0, 0.4);"></div>
         </div>
 
-        <div class="fragmento-final">
-          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">la</span></p>
+        <p id="vitraux-feedback" class="pista"></p>
+
+        <div class="fragmento-final" id="fragmento-final" style="display: none;">
+          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece">la</span></p>
           <p><strong>QR en el pueblo:</strong> IGLESIA-1300</p>
-          <p><strong>Dato Curioso:</strong> La iglesia fue declarada monumento en 1981 y contiene artesonados únicos del siglo XV.</p>
+          <p><strong>Dato Curioso:</strong> Algunas pinturas murales fueron descubiertas bajo capas de yeso en el siglo XX.</p>
         </div>
 
         <div id="continue-button" style="display: none;">
@@ -104,64 +111,33 @@
 
     <script src="scripts/script.js"></script>
     <script>
-      const symbols = ['🧱', '🕍', '🔔', '🧱', '🕍', '🔔'];
-      let selected = [];
-      let matchedPairs = 0;
+      const ordenCorrecto = [0, 1, 2]; // Azul, Rojo, Dorado
+      let secuencia = [];
+      let vitrales = document.querySelectorAll(".vitraux");
 
-      function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
+      function activarVitraux(indice) {
+        secuencia.push(indice);
+        vitrales[indice].classList.add("lit");
+
+        if (secuencia.length === 3) {
+          if (JSON.stringify(secuencia) === JSON.stringify(ordenCorrecto)) {
+            document.getElementById("vitraux-feedback").textContent = "✨ ¡La iglesia se ha iluminado!";
+            document.getElementById("fragmento-final").style.display = "block";
+            document.getElementById("continue-button").style.display = "block";
+            localStorage.setItem("iglesia-completed", "true");
+            playSound("cheers-sound");
+          } else {
+            document.getElementById("vitraux-feedback").textContent = "❌ Orden incorrecto. Intenta de nuevo.";
+            playSound("error-sound");
+            resetVitraux();
+          }
         }
-        return array;
       }
 
-      function initMemoryGame() {
-        const grid = document.getElementById("memory-grid");
-        const feedback = document.getElementById("memory-feedback");
-        const shuffled = shuffle([...symbols]);
-        grid.innerHTML = "";
-        selected = [];
-        matchedPairs = 0;
-
-        shuffled.forEach((symbol, index) => {
-          const card = document.createElement("div");
-          card.className = "memory-card";
-          card.dataset.symbol = symbol;
-          card.dataset.index = index;
-          card.textContent = "❓";
-          card.addEventListener("click", function () {
-            if (card.classList.contains("matched") || selected.includes(card)) return;
-            card.textContent = symbol;
-            selected.push(card);
-            if (selected.length === 2) {
-              setTimeout(() => {
-                if (selected[0].dataset.symbol === selected[1].dataset.symbol) {
-                  selected[0].classList.add("matched");
-                  selected[1].classList.add("matched");
-                  matchedPairs++;
-                  playSound("success-sound");
-                } else {
-                  selected[0].textContent = "❓";
-                  selected[1].textContent = "❓";
-                  playSound("error-sound");
-                }
-                selected = [];
-                if (matchedPairs === symbols.length / 2) {
-                  feedback.textContent = "✅ ¡Todos los pares encontrados!";
-                  document.getElementById("message-piece").style.display = "inline";
-                  document.getElementById("continue-button").style.display = "block";
-                  playSound("cheers-sound");
-                  localStorage.setItem("iglesia-completed", "true");
-                }
-              }, 500);
-            }
-          });
-          grid.appendChild(card);
-        });
+      function resetVitraux() {
+        secuencia = [];
+        vitrales.forEach(v => v.classList.remove("lit"));
       }
-
-      document.addEventListener("DOMContentLoaded", initMemoryGame);
     </script>
 </body>
 </html>
