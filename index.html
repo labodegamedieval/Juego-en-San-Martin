@@ -87,5 +87,24 @@
         .catch(err => console.warn("⚠️ Error registrando Service Worker:", err));
     }
   </script>
+  <script>
+  function guardarNombreJugador() {
+    const nombre = document.getElementById("nombre-input").value.trim();
+    if (nombre.length >= 3) {
+      localStorage.setItem("jugador", nombre);
+      document.getElementById("nombre-jugador").style.display = "none";
+    } else {
+      alert("Por favor, escribe al menos 3 caracteres.");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("jugador")) {
+      const bloque = document.getElementById("nombre-jugador");
+      if (bloque) bloque.style.display = "none";
+    }
+  });
+</script>
+
 </body>
 </html>
