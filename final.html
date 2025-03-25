@@ -98,8 +98,21 @@
   const puntos = ["castillo","plaza","iglesia","fuente","ermita","puente","bodega"]
     .filter(s => localStorage.getItem(`${s}-completed`) === "true").length;
 
-  ranking.push({ nombre, puntos });
-  localStorage.setItem("ranking", JSON.stringify(ranking));
+  const ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+const nombre = localStorage.getItem("jugador") || "Anónimo";
+const puntos = ["castillo","plaza","iglesia","fuente","ermita","puente","bodega"]
+  .filter(s => localStorage.getItem(`${s}-completed`) === "true").length;
+
+// Reemplazar si ya existe ese jugador
+const index = ranking.findIndex(j => j.nombre === nombre);
+if (index !== -1) {
+  ranking[index].puntos = puntos; // Actualiza la puntuación
+} else {
+  ranking.push({ nombre, puntos }); // Añade nuevo
+}
+
+localStorage.setItem("ranking", JSON.stringify(ranking));
+
 </script>
   
 </body>
