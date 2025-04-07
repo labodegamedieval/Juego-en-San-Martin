@@ -10,53 +10,92 @@
     body {
       background: url('images/pergamino.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #4a2c2a;
+      font-family: 'Georgia', serif;
+      color: #3b241b;
+      padding: 20px;
     }
 
     .log-container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
-      background: rgba(255,255,255,0.9);
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255, 248, 228, 0.95);
+      border: 4px double #6b3e2e;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .log-container h1 {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 30px;
     }
 
     .log-entry {
+      background-color: #fff7e0;
+      border-left: 6px solid #a8794e;
+      padding: 20px;
       margin-bottom: 30px;
-      padding-bottom: 10px;
-      border-bottom: 1px dashed #aaa;
+      border-radius: 12px;
     }
 
     .log-entry h3 {
-      font-size: 1.5em;
-      margin-bottom: 5px;
+      font-size: 1.4em;
+      color: #5a351b;
+      margin-bottom: 10px;
     }
 
     .fragment {
       font-style: italic;
-      color: #6b3e2e;
+      font-size: 1.1em;
+      color: #8b0000;
+      margin: 10px 0;
+    }
+
+    .curiosidad {
+      margin-top: 10px;
+      font-size: 1.05em;
+      color: #3b2a1b;
     }
 
     .message-complete {
       font-size: 1.4em;
       font-weight: bold;
-      margin-top: 30px;
       text-align: center;
-      background: #fff7e0;
-      border: 2px dashed #c58a46;
-      padding: 20px;
-      border-radius: 8px;
+      background: #e8d6b8;
+      border: 3px dashed #8b5e3c;
+      padding: 30px;
+      border-radius: 14px;
+      margin-top: 40px;
+    }
+
+    .message-complete p {
+      margin-bottom: 15px;
     }
 
     .button-group {
       text-align: center;
-      margin-top: 30px;
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
     .action-btn {
       font-size: 18px;
-      padding: 12px 20px;
+      padding: 14px 26px;
+      background-color: #e2c79c;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      color: #3b241b;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      transition: 0.3s;
+    }
+
+    .action-btn:hover {
+      background-color: #d6b88a;
     }
   </style>
 </head>
@@ -66,7 +105,7 @@
     <div id="log-entries"></div>
 
     <div id="message-complete" class="message-complete" style="display: none;">
-      <p>Has completado la aventura. El mensaje final es:</p>
+      <p>🧩 Has conseguido descifrar todos los fragmentos del enigma:</p>
       <p><strong>"El secreto familiar se esconde tras el escudo desarmado."</strong></p>
       <button class="action-btn" onclick="window.location.href='final.html'">🔓 Ver Mensaje</button>
     </div>
@@ -78,11 +117,13 @@
     </div>
   </div>
 
+  <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop autoplay></audio>
+
   <script>
     const paradas = [
       {
         id: "castillo",
-        nombre: "🏰 Castillo",
+        nombre: "🏰 Castillo de la Sierra",
         fragmento: "Oculto",
         curiosidad: "Un rayo marcó su torre en 1834 y aún puede verse la cicatriz.",
       },
@@ -94,7 +135,7 @@
       },
       {
         id: "iglesia",
-        nombre: "⛪ Iglesia",
+        nombre: "⛪ Iglesia de San Martín",
         fragmento: "la",
         curiosidad: "Oculta pinturas góticas bajo capas de yeso redescubiertas en el siglo XX.",
       },
@@ -106,19 +147,19 @@
       },
       {
         id: "ermita",
-        nombre: "🙏 Ermita",
+        nombre: "🙏 Ermita del Socorro",
         fragmento: "sin",
         curiosidad: "Los vecinos rezaban aquí en tormentas para pedir protección divina.",
       },
       {
         id: "puente",
-        nombre: "🌉 Puente",
+        nombre: "🌉 Puente Medieval",
         fragmento: "escudo",
         curiosidad: "Resistió una crecida del Canderuelo en 1650 sin perder ni una piedra.",
       },
       {
         id: "bodega",
-        nombre: "🍷 Bodega",
+        nombre: "🍷 Bodega Medieval",
         fragmento: "desarmado",
         curiosidad: "Se rumorea que hay un túnel secreto bajo sus cimientos.",
       },
@@ -133,8 +174,8 @@
         div.className = "log-entry";
         div.innerHTML = `
           <h3>${p.nombre}</h3>
-          <p class="fragment">🧩 Fragmento: "${p.fragmento}"</p>
-          <p>📖 ${p.curiosidad}</p>
+          <p class="fragment">🧩 Fragmento descubierto: <strong>${p.fragmento}</strong></p>
+          <p class="curiosidad">📖 ${p.curiosidad}</p>
         `;
         container.appendChild(div);
         mensajeFinal.push(p.fragmento);
