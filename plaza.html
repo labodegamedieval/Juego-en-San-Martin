@@ -71,7 +71,7 @@
 
     .drag-item {
       font-family: 'MedievalSharp', cursive;
-      background-image: url('images/pergamino.jpg');
+      background-image: url('images/pergamino.png');
       background-size: cover;
       background-position: center;
       color: #3b1e0c;
@@ -196,7 +196,7 @@
       <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
       <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
       <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
-      <p><a href="https://sanmartindelcastanar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
+      <p><a href="https://sanmartindelcastañar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
     </div>
 
     <div id="drag-area-wrapper">
@@ -213,9 +213,9 @@
       </div>
 
       <div class="drop-zone" style="background-image: url('images/pergamino.png'); background-size: contain; background-repeat: no-repeat; background-position: center; padding: 40px; border-radius: 16px; border: 3px solid #8b5e3c; max-width: 100%;">
-        <div class="slot" style="display: flex; align-items: center; justify-content: center; text-align: center;" data-answer="11 de agosto">📅 ¿Qué día comenzaron las capeas en las que desapareció Gonzalo?</div>
-        <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche junto a la plaza?</div>
-        <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último brindis antes de desaparecer?</div>
+        <div class="slot" style="display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9em; padding: 18px;" data-answer="11 de agosto">📅 ¿Qué día comenzaron las capeas<br>en las que desapareció Gonzalo?</div>
+        <div class="slot" style="display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9em; padding: 18px;" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche<br>junto a la plaza?</div>
+        <div class="slot" style="display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9em; padding: 18px;" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último<br>brindis antes de desaparecer?</div>
       </div>
     </div>
 
@@ -227,7 +227,8 @@
     </div>
   </div>
 
-  <audio id="success-sound" src="sounds/coins.mp3" preload="auto"></audio>
+  <audio id="success-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+  <audio id="final-sound" src="sounds/coins.mp3" preload="auto"></audio></audio>
   <audio id="error-sound" src="sounds/error.mp3" preload="auto" data-role="error" ></audio>
   <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" autoplay loop></audio>
 
@@ -272,9 +273,8 @@
     localStorage.setItem('plaza-completed', 'true');
     document.getElementById('success-sound').play();
     setTimeout(() => {
-      const cheers = new Audio('sounds/cheers.mp3');
-      cheers.play();
-    }, 1000);
+      document.getElementById('final-sound').play();
+    }, 800);
   } else {
     result.textContent = '❌ Alguno de los elementos aún no encaja...';
     img.style.display = 'none';
