@@ -55,13 +55,13 @@
     }
 
     .slot {
-      background-image: url('images/pergamino.png');
+      background-image: url('images/pergamino-slot.png');
       background-size: cover;
       background-repeat: no-repeat;
       border: 2px dashed #8b5e3c;
       border-radius: 10px;
       padding: 25px;
-      min-height: 75px;
+      min-height: 60px;
       color: #311c0f;
       font-weight: bold;
       text-align: center;
@@ -71,7 +71,7 @@
 
     .drag-item {
       font-family: 'MedievalSharp', cursive;
-      background-image: url('images/pergamino.png');
+      background-image: url('images/papel-antiguo.png');
       background-size: cover;
       background-position: center;
       color: #3b1e0c;
@@ -99,10 +99,29 @@
     }
 
     #drag-area-wrapper {
-      display: flex;
-      justify-content: space-between;
-      gap: 40px;
-    }
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  #drag-area-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .drag-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .slot {
+    font-size: 0.95em;
+  }
+}
 
     #result {
       margin-top: 20px;
@@ -141,7 +160,7 @@
   <div class="music-control" style="text-align: right; margin-bottom: 10px;">
     <button class="action-btn" onclick="toggleMusic()">🎵 Pausar Música</button>
   </div>
-$1
+<div class="container">
     <h1>🏟️ Plaza de Toros</h1>
     <p>Gonzalo dejó un cartel enigmático con pistas ocultas... ¿serás capaz de restaurarlo con precisión?</p>
 
@@ -170,6 +189,10 @@ $1
         <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche junto a la plaza?</div>
         <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último brindis antes de desaparecer?</div>
       </div>
+        <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche junto a la plaza?</div>
+        <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último brindis antes de desaparecer?</div>
+      </div>
+    </div>
 
     <div id="result"></div>
     <img src="images/cartel.jpeg" alt="Cartel de fiestas" class="cartel-img" id="cartel-img" />
