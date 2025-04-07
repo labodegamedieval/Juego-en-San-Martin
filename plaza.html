@@ -49,28 +49,31 @@
     .drop-zone {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 15px;
       margin: 30px 0;
     }
 
     .slot {
       border: 2px dashed #8b5e3c;
       border-radius: 10px;
-      padding: 20px;
-      min-height: 50px;
+      padding: 12px;
+      min-height: 40px;
       background-color: #fff7e0;
       font-weight: bold;
       text-align: center;
+      font-size: 0.95em;
     }
 
     .drag-item {
-      padding: 10px;
+      padding: 8px 10px;
+      font-size: 0.9em;
       background-color: #e2c79c;
       border: 2px solid #6d4c41;
       border-radius: 8px;
       cursor: grab;
       text-align: center;
       transition: transform 0.2s;
+      max-width: 150px;
     }
 
     .drag-item:hover {
@@ -79,10 +82,17 @@
 
     .drag-container {
       display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
       margin-top: 20px;
+      max-width: 180px;
+    }
+
+    #drag-area-wrapper {
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
     }
 
     #result {
@@ -121,22 +131,24 @@
       <p>Las capeas del 11 de agosto, símbolo de identidad local.</p>
     </div>
 
-    <div class="drop-zone">
-      <div class="slot" data-answer="11 de agosto">📅 ¿Qué día arranca la celebración?</div>
-      <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué tradición acompaña las capeas?</div>
-      <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué se ofrece a los asistentes como bienvenida?</div>
-    </div>
+    <div id="drag-area-wrapper">
+      <div class="drag-container">
+        <div class="drag-item" draggable="true">10 de junio</div>
+        <div class="drag-item" draggable="true">11 de agosto</div>
+        <div class="drag-item" draggable="true">15 de septiembre</div>
+        <div class="drag-item" draggable="true">Fiesta del vino</div>
+        <div class="drag-item" draggable="true">Procesión religiosa</div>
+        <div class="drag-item" draggable="true">Danza medieval</div>
+        <div class="drag-item" draggable="true">Cerveza alemana</div>
+        <div class="drag-item" draggable="true">Vino de la Sierra</div>
+        <div class="drag-item" draggable="true">Horchata</div>
+      </div>
 
-    <div class="drag-container">
-      <div class="drag-item" draggable="true">10 de junio</div>
-      <div class="drag-item" draggable="true">11 de agosto</div>
-      <div class="drag-item" draggable="true">15 de septiembre</div>
-      <div class="drag-item" draggable="true">Fiesta del vino</div>
-      <div class="drag-item" draggable="true">Procesión religiosa</div>
-      <div class="drag-item" draggable="true">Danza medieval</div>
-      <div class="drag-item" draggable="true">Cerveza alemana</div>
-      <div class="drag-item" draggable="true">Vino de la Sierra</div>
-      <div class="drag-item" draggable="true">Horchata</div>
+      <div class="drop-zone">
+        <div class="slot" data-answer="11 de agosto">📅 ¿Qué día arranca la celebración?</div>
+        <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué tradición acompaña las capeas?</div>
+        <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué se ofrece a los asistentes como bienvenida?</div>
+      </div>
     </div>
 
     <div id="result"></div>
