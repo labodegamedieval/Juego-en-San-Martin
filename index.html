@@ -6,14 +6,142 @@
   <title>🏰 El enigma de Gonzalo de la Sierra</title>
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/png" href="images/icon-192.png"/>
+  <style>
+    body {
+      background: url('images/pergamino.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Georgia', serif;
+      color: #3b241b;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255, 248, 228, 0.95);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    header h1 {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .music-control {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .carousel {
+      position: relative;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .carousel img {
+      width: 100%;
+      border-radius: 12px;
+      border: 3px solid #5a3b2b;
+    }
+
+    .carousel p {
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 40%;
+      transform: translateY(-50%);
+      background-color: rgba(255,255,255,0.8);
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 50%;
+    }
+
+    .carousel-btn.prev-slide { left: 10px; }
+    .carousel-btn.next-slide { right: 10px; }
+
+    h2 {
+      margin-top: 30px;
+      font-size: 1.5em;
+    }
+
+    ol {
+      margin-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    .info-extra {
+      font-style: italic;
+      background-color: #f6efe0;
+      padding: 15px;
+      border-left: 5px solid #6d4c41;
+      margin-bottom: 30px;
+      border-radius: 8px;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #999;
+      width: 70%;
+      max-width: 300px;
+    }
+
+    .action-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #d6c1a1;
+      border: 2px solid #6d4c41;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .button-group button {
+      padding: 14px 24px;
+      font-size: 18px;
+      background-color: #e2c79c;
+      border: 2px solid #5a3b2b;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      transition: 0.3s;
+    }
+
+    .button-group button:hover {
+      background-color: #cfb68a;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-style: italic;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>🏰 El enigma de Gonzalo de la Sierra</h1>
       <div class="music-control">
-        <button class="music-btn">
-          <span class="music-icon">🎵</span> Música
+        <button class="music-btn" onclick="toggleMusic()">
+          🎵 Música
         </button>
       </div>
     </header>
@@ -24,48 +152,55 @@
           <img src="images/portada.jpg" alt="San Martín del Castañar" />
           <p>
             San Martín del Castañar, un pueblo medieval que esconde un secreto
-            que solo los más curiosos pueden descubrir...te atreves? 
+            que solo los más curiosos pueden descubrir... ¿te atreves?
           </p>
         </div>
         <div class="slide">
           <img src="images/gonzalo.jpg" alt="Gonzalo de la Sierra" />
           <p>
-            Gonzalo de la Sierra, antiguo bodeguero del siglo XVI que desapareció sin dejar rastro, pero dejó un
-            mensaje oculto entre los rincones del pueblo. Busca los fragmentos, sigue las pistas y descubre el enigma de su desaparición.
+            Gonzalo de la Sierra, antiguo bodeguero del siglo XVI, desapareció sin dejar rastro.
+            Pero dejó un mensaje oculto entre los rincones del pueblo. Busca los fragmentos, sigue las pistas y descubre el enigma.
           </p>
         </div>
         <div class="slide">
           <img src="images/mapa-san-martin.jpg" alt="Mapa del Pueblo" />
           <p>
-            Visita cada parada, supera los retos, escanea el QR... y desvela el
-            secreto oculto.
+            Visita cada parada, supera los retos, escanea el QR... y desvela el secreto oculto.
           </p>
         </div>
         <button class="carousel-btn prev-slide">←</button>
         <button class="carousel-btn next-slide">→</button>
       </div>
 
-      <h2>Instrucciones</h2>
+      <h2>🧾 ¿Cómo funciona el juego?</h2>
       <ol>
-        <li>Activa el GPS y visita las 7 paradas del pueblo.</li>
-        <li>En cada lugar, resuelve retos y responde preguntas.</li>
-        <li>Escanea el QR para revelar un fragmento del mensaje.</li>
-        <li>Completa todas las paradas para desvelar el mensaje de Gonzalo de la Sierra.</li>
+        <li>Activa el GPS de tu móvil y recorre el pueblo.</li>
+        <li>Visita las 7 paradas y supera los retos en cada una.</li>
+        <li>Escanea el QR en cada lugar para descubrir un fragmento del mensaje.</li>
+        <li>Solo si completas todas las paradas, podrás desvelar el secreto final.</li>
       </ol>
 
+      <div class="info-extra">
+        🎮 Este juego es <strong>gratuito</strong> y pensado como una forma divertida de conocer este
+        pueblo tan peculiar y lleno de historia.  
+        <br><br>
+        💡 Se trata de una <strong>iniciativa privada y local</strong>, sin financiación pública, creada por personas que aman este lugar y buscan
+        mejorar la experiencia turística de quienes nos visitan.
+      </div>
+
       <div id="nombre-jugador" style="margin: 20px 0;">
-  <h2>📝 Antes de comenzar...</h2>
-  <p>Introduce tu nombre o apodo para registrar tu aventura:</p>
-  <input type="text" id="nombre-input" placeholder="Ej: Valiente123" style="padding: 8px; font-size: 16px;">
-  <button class="action-btn" onclick="guardarNombreJugador()">Guardar y Empezar</button>
-</div>
+        <h2>📝 Antes de comenzar...</h2>
+        <p>Introduce tu nombre o apodo para registrar tu aventura:</p>
+        <input type="text" id="nombre-input" placeholder="Ej: Valiente123" />
+        <br>
+        <button class="action-btn" onclick="guardarNombreJugador()">Guardar y Empezar</button>
+      </div>
 
       <div class="button-group">
         <button onclick="window.location.href='explorar.html'">🗺️ Explorar</button>
         <button onclick="window.location.href='guia.html'">📖 Guía Histórica</button>
         <button onclick="window.location.href='cronica.html'">📜 Crónica</button>
         <button onclick="window.location.href='ranking.html'">🏆 Ranking</button>
-
       </div>
     </section>
 
@@ -83,30 +218,33 @@
 
   <script src="scripts/script.js"></script>
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(reg => console.log("✅ Service Worker registrado:", reg.scope))
-        .catch(err => console.warn("⚠️ Error registrando Service Worker:", err));
+    function guardarNombreJugador() {
+      const nombre = document.getElementById("nombre-input").value.trim();
+      if (nombre.length >= 3) {
+        localStorage.setItem("jugador", nombre);
+        document.getElementById("nombre-jugador").style.display = "none";
+      } else {
+        alert("Por favor, escribe al menos 3 caracteres.");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("jugador")) {
+        document.getElementById("nombre-jugador").style.display = "none";
+      }
+    });
+
+    function toggleMusic() {
+      const music = document.getElementById("background-music");
+      const btn = document.querySelector(".music-btn");
+      if (music.paused) {
+        music.play();
+        btn.innerText = "🎵 Pausar Música";
+      } else {
+        music.pause();
+        btn.innerText = "🎵 Reanudar Música";
+      }
     }
   </script>
-  <script>
-  function guardarNombreJugador() {
-    const nombre = document.getElementById("nombre-input").value.trim();
-    if (nombre.length >= 3) {
-      localStorage.setItem("jugador", nombre);
-      document.getElementById("nombre-jugador").style.display = "none";
-    } else {
-      alert("Por favor, escribe al menos 3 caracteres.");
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("jugador")) {
-      const bloque = document.getElementById("nombre-jugador");
-      if (bloque) bloque.style.display = "none";
-    }
-  });
-</script>
-
 </body>
 </html>
