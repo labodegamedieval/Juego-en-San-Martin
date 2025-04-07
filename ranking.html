@@ -3,50 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🏆 Ranking de Jugadores</title>
+  <title>🏆 Ranking de Aventureros</title>
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
   <style>
     body {
       background: url('images/pergamino.jpg') no-repeat center center fixed;
       background-size: cover;
-      font-family: Georgia, serif;
-      color: #4a2c2a;
+      font-family: 'Georgia', serif;
+      color: #3b241b;
+      padding: 20px;
     }
 
     .ranking-container {
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 20px;
-      background: rgba(255,255,255,0.95);
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 248, 228, 0.95);
+      border: 4px double #5e3b1b;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.3);
       text-align: center;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-style: italic;
+      margin-bottom: 20px;
     }
 
     table {
       width: 100%;
-      margin-top: 20px;
       border-collapse: collapse;
+      margin-top: 10px;
+      background-color: #fff7e0;
+      border: 2px solid #8b5e3c;
     }
 
     th, td {
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
+      padding: 12px;
+      border-bottom: 1px dashed #b9a27c;
+      font-size: 1.1em;
     }
 
     th {
-      background: #eee;
+      background-color: #e2c79c;
+      color: #4a2c2a;
+      border-bottom: 2px solid #8b5e3c;
     }
 
     .button-group {
       margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
     .action-btn {
-      font-size: 16px;
-      padding: 10px 16px;
-      margin: 5px;
+      font-size: 18px;
+      padding: 12px 24px;
+      background-color: #e2c79c;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      color: #3b241b;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      transition: background-color 0.3s;
+    }
+
+    .action-btn:hover {
+      background-color: #d6b88a;
     }
   </style>
 </head>
@@ -67,7 +98,6 @@
     <div class="button-group">
       <button class="action-btn" onclick="window.location.href='index.html'">🏠 Inicio</button>
       <button class="action-btn" onclick="window.location.href='explorar.html'">🗺️ Explorar</button>
-      <button class="action-btn" onclick="localStorage.removeItem('ranking'); location.reload();">🧹 Reiniciar Ranking</button>
     </div>
   </div>
 
@@ -75,7 +105,6 @@
     const ranking = JSON.parse(localStorage.getItem("ranking")) || [];
     const tbody = document.getElementById("ranking-body");
 
-    // Ordenar por puntuación descendente
     ranking.sort((a, b) => b.puntos - a.puntos);
 
     ranking.forEach(entry => {
@@ -86,4 +115,3 @@
   </script>
 </body>
 </html>
-
