@@ -6,6 +6,7 @@
   <title>🏟️ Plaza de Toros</title>
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <style>
     body {
       background: url('images/pergamino.jpg') no-repeat center center fixed;
@@ -54,20 +55,28 @@
     }
 
     .slot {
+      background-image: url('images/pergamino-slot.png');
+      background-size: cover;
+      background-repeat: no-repeat;
       border: 2px dashed #8b5e3c;
       border-radius: 10px;
-      padding: 12px;
-      min-height: 40px;
-      background-color: #fff7e0;
+      padding: 25px;
+      min-height: 60px;
+      color: #311c0f;
       font-weight: bold;
       text-align: center;
-      font-size: 0.95em;
+      font-size: 1em;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     }
 
     .drag-item {
-      padding: 8px 10px;
-      font-size: 0.9em;
-      background-color: #e2c79c;
+      font-family: 'MedievalSharp', cursive;
+      background-image: url('images/papel-antiguo.png');
+      background-size: cover;
+      background-position: center;
+      color: #3b1e0c;
+      font-weight: bold;
+      padding: 10px;
       border: 2px solid #6d4c41;
       border-radius: 8px;
       cursor: grab;
@@ -107,6 +116,13 @@
       border-radius: 12px;
       margin-top: 30px;
       display: none;
+      animation: aparecer 1s ease-in-out;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .action-btn {
@@ -129,8 +145,8 @@
     <div class="carousel">
       <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
       <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
-<p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
-<p><a href="https://sanmartindelcastañar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
+      <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
+      <p><a href="https://sanmartindelcastanar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
     </div>
 
     <div id="drag-area-wrapper">
