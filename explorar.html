@@ -208,7 +208,7 @@
       const allStops = [...mainStops, "bodega"];
       let completadas = 0;
 
-  // Marcar como completadas
+      // Marcar como completadas y tachar
       allStops.forEach(stop => {
         const completada = localStorage.getItem(`${stop}-completed`) === "true";
         if (completada) completadas++;
@@ -216,18 +216,18 @@
         if (btn && completada) {
           btn.classList.add("completed");
         }
-  });
+      });
 
-  // Ocultar Bodega si no se han completado las otras
-      const bodegaVisible = mainStops.every(stop => localStorage.getItem(`${stop}-completed`) === "true");
+      // Ocultar bodega si no se han completado todas las demás
+      const bodegaDesbloqueada = mainStops.every(stop => localStorage.getItem(`${stop}-completed`) === "true");
       const bodegaBtn = document.querySelector(`.map-btn[data-stop="bodega"]`);
-      if (bodegaBtn && !bodegaVisible) {
+      if (bodegaBtn && !bodegaDesbloqueada) {
         bodegaBtn.style.display = "none";
       }
 
-  // Actualizar barra de progreso
-  document.getElementById("progress-fill").style.width = `${(completadas / allStops.length) * 100}%`;
-  document.getElementById("progress-text").textContent = `Paradas completadas: ${completadas}/${allStops.length}`;
+      // Progreso
+      document.getElementById("progress-fill").style.width = `${(completadas / allStops.length) * 100}%`;
+      document.getElementById("progress-text").textContent = `Paradas completadas: ${completadas}/${allStops.length}`;
 
       function checkQR() {
         const qrInput = document.getElementById("qr-input").value.trim().toUpperCase();
