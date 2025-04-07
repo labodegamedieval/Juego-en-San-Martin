@@ -6,15 +6,153 @@
   <title>🗺️ Explora San Martín del Castañar</title>
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
+  <style>
+    body {
+      background: url('images/pergamino.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Georgia', serif;
+      color: #3b241b;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: auto;
+      background: rgba(255, 248, 228, 0.95);
+      border: 3px solid #5a3b2b;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    header h1 {
+      font-size: 2em;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .music-control {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .progress-container {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .progress-bar {
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 20px;
+      margin: 10px auto;
+      width: 80%;
+    }
+
+    .progress-fill {
+      background: #c19a6b;
+      height: 100%;
+      width: 0%;
+    }
+
+    .map-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .map-container img {
+      width: 60%;
+      border: 3px solid #8b5e3c;
+      border-radius: 10px;
+    }
+
+    .map-description {
+      font-style: italic;
+      margin-top: 10px;
+    }
+
+    .buttons-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .map-btn {
+      padding: 10px 16px;
+      background-color: #e8d6b8;
+      border: 2px solid #6d4c41;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+      color: #3b241b;
+      font-family: 'Georgia', serif;
+    }
+
+    .map-btn.completed {
+      text-decoration: line-through;
+      background-color: #dcd2bd;
+      opacity: 0.6;
+    }
+
+    .qr-section {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .qr-section input {
+      padding: 8px;
+      width: 60%;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #999;
+    }
+
+    .action-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #d6c1a1;
+      border: 2px solid #6d4c41;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+    }
+
+    .button-group {
+      text-align: center;
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-style: italic;
+    }
+
+    a {
+      color: #3b241b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>🗺️ Explora el Mensaje Oculto de Gonzalo</h1>
       <div class="music-control">
-        <button class="music-btn">
-          <span class="music-icon">🎵</span> Pausar Música
-        </button>
+        <button class="music-btn" onclick="toggleMusic()">🎵 Pausar Música</button>
       </div>
     </header>
 
@@ -29,20 +167,25 @@
 
       <div class="map-container">
         <img src="images/callejero.jpg" alt="Mapa de San Martín del Castañar" />
+        <p class="map-description">
+          Consulta <a href="https://goo.gl/maps/GXwTzwoLNU1uXrkG7" target="_blank">San Martín del Castañar en Google Maps</a>
+        </p>
+
         <div class="buttons-container">
-          <button class="map-btn" onclick="location.href='castillo.html'">🏰 Castillo</button>
-          <button class="map-btn" onclick="location.href='plaza.html'">🏟️ Plaza de toros</button>
-          <button class="map-btn" onclick="location.href='iglesia.html'">⛪ Iglesia</button>
-          <button class="map-btn" onclick="location.href='fuente.html'">⛲ Fuente y Portalón</button>
-          <button class="map-btn" onclick="location.href='ermita.html'">🙏 Ermita</button>
-          <button class="map-btn" onclick="location.href='puente.html'">🌉 Puente</button>
-          <button class="map-btn" onclick="location.href='bodega.html'">🍷 Bodega</button>
+          <button class="map-btn" data-stop="castillo" onclick="location.href='castillo.html'">🏰 Castillo</button>
+          <button class="map-btn" data-stop="plaza" onclick="location.href='plaza.html'">🏟️ Plaza de toros</button>
+          <button class="map-btn" data-stop="iglesia" onclick="location.href='iglesia.html'">⛪ Iglesia</button>
+          <button class="map-btn" data-stop="fuente" onclick="location.href='fuente.html'">⛲ Fuente y Portalón</button>
+          <button class="map-btn" data-stop="ermita" onclick="location.href='ermita.html'">🙏 Ermita</button>
+          <button class="map-btn" data-stop="puente" onclick="location.href='puente.html'">🌉 Puente</button>
+          <button class="map-btn" data-stop="bodega" onclick="location.href='bodega.html'">🍷 Bodega</button>
         </div>
       </div>
 
       <div class="qr-section">
         <h2>Escanea un Código QR</h2>
         <input type="text" id="qr-input" placeholder="Ej: FUENTE-1600" />
+        <br />
         <button class="action-btn" onclick="checkQR()">Verificar QR</button>
         <p id="qr-status"></p>
       </div>
@@ -54,14 +197,28 @@
       </div>
     </section>
 
-    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop autoplay></audio>
 
     <footer>
       <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
     </footer>
 
-    <script src="scripts/script.js"></script>
     <script>
+      const stops = ["castillo", "plaza", "iglesia", "fuente", "ermita", "puente", "bodega"];
+      let completadas = 0;
+
+      stops.forEach(stop => {
+        const completada = localStorage.getItem(`${stop}-completed`) === "true";
+        if (completada) completadas++;
+        const btn = document.querySelector(`.map-btn[data-stop="${stop}"]`);
+        if (btn && completada) {
+          btn.classList.add("completed");
+        }
+      });
+
+      document.getElementById("progress-fill").style.width = `${(completadas / stops.length) * 100}%`;
+      document.getElementById("progress-text").textContent = `Paradas completadas: ${completadas}/${stops.length}`;
+
       function checkQR() {
         const qrInput = document.getElementById("qr-input").value.trim().toUpperCase();
         const codes = {
@@ -85,6 +242,18 @@
           }, 1500);
         } else {
           status.textContent = "❌ Código incorrecto. Intenta de nuevo.";
+        }
+      }
+
+      function toggleMusic() {
+        const music = document.getElementById("background-music");
+        const btn = document.querySelector(".music-btn");
+        if (music.paused) {
+          music.play();
+          btn.innerHTML = "🎵 Pausar Música";
+        } else {
+          music.pause();
+          btn.innerHTML = "🎵 Reanudar Música";
         }
       }
     </script>
