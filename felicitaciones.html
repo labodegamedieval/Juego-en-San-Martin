@@ -38,16 +38,27 @@
       color: gold;
     }
 
+    .pergamino-fragmento {
+      background: url('images/pergamino.png') no-repeat center center;
+      background-size: contain;
+      width: 100%;
+      max-width: 500px;
+      height: 200px;
+      margin: 20px auto;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
     .fragmento {
       font-size: 1.6em;
       font-weight: bold;
       font-style: italic;
       color: #8b0000;
-      background-color: #fff3cd;
-      border: 2px dashed #8b0000;
-      padding: 10px;
-      margin-top: 20px;
-      display: inline-block;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 10px 20px;
+      border-radius: 10px;
     }
 
     .button-group {
@@ -88,7 +99,10 @@
     <p>Has superado este reto del mensaje oculto de Gonzalo.</p>
     <div class="stars">⭐ ⭐ ⭐</div>
     <p id="completion-text">Tu valentía será recordada en San Martín del Castañar...</p>
-    <p class="fragmento" id="fragment-text" style="display: none;"></p>
+
+    <div class="pergamino-fragmento" id="fragment-container">
+      <p class="fragmento" id="fragment-text"></p>
+    </div>
 
     <div class="share-section" style="margin-top: 30px;">
       <h3>📣 Comparte tu aventura</h3>
@@ -140,18 +154,19 @@
     };
 
     const completionText = document.getElementById("completion-text");
+    const fragmentContainer = document.getElementById("fragment-container");
     const fragmentText = document.getElementById("fragment-text");
 
     if (stop === "bodega") {
       completionText.textContent = "Has llegado al final de la aventura...";
-      fragmentText.innerHTML = "🧩 Has reunido todos los fragmentos. ¡Dirígete a la bodega para desvelar el secreto!";
-      fragmentText.style.display = "block";
+      fragmentText.textContent = "🧩 Has reunido todos los fragmentos. ¡Dirígete a la bodega para desvelar el secreto!";
+      fragmentContainer.style.display = "flex";
       document.getElementById("button-group").innerHTML += `
         <button class="action-btn" onclick="window.location.href='final.html'">🔓 Ver Mensaje Completo</button>
       `;
     } else if (fragmentos[stop]) {
       fragmentText.innerHTML = fragmentos[stop];
-      fragmentText.style.display = "block";
+      fragmentContainer.style.display = "flex";
     }
   </script>
 </body>
