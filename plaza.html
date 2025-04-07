@@ -16,7 +16,7 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 950px;
       margin: auto;
       background: rgba(255, 248, 228, 0.95);
       border-radius: 16px;
@@ -26,6 +26,24 @@
 
     h1 {
       text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .carousel {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .carousel img {
+      width: 100%;
+      border-radius: 10px;
+      border: 2px solid #6b3e2e;
+    }
+
+    .carousel p {
+      text-align: center;
+      font-style: italic;
+      margin-top: 10px;
     }
 
     .drop-zone {
@@ -52,6 +70,11 @@
       border-radius: 8px;
       cursor: grab;
       text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .drag-item:hover {
+      transform: scale(1.05);
     }
 
     .drag-container {
@@ -90,20 +113,28 @@
 </head>
 <body>
   <div class="container">
-    <h1>🏟️ Plaza de Toros - Reto del Cartel</h1>
-    <p>Gonzalo dejó pistas en el antiguo cartel de fiestas. Arrastra cada elemento a su lugar correspondiente.</p>
+    <h1>🏟️ Plaza de Toros</h1>
+    <p>Gonzalo dejó un cartel enigmático con pistas ocultas... ¿serás capaz de restaurarlo con precisión?</p>
+
+    <div class="carousel">
+      <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
+      <p>Las capeas del 11 de agosto, símbolo de identidad local.</p>
+    </div>
 
     <div class="drop-zone">
-      <div class="slot" data-answer="11 de agosto">📅 Fecha: <span class="placeholder">Arrastra aquí</span></div>
-      <div class="slot" data-answer="Fiesta del vino">🎉 Actividad: <span class="placeholder">Arrastra aquí</span></div>
-      <div class="slot" data-answer="Vino de la Sierra">🍷 Bebida: <span class="placeholder">Arrastra aquí</span></div>
+      <div class="slot" data-answer="11 de agosto">📅 ¿Qué día arranca la celebración?</div>
+      <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué tradición acompaña las capeas?</div>
+      <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué se ofrece a los asistentes como bienvenida?</div>
     </div>
 
     <div class="drag-container">
+      <div class="drag-item" draggable="true">10 de junio</div>
       <div class="drag-item" draggable="true">11 de agosto</div>
       <div class="drag-item" draggable="true">15 de septiembre</div>
-      <div class="drag-item" draggable="true">Procesión religiosa</div>
       <div class="drag-item" draggable="true">Fiesta del vino</div>
+      <div class="drag-item" draggable="true">Procesión religiosa</div>
+      <div class="drag-item" draggable="true">Danza medieval</div>
+      <div class="drag-item" draggable="true">Cerveza alemana</div>
       <div class="drag-item" draggable="true">Vino de la Sierra</div>
       <div class="drag-item" draggable="true">Horchata</div>
     </div>
@@ -115,6 +146,10 @@
       <button class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
     </div>
   </div>
+
+  <audio id="success-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+  <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
+  <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" autoplay loop></audio>
 
   <script>
     const draggables = document.querySelectorAll('.drag-item');
@@ -131,15 +166,11 @@
       slot.addEventListener('dragover', e => e.preventDefault());
       slot.addEventListener('drop', () => {
         if (draggedItem) {
-          slot.querySelector('.placeholder').textContent = draggedItem.textContent;
+          slot.innerHTML = draggedItem.textContent;
           slot.setAttribute('data-user', draggedItem.textContent);
+          checkSolution();
         }
       });
-    });
-
-    document.addEventListener('dragend', () => {
-      draggedItem = null;
-      checkSolution();
     });
 
     function checkSolution() {
@@ -151,12 +182,14 @@
       });
 
       if (correct === slots.length) {
-        document.getElementById('result').textContent = '✅ ¡Cartel correcto! Gonzalo estaría orgulloso.';
+        document.getElementById('result').textContent = '✅ ¡Cartel restaurado! Gonzalo estaría orgulloso.';
         document.getElementById('cartel-img').style.display = 'block';
         document.getElementById('continue-button').style.display = 'block';
         localStorage.setItem('plaza-completed', 'true');
-        const audio = new Audio('sounds/cheers.mp3');
-        audio.play();
+        document.getElementById('success-sound').play();
+      } else {
+        document.getElementById('result').textContent = '❌ Alguno de los elementos aún no encaja...';
+        document.getElementById('error-sound').play();
       }
     }
   </script>
