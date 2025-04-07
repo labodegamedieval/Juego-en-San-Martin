@@ -55,7 +55,7 @@
     }
 
     .slot {
-      background-image: url('images/pergamino.jpg');
+      background-image: url('images/pergamino-slot.png');
       background-size: cover;
       background-repeat: no-repeat;
       border: 2px dashed #8b5e3c;
@@ -71,7 +71,7 @@
 
     .drag-item {
       font-family: 'MedievalSharp', cursive;
-      background-image: url('images/pergamino.png');
+      background-image: url('images/papel-antiguo.png');
       background-size: cover;
       background-position: center;
       color: #3b1e0c;
@@ -138,7 +138,10 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="music-control" style="text-align: right; margin-bottom: 10px;">
+    <button class="action-btn" onclick="toggleMusic()">🎵 Pausar Música</button>
+  </div>
+$1
     <h1>🏟️ Plaza de Toros</h1>
     <p>Gonzalo dejó un cartel enigmático con pistas ocultas... ¿serás capaz de restaurarlo con precisión?</p>
 
@@ -162,8 +165,11 @@
         <div class="drag-item" draggable="true">Horchata</div>
       </div>
 
-      <div class="drop-zone">
+      <div class="drop-zone" style="background-image: url('images/pergamino.png'); background-size: cover; background-position: center; padding: 30px; border-radius: 16px; border: 3px solid #8b5e3c;">
         <div class="slot" data-answer="11 de agosto">📅 ¿Qué día comenzaron las capeas en las que desapareció Gonzalo?</div>
+        <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche junto a la plaza?</div>
+        <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último brindis antes de desaparecer?</div>
+      </div>
         <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche junto a la plaza?</div>
         <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último brindis antes de desaparecer?</div>
       </div>
@@ -178,7 +184,7 @@
   </div>
 
   <audio id="success-sound" src="sounds/coins.mp3" preload="auto"></audio>
-  <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
+  <audio id="error-sound" src="sounds/error.mp3" preload="auto" data-role="error" ></audio>
   <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" autoplay loop></audio>
 
   <script>
@@ -217,11 +223,23 @@
         document.getElementById('continue-button').style.display = 'block';
         localStorage.setItem('plaza-completed', 'true');
         document.getElementById('success-sound').play();
+        setTimeout(() => {
+          const cheers = new Audio('sounds/cheers.mp3');
+          cheers.play();
+        }, 1000);
       } else {
         document.getElementById('result').textContent = '❌ Alguno de los elementos aún no encaja...';
         document.getElementById('error-sound').play();
       }
     }
-  </script>
+  function toggleMusic() {
+    const music = document.getElementById('background-music');
+    if (music.paused) {
+      music.play();
+    } else {
+      music.pause();
+    }
+  }
+</script>
 </body>
 </html>
