@@ -2,148 +2,163 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🏟️ Plaza de Toros</title>
-  <link rel="stylesheet" href="styles/style.css"/>
-  <link rel="icon" type="image/jpg" href="images/escudo-borrado.jpg"/>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
   <style>
-    .quiz-block {
-      margin: 20px auto;
-      max-width: 700px;
-      background: #fffbe9;
-      border: 2px solid #d3a971;
-      border-radius: 10px;
+    body {
+      background: url('images/pergamino.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Georgia, serif;
+      color: #3b241b;
       padding: 20px;
     }
-    .quiz-block h2 {
-      margin-bottom: 15px;
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255, 248, 228, 0.95);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
-    .quiz-block select {
-      font-size: 16px;
-      padding: 6px;
-      margin: 5px 0 10px;
-      width: 100%;
+
+    h1 {
+      text-align: center;
     }
-    .quiz-block button {
-      margin-top: 10px;
+
+    .drop-zone {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .slot {
+      border: 2px dashed #8b5e3c;
+      border-radius: 10px;
+      padding: 20px;
+      min-height: 50px;
+      background-color: #fff7e0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .drag-item {
+      padding: 10px;
+      background-color: #e2c79c;
+      border: 2px solid #6d4c41;
+      border-radius: 8px;
+      cursor: grab;
+      text-align: center;
+    }
+
+    .drag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .cartel-img {
+      max-width: 100%;
+      border: 4px solid #6b3e2e;
+      border-radius: 12px;
+      margin-top: 30px;
+      display: none;
+    }
+
+    .action-btn {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 20px;
+      font-size: 18px;
+      background-color: #d6b88a;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>🏟️ Plaza de Toros</h1>
-      <div class="music-control">
-        <button class="music-btn"><span class="music-icon">🎵</span> Música</button>
-      </div>
-    </header>
+    <h1>🏟️ Plaza de Toros - Reto del Cartel</h1>
+    <p>Gonzalo dejó pistas en el antiguo cartel de fiestas. Arrastra cada elemento a su lugar correspondiente.</p>
 
-    <section id="content">
-      <div class="stop-icon">🏟️</div>
-      <div id="location-check">
-        <h2>Verifica tu ubicación</h2>
-        <p>Busca la columna en piedra frente a la plaza. Gonzalo marcó el lugar...</p>
-        <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
-        <p>O escribe el nombre:</p>
-        <input type="text" id="location-input" placeholder="Ej: Plaza" />
-        <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
-        <p id="location-status"></p>
-        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
-      </div>
+    <div class="drop-zone">
+      <div class="slot" data-answer="11 de agosto">📅 Fecha: <span class="placeholder">Arrastra aquí</span></div>
+      <div class="slot" data-answer="Fiesta del vino">🎉 Actividad: <span class="placeholder">Arrastra aquí</span></div>
+      <div class="slot" data-answer="Vino de la Sierra">🍷 Bebida: <span class="placeholder">Arrastra aquí</span></div>
+    </div>
 
-      <div id="game-content" style="display: none;">
-        <div class="carousel">
-          <div class="slide active">
-            <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
-            <p><strong>Tradición:</strong> Las capeas del 11 de agosto, símbolo de identidad local.</p>
-          </div>
-          <div class="slide">
-            <img src="images/plaza-gradas.jpeg" alt="Gradas y burladeros" />
-            <p><strong>Gradas:</strong> De piedra original, testigos de generaciones.</p>
-          </div>
-          <div class="slide">
-            <img src="images/muralla.jpg" alt="Gradas y burladeros" />
-            <p><strong>Gradas:</strong> De piedra original, testigos de generaciones.</p>
-          </div>
-          <button class="carousel-btn prev-slide">←</button>
-          <button class="carousel-btn next-slide">→</button>
-        </div>
+    <div class="drag-container">
+      <div class="drag-item" draggable="true">11 de agosto</div>
+      <div class="drag-item" draggable="true">15 de septiembre</div>
+      <div class="drag-item" draggable="true">Procesión religiosa</div>
+      <div class="drag-item" draggable="true">Fiesta del vino</div>
+      <div class="drag-item" draggable="true">Vino de la Sierra</div>
+      <div class="drag-item" draggable="true">Horchata</div>
+    </div>
 
-        <div class="quiz-block">
-          <h2>🪧 Reto: Completa el cartel de la fiesta</h2>
-          <p><strong>1. ¿En qué fecha se celebran las capeas?</strong></p>
-          <select id="q1">
-            <option value="">Selecciona una opción</option>
-            <option value="10 de junio">10 de junio</option>
-            <option value="11 de agosto">11 de agosto</option>
-            <option value="15 de septiembre">15 de septiembre</option>
-          </select>
+    <div id="result"></div>
+    <img src="images/cartel.jpeg" alt="Cartel de fiestas" class="cartel-img" id="cartel-img" />
 
-          <p><strong>2. ¿Qué actividad acompaña las capeas?</strong></p>
-          <select id="q2">
-            <option value="">Selecciona una opción</option>
-            <option value="Procesión religiosa">Procesión religiosa</option>
-            <option value="Danza medieval">Danza medieval</option>
-            <option value="Fiesta del vino">Fiesta del vino</option>
-          </select>
+    <div id="continue-button" style="display:none">
+      <button class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
+    </div>
+  </div>
 
-          <p><strong>3. ¿Qué bebida se reparte durante la celebración?</strong></p>
-          <select id="q3">
-            <option value="">Selecciona una opción</option>
-            <option value="Cerveza alemana">Cerveza alemana</option>
-            <option value="Vino de la Sierra">Vino de la Sierra</option>
-            <option value="Horchata">Horchata</option>
-          </select>
+  <script>
+    const draggables = document.querySelectorAll('.drag-item');
+    const slots = document.querySelectorAll('.slot');
+    let draggedItem = null;
 
-          <button class="action-btn" onclick="validarCartel()">Comprobar</button>
-          <p id="cartel-feedback" style="margin-top:10px;"></p>
-        </div>
+    draggables.forEach(item => {
+      item.addEventListener('dragstart', () => {
+        draggedItem = item;
+      });
+    });
 
-        <div class="fragmento-final" id="fragmento-final" style="display: none;">
-          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece">en</span></p>
-          <p><strong>QR en el pueblo:</strong> PLAZA-1523</p>
-          <p><strong>Dato Curioso:</strong> La plaza se construyó aprovechando el patio de armas del castillo en el siglo XVII.</p>
-        </div>
-
-        <div id="continue-button" style="display: none;">
-          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar búsqueda</button>
-        </div>
-      </div>
-    </section>
-
-    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
-    <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
-    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-
-    <footer>
-      <p>© 2025 La Bodega Medieval |
-        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
-      </p>
-    </footer>
-
-    <script src="scripts/script.js"></script>
-    <script>
-      function validarCartel() {
-        const f1 = document.getElementById("q1").value;
-        const f2 = document.getElementById("q2").value;
-        const f3 = document.getElementById("q3").value;
-        const feedback = document.getElementById("cartel-feedback");
-
-        if (f1 === "11 de agosto" && f2 === "Fiesta del vino" && f3 === "Vino de la Sierra") {
-          feedback.textContent = "✅ ¡Cartel correcto! Gonzalo estaría orgulloso.";
-          document.getElementById("fragmento-final").style.display = "block";
-          document.getElementById("continue-button").style.display = "block";
-          localStorage.setItem("plaza-completed", "true");
-          playSound("cheers-sound");
-        } else {
-          feedback.textContent = "❌ El cartel no es del todo exacto... prueba con otra combinación.";
-          playSound("error-sound");
+    slots.forEach(slot => {
+      slot.addEventListener('dragover', e => e.preventDefault());
+      slot.addEventListener('drop', () => {
+        if (draggedItem) {
+          slot.querySelector('.placeholder').textContent = draggedItem.textContent;
+          slot.setAttribute('data-user', draggedItem.textContent);
         }
-      }
-    </script>
-    <script>
-  localStorage.setItem("plaza-completed", "true");
-</script>
+      });
+    });
 
+    document.addEventListener('dragend', () => {
+      draggedItem = null;
+      checkSolution();
+    });
+
+    function checkSolution() {
+      let correct = 0;
+      slots.forEach(slot => {
+        const expected = slot.getAttribute('data-answer');
+        const given = slot.getAttribute('data-user');
+        if (expected === given) correct++;
+      });
+
+      if (correct === slots.length) {
+        document.getElementById('result').textContent = '✅ ¡Cartel correcto! Gonzalo estaría orgulloso.';
+        document.getElementById('cartel-img').style.display = 'block';
+        document.getElementById('continue-button').style.display = 'block';
+        localStorage.setItem('plaza-completed', 'true');
+        const audio = new Audio('sounds/cheers.mp3');
+        audio.play();
+      }
+    }
+  </script>
 </body>
 </html>
