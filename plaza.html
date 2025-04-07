@@ -55,7 +55,7 @@
     }
 
     .slot {
-      background-image:;
+      background-image:url('images/pergamino.png');
       background-size: cover;
       background-repeat: no-repeat;
       border: 2px dashed #8b5e3c;
@@ -99,91 +99,39 @@
     }
 
     #drag-area-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 40px;
-}
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
 
-@media (max-width: 768px) {
-  #drag-area-wrapper {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
+    @media (max-width: 768px) {
+      #drag-area-wrapper {
+        flex-direction: column;
+        align-items: center;
+      }
 
-  .drag-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 100%;
-    gap: 8px;
-  }
+      .drag-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 100%;
+        gap: 10px;
+      }
 
-  .drag-item {
-    font-size: 0.9em;
-    padding: 6px 8px;
-    max-width: 120px;
-  }
+      .drop-zone {
+        width: 100%;
+        padding: 20px;
+      }
 
-  .drop-zone {
-    width: 100%;
-    padding: 16px;
-    max-width: 100%;
-  }
-
-  .slot {
-    font-size: 0.9em;
-    padding: 14px;
-    min-height: 50px;
-  }
-}
-
-@media (max-width: 768px) {
-  #drag-area-wrapper {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .drag-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 100%;
-    gap: 10px;
-  }
-
-  .drop-zone {
-    width: 100%;
-    padding: 20px;
-  }
-
-  .slot {
-    font-size: 1em;
-    padding: 20px;
-    min-height: 60px;
-  }
-}
-
-@media (max-width: 768px) {
-  #drag-area-wrapper {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .drag-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 100%;
-  }
-
-  .slot {
-    font-size: 0.95em;
-  }
-}
+      .slot {
+        font-size: 0.95em;
+        padding: 20px;
+        min-height: 60px;
+      }
+    }
 
     #result {
       margin-top: 20px;
@@ -222,7 +170,8 @@
   <div class="music-control" style="text-align: right; margin-bottom: 10px;">
     <button class="action-btn" onclick="toggleMusic()">🎵 Pausar Música</button>
   </div>
-<div class="container">
+
+  <div class="container">
     <div id="location-check">
       <h2>📍 Verifica tu ubicación</h2>
       <p>Acércate a la Plaza de Toros o escribe el nombre manualmente:</p>
@@ -231,71 +180,50 @@
       <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
       <p id="location-status"></p>
     </div>
+
     <div id="game-content" style="display: none;">
-    <div id="location-check">
-      <h2>📍 Verifica tu ubicación</h2>
-      <p>Acércate a la Plaza de Toros para desbloquear el reto o introduce el nombre manualmente:</p>
-      <button class="action-btn" onclick="checkLocation()">Verificar con GPS</button>
-      <input type="text" id="location-input" placeholder="Ej: Plaza">
-      <button class="action-btn" onclick="checkLocationManual()">Verificar Manualmente</button>
-      <p id="location-status"></p>
-    </div>
-    <div id="game-content" style="display: none;">
-    <h1>🏟️ Plaza de Toros</h1>
-    <p>Gonzalo dejó un cartel enigmático con pistas ocultas... ¿serás capaz de restaurarlo con precisión?</p>
+      <h1>🏟️ Plaza de Toros</h1>
+      <p>Gonzalo dejó un cartel enigmático con pistas ocultas... ¿serás capaz de restaurarlo con precisión?</p>
 
-    <div class="carousel">
-      <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
-      <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
-      <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
-      <p><a href="https://sanmartindelcastañar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
-    </div>
-
-    <div id="drag-area-wrapper">
-      <div class="drag-container">
-        <div class="drag-item" draggable="true">10 de junio</div>
-        <div class="drag-item" draggable="true">11 de agosto</div>
-        <div class="drag-item" draggable="true">15 de septiembre</div>
-        <div class="drag-item" draggable="true">Fiesta del vino</div>
-        <div class="drag-item" draggable="true">Procesión religiosa</div>
-        <div class="drag-item" draggable="true">Danza medieval</div>
-        <div class="drag-item" draggable="true">Cerveza alemana</div>
-        <div class="drag-item" draggable="true">Vino de la Sierra</div>
-        <div class="drag-item" draggable="true">Horchata</div>
+      <div class="carousel">
+        <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
+        <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
+        <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
+        <p><a href="https://sanmartindelcastañar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
       </div>
 
-      <div class="drop-zone" style="
-  background-image: url('images/pergamino.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  padding: 20px;
-  border-radius: 12px;
-  border: 2px solid #8b5e3c;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-">
-        <div class="slot" style="display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9em; padding: 18px;" data-answer="11 de agosto">📅 ¿Qué día comenzaron las capeas<br>en las que desapareció Gonzalo?</div>
-        <div class="slot" style="display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9em; padding: 18px;" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche<br>junto a la plaza?</div>
-        <div class="slot" style="display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9em; padding: 18px;" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último<br>brindis antes de desaparecer?</div>
-      </div>
-        <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche junto a la plaza?</div>
-        <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último brindis antes de desaparecer?</div>
-      </div>
-    </div>
+      <div id="drag-area-wrapper">
+        <div class="drag-container">
+          <div class="drag-item" draggable="true">10 de junio</div>
+          <div class="drag-item" draggable="true">11 de agosto</div>
+          <div class="drag-item" draggable="true">15 de septiembre</div>
+          <div class="drag-item" draggable="true">Fiesta del vino</div>
+          <div class="drag-item" draggable="true">Procesión religiosa</div>
+          <div class="drag-item" draggable="true">Danza medieval</div>
+          <div class="drag-item" draggable="true">Cerveza alemana</div>
+          <div class="drag-item" draggable="true">Vino de la Sierra</div>
+          <div class="drag-item" draggable="true">Horchata</div>
+        </div>
 
-    <div id="result"></div>
-    <img src="images/cartel.jpeg" alt="Cartel de fiestas" class="cartel-img" id="cartel-img" />
+        <div class="drop-zone" style="background-image: url('images/pergamino.jpg');">
+          <div class="slot" data-answer="11 de agosto">📅 ¿Qué día comenzaron las capeas<br>en las que desapareció Gonzalo?</div>
+          <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche<br>junto a la plaza?</div>
+          <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último<br>brindis antes de desaparecer?</div>
+        </div>
+      </div>
 
-    <div id="continue-button" style="display:none">
-      <button class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
+      <div id="result"></div>
+      <img src="images/cartel.jpeg" alt="Cartel de fiestas" class="cartel-img" id="cartel-img" />
+
+      <div id="continue-button" style="display:none">
+        <button class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
+      </div>
     </div>
   </div>
 
   <audio id="success-sound" src="sounds/cheers.mp3" preload="auto"></audio>
-  <audio id="final-sound" src="sounds/coins.mp3" preload="auto"></audio></audio>
-  <audio id="error-sound" src="sounds/error.mp3" preload="auto" data-role="error" ></audio>
+  <audio id="final-sound" src="sounds/coins.mp3" preload="auto"></audio>
+  <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
   <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" autoplay loop></audio>
 
   <script>
@@ -327,31 +255,12 @@
       }
     }
 
-    function checkLocation() {
-      navigator.geolocation.getCurrentPosition(position => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        const plazaLat = 40.5245;
-        const plazaLon = -6.0182;
-        const distance = Math.sqrt(Math.pow(lat - plazaLat, 2) + Math.pow(lon - plazaLon, 2));
-        if (distance < 0.002) {
-          document.getElementById('location-status').textContent = '✅ Ubicación confirmada.';
-          document.getElementById('game-content').style.display = 'block';
-          document.getElementById('location-check').style.display = 'none';
-        } else {
-          document.getElementById('location-status').textContent = '❌ No estás cerca de la plaza.';
-        }
-      });
-    }
-
-    function checkLocationManual() {
-      const input = document.getElementById('location-input').value.trim().toLowerCase();
-      if (input === 'plaza') {
-        document.getElementById('location-status').textContent = '✅ Acceso concedido por verificación manual.';
-        document.getElementById('game-content').style.display = 'block';
-        document.getElementById('location-check').style.display = 'none';
+    function toggleMusic() {
+      const music = document.getElementById('background-music');
+      if (music.paused) {
+        music.play();
       } else {
-        document.getElementById('location-status').textContent = '❌ Nombre incorrecto.';
+        music.pause();
       }
     }
 
@@ -377,45 +286,36 @@
     });
 
     function checkSolution() {
-  let correct = 0;
-  let totalAnswered = 0;
+      let correct = 0;
+      let totalAnswered = 0;
 
-  slots.forEach(slot => {
-    const expected = slot.getAttribute('data-answer');
-    const given = slot.getAttribute('data-user');
-    if (given) totalAnswered++;
-    if (expected === given) correct++;
-  });
+      slots.forEach(slot => {
+        const expected = slot.getAttribute('data-answer');
+        const given = slot.getAttribute('data-user');
+        if (given) totalAnswered++;
+        if (expected === given) correct++;
+      });
 
-  const result = document.getElementById('result');
-  const img = document.getElementById('cartel-img');
-  const btn = document.getElementById('continue-button');
+      const result = document.getElementById('result');
+      const img = document.getElementById('cartel-img');
+      const btn = document.getElementById('continue-button');
 
-  if (correct === slots.length) {
-    result.textContent = '✅ ¡Cartel restaurado! Gonzalo estaría orgulloso.';
-    img.style.display = 'block';
-    btn.style.display = 'block';
-    localStorage.setItem('plaza-completed', 'true');
-    document.getElementById('success-sound').play();
-    setTimeout(() => {
-      document.getElementById('final-sound').play();
-    }, 800);
-  } else if (totalAnswered === slots.length) {
-    result.textContent = '❌ Alguno de los elementos aún no encaja...';
-    img.style.display = 'none';
-    btn.style.display = 'none';
-    document.getElementById('error-sound').play();
-  }
-}
-
-function toggleMusic() {
-    const music = document.getElementById('background-music');
-    if (music.paused) {
-      music.play();
-    } else {
-      music.pause();
+      if (correct === slots.length) {
+        result.textContent = '✅ ¡Cartel restaurado! Gonzalo estaría orgulloso.';
+        img.style.display = 'block';
+        btn.style.display = 'block';
+        localStorage.setItem('plaza-completed', 'true');
+        document.getElementById('success-sound').play();
+        setTimeout(() => {
+          document.getElementById('final-sound').play();
+        }, 800);
+      } else if (totalAnswered === slots.length) {
+        result.textContent = '❌ Alguno de los elementos aún no encaja...';
+        img.style.display = 'none';
+        btn.style.display = 'none';
+        document.getElementById('error-sound').play();
+      }
     }
-  }
-</script>
+  </script>
 </body>
 </html>
