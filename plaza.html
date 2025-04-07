@@ -55,7 +55,7 @@
     }
 
     .slot {
-      background-image:url('images/pergamino.jpg');
+      background-image: url('images/pergamino.jpg');
       background-size: cover;
       background-repeat: no-repeat;
       border: 2px dashed #8b5e3c;
@@ -65,7 +65,7 @@
       color: #311c0f;
       font-weight: bold;
       text-align: center;
-      font-size: 1em;
+      font-size: 0.85em;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     }
 
@@ -95,7 +95,7 @@
       gap: 10px;
       align-items: flex-start;
       margin-top: 20px;
-      max-width: 180px;
+      max-width: 140px;
     }
 
     #drag-area-wrapper {
@@ -105,6 +105,40 @@
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 40px;
+}
+
+@media (max-width: 768px) {
+  #drag-area-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .drag-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+    gap: 8px;
+  }
+
+  .drag-item {
+    font-size: 0.9em;
+    padding: 6px 8px;
+    max-width: 120px;
+  }
+
+  .drop-zone {
+    width: 100%;
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  .slot {
+    font-size: 0.9em;
+    padding: 14px;
+    min-height: 50px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -189,6 +223,24 @@
     <button class="action-btn" onclick="toggleMusic()">🎵 Pausar Música</button>
   </div>
 <div class="container">
+    <div id="location-check">
+      <h2>📍 Verifica tu ubicación</h2>
+      <p>Acércate a la Plaza de Toros o escribe el nombre manualmente:</p>
+      <button class="action-btn" onclick="checkLocation()">Verificar con GPS</button>
+      <input type="text" id="location-input" placeholder="Ej: Plaza">
+      <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
+      <p id="location-status"></p>
+    </div>
+    <div id="game-content" style="display: none;">
+    <div id="location-check">
+      <h2>📍 Verifica tu ubicación</h2>
+      <p>Acércate a la Plaza de Toros para desbloquear el reto o introduce el nombre manualmente:</p>
+      <button class="action-btn" onclick="checkLocation()">Verificar con GPS</button>
+      <input type="text" id="location-input" placeholder="Ej: Plaza">
+      <button class="action-btn" onclick="checkLocationManual()">Verificar Manualmente</button>
+      <p id="location-status"></p>
+    </div>
+    <div id="game-content" style="display: none;">
     <h1>🏟️ Plaza de Toros</h1>
     <p>Gonzalo dejó un cartel enigmático con pistas ocultas... ¿serás capaz de restaurarlo con precisión?</p>
 
@@ -213,21 +265,23 @@
       </div>
 
       <div class="drop-zone" style="
-        background-image: url('images/pergamino.png');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        padding: 20px;
-        border-radius: 12px;
-        border: 2px solid #8b5e3c;
-        width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
-      ">
-
+  background-image: url('images/pergamino.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #8b5e3c;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+">
         <div class="slot" style="display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9em; padding: 18px;" data-answer="11 de agosto">📅 ¿Qué día comenzaron las capeas<br>en las que desapareció Gonzalo?</div>
         <div class="slot" style="display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9em; padding: 18px;" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche<br>junto a la plaza?</div>
         <div class="slot" style="display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9em; padding: 18px;" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último<br>brindis antes de desaparecer?</div>
+      </div>
+        <div class="slot" data-answer="Fiesta del vino">🍇 ¿Qué evento popular se celebraba esa noche junto a la plaza?</div>
+        <div class="slot" data-answer="Vino de la Sierra">🍷 ¿Qué bebida ofreció Gonzalo como último brindis antes de desaparecer?</div>
       </div>
     </div>
 
@@ -245,6 +299,62 @@
   <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" autoplay loop></audio>
 
   <script>
+    function checkLocation() {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const plazaLat = 40.5245;
+        const plazaLon = -6.0182;
+        const distance = Math.sqrt(Math.pow(lat - plazaLat, 2) + Math.pow(lon - plazaLon, 2));
+        if (distance < 0.002) {
+          document.getElementById('location-status').textContent = '✅ Ubicación confirmada.';
+          document.getElementById('game-content').style.display = 'block';
+          document.getElementById('location-check').style.display = 'none';
+        } else {
+          document.getElementById('location-status').textContent = '❌ No estás cerca de la plaza.';
+        }
+      });
+    }
+
+    function checkLocationManual() {
+      const input = document.getElementById('location-input').value.trim().toLowerCase();
+      if (input === 'plaza') {
+        document.getElementById('location-status').textContent = '✅ Acceso concedido por verificación manual.';
+        document.getElementById('game-content').style.display = 'block';
+        document.getElementById('location-check').style.display = 'none';
+      } else {
+        document.getElementById('location-status').textContent = '❌ Nombre incorrecto.';
+      }
+    }
+
+    function checkLocation() {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const plazaLat = 40.5245;
+        const plazaLon = -6.0182;
+        const distance = Math.sqrt(Math.pow(lat - plazaLat, 2) + Math.pow(lon - plazaLon, 2));
+        if (distance < 0.002) {
+          document.getElementById('location-status').textContent = '✅ Ubicación confirmada.';
+          document.getElementById('game-content').style.display = 'block';
+          document.getElementById('location-check').style.display = 'none';
+        } else {
+          document.getElementById('location-status').textContent = '❌ No estás cerca de la plaza.';
+        }
+      });
+    }
+
+    function checkLocationManual() {
+      const input = document.getElementById('location-input').value.trim().toLowerCase();
+      if (input === 'plaza') {
+        document.getElementById('location-status').textContent = '✅ Acceso concedido por verificación manual.';
+        document.getElementById('game-content').style.display = 'block';
+        document.getElementById('location-check').style.display = 'none';
+      } else {
+        document.getElementById('location-status').textContent = '❌ Nombre incorrecto.';
+      }
+    }
+
     const draggables = document.querySelectorAll('.drag-item');
     const slots = document.querySelectorAll('.slot');
     let draggedItem = null;
