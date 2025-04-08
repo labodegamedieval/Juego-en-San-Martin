@@ -10,12 +10,12 @@
       background-size: cover;
       font-family: Georgia, serif;
       color: #3b241b;
-      padding: 0;
       margin: 0;
+      padding: 0;
     }
 
     .container {
-      max-width: 950px;
+      max-width: 900px;
       margin: auto;
       background: rgba(255, 248, 228, 0.96);
       border-radius: 16px;
@@ -26,11 +26,17 @@
 
     h1 {
       font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 1.2em;
       margin-bottom: 20px;
+      font-style: italic;
+      color: #5e3b1b;
     }
 
     .carousel {
-      position: relative;
       margin-bottom: 30px;
     }
 
@@ -46,41 +52,59 @@
       margin-top: 10px;
     }
 
+    .caseta {
+      border: 6px double #8b5e3c;
+      background: url('images/caseta-feria.png') no-repeat center center;
+      background-size: cover;
+      padding: 20px;
+      border-radius: 16px;
+      margin-top: 20px;
+    }
+
     canvas {
       border: 3px solid #5e3b1b;
       border-radius: 12px;
       display: block;
-      margin: 0 auto 20px;
+      margin: 0 auto;
       background: #fcefdc;
+    }
+
+    #score-display {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 10px;
     }
 
     #fragmento {
       display: none;
-      padding: 20px;
-      margin-top: 20px;
+      margin: 20px auto;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: contain;
+      padding: 40px;
+      text-align: center;
+      font-size: 1.2em;
+      font-weight: bold;
       border: 2px solid #6b3e2e;
       border-radius: 12px;
-      background: url('images/pergamino.png');
-      background-size: cover;
-      font-weight: bold;
     }
 
     .action-btn {
       display: none;
-      margin-top: 20px;
+      margin: 30px auto 20px;
       padding: 12px 20px;
       font-size: 18px;
       background-color: #d6b88a;
       border: 2px solid #5e3b1b;
       border-radius: 10px;
       cursor: pointer;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>🏟️ Plaza de Toros</h1>
-    <p>Gonzalo dejó un cartel enigmático con pistas ocultas... Pero hoy lo descubrirás con tu puntería medieval.</p>
+    <p class="subtitle">🎪 ¡Bienvenido a la caseta de puntería! Demuestra tu habilidad y revela el secreto oculto entre aplausos y capeas.</p>
 
     <div class="carousel">
       <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
@@ -89,23 +113,34 @@
       <p><a href="https://sanmartindelcastanar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
     </div>
 
-    <canvas id="gameCanvas" width="600" height="300"></canvas>
-    <p>🎯 Acierta a la <strong>copa</strong>, el <strong>escudo</strong> y el <strong>racimo de uvas</strong> para ganar.</p>
-    <div id="fragmento">📜 Fragmento revelado: "...y el brindis selló su destino bajo el estruendo de la plaza."</div>
-    <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
+    <div class="caseta">
+      <canvas id="gameCanvas" width="600" height="300"></canvas>
+      <p>🎯 Acierta a la <strong>copa</strong>, el <strong>escudo</strong> y el <strong>racimo de uvas</strong> para ganar.</p>
+      <div id="score-display">Puntuación: 0 / 3</div>
+      <div id="fragmento">📜 Fragmento revelado: "…y en la arena retumbó el secreto."</div>
+      <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
+    </div>
   </div>
 
-  <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
+  <audio id="hit-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+  <audio id="miss-sound" src="sounds/error.mp3" preload="auto"></audio>
 
-    const objetivos = ['🍷', '🛡️', '🍇', '🐂', '⚔️', '🎭'];
-    const blancos = [];
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const scoreDisplay = document.getElementById("score-display");
+    const fragmento = document.getElementById("fragmento");
+    const btn = document.getElementById("continue-button");
+    const hitSound = document.getElementById("hit-sound");
+    const missSound = document.getElementById("miss-sound");
+
+    const objetivos = ["🍷", "🛡️", "🍇", "🐂", "⚔️", "🎭"];
+    const objetivosClave = new Set(["🍷", "🛡️", "🍇"]);
     const aciertos = new Set();
-    const targetsObjetivo = ['🍷', '🛡️', '🍇'];
+    const blancos = [];
 
     const filas = [60, 140, 220];
-    const velocidad = 1.2;
+    const velocidad = 1.5;
 
     for (let y of filas) {
       for (let i = 0; i < 6; i++) {
@@ -120,7 +155,7 @@
     function dibujar() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       blancos.forEach(b => {
-        ctx.font = '32px serif';
+        ctx.font = "32px serif";
         ctx.fillText(b.icono, b.x, b.y);
         b.x += velocidad;
         if (b.x > canvas.width + 40) {
@@ -131,25 +166,39 @@
       requestAnimationFrame(dibujar);
     }
 
-    canvas.addEventListener('click', e => {
+    function disparar(event) {
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = (event.clientX || event.touches?.[0]?.clientX) - rect.left;
+      const y = (event.clientY || event.touches?.[0]?.clientY) - rect.top;
+
+      let acertado = false;
 
       blancos.forEach(b => {
         if (x > b.x - 20 && x < b.x + 20 && y > b.y - 30 && y < b.y) {
-          if (targetsObjetivo.includes(b.icono)) {
+          if (objetivosClave.has(b.icono)) {
             aciertos.add(b.icono);
+            acertado = true;
           }
         }
       });
 
+      if (acertado) {
+        hitSound.play().catch(() => {});
+      } else {
+        missSound.play().catch(() => {});
+      }
+
+      scoreDisplay.textContent = `Puntuación: ${aciertos.size} / 3`;
+
       if (aciertos.size === 3) {
-        document.getElementById('fragmento').style.display = 'block';
-        document.getElementById('continue-button').style.display = 'block';
+        fragmento.style.display = "block";
+        btn.style.display = "block";
         localStorage.setItem("plaza-completed", "true");
       }
-    });
+    }
+
+    canvas.addEventListener("click", disparar);
+    canvas.addEventListener("touchstart", disparar);
 
     dibujar();
   </script>
