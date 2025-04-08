@@ -68,7 +68,11 @@
       display: block;
       margin: 0 auto;
       background: url('images/caseta-feria.png') center center no-repeat;
-      background-size: cover;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      max-width: 100%;
+      height: auto;
     }
 
     #score-display, #game-instruction {
@@ -105,7 +109,8 @@
       cursor: pointer;
       text-align: center;
     }
-  @keyframes desenrollar {
+
+    @keyframes desenrollar {
       from { transform: scaleY(0); opacity: 0; }
       to { transform: scaleY(1); opacity: 1; }
     }
@@ -114,7 +119,7 @@
 <body>
   <div class="container">
     <h1>🏟️ Plaza de Toros</h1>
-    <p class="subtitle">🎪 ¡Bienvenido a la caseta de puntería! Demuestra tu habilidad y revela el secreto oculto entre aplausos y capeas.</p>
+    <p class="subtitle">🎪 ¡Bienvenido a la caseta de puntería! Acierta a la copa, el escudo y el racimo de uvas para revelar el secreto oculto entre aplausos y capeas.</p>
 
     <div class="carousel">
       <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
@@ -124,7 +129,6 @@
     </div>
 
     <div class="caseta">
-      <p id="game-instruction">🎯 Acierta a la <strong>copa</strong>, el <strong>escudo</strong> y el <strong>racimo de uvas</strong> para ganar.</p>
       <canvas id="gameCanvas" width="600" height="300"></canvas>
       <div id="score-display">Puntuación: 0 / 3</div>
       <div id="fragmento">📜 Fragmento revelado: "…y en la arena retumbó el secreto."</div>
@@ -134,6 +138,7 @@
 
   <audio id="hit-sound" src="sounds/cheers.mp3" preload="auto"></audio>
   <audio id="miss-sound" src="sounds/error.mp3" preload="auto"></audio>
+  <audio id="arrow-sound" src="sounds/arrow.mp3" preload="auto"></audio>
 
   <script>
     const canvas = document.getElementById("gameCanvas");
@@ -143,12 +148,12 @@
     const btn = document.getElementById("continue-button");
     const hitSound = document.getElementById("hit-sound");
     const missSound = document.getElementById("miss-sound");
+    const arrowSound = document.getElementById("arrow-sound");
 
-    const objetivos = ["🍷", "🛡️", "🍇", "🐂", "⚔️", "🎭"];
+    const objetivos = ["🍷", "🛡️", "🍇", "🐂", "⚔️", "🎭", "🎯", "🥇", "🏹"];
     const objetivosClave = new Set(["🍷", "🛡️", "🍇"]);
     const aciertos = new Set();
     const blancos = [];
-
     const filas = [60, 140, 220];
     const velocidad = 1.5;
 
@@ -190,6 +195,7 @@
     }
 
     function disparar(event) {
+      arrowSound.play();
       const rect = canvas.getBoundingClientRect();
       const x = (event.clientX || event.touches?.[0]?.clientX || 0) - rect.left;
       const y = (event.clientY || event.touches?.[0]?.clientY || 0) - rect.top;
