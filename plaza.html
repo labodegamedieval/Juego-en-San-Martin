@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🏟️ Plaza de Toros</title>
-  <link rel="icon" href="favicon.ico" />
+  <link rel="icon" href="images/escudo-borrado.jpg" type="image/jpeg" />
   <style>
     body {
       background: url('images/pergamino.jpg') no-repeat center center fixed;
@@ -30,13 +30,6 @@
       margin-bottom: 10px;
     }
 
-    .subtitle {
-      font-size: 1.2em;
-      margin-bottom: 20px;
-      font-style: italic;
-      color: #5e3b1b;
-    }
-
     .carousel {
       margin-bottom: 30px;
     }
@@ -53,15 +46,6 @@
       margin-top: 10px;
     }
 
-    .caseta {
-      border: 6px double #8b5e3c;
-      background-color: rgba(255, 248, 228, 0.5);
-      padding: 20px;
-      border-radius: 16px;
-      margin-top: 20px;
-      backdrop-filter: blur(3px);
-    }
-
     canvas {
       border: 3px solid #5e3b1b;
       border-radius: 12px;
@@ -69,13 +53,11 @@
       margin: 0 auto;
       background: url('images/caseta-feria.png') center center no-repeat;
       background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
       max-width: 100%;
       height: auto;
     }
 
-    #score-display, #game-instruction {
+    #score-display {
       text-align: center;
       font-size: 18px;
       margin-top: 10px;
@@ -95,7 +77,6 @@
       width: 90%;
       max-width: 700px;
       min-height: 100px;
-      animation: desenrollar 1s ease forwards;
     }
 
     .action-btn {
@@ -109,31 +90,23 @@
       cursor: pointer;
       text-align: center;
     }
-
-    @keyframes desenrollar {
-      from { transform: scaleY(0); opacity: 0; }
-      to { transform: scaleY(1); opacity: 1; }
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>🏟️ Plaza de Toros</h1>
-
     <div class="carousel">
       <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
       <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
       <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
-      <p><a href="https://sanmartindelcastañar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
+      <p><a href="https://sanmartindelcastanar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
       <p>🎪 ¡Bienvenido a la caseta de puntería! Acierta a la copa, el escudo y el racimo de uvas para revelar el secreto oculto entre aplausos y capeas.</p>
     </div>
 
-    <div class="caseta">
-      <canvas id="gameCanvas" width="600" height="300"></canvas>
-      <div id="score-display">Puntuación: 0 / 3</div>
-      <div id="fragmento">📜 Fragmento revelado: "…y en la arena retumbó el secreto."</div>
-      <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
-    </div>
+    <canvas id="gameCanvas" width="600" height="300"></canvas>
+    <div id="score-display">Puntuación: 0 / 3</div>
+    <div id="fragmento">📜 Fragmento revelado: "…y en la arena retumbó el secreto."</div>
+    <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
   </div>
 
   <audio id="hit-sound" src="sounds/cheers.mp3" preload="auto"></audio>
@@ -206,9 +179,7 @@
 
     function disparar(x, y) {
       arrowSound.play();
-
       let acertado = false;
-
       blancos.forEach(b => {
         if (!b.roto && x > b.x - 45 && x < b.x + 45 && y > b.y - 50 && y < b.y) {
           if (objetivosClave.has(b.icono)) {
@@ -219,14 +190,11 @@
           }
         }
       });
-
       setTimeout(() => {
         if (acertado) hitSound.play();
         else missSound.play();
       }, 150);
-
       scoreDisplay.textContent = `Puntuación: ${aciertos.size} / 3`;
-
       if (aciertos.size === 3) {
         fragmento.style.display = "block";
         btn.style.display = "block";
@@ -234,21 +202,13 @@
       }
     }
 
-    canvas.addEventListener("click", e => {
+    canvas.addEventListener("pointerdown", e => {
+      e.preventDefault();
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       disparar(x, y);
     });
-
-    canvas.addEventListener("touchstart", e => {
-      e.preventDefault();
-      const rect = canvas.getBoundingClientRect();
-      const touch = e.touches[0];
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
-      disparar(x, y);
-    }, { passive: false });
 
     dibujar();
   </script>
