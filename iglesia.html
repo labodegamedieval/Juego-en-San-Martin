@@ -65,8 +65,7 @@
         <div class="carousel">
           <div class="slide active">
             <img src="images/retablo.jpg" alt="Interior de la Iglesia" />
-            <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si la iglesia està cerrada, te va a interesar este link. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a>
-            </p>
+            <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si la iglesia está cerrada, te va a interesar este link. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
           </div>
           <div class="slide">
             <img src="images/iglesia.jpg" alt="Exterior de la Iglesia" />
@@ -77,20 +76,21 @@
         </div>
 
         <h2>🕯️ Reto: Enciende los vitrales</h2>
-        <p>Ilumina la iglesia tocando los vitrales en el orden que marca la tradición:</p>
+        <p>Ilumina la iglesia tocando los vitrales en el orden que marca la tradición. <br><span class="pista">🔍 Pista: el orden lo marca el escudo de San Martín: sangre, oro y cielo.</span></p>
 
         <div class="vitraux-container">
-          <div class="vitraux" id="vitraux-1" onclick="activarVitraux(0)" style="background: rgba(0, 0, 255, 0.4);"></div>
-          <div class="vitraux" id="vitraux-2" onclick="activarVitraux(1)" style="background: rgba(255, 0, 0, 0.4);"></div>
-          <div class="vitraux" id="vitraux-3" onclick="activarVitraux(2)" style="background: rgba(255, 215, 0, 0.4);"></div>
+          <div class="vitraux" id="vitraux-1" onclick="activarVitraux(0)" style="background: rgba(255, 0, 0, 0.4);"></div>
+          <div class="vitraux" id="vitraux-2" onclick="activarVitraux(1)" style="background: rgba(255, 215, 0, 0.4);"></div>
+          <div class="vitraux" id="vitraux-3" onclick="activarVitraux(2)" style="background: rgba(0, 0, 255, 0.4);"></div>
+          <div class="vitraux" id="vitraux-4" onclick="activarVitraux(3)" style="background: rgba(255, 255, 255, 0.4);"></div>
         </div>
 
         <p id="vitraux-feedback" class="pista"></p>
 
         <div class="fragmento-final" id="fragmento-final" style="display: none;">
-          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece">la</span></p>
+          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece">la fe del pueblo guía las almas...</span></p>
           <p><strong>QR en el pueblo:</strong> IGLESIA-1300</p>
-          <p><strong>Dato Curioso:</strong> Se conserva una estela funeraria romana a la izquierda del portal. Sugerencia: si la fortuna os acompaña y la panaderia està abierta podréis adquirir sus famosas perronillas....a lo mejor os dan alguna pista.</p>
+          <p><strong>Dato Curioso:</strong> Se conserva una estela funeraria romana a la izquierda del portal. Sugerencia: si la fortuna os acompaña y la panadería está abierta podréis adquirir sus famosas perronillas... a lo mejor os dan alguna pista.</p>
         </div>
 
         <div id="continue-button" style="display: none;">
@@ -102,6 +102,7 @@
     <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+    <audio id="organ-sound" src="sounds/organ.mp3" preload="auto"></audio>
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
 
     <footer>
@@ -110,9 +111,8 @@
       </p>
     </footer>
 
-    <script src="scripts/script.js"></script>
     <script>
-      const ordenCorrecto = [1, 2, 0]; // Rojo, Dorado, Azul
+      const ordenCorrecto = [0, 1, 2, 3]; // Rojo, Dorado, Azul, Blanco
       let secuencia = [];
       let vitrales = document.querySelectorAll(".vitraux");
 
@@ -120,18 +120,20 @@
         secuencia.push(indice);
         vitrales[indice].classList.add("lit");
 
-        if (secuencia.length === 3) {
-          if (JSON.stringify(secuencia) === JSON.stringify(ordenCorrecto)) {
-            document.getElementById("vitraux-feedback").textContent = "✨ ¡La iglesia se ha iluminado!";
-            document.getElementById("fragmento-final").style.display = "block";
-            document.getElementById("continue-button").style.display = "block";
-            localStorage.setItem("iglesia-completed", "true");
-            playSound("cheers-sound");
-          } else {
-            document.getElementById("vitraux-feedback").textContent = "❌ Orden incorrecto. Intenta de nuevo.";
-            playSound("error-sound");
-            resetVitraux();
-          }
+        if (secuencia.length === ordenCorrecto.length) {
+          setTimeout(() => {
+            if (JSON.stringify(secuencia) === JSON.stringify(ordenCorrecto)) {
+              document.getElementById("vitraux-feedback").textContent = "✨ ¡La iglesia se ha iluminado con gloria!";
+              document.getElementById("fragmento-final").style.display = "block";
+              document.getElementById("continue-button").style.display = "block";
+              localStorage.setItem("iglesia-completed", "true");
+              playSound("organ-sound");
+            } else {
+              document.getElementById("vitraux-feedback").textContent = "❌ Orden incorrecto. Intenta de nuevo.";
+              playSound("error-sound");
+              resetVitraux();
+            }
+          }, 300);
         }
       }
 
@@ -139,11 +141,12 @@
         secuencia = [];
         vitrales.forEach(v => v.classList.remove("lit"));
       }
-    </script>
-    
-    <script>
-  localStorage.setItem("iglesia-completed", "true");
-</script>
 
+      function playSound(id) {
+        const snd = document.getElementById(id);
+        snd.currentTime = 0;
+        snd.play();
+      }
+    </script>
 </body>
 </html>
