@@ -116,7 +116,7 @@
       <button id="exit-fullscreen" title="Salir de pantalla completa">❌</button>
       <img src="images/flecha.png" id="compass" alt="Brújula" />
       <p class="map-description">
-        Mapa interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5100/-6.1000" target="_blank">San Martín del Castañar</a>
+        Mapa interactivo de <a href="https://www.openstreetmap.org/#map=17/40.522236/-6.064579" target="_blank">San Martín del Castañar</a>
       </p>
     </div>
   </div>
@@ -136,7 +136,7 @@
     document.getElementById("progress-fill").style.width = `${(completadas / allStops.length) * 100}%`;
     document.getElementById("progress-text").textContent = `Paradas completadas: ${completadas}/${allStops.length}`;
 
-    const map = L.map("map").setView([40.5100, -6.1000], 17);
+    const map = L.map("map").setView([40.522236, -6.064579], 17);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
     }).addTo(map);
@@ -150,13 +150,13 @@
     }
 
     const paradas = [
-      { id: "castillo", nombre: "Castillo", coords: [40.5103, -6.0995], icono: "🏰", archivo: "castillo.html" },
-      { id: "plaza", nombre: "Plaza de toros", coords: [40.5097, -6.1002], icono: "🏟️", archivo: "plaza.html" },
-      { id: "iglesia", nombre: "Iglesia", coords: [40.5101, -6.0990], icono: "⛪", archivo: "iglesia.html" },
-      { id: "fuente", nombre: "Fuente y Portalón", coords: [40.5090, -6.1007], icono: "⛲", archivo: "fuente.html" },
-      { id: "ermita", nombre: "Ermita", coords: [40.5088, -6.1015], icono: "🙏", archivo: "ermita.html" },
-      { id: "puente", nombre: "Puente", coords: [40.5105, -6.1010], icono: "🌉", archivo: "puente.html" },
-      { id: "bodega", nombre: "Bodega", coords: [40.5100, -6.0988], icono: "🍷", archivo: "bodega.html" }
+      { id: "castillo", nombre: "Castillo", coords: [40.520537, -6.063549], icono: "🏰", archivo: "castillo.html" },
+      { id: "plaza", nombre: "Plaza de toros", coords: [40.520685, -6.063465], icono: "🏟️", archivo: "plaza.html" },
+      { id: "iglesia", nombre: "Iglesia", coords: [40.521341, -6.063827], icono: "⛪", archivo: "iglesia.html" },
+      { id: "fuente", nombre: "Fuente y Portalón", coords: [40.522182, -6.064559], icono: "⛲", archivo: "fuente.html" },
+      { id: "ermita", nombre: "Ermita", coords: [40.522765, -6.066472], icono: "🙏", archivo: "ermita.html" },
+      { id: "puente", nombre: "Puente", coords: [40.522526, -6.065782], icono: "🌉", archivo: "puente.html" },
+      { id: "bodega", nombre: "Bodega", coords: [40.521674, -6.064408], icono: "🍷", archivo: "bodega.html" }
     ];
 
     paradas.forEach(parada => {
