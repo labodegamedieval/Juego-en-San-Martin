@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🧙‍♂️ Explora San Martín del Castañar</title>
+  <title>🧙‍♂️🗘️ Explora San Martín del Castañar</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     body {
@@ -38,54 +38,6 @@
       position: relative;
     }
 
-    .fullscreen #map {
-      height: 100vh;
-      width: 100vw;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 9999;
-      border-radius: 0;
-      border: none;
-    }
-
-    .fullscreen header,
-    .fullscreen .progress-container,
-    .fullscreen .map-description,
-    .fullscreen .qr-section,
-    .fullscreen .button-group,
-    .fullscreen footer {
-      display: none;
-    }
-
-    #fullscreen-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 1001;
-      background: transparent;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    #exit-fullscreen {
-      display: none;
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 1001;
-      font-size: 28px;
-      background: transparent;
-      border: none;
-      color: #3b241b;
-      cursor: pointer;
-    }
-
-    .fullscreen #exit-fullscreen {
-      display: block;
-    }
-
     #compass {
       position: fixed;
       bottom: 10px;
@@ -108,31 +60,38 @@
       transform: scale(1.4);
     }
 
-    .floating-buttons {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      z-index: 1002;
+    .button-row {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px 0;
     }
 
-    .floating-buttons a {
+    .button-row a {
       background: rgba(255, 248, 228, 0.85);
       border: 2px solid #8b5e3c;
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 10px 16px;
       text-decoration: none;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
       color: #3b241b;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
       backdrop-filter: blur(2px);
     }
+
+    footer {
+      text-align: center;
+      font-style: italic;
+      font-size: 14px;
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
+  <!-- Código original creado por Alex Román | Abril 2025 -->
+  <!-- Marca registrada digitalmente por @alexroman.leis -->
+
   <div class="container" id="main-container">
     <header>
       <h1>🧙‍♂️🗘️ Explora el Mensaje Oculto de Gonzalo</h1>
@@ -143,12 +102,16 @@
         <div class="progress-fill" id="progress-fill" style="background: #c19a6b; height: 100%; width: 0%;"></div>
       </div>
       <p id="progress-text" style="text-align:center;">Paradas completadas: 0/7</p>
+
+      <div class="button-row">
+        <a href="index.html">🏠 Inicio</a>
+        <a href="guia.html">📖 Guía</a>
+        <a href="ranking.html">📊 Ranking</a>
+      </div>
     </div>
 
     <div class="map-container">
       <div id="map"></div>
-      <button id="fullscreen-btn" title="Ampliar mapa">🔍</button>
-      <button id="exit-fullscreen" title="Salir de pantalla completa">❌</button>
       <p class="map-description">
         Mapa interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5222/-6.0645" target="_blank">San Martín del Castañar</a>
       </p>
@@ -156,11 +119,9 @@
     <img src="images/flecha.png" id="compass" alt="Brújula" />
   </div>
 
-  <div class="floating-buttons">
-    <a href="index.html">🏠 Inicio</a>
-    <a href="guia.html">📖 Guía</a>
-    <a href="ranking.html">📊 Ranking</a>
-  </div>
+  <footer>
+    Diseño original por <strong>Alex Román</strong> | Abril 2025 | <a href="https://www.labodegamedieval.es" target="_blank">www.labodegamedieval.es</a>
+  </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
@@ -250,10 +211,6 @@
     }
 
     window.addEventListener("click", initOrientation, { once: true });
-
-    const container = document.getElementById("main-container");
-    document.getElementById("fullscreen-btn").onclick = () => container.classList.add("fullscreen");
-    document.getElementById("exit-fullscreen").onclick = () => container.classList.remove("fullscreen");
   </script>
 </body>
 </html>
