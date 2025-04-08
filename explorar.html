@@ -207,7 +207,6 @@
       <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
     </footer>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
       const mainStops = ["castillo", "plaza", "iglesia", "fuente", "ermita", "puente"];
@@ -270,8 +269,8 @@
         }
       }
 
-      // MAPA INTERACTIVO
-      const sanMartinCoords = [40.5245, -6.0179];
+      // MAPA Y MARCADORES
+      const sanMartinCoords = [40.5224722, -6.0765000];
       const map = L.map('map').setView(sanMartinCoords, 17);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -301,6 +300,32 @@
           () => console.log('No se pudo obtener tu ubicación')
         );
       }
+
+      const paradas = [
+        { nombre: "Castillo", coords: [40.5247, -6.0175], icono: "🏰", archivo: "castillo.html" },
+        { nombre: "Plaza de toros", coords: [40.5246, -6.0180], icono: "🏟️", archivo: "plaza.html" },
+        { nombre: "Iglesia", coords: [40.5244, -6.0173], icono: "⛪", archivo: "iglesia.html" },
+        { nombre: "Fuente y Portalón", coords: [40.5242, -6.0178], icono: "⛲", archivo: "fuente.html" },
+        { nombre: "Ermita", coords: [40.5241, -6.0183], icono: "🙏", archivo: "ermita.html" },
+        { nombre: "Puente", coords: [40.5239, -6.0188], icono: "🌉", archivo: "puente.html" },
+        { nombre: "Bodega", coords: [40.5243, -6.0176], icono: "🍷", archivo: "bodega.html" }
+      ];
+
+      paradas.forEach(parada => {
+        const customIcon = L.divIcon({
+          className: "custom-icon",
+          html: `<div style="font-size: 24px;">${parada.icono}</div>`,
+          iconSize: [30, 30],
+          iconAnchor: [15, 15]
+        });
+
+        L.marker(parada.coords, { icon: customIcon })
+          .addTo(map)
+          .bindPopup(`
+            <strong>${parada.icono} ${parada.nombre}</strong><br>
+            <button onclick="location.href='${parada.archivo}'" style="margin-top: 5px; padding: 6px 10px; font-size: 14px;">Ir a la parada</button>
+          `);
+      });
     </script>
   </div>
 </body>
