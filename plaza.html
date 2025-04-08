@@ -174,8 +174,17 @@
       blancos.forEach(b => {
         if (!b.roto) {
           ctx.globalAlpha = 1;
-          ctx.font = "32px serif";
-          ctx.fillText(b.icono, b.x, b.y);
+          ctx.font = "48px serif";
+          if (b.rebote) {
+            ctx.save();
+            ctx.translate(b.x, b.y);
+            ctx.scale(1.2, 1.2);
+            ctx.fillText(b.icono, 0, 0);
+            ctx.restore();
+            b.rebote = false;
+          } else {
+            ctx.fillText(b.icono, b.x, b.y);
+          }
         } else if (b.alpha > 0) {
           ctx.globalAlpha = b.alpha;
           ctx.font = "32px serif";
@@ -203,10 +212,11 @@
       let acertado = false;
 
       blancos.forEach(b => {
-        if (!b.roto && x > b.x - 20 && x < b.x + 20 && y > b.y - 30 && y < b.y) {
+        if (!b.roto && x > b.x - 35 && x < b.x + 35 && y > b.y - 40 && y < b.y) {
           if (objetivosClave.has(b.icono)) {
             aciertos.add(b.icono);
             b.roto = true;
+          b.rebote = true;
             acertado = true;
           }
         }
@@ -215,7 +225,10 @@
       try {
         arrowSound.play();
       setTimeout(() => {
-        if (acertado) hitSound.play();
+        if (acertado) {
+        hitSound.play();
+        if (navigator.vibrate) navigator.vibrate(150);
+      }
         else missSound.play();
       }, 150);
       } catch (e) {
