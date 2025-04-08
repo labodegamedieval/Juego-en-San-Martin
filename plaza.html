@@ -68,7 +68,7 @@
       display: block;
       margin: 0 auto;
       background: url('images/caseta-feria.png') center center no-repeat;
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
       max-width: 100%;
@@ -213,8 +213,11 @@
       });
 
       try {
+        arrowSound.play();
+      setTimeout(() => {
         if (acertado) hitSound.play();
         else missSound.play();
+      }, 150);
       } catch (e) {
         console.warn("Audio error:", e);
       }
