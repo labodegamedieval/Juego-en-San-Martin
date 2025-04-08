@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🏟️ Plaza de Toros</title>
+  <link rel="icon" href="favicon.ico" />
   <style>
     body {
       background: url('images/pergamino.jpg') no-repeat center center fixed;
@@ -54,11 +55,11 @@
 
     .caseta {
       border: 6px double #8b5e3c;
-      background: url('images/caseta-feria.png') no-repeat center center;
-      background-size: cover;
+      background-color: rgba(255, 248, 228, 0.5);
       padding: 20px;
       border-radius: 16px;
       margin-top: 20px;
+      backdrop-filter: blur(3px);
     }
 
     canvas {
@@ -66,10 +67,11 @@
       border-radius: 12px;
       display: block;
       margin: 0 auto;
-      background: #fcefdc;
+      background-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(2px);
     }
 
-    #score-display {
+    #score-display, #game-instruction {
       text-align: center;
       font-size: 18px;
       margin-top: 10px;
@@ -114,8 +116,8 @@
     </div>
 
     <div class="caseta">
+      <p id="game-instruction">🎯 Acierta a la <strong>copa</strong>, el <strong>escudo</strong> y el <strong>racimo de uvas</strong> para ganar.</p>
       <canvas id="gameCanvas" width="600" height="300"></canvas>
-      <p>🎯 Acierta a la <strong>copa</strong>, el <strong>escudo</strong> y el <strong>racimo de uvas</strong> para ganar.</p>
       <div id="score-display">Puntuación: 0 / 3</div>
       <div id="fragmento">📜 Fragmento revelado: "…y en la arena retumbó el secreto."</div>
       <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
@@ -168,8 +170,8 @@
 
     function disparar(event) {
       const rect = canvas.getBoundingClientRect();
-      const x = (event.clientX || event.touches?.[0]?.clientX) - rect.left;
-      const y = (event.clientY || event.touches?.[0]?.clientY) - rect.top;
+      const x = (event.clientX || event.touches?.[0]?.clientX || 0) - rect.left;
+      const y = (event.clientY || event.touches?.[0]?.clientY || 0) - rect.top;
 
       let acertado = false;
 
@@ -182,10 +184,11 @@
         }
       });
 
-      if (acertado) {
-        hitSound.play().catch(() => {});
-      } else {
-        missSound.play().catch(() => {});
+      try {
+        if (acertado) hitSound.play();
+        else missSound.play();
+      } catch (e) {
+        console.warn("Audio error:", e);
       }
 
       scoreDisplay.textContent = `Puntuación: ${aciertos.size} / 3`;
