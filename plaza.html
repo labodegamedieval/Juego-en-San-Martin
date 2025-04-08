@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🏟️ Plaza de Toros</title>
-  <link rel="stylesheet" href="styles/style.css" />
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
-  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <style>
     body {
       background: url('images/pergamino.jpg') no-repeat center center fixed;
@@ -20,15 +17,16 @@
     .container {
       max-width: 950px;
       margin: auto;
-      background: rgba(255, 248, 228, 0.95);
+      background: rgba(255, 248, 228, 0.96);
       border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
-      margin-bottom: 10px;
+      font-size: 2em;
+      margin-bottom: 20px;
     }
 
     .carousel {
@@ -49,44 +47,33 @@
     }
 
     canvas {
-      display: block;
-      margin: 20px auto 10px;
-      border: 4px solid #5a3b1b;
+      border: 3px solid #5e3b1b;
       border-radius: 12px;
-      width: 100%;
-      max-width: 600px;
-      height: auto;
-    }
-
-    #score-display {
-      text-align: center;
-      font-size: 18px;
-      margin-top: 10px;
+      display: block;
+      margin: 0 auto 20px;
+      background: #fcefdc;
     }
 
     #fragmento {
       display: none;
-      margin: 20px auto;
-      background: url('images/pergamino.png') center center no-repeat;
-      background-size: contain;
-      padding: 40px;
-      text-align: center;
-      font-size: 1.2em;
-      font-weight: bold;
+      padding: 20px;
+      margin-top: 20px;
       border: 2px solid #6b3e2e;
       border-radius: 12px;
+      background: url('images/pergamino.png');
+      background-size: cover;
+      font-weight: bold;
     }
 
     .action-btn {
       display: none;
-      margin: 30px auto 20px;
+      margin-top: 20px;
       padding: 12px 20px;
       font-size: 18px;
       background-color: #d6b88a;
       border: 2px solid #5e3b1b;
       border-radius: 10px;
       cursor: pointer;
-      text-align: center;
     }
   </style>
 </head>
@@ -102,109 +89,69 @@
       <p><a href="https://sanmartindelcastanar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
     </div>
 
-    <canvas id="game-canvas"></canvas>
-    <div id="score-display">Puntuación: 0 / 3</div>
-    <div id="fragmento">📜 Fragmento revelado: "…y en la arena retumbó el secreto."</div>
+    <canvas id="gameCanvas" width="600" height="300"></canvas>
+    <p>🎯 Acierta a la <strong>copa</strong>, el <strong>escudo</strong> y el <strong>racimo de uvas</strong> para ganar.</p>
+    <div id="fragmento">📜 Fragmento revelado: "...y el brindis selló su destino bajo el estruendo de la plaza."</div>
     <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
   </div>
 
-  <audio id="hit-sound" src="sounds/cheers.mp3" preload="auto"></audio>
-  <audio id="miss-sound" src="sounds/error.mp3" preload="auto"></audio>
-
-  <script src="https://unpkg.com/three@0.148.0/build/three.min.js"></script>
   <script>
-    window.onload = function () {
-      let score = 0;
-      const canvas = document.getElementById('game-canvas');
-      const scoreDisplay = document.getElementById("score-display");
-      const fragmento = document.getElementById("fragmento");
-      const btn = document.getElementById("continue-button");
-      const hitSound = document.getElementById("hit-sound");
-      const missSound = document.getElementById("miss-sound");
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
 
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+    const objetivos = ['🍷', '🛡️', '🍇', '🐂', '⚔️', '🎭'];
+    const blancos = [];
+    const aciertos = new Set();
+    const targetsObjetivo = ['🍷', '🛡️', '🍇'];
 
-      const light = new THREE.PointLight(0xffffff, 1, 100);
-      light.position.set(10, 10, 10);
-      scene.add(light);
+    const filas = [60, 140, 220];
+    const velocidad = 1.2;
 
-      // 🎯 Diana 3D con círculos de colores
-      const targetGroup = new THREE.Group();
-      const colors = [0xffffff, 0xff0000, 0xffff00, 0x0000ff]; // blanco, rojo, amarillo, azul
-      const radii = [1, 0.75, 0.5, 0.25];
-
-      for (let i = 0; i < colors.length; i++) {
-        const circle = new THREE.Mesh(
-          new THREE.RingGeometry(radii[i] * 0.7, radii[i], 64),
-          new THREE.MeshBasicMaterial({ color: colors[i], side: THREE.DoubleSide })
-        );
-        targetGroup.add(circle);
+    for (let y of filas) {
+      for (let i = 0; i < 6; i++) {
+        blancos.push({
+          x: -Math.random() * 600,
+          y,
+          icono: objetivos[Math.floor(Math.random() * objetivos.length)]
+        });
       }
+    }
 
-      scene.add(targetGroup);
-      targetGroup.position.z = -5;
-      repositionTarget();
-
-      camera.position.z = 1;
-
-      function repositionTarget() {
-        targetGroup.position.x = (Math.random() - 0.5) * 4;
-        targetGroup.position.y = (Math.random() - 0.5) * 2;
-      }
-
-      function animate() {
-        requestAnimationFrame(animate);
-        targetGroup.rotation.z += 0.01;
-        renderer.render(scene, camera);
-      }
-
-      animate();
-
-      function shoot(event) {
-        const rect = renderer.domElement.getBoundingClientRect();
-        const x = (event.clientX || event.touches?.[0]?.clientX || 0) - rect.left;
-        const y = (event.clientY || event.touches?.[0]?.clientY || 0) - rect.top;
-
-        const mouse = new THREE.Vector2(
-          (x / rect.width) * 2 - 1,
-          -(y / rect.height) * 2 + 1
-        );
-
-        const raycaster = new THREE.Raycaster();
-        raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(targetGroup.children);
-
-        if (intersects.length > 0) {
-          hitSound.play();
-          score++;
-          repositionTarget();
-        } else {
-          missSound.play();
+    function dibujar() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      blancos.forEach(b => {
+        ctx.font = '32px serif';
+        ctx.fillText(b.icono, b.x, b.y);
+        b.x += velocidad;
+        if (b.x > canvas.width + 40) {
+          b.x = -Math.random() * 600;
+          b.icono = objetivos[Math.floor(Math.random() * objetivos.length)];
         }
-
-        scoreDisplay.textContent = `Puntuación: ${score} / 3`;
-
-        if (score >= 3) {
-          fragmento.style.display = "block";
-          btn.style.display = "block";
-          localStorage.setItem("plaza-completed", "true");
-        }
-      }
-
-      renderer.domElement.addEventListener("click", shoot);
-      renderer.domElement.addEventListener("touchstart", shoot);
-
-      window.addEventListener("resize", () => {
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(width, height, false);
       });
-    };
+      requestAnimationFrame(dibujar);
+    }
+
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      blancos.forEach(b => {
+        if (x > b.x - 20 && x < b.x + 20 && y > b.y - 30 && y < b.y) {
+          if (targetsObjetivo.includes(b.icono)) {
+            aciertos.add(b.icono);
+          }
+        }
+      });
+
+      if (aciertos.size === 3) {
+        document.getElementById('fragmento').style.display = 'block';
+        document.getElementById('continue-button').style.display = 'block';
+        localStorage.setItem("plaza-completed", "true");
+      }
+    });
+
+    dibujar();
   </script>
 </body>
 </html>
