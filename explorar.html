@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🧙‍♂️ Explora San Martín del Castañar</title>
+  <title>🧙‍♂️🗘️ Explora San Martín del Castañar</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     body {
@@ -62,6 +62,7 @@
 
     .button-row {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 12px;
       margin: 20px 0;
@@ -94,7 +95,7 @@
 
   <div class="container" id="main-container">
     <header>
-      <h1>🧙‍♂️ Explora el Mensaje Oculto de Gonzalo</h1>
+      <h1>🧙‍♂️🗘️ Explora el Mensaje Oculto de Gonzalo</h1>
     </header>
 
     <div class="progress-container">
@@ -107,6 +108,7 @@
         <a href="index.html">🏠 Inicio</a>
         <a href="guia.html">📖 Guía</a>
         <a href="ranking.html">📊 Ranking</a>
+        <a href="cronica.html">📜 Crónica</a>
       </div>
     </div>
 
@@ -147,7 +149,12 @@
       navigator.geolocation.getCurrentPosition(position => {
         const coords = [position.coords.latitude, position.coords.longitude];
         L.marker(coords).addTo(map).bindPopup("📌 Estás aquí").openPopup();
-        L.circle(coords, { radius: 15, color: "blue", fillColor: "#30f", fillOpacity: 0.3 }).addTo(map);
+        L.circle(coords, {
+          radius: 15,
+          color: "black",
+          fillColor: "#30f",
+          fillOpacity: 0.3
+        }).addTo(map);
       });
     }
 
