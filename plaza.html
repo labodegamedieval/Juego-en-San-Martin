@@ -53,7 +53,8 @@
       margin: 0 auto;
       background: url('images/caseta-feria.png') center center no-repeat;
       background-size: cover;
-      max-width: 100%;
+      width: 100%;
+      max-width: 600px;
       height: auto;
     }
 
@@ -103,7 +104,7 @@
       <p>🎪 ¡Bienvenido a la caseta de puntería! Acierta a la copa, el escudo y el racimo de uvas para revelar el secreto oculto entre aplausos y capeas.</p>
     </div>
 
-    <canvas id="gameCanvas" width="600" height="300"></canvas>
+    <canvas id="gameCanvas" width="600" height="360"></canvas>
     <div id="score-display">Puntuación: 0 / 3</div>
     <div id="fragmento">📜 Fragmento revelado: "…y en la arena retumbó el secreto."</div>
     <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
@@ -127,8 +128,8 @@
     const objetivosClave = new Set(["🍷", "🛡️", "🍇"]);
     const aciertos = new Set();
     const blancos = [];
-    const filas = [60, 140, 220];
-    const velocidad = 1.5;
+    const filas = [80, 180, 280];
+    const velocidad = 1.8;
 
     for (let y of filas) {
       for (let i = 0; i < 6; i++) {
@@ -145,20 +146,14 @@
 
     function dibujar() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
       blancos.forEach(b => {
         if (!b.roto) {
           ctx.globalAlpha = 1;
           ctx.font = "48px serif";
-          if (b.rebote) {
-            ctx.save();
-            ctx.translate(b.x, b.y);
-            ctx.scale(1.2, 1.2);
-            ctx.fillText(b.icono, 0, 0);
-            ctx.restore();
-            b.rebote = false;
-          } else {
-            ctx.fillText(b.icono, b.x, b.y);
-          }
+          ctx.fillText(b.icono, b.x, b.y);
         } else if (b.alpha > 0) {
           ctx.globalAlpha = b.alpha;
           ctx.font = "48px serif";
@@ -181,11 +176,10 @@
       arrowSound.play();
       let acertado = false;
       blancos.forEach(b => {
-        if (!b.roto && x > b.x - 45 && x < b.x + 45 && y > b.y - 50 && y < b.y) {
+        if (!b.roto && Math.abs(x - b.x) < 35 && Math.abs(y - b.y) < 35) {
           if (objetivosClave.has(b.icono)) {
             aciertos.add(b.icono);
             b.roto = true;
-            b.rebote = true;
             acertado = true;
           }
         }
@@ -193,7 +187,7 @@
       setTimeout(() => {
         if (acertado) hitSound.play();
         else missSound.play();
-      }, 150);
+      }, 120);
       scoreDisplay.textContent = `Puntuación: ${aciertos.size} / 3`;
       if (aciertos.size === 3) {
         fragmento.style.display = "block";
@@ -205,9 +199,9 @@
     canvas.addEventListener("pointerdown", e => {
       e.preventDefault();
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      disparar(x, y);
+      const x = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
+      const y = (e.clientY || e.touches?.[0]?.clientY) - rect.top;
+      disparar(x * canvas.width / rect.width, y * canvas.height / rect.height);
     });
 
     dibujar();
