@@ -78,7 +78,7 @@
     }
 
     .action-btn {
-      display: block;
+      display: none;
       margin: 30px auto 0;
       padding: 12px 20px;
       font-size: 18px;
@@ -86,97 +86,96 @@
       border: 2px solid #5e3b1b;
       border-radius: 10px;
       cursor: pointer;
-      display: none;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>🏟️ Plaza de Toros</h1>
-  <p>Gonzalo dejó un cartel enigmático con pistas ocultas... Pero hoy lo descubrirás con tu puntería medieval.</p>
+  <div class="container">
+    <h1>🏟️ Plaza de Toros</h1>
+    <p>Gonzalo dejó un cartel enigmático con pistas ocultas... Pero hoy lo descubrirás con tu puntería medieval.</p>
 
-  <div class="carousel">
-    <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
-    <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
-    <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
-    <p><a href="https://sanmartindelcastañar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
+    <div class="carousel">
+      <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
+      <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
+      <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
+      <p><a href="https://sanmartindelcastanar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+    <div id="score-display">Puntuación: 0 / 3</div>
+    <div id="fragmento">📜 Fragmento revelado: "…y en la arena retumbó el secreto."</div>
+    <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
   </div>
 
-  <canvas id="game-canvas"></canvas>
-  <div id="score-display">Puntuación: 0 / 3</div>
-  <div id="fragmento">🔍 Fragmento revelado: "...y en la arena retumbó el secreto."</div>
-  <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
-</div>
+  <audio id="hit-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+  <audio id="miss-sound" src="sounds/error.mp3" preload="auto"></audio>
 
-<audio id="hit-sound" src="sounds/cheers.mp3" preload="auto"></audio>
-<audio id="miss-sound" src="sounds/error.mp3" preload="auto"></audio>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
-<script>
-  let score = 0;
-  const scoreDisplay = document.getElementById("score-display");
-  const fragmento = document.getElementById("fragmento");
-  const btn = document.getElementById("continue-button");
+  <!-- Carga Three.js aquí antes de usarlo -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
+  <script>
+    let score = 0;
+    const scoreDisplay = document.getElementById("score-display");
+    const fragmento = document.getElementById("fragmento");
+    const btn = document.getElementById("continue-button");
+    const hitSound = document.getElementById("hit-sound");
+    const missSound = document.getElementById("miss-sound");
 
-  const hitSound = document.getElementById("hit-sound");
-  const missSound = document.getElementById("miss-sound");
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 600 / 400, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('game-canvas'), alpha: true });
+    renderer.setSize(600, 400);
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 600, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('game-canvas'), alpha: true });
-  renderer.setSize(600, 400);
+    const light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(10, 10, 10);
+    scene.add(light);
 
-  const light = new THREE.PointLight(0xffffff, 1, 100);
-  light.position.set(10, 10, 10);
-  scene.add(light);
+    const geometry = new THREE.RingGeometry(0.2, 1, 64, 3, 0, Math.PI * 2);
+    const material = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
+    const target = new THREE.Mesh(geometry, material);
+    scene.add(target);
 
-  const geometry = new THREE.RingGeometry(0.2, 1, 64, 3, 0, Math.PI * 2);
-  const material = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
-  const target = new THREE.Mesh(geometry, material);
-  scene.add(target);
+    target.position.z = -5;
+    target.position.x = (Math.random() - 0.5) * 4;
+    target.position.y = (Math.random() - 0.5) * 2;
+    camera.position.z = 1;
 
-  target.position.z = -5;
-  target.position.x = (Math.random() - 0.5) * 4;
-  target.position.y = (Math.random() - 0.5) * 2;
-
-  camera.position.z = 1;
-
-  function animate() {
-    requestAnimationFrame(animate);
-    target.rotation.z += 0.01;
-    renderer.render(scene, camera);
-  }
-
-  animate();
-
-  function shoot(event) {
-    const mouse = new THREE.Vector2();
-    const rect = renderer.domElement.getBoundingClientRect();
-    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObject(target);
-
-    if (intersects.length > 0) {
-      hitSound.play();
-      score++;
-      target.position.x = (Math.random() - 0.5) * 4;
-      target.position.y = (Math.random() - 0.5) * 2;
-    } else {
-      missSound.play();
+    function animate() {
+      requestAnimationFrame(animate);
+      target.rotation.z += 0.01;
+      renderer.render(scene, camera);
     }
 
-    scoreDisplay.textContent = `Puntuación: ${score} / 3`;
+    animate();
 
-    if (score >= 3) {
-      fragmento.style.display = "block";
-      btn.style.display = "block";
-      localStorage.setItem("plaza-completed", "true");
+    function shoot(event) {
+      const mouse = new THREE.Vector2();
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObject(target);
+
+      if (intersects.length > 0) {
+        hitSound.play();
+        score++;
+        target.position.x = (Math.random() - 0.5) * 4;
+        target.position.y = (Math.random() - 0.5) * 2;
+      } else {
+        missSound.play();
+      }
+
+      scoreDisplay.textContent = `Puntuación: ${score} / 3`;
+
+      if (score >= 3) {
+        fragmento.style.display = "block";
+        btn.style.display = "block";
+        localStorage.setItem("plaza-completed", "true");
+      }
     }
-  }
 
-  renderer.domElement.addEventListener("click", shoot);
-</script>
+    renderer.domElement.addEventListener("click", shoot);
+  </script>
 </body>
 </html>
