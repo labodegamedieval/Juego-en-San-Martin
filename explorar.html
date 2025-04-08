@@ -4,16 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🗺️ Explora San Martín del Castañar</title>
-  <link rel="stylesheet" href="styles/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
   <style>
     body {
       background: url('images/pergamino.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Georgia', serif;
       color: #3b241b;
-      padding: 20px;
+      padding: 0;
+      margin: 0;
     }
 
     .container {
@@ -26,270 +25,166 @@
       box-shadow: 0 0 20px rgba(0,0,0,0.3);
     }
 
-    header h1 {
-      font-size: 2em;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .music-control {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .progress-container {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .progress-bar {
-      background: #ddd;
-      border-radius: 10px;
-      overflow: hidden;
-      height: 20px;
-      margin: 10px auto;
-      width: 80%;
-    }
-
-    .progress-fill {
-      background: #c19a6b;
-      height: 100%;
-      width: 0%;
-    }
-
-    .map-container {
-      text-align: center;
-      margin: 20px 0;
+    header, .progress-container, .map-description, .qr-section, .button-group, footer {
+      transition: opacity 0.3s ease;
     }
 
     #map {
       height: 400px;
       width: 100%;
-      max-width: 700px;
-      margin: 0 auto;
       border: 3px solid #8b5e3c;
       border-radius: 10px;
+      position: relative;
     }
 
-    .map-description {
-      font-style: italic;
-      margin-top: 10px;
+    .fullscreen #map {
+      height: 100vh;
+      width: 100vw;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      border-radius: 0;
+      border: none;
     }
 
-    .qr-section {
-      text-align: center;
-      margin-top: 30px;
+    .fullscreen header,
+    .fullscreen .progress-container,
+    .fullscreen .map-description,
+    .fullscreen .qr-section,
+    .fullscreen .button-group,
+    .fullscreen footer {
+      display: none;
     }
 
-    .qr-section input {
-      padding: 8px;
-      width: 60%;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #999;
-    }
-
-    .action-btn {
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #d6c1a1;
-      border: 2px solid #6d4c41;
-      border-radius: 8px;
+    #fullscreen-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1001;
+      background: #fff0;
+      border: none;
+      font-size: 24px;
       cursor: pointer;
-      font-family: 'Georgia', serif;
     }
 
-    .button-group {
-      text-align: center;
-      margin-top: 30px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      font-style: italic;
-    }
-
-    a {
+    #exit-fullscreen {
+      display: none;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1001;
+      font-size: 28px;
+      background: #fff0;
+      border: none;
       color: #3b241b;
+      cursor: pointer;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .fullscreen #exit-fullscreen {
+      display: block;
+    }
+
+    #compass {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 48px;
+      height: 48px;
+      z-index: 1001;
+      transform: rotate(0deg);
+      transition: transform 0.5s linear;
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="main-container">
     <header>
       <h1>🗺️ Explora el Mensaje Oculto de Gonzalo</h1>
-      <div class="music-control">
-        <button class="music-btn" onclick="toggleMusic()">🎵 Pausar Música</button>
-      </div>
     </header>
 
-    <section>
-      <div class="progress-container">
-        <h3>Progreso de la Aventura</h3>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-        <p id="progress-text">Paradas completadas: 0/7</p>
+    <div class="progress-container">
+      <div class="progress-bar" style="background: #ddd; border-radius: 10px; height: 20px; width: 80%; margin: auto;">
+        <div class="progress-fill" id="progress-fill" style="background: #c19a6b; height: 100%; width: 0%;"></div>
       </div>
+      <p id="progress-text" style="text-align:center;">Paradas completadas: 0/7</p>
+    </div>
 
-      <div class="map-container">
-        <div id="map"></div>
-        <p class="map-description">
-          Mapa callejero interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5100/-6.1000" target="_blank">San Martín del Castañar</a>
-        </p>
-      </div>
-
-      <div class="qr-section">
-        <h2>Escanea un Código QR</h2>
-        <input type="text" id="qr-input" placeholder="Ej: FUENTE-1600" />
-        <br />
-        <button class="action-btn" onclick="checkQR()">Verificar QR</button>
-        <p id="qr-status"></p>
-      </div>
-
-      <div class="button-group">
-        <button class="action-btn" onclick="location.href='index.html'">🏠 Inicio</button>
-        <button class="action-btn" onclick="location.href='guia.html'">📖 Guía Histórica</button>
-        <button class="action-btn" onclick="location.href='cronica.html'">📜 Crónica</button>
-      </div>
-    </section>
-
-    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop autoplay></audio>
-
-    <footer>
-      <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
-    </footer>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-      // Lista de paradas principales y bodega
-      const mainStops = ["castillo", "plaza", "iglesia", "fuente", "ermita", "puente"];
-      const allStops = [...mainStops, "bodega"];
-      let completadas = 0;
-
-      // Contabilizar paradas completadas
-      allStops.forEach(stop => {
-        const completada = localStorage.getItem(`${stop}-completed`) === "true";
-        if (completada) completadas++;
-      });
-
-      // La Bodega se desbloquea solo si todas las demás están completadas
-      const bodegaDesbloqueada = mainStops.every(stop => localStorage.getItem(`${stop}-completed`) === "true");
-
-      document.getElementById("progress-fill").style.width = `${(completadas / allStops.length) * 100}%`;
-      document.getElementById("progress-text").textContent = `Paradas completadas: ${completadas}/${allStops.length}`;
-
-      function checkQR() {
-        const qrInput = document.getElementById("qr-input").value.trim().toUpperCase();
-        const codes = {
-          "CASTILLO-1834": "castillo",
-          "PLAZA-1523": "plaza",
-          "IGLESIA-1300": "iglesia",
-          "FUENTE-1600": "fuente",
-          "ERMITA-1500": "ermita",
-          "PUENTE-1400": "puente",
-          "BODEGA-1600": "bodega"
-        };
-
-        const destino = codes[qrInput];
-        const status = document.getElementById("qr-status");
-
-        if (destino) {
-          status.textContent = "✅ Código correcto. Abriendo...";
-          localStorage.setItem(`${destino}-completed`, "true");
-          setTimeout(() => {
-            window.location.href = destino + ".html";
-          }, 1500);
-        } else {
-          status.textContent = "❌ Código incorrecto. Intenta de nuevo.";
-        }
-      }
-
-      function toggleMusic() {
-        const music = document.getElementById("background-music");
-        const btn = document.querySelector(".music-btn");
-        if (music.paused) {
-          music.play();
-          btn.innerHTML = "🎵 Pausar Música";
-        } else {
-          music.pause();
-          btn.innerHTML = "🎵 Reanudar Música";
-        }
-      }
-
-      // Configuración del mapa: Centro en San Martín del Castañar
-      const sanMartinCoords = [40.5100, -6.1000];
-      const map = L.map('map').setView(sanMartinCoords, 17);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-      }).addTo(map);
-
-      // Si se permite, mostrar la ubicación del usuario
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const userCoords = [position.coords.latitude, position.coords.longitude];
-            L.marker(userCoords)
-              .addTo(map)
-              .bindPopup('📌 Estás aquí')
-              .openPopup();
-
-            L.circle(userCoords, {
-              radius: 15,
-              color: 'blue',
-              fillColor: '#30f',
-              fillOpacity: 0.3,
-            }).addTo(map);
-          },
-          () => console.log('No se pudo obtener tu ubicación')
-        );
-      }
-
-      // Definición de paradas con sus coordenadas y iconos
-      const paradas = [
-        { id: "castillo", nombre: "Castillo", coords: [40.5103, -6.0995], icono: "🏰", archivo: "castillo.html" },
-        { id: "plaza", nombre: "Plaza de toros", coords: [40.5097, -6.1002], icono: "🏟️", archivo: "plaza.html" },
-        { id: "iglesia", nombre: "Iglesia", coords: [40.5101, -6.0990], icono: "⛪", archivo: "iglesia.html" },
-        { id: "fuente", nombre: "Fuente y Portalón", coords: [40.5090, -6.1007], icono: "⛲", archivo: "fuente.html" },
-        { id: "ermita", nombre: "Ermita", coords: [40.5088, -6.1015], icono: "🙏", archivo: "ermita.html" },
-        { id: "puente", nombre: "Puente", coords: [40.5105, -6.1010], icono: "🌉", archivo: "puente.html" },
-        { id: "bodega", nombre: "Bodega", coords: [40.5100, -6.0988], icono: "🍷", archivo: "bodega.html" }
-      ];
-
-      // Crear marcadores interactivos para cada parada
-      paradas.forEach(parada => {
-        const completada = localStorage.getItem(`${parada.id}-completed`) === "true";
-        // Mostrar Bodega solo si está desbloqueada
-        if (parada.id === "bodega" && !bodegaDesbloqueada) return;
-
-        // Si está completada, se antepone un check al icono
-        const iconoFinal = completada ? `✅${parada.icono}` : parada.icono;
-
-        const customIcon = L.divIcon({
-          className: "custom-icon",
-          html: `<div style="font-size: 24px;">${iconoFinal}</div>`,
-          iconSize: [30, 30],
-          iconAnchor: [15, 15]
-        });
-
-        L.marker(parada.coords, { icon: customIcon })
-          .addTo(map)
-          .bindPopup(`
-            <strong>${iconoFinal} ${parada.nombre}</strong><br>
-            <button onclick="location.href='${parada.archivo}'" style="margin-top: 5px; padding: 6px 10px; font-size: 14px;">Ir a la parada</button>
-          `);
-      });
-    </script>
+    <div class="map-container">
+      <div id="map"></div>
+      <button id="fullscreen-btn" title="Ampliar mapa">🔍</button>
+      <button id="exit-fullscreen" title="Salir de pantalla completa">❌</button>
+      <img src="images/flecha.png" id="compass" alt="Brújula" />
+      <p class="map-description">
+        Mapa interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5100/-6.1000" target="_blank">San Martín del Castañar</a>
+      </p>
+    </div>
   </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const mainStops = ["castillo", "plaza", "iglesia", "fuente", "ermita", "puente"];
+    const allStops = [...mainStops, "bodega"];
+    let completadas = 0;
+
+    allStops.forEach(stop => {
+      if (localStorage.getItem(`${stop}-completed`) === "true") completadas++;
+    });
+
+    const bodegaDesbloqueada = mainStops.every(stop => localStorage.getItem(`${stop}-completed`) === "true");
+
+    document.getElementById("progress-fill").style.width = `${(completadas / allStops.length) * 100}%`;
+    document.getElementById("progress-text").textContent = `Paradas completadas: ${completadas}/${allStops.length}`;
+
+    const map = L.map("map").setView([40.5100, -6.1000], 17);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+    }).addTo(map);
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const coords = [position.coords.latitude, position.coords.longitude];
+        L.marker(coords).addTo(map).bindPopup("📌 Estás aquí").openPopup();
+        L.circle(coords, { radius: 15, color: "blue", fillColor: "#30f", fillOpacity: 0.3 }).addTo(map);
+      });
+    }
+
+    const paradas = [
+      { id: "castillo", nombre: "Castillo", coords: [40.5103, -6.0995], icono: "🏰", archivo: "castillo.html" },
+      { id: "plaza", nombre: "Plaza de toros", coords: [40.5097, -6.1002], icono: "🏟️", archivo: "plaza.html" },
+      { id: "iglesia", nombre: "Iglesia", coords: [40.5101, -6.0990], icono: "⛪", archivo: "iglesia.html" },
+      { id: "fuente", nombre: "Fuente y Portalón", coords: [40.5090, -6.1007], icono: "⛲", archivo: "fuente.html" },
+      { id: "ermita", nombre: "Ermita", coords: [40.5088, -6.1015], icono: "🙏", archivo: "ermita.html" },
+      { id: "puente", nombre: "Puente", coords: [40.5105, -6.1010], icono: "🌉", archivo: "puente.html" },
+      { id: "bodega", nombre: "Bodega", coords: [40.5100, -6.0988], icono: "🍷", archivo: "bodega.html" }
+    ];
+
+    paradas.forEach(parada => {
+      const completada = localStorage.getItem(`${parada.id}-completed`) === "true";
+      if (parada.id === "bodega" && !bodegaDesbloqueada) return;
+
+      const iconoFinal = completada ? `✅${parada.icono}` : parada.icono;
+      const customIcon = L.divIcon({ html: `<div style="font-size: 24px;">${iconoFinal}</div>`, iconSize: [30, 30], iconAnchor: [15, 15] });
+
+      const marker = L.marker(parada.coords, { icon: customIcon }).addTo(map);
+      marker.bindPopup(`<strong>${iconoFinal} ${parada.nombre}</strong><br><button onclick=\"location.href='${parada.archivo}'\">Ir a la parada</button>`);
+      marker.on("click", () => map.setView(parada.coords, 18));
+    });
+
+    // Brújula
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener("deviceorientationabsolute", function(event) {
+        const alpha = event.alpha;
+        if (typeof alpha === "number") {
+          document.getElementById("compass").style.transform = `rotate(${alpha}deg)`;
+        }
+      }, true);
+    }
+
+    // Pantalla completa
+    const container = document.getElementById("main-container");
+    document.getElementById("fullscreen-btn").onclick = () => container.classList.add("fullscreen");
+    document.getElementById("exit-fullscreen").onclick = () => container.classList.remove("fullscreen");
+  </script>
 </body>
 </html>
