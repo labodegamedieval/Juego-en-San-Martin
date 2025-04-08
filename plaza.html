@@ -67,8 +67,8 @@
       border-radius: 12px;
       display: block;
       margin: 0 auto;
-      background-color: transparent;
-      backdrop-filter: none;
+      background: url('images/caseta-feria.png') center center no-repeat;
+      background-size: cover;
     }
 
     #score-display, #game-instruction {
@@ -81,13 +81,17 @@
       display: none;
       margin: 20px auto;
       background: url('images/pergamino.png') center center no-repeat;
-      background-size: contain;
+      background-size: 100% 100%;
       padding: 40px;
       text-align: center;
       font-size: 1.2em;
       font-weight: bold;
       border: 2px solid #6b3e2e;
       border-radius: 12px;
+      width: 90%;
+      max-width: 700px;
+      min-height: 100px;
+      animation: desenrollar 1s ease forwards;
     }
 
     .action-btn {
@@ -100,6 +104,10 @@
       border-radius: 10px;
       cursor: pointer;
       text-align: center;
+    }
+  @keyframes desenrollar {
+      from { transform: scaleY(0); opacity: 0; }
+      to { transform: scaleY(1); opacity: 1; }
     }
   </style>
 </head>
