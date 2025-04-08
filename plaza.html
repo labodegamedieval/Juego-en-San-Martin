@@ -213,7 +213,7 @@
       let acertado = false;
 
       blancos.forEach(b => {
-        if (!b.roto && x > b.x - 35 && x < b.x + 35 && y > b.y - 40 && y < b.y) {
+        if (!b.roto && x > b.x - 45 && x < b.x + 45 && y > b.y - 50 && y < b.y) {
           if (objetivosClave.has(b.icono)) {
             aciertos.add(b.icono);
             b.roto = true;
@@ -228,7 +228,7 @@
       setTimeout(() => {
         if (acertado) {
         hitSound.play();
-        if (navigator.vibrate) navigator.vibrate(150);
+        
       }
         else missSound.play();
       }, 150);
