@@ -7,34 +7,34 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    .vitraux-container {
+    .organ-container {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
       margin: 20px auto;
     }
 
-    .vitraux {
-      width: 80px;
-      height: 120px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.2);
-      border: 3px solid #999;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+    .key {
+      width: 50px;
+      height: 150px;
+      background: #eee;
+      border: 2px solid #555;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: background 0.3s;
     }
 
-    .lit {
-      box-shadow: 0 0 20px 8px yellow;
-      transform: scale(1.1);
-      border-color: gold;
+    .key.active {
+      background: gold;
     }
 
     .pista {
       margin-top: 15px;
       font-style: italic;
       color: #444;
+      text-align: center;
     }
   </style>
 </head>
@@ -75,14 +75,16 @@
           <button class="carousel-btn next-slide">→</button>
         </div>
 
-        <h2>🕯️ Reto: Enciende los vitrales</h2>
-        <p>Ilumina la iglesia tocando los vitrales en el orden que marca la tradición. <br><span class="pista">🔍 Pista: el orden lo marca el escudo de San Martín: sangre, oro y cielo.</span></p>
+        <h2>🎼 Reto del Órgano</h2>
+        <p>🎹 Toca las teclas del antiguo órgano siguiendo la secuencia secreta.<br><span class="pista">Pista: Las campanas de San Martín tañen con el alba: DO, FA, RE, SOL</span></p>
 
-        <div class="vitraux-container">
-          <div class="vitraux" id="vitraux-1" onclick="activarVitraux(0)" style="background: rgba(255, 0, 0, 0.4);"></div>
-          <div class="vitraux" id="vitraux-2" onclick="activarVitraux(1)" style="background: rgba(255, 215, 0, 0.4);"></div>
-          <div class="vitraux" id="vitraux-3" onclick="activarVitraux(2)" style="background: rgba(0, 0, 255, 0.4);"></div>
-          <div class="vitraux" id="vitraux-4" onclick="activarVitraux(3)" style="background: rgba(255, 255, 255, 0.4);"></div>
+        <div class="organ-container">
+          <div class="key" data-note="do"></div>
+          <div class="key" data-note="re"></div>
+          <div class="key" data-note="mi"></div>
+          <div class="key" data-note="fa"></div>
+          <div class="key" data-note="sol"></div>
+          <div class="key" data-note="la"></div>
         </div>
 
         <p id="vitraux-feedback" class="pista"></p>
@@ -99,10 +101,14 @@
       </div>
     </section>
 
-    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
+    <audio id="organ-do" src="sounds/organ-do.mp3" preload="auto"></audio>
+    <audio id="organ-re" src="sounds/organ-re.mp3" preload="auto"></audio>
+    <audio id="organ-mi" src="sounds/organ-mi.mp3" preload="auto"></audio>
+    <audio id="organ-fa" src="sounds/organ-fa.mp3" preload="auto"></audio>
+    <audio id="organ-sol" src="sounds/organ-sol.mp3" preload="auto"></audio>
+    <audio id="organ-la" src="sounds/organ-la.mp3" preload="auto"></audio>
+    <audio id="organ-full" src="sounds/organ-full.mp3" preload="auto"></audio>
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
-    <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
-    <audio id="organ-sound" src="sounds/organ.mp3" preload="auto"></audio>
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
 
     <footer>
@@ -112,41 +118,35 @@
     </footer>
 
     <script>
-      const ordenCorrecto = [0, 1, 2, 3]; // Rojo, Dorado, Azul, Blanco
-      let secuencia = [];
-      let vitrales = document.querySelectorAll(".vitraux");
+      const secuenciaCorrecta = ["do", "fa", "re", "sol"];
+      let entradaUsuario = [];
 
-      function activarVitraux(indice) {
-        secuencia.push(indice);
-        vitrales[indice].classList.add("lit");
+      document.querySelectorAll('.key').forEach(key => {
+        key.addEventListener('click', () => {
+          const nota = key.dataset.note;
+          entradaUsuario.push(nota);
 
-        if (secuencia.length === ordenCorrecto.length) {
-          setTimeout(() => {
-            if (JSON.stringify(secuencia) === JSON.stringify(ordenCorrecto)) {
-              document.getElementById("vitraux-feedback").textContent = "✨ ¡La iglesia se ha iluminado con gloria!";
+          document.getElementById(`organ-${nota}`).currentTime = 0;
+          document.getElementById(`organ-${nota}`).play();
+
+          key.classList.add('active');
+          setTimeout(() => key.classList.remove('active'), 300);
+
+          if (entradaUsuario.length === secuenciaCorrecta.length) {
+            if (JSON.stringify(entradaUsuario) === JSON.stringify(secuenciaCorrecta)) {
+              document.getElementById("vitraux-feedback").textContent = "🎶 ¡Has reproducido la melodía sagrada!";
               document.getElementById("fragmento-final").style.display = "block";
               document.getElementById("continue-button").style.display = "block";
               localStorage.setItem("iglesia-completed", "true");
-              playSound("organ-sound");
+              document.getElementById("organ-full").play();
             } else {
-              document.getElementById("vitraux-feedback").textContent = "❌ Orden incorrecto. Intenta de nuevo.";
-              playSound("error-sound");
-              resetVitraux();
+              document.getElementById("vitraux-feedback").textContent = "❌ Esa no era la secuencia. Vuelve a intentarlo.";
+              document.getElementById("error-sound").play();
             }
-          }, 300);
-        }
-      }
-
-      function resetVitraux() {
-        secuencia = [];
-        vitrales.forEach(v => v.classList.remove("lit"));
-      }
-
-      function playSound(id) {
-        const snd = document.getElementById(id);
-        snd.currentTime = 0;
-        snd.play();
-      }
+            entradaUsuario = [];
+          }
+        });
+      });
     </script>
 </body>
 </html>
