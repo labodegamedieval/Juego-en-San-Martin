@@ -38,15 +38,21 @@
       position: relative;
     }
 
+    .compass-container {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 10px;
+    }
+
     #compass {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
       width: 48px;
       height: 48px;
-      z-index: 1001;
       transform: rotate(0deg);
       transition: transform 0.5s linear;
+      border: 2px solid black;
+      border-radius: 50%;
+      padding: 4px;
+      background: white;
     }
 
     .marker-emoji {
@@ -118,7 +124,9 @@
         Mapa interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5222/-6.0645" target="_blank">San Martín del Castañar</a>
       </p>
     </div>
-    <img src="images/flecha.png" id="compass" alt="Brújula" />
+    <div class="compass-container">
+      <img src="images/flecha.png" id="compass" alt="Brújula" />
+    </div>
   </div>
 
   <footer>
