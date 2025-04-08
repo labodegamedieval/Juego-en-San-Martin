@@ -68,8 +68,9 @@
       display: none;
       margin: 20px auto;
       background: url('images/pergamino.png') center center no-repeat;
-      background-size: 100% 100%;
-      padding: 40px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      padding: 40px 20px;
       text-align: center;
       font-size: 1.2em;
       font-weight: bold;
@@ -77,7 +78,7 @@
       border-radius: 12px;
       width: 90%;
       max-width: 700px;
-      min-height: 100px;
+      box-sizing: border-box;
     }
 
     .action-btn {
