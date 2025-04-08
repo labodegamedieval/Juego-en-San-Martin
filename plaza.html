@@ -119,13 +119,13 @@
 <body>
   <div class="container">
     <h1>🏟️ Plaza de Toros</h1>
-    <p class="subtitle">🎪 ¡Bienvenido a la caseta de puntería! Acierta a la copa, el escudo y el racimo de uvas para revelar el secreto oculto entre aplausos y capeas.</p>
 
     <div class="carousel">
       <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
       <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
       <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
-      <p>🎪 ¡Bienvenido a la caseta de tiro con arco! Acierta a la copa, el escudo y el racimo de uvas para revelar el secreto oculto entre aplausos y capeas.</p>
+      <p><a href="https://sanmartindelcastañar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
+      <p>🎪 ¡Bienvenido a la caseta de puntería! Acierta a la copa, el escudo y el racimo de uvas para revelar el secreto oculto entre aplausos y capeas.</p>
     </div>
 
     <div class="caseta">
@@ -164,7 +164,8 @@
           y,
           icono: objetivos[Math.floor(Math.random() * objetivos.length)],
           roto: false,
-          alpha: 1
+          alpha: 1,
+          rebote: false
         });
       }
     }
@@ -187,7 +188,7 @@
           }
         } else if (b.alpha > 0) {
           ctx.globalAlpha = b.alpha;
-          ctx.font = "32px serif";
+          ctx.font = "48px serif";
           ctx.fillText(b.icono, b.x, b.y);
           b.alpha -= 0.02;
         }
@@ -203,11 +204,8 @@
       requestAnimationFrame(dibujar);
     }
 
-    function disparar(event) {
+    function disparar(x, y) {
       arrowSound.play();
-      const rect = canvas.getBoundingClientRect();
-      const x = (event.clientX || event.touches?.[0]?.clientX || 0) - rect.left;
-      const y = (event.clientY || event.touches?.[0]?.clientY || 0) - rect.top;
 
       let acertado = false;
 
@@ -216,24 +214,16 @@
           if (objetivosClave.has(b.icono)) {
             aciertos.add(b.icono);
             b.roto = true;
-          b.rebote = true;
+            b.rebote = true;
             acertado = true;
           }
         }
       });
 
-      try {
-        arrowSound.play();
       setTimeout(() => {
-        if (acertado) {
-        hitSound.play();
-        
-      }
+        if (acertado) hitSound.play();
         else missSound.play();
       }, 150);
-      } catch (e) {
-        console.warn("Audio error:", e);
-      }
 
       scoreDisplay.textContent = `Puntuación: ${aciertos.size} / 3`;
 
@@ -244,8 +234,21 @@
       }
     }
 
-    canvas.addEventListener("click", disparar);
-    canvas.addEventListener("touchstart", disparar);
+    canvas.addEventListener("click", e => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      disparar(x, y);
+    });
+
+    canvas.addEventListener("touchstart", e => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      disparar(x, y);
+    }, { passive: false });
 
     dibujar();
   </script>
