@@ -86,7 +86,7 @@
     }
 
     #compass {
-      position: absolute;
+      position: fixed;
       bottom: 10px;
       right: 10px;
       width: 48px;
@@ -125,11 +125,11 @@
       <div id="map"></div>
       <button id="fullscreen-btn" title="Ampliar mapa">🔍</button>
       <button id="exit-fullscreen" title="Salir de pantalla completa">❌</button>
-      <img src="images/flecha.png" id="compass" alt="Brújula" />
       <p class="map-description">
         Mapa interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5222/-6.0645" target="_blank">San Martín del Castañar</a>
       </p>
     </div>
+    <img src="images/flecha.png" id="compass" alt="Brújula" />
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -196,14 +196,30 @@
       marker.on("click", () => map.setView(parada.coords, 18));
     });
 
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener("deviceorientationabsolute", function(event) {
-        const alpha = event.alpha;
-        if (typeof alpha === "number") {
-          document.getElementById("compass").style.transform = `rotate(${alpha}deg)`;
-        }
-      }, true);
+    const compass = document.getElementById("compass");
+
+    function handleOrientation(event) {
+      const alpha = event.alpha;
+      if (typeof alpha === "number") {
+        compass.style.transform = `rotate(${alpha}deg)`;
+      }
     }
+
+    function initOrientation() {
+      if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === "granted") {
+              window.addEventListener("deviceorientation", handleOrientation, true);
+            }
+          })
+          .catch(console.error);
+      } else {
+        window.addEventListener("deviceorientation", handleOrientation, true);
+      }
+    }
+
+    window.addEventListener("click", initOrientation, { once: true });
 
     const container = document.getElementById("main-container");
     document.getElementById("fullscreen-btn").onclick = () => container.classList.add("fullscreen");
