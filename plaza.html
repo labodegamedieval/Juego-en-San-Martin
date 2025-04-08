@@ -149,7 +149,9 @@
         blancos.push({
           x: -Math.random() * 600,
           y,
-          icono: objetivos[Math.floor(Math.random() * objetivos.length)]
+          icono: objetivos[Math.floor(Math.random() * objetivos.length)],
+          roto: false,
+          alpha: 1
         });
       }
     }
@@ -157,14 +159,25 @@
     function dibujar() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       blancos.forEach(b => {
-        ctx.font = "32px serif";
-        ctx.fillText(b.icono, b.x, b.y);
+        if (!b.roto) {
+          ctx.globalAlpha = 1;
+          ctx.font = "32px serif";
+          ctx.fillText(b.icono, b.x, b.y);
+        } else if (b.alpha > 0) {
+          ctx.globalAlpha = b.alpha;
+          ctx.font = "32px serif";
+          ctx.fillText(b.icono, b.x, b.y);
+          b.alpha -= 0.02;
+        }
         b.x += velocidad;
         if (b.x > canvas.width + 40) {
           b.x = -Math.random() * 600;
           b.icono = objetivos[Math.floor(Math.random() * objetivos.length)];
+          b.roto = false;
+          b.alpha = 1;
         }
       });
+      ctx.globalAlpha = 1;
       requestAnimationFrame(dibujar);
     }
 
@@ -176,9 +189,10 @@
       let acertado = false;
 
       blancos.forEach(b => {
-        if (x > b.x - 20 && x < b.x + 20 && y > b.y - 30 && y < b.y) {
+        if (!b.roto && x > b.x - 20 && x < b.x + 20 && y > b.y - 30 && y < b.y) {
           if (objetivosClave.has(b.icono)) {
             aciertos.add(b.icono);
+            b.roto = true;
             acertado = true;
           }
         }
