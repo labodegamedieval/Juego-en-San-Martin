@@ -95,6 +95,17 @@
       transform: rotate(0deg);
       transition: transform 0.5s linear;
     }
+
+    .marker-emoji {
+      font-size: 36px;
+      transition: transform 0.2s ease;
+      filter: drop-shadow(0 0 2px #000);
+      user-select: none;
+    }
+
+    .marker-emoji.clicked {
+      transform: scale(1.4);
+    }
   </style>
 </head>
 <body>
@@ -164,11 +175,20 @@
       if (parada.id === "bodega" && !bodegaDesbloqueada) return;
 
       const iconoFinal = completada ? `✅${parada.icono}` : parada.icono;
+      const markerElement = document.createElement("div");
+      markerElement.className = "marker-emoji";
+      markerElement.textContent = iconoFinal;
+
+      markerElement.addEventListener("click", () => {
+        markerElement.classList.add("clicked");
+        setTimeout(() => markerElement.classList.remove("clicked"), 300);
+      });
+
       const customIcon = L.divIcon({
         className: "",
-        html: `<div style="font-size: 24px;">${iconoFinal}</div>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
+        html: markerElement.outerHTML,
+        iconSize: [40, 40],
+        iconAnchor: [20, 20]
       });
 
       const marker = L.marker(parada.coords, { icon: customIcon }).addTo(map);
