@@ -76,33 +76,6 @@
       margin-top: 10px;
     }
 
-    .buttons-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .map-btn {
-      padding: 10px 16px;
-      background-color: #e8d6b8;
-      border: 2px solid #6d4c41;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-      text-decoration: none;
-      color: #3b241b;
-      font-family: 'Georgia', serif;
-    }
-
-    .map-btn.completed {
-      text-decoration: line-through;
-      background-color: #dcd2bd;
-      opacity: 0.6;
-    }
-
     .qr-section {
       text-align: center;
       margin-top: 30px;
@@ -174,16 +147,6 @@
         <p class="map-description">
           Mapa callejero interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5245/-6.0179" target="_blank">San Martín del Castañar</a>
         </p>
-
-        <div class="buttons-container">
-          <button class="map-btn" data-stop="castillo" onclick="location.href='castillo.html'">🏰 Castillo</button>
-          <button class="map-btn" data-stop="plaza" onclick="location.href='plaza.html'">🏟️ Plaza de toros</button>
-          <button class="map-btn" data-stop="iglesia" onclick="location.href='iglesia.html'">⛪ Iglesia</button>
-          <button class="map-btn" data-stop="fuente" onclick="location.href='fuente.html'">⛲ Fuente y Portalón</button>
-          <button class="map-btn" data-stop="ermita" onclick="location.href='ermita.html'">🙏 Ermita</button>
-          <button class="map-btn" data-stop="puente" onclick="location.href='puente.html'">🌉 Puente</button>
-          <button class="map-btn" data-stop="bodega" onclick="location.href='bodega.html'">🍷 Bodega</button>
-        </div>
       </div>
 
       <div class="qr-section">
@@ -213,21 +176,12 @@
       const allStops = [...mainStops, "bodega"];
       let completadas = 0;
 
-      // Botones
       allStops.forEach(stop => {
         const completada = localStorage.getItem(`${stop}-completed`) === "true";
         if (completada) completadas++;
-        const btn = document.querySelector(`.map-btn[data-stop="${stop}"]`);
-        if (btn && completada) {
-          btn.classList.add("completed");
-        }
       });
 
       const bodegaDesbloqueada = mainStops.every(stop => localStorage.getItem(`${stop}-completed`) === "true");
-      const bodegaBtn = document.querySelector(`.map-btn[data-stop="bodega"]`);
-      if (bodegaBtn && !bodegaDesbloqueada) {
-        bodegaBtn.style.display = "none";
-      }
 
       document.getElementById("progress-fill").style.width = `${(completadas / allStops.length) * 100}%`;
       document.getElementById("progress-text").textContent = `Paradas completadas: ${completadas}/${allStops.length}`;
@@ -277,7 +231,6 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
       }).addTo(map);
 
-      // Ubicación del usuario
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           position => {
@@ -298,7 +251,6 @@
         );
       }
 
-      // Marcadores personalizados con check si están completados
       const paradas = [
         { id: "castillo", nombre: "Castillo", coords: [40.5247, -6.0175], icono: "🏰", archivo: "castillo.html" },
         { id: "plaza", nombre: "Plaza de toros", coords: [40.5246, -6.0180], icono: "🏟️", archivo: "plaza.html" },
@@ -311,8 +263,6 @@
 
       paradas.forEach(parada => {
         const completada = localStorage.getItem(`${parada.id}-completed`) === "true";
-
-        // Solo mostramos Bodega si está desbloqueada
         if (parada.id === "bodega" && !bodegaDesbloqueada) return;
 
         const iconoFinal = completada ? `✅${parada.icono}` : parada.icono;
