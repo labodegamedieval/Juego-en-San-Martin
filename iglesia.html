@@ -24,6 +24,52 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.3);
     }
 
+    /* Estilos del carrusel */
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+
+    .carousel-slides {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      display: block;
+      border-radius: 10px;
+      border: 2px solid #6b3e2e;
+    }
+
+    .carousel-slide p {
+      font-style: italic;
+      margin-top: 10px;
+    }
+
+    .carousel-prev, .carousel-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.7);
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+    }
+    .carousel-prev { left: 10px; }
+    .carousel-next { right: 10px; }
+
     .organ-wrapper {
       display: flex;
       justify-content: center;
@@ -110,23 +156,6 @@
       cursor: pointer;
     }
 
-    .carousel {
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    .carousel img {
-      width: 100%;
-      border-radius: 10px;
-      border: 2px solid #6b3e2e;
-    }
-
-    .carousel p {
-      font-style: italic;
-      text-align: center;
-      margin-top: 10px;
-    }
-
     @media screen and (max-width: 768px) {
       .pista-box {
         width: 100%; /* Asegura que el pergamino se ajuste en móvil */
@@ -138,20 +167,24 @@
   <div class="container">
     <h1>⛪ Iglesia de San Martín</h1>
 
-    <!-- Carrusel con tres fotos, texto y enlaces -->
-    <div class="carousel">
-      <img src="images/retablo.jpg" alt="Retablo" />
-      <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si la iglesia está cerrada, te va a interesar este link. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
-    </div>
-
-    <div class="carousel">
-      <img src="images/fachada.jpg" alt="Fachada" />
-      <p><strong>Fachada:</strong> Exquisita arquitectura medieval, una joya del pueblo. Descubre más sobre la iglesia en <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">este enlace</a>.</p>
-    </div>
-
-    <div class="carousel">
-      <img src="images/vitrail.jpg" alt="Vitrail" />
-      <p><strong>Vitrales:</strong> Preciosos vitrales de la iglesia que narran historias bíblicas. Conoce su historia <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">aquí</a>.</p>
+    <!-- Carrusel integrado -->
+    <div class="carousel-container">
+      <div class="carousel-slides">
+        <div class="carousel-slide">
+          <img src="images/retablo.jpg" alt="Retablo" />
+          <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si la iglesia está cerrada, te va a interesar este link. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+        </div>
+        <div class="carousel-slide">
+          <img src="images/fachada.jpg" alt="Fachada" />
+          <p><strong>Fachada:</strong> Exquisita arquitectura medieval, una joya del pueblo. Descubre más sobre la iglesia en <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">este enlace</a>.</p>
+        </div>
+        <div class="carousel-slide">
+          <img src="images/vitrail.jpg" alt="Vitrales" />
+          <p><strong>Vitrales:</strong> Preciosos vitrales que narran historias bíblicas. Conoce su historia <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">aquí</a>.</p>
+        </div>
+      </div>
+      <button class="carousel-prev">&#10094;</button>
+      <button class="carousel-next">&#10095;</button>
     </div>
 
     <h2>🎼 Reto del Órgano</h2>
@@ -205,6 +238,7 @@
   <audio id="organ-full" src="sounds/organ-full.mp3"></audio>
 
   <script>
+    // Reto del órgano
     const secuenciaCorrecta = ["do", "fa", "re", "sol"];
     let entradaUsuario = [];
 
@@ -234,6 +268,25 @@
         }
       });
     });
+
+    // Script para el carrusel
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+
+    document.querySelector('.carousel-prev').addEventListener('click', () => {
+      currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+      updateCarousel();
+    });
+
+    document.querySelector('.carousel-next').addEventListener('click', () => {
+      currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
+      updateCarousel();
+    });
+
+    function updateCarousel() {
+      const carouselSlides = document.querySelector('.carousel-slides');
+      carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
+    }
   </script>
 </body>
 </html>
