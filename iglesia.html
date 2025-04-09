@@ -2,73 +2,74 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>⛪ Iglesia de San Martín</title>
-  <link rel="stylesheet" href="styles/style.css"/>
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
   <style>
     .organ-wrapper {
+      position: relative;
       display: flex;
       justify-content: center;
-      margin-top: 20px;
-      position: relative;
-      height: 160px;
+      margin: 20px auto;
+      height: 180px;
     }
-
     .white-key {
       width: 40px;
-      height: 160px;
-      background: #fff;
+      height: 180px;
+      background: white;
       border: 1px solid #444;
-      position: relative;
       z-index: 1;
+      text-align: center;
       font-size: 12px;
       font-weight: bold;
-      text-align: center;
       line-height: 160px;
       cursor: pointer;
+      position: relative;
     }
-
     .white-key.active {
       background: #ffe58a;
     }
-
     .black-key {
       width: 25px;
       height: 100px;
-      background: #111;
+      background: black;
+      color: white;
+      text-align: center;
+      line-height: 100px;
+      font-size: 10px;
       position: absolute;
       top: 0;
       z-index: 2;
       border-radius: 4px;
-      color: white;
-      font-size: 10px;
-      text-align: center;
-      line-height: 100px;
       cursor: pointer;
     }
-
     .black-key.active {
       background: #ffbf00;
     }
-
-    .pista {
-      margin-top: 15px;
-      font-style: italic;
-      color: #444;
-      text-align: center;
-    }
-
-    .fragmento-final {
-      margin-top: 20px;
+    .fragmento-final, .pista-container {
       background: url('images/pergamino.png') center center no-repeat;
-      background-size: contain;
-      padding: 40px;
-      text-align: center;
-      font-size: 1.2em;
-      font-weight: bold;
+      background-size: cover;
       border: 2px solid #6b3e2e;
       border-radius: 12px;
+      padding: 30px;
+      margin: 20px auto;
+      max-width: 600px;
+      text-align: center;
+    }
+    .pista-container {
+      display: none;
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .carousel img {
+      width: 100%;
+      border-radius: 10px;
+      border: 2px solid #6b3e2e;
+    }
+    .carousel p {
+      text-align: center;
+      font-style: italic;
     }
   </style>
 </head>
@@ -82,8 +83,6 @@
     </header>
 
     <section id="content">
-      <div class="stop-icon">⛪</div>
-
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
         <p>Colócate frente a la puerta gótico-mudéjar de la iglesia.</p>
@@ -92,25 +91,23 @@
         <input type="text" id="location-input" placeholder="Ej: Iglesia" />
         <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
         <p id="location-status"></p>
-        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
       </div>
 
       <div id="game-content" style="display: none;">
         <div class="carousel">
-          <div class="slide active">
+          <div class="slide">
             <img src="images/retablo.jpg" alt="Interior de la Iglesia" />
-            <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si la iglesia está cerrada, te va a interesar este link. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+            <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si está cerrada: <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">+ info</a></p>
           </div>
           <div class="slide">
             <img src="images/iglesia.jpg" alt="Exterior de la Iglesia" />
-            <p><strong>Fachada:</strong> Entrada en piedra y ladrillo con campanario de cinco campanas.</p>
+            <p><strong>Fachada:</strong> Entrada de piedra y ladrillo con campanario de cinco campanas.</p>
           </div>
-          <button class="carousel-btn prev-slide">←</button>
-          <button class="carousel-btn next-slide">→</button>
         </div>
 
         <h2>🎼 Reto del Órgano</h2>
-        <p>🎹 Toca las teclas del antiguo órgano siguiendo la secuencia secreta.<br><span class="pista">Pista: Las campanas de San Martín tañen con el alba: DO, FA, RE, SOL</span></p>
+        <p>🎹 Toca las teclas del órgano siguiendo la secuencia secreta.</p>
+        <button class="action-btn" onclick="document.getElementById('pista').style.display='block'">🗳️ Ver pista</button>
 
         <div class="organ-wrapper">
           <div class="white-key" data-note="do">DO</div>
@@ -127,59 +124,45 @@
           <div class="white-key" data-note="si">SI</div>
         </div>
 
-        <p id="vitraux-feedback" class="pista"></p>
-
-        <div class="fragmento-final" id="fragmento-final" style="display: none;">
-          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece">la fe del pueblo guía las almas...</span></p>
-          <p><strong>QR en el pueblo:</strong> IGLESIA-1300</p>
-          <p><strong>Dato Curioso:</strong> Se conserva una estela funeraria romana a la izquierda del portal. Sugerencia: si la fortuna os acompaña y la panadería está abierta podréis adquirir sus famosas perronillas... a lo mejor os dan alguna pista.</p>
+        <div id="pista" class="pista-container">
+          <p>Domingo de misterio en el pueblo</p>
+          <p>las campanas tañen al alba.</p>
+          <p>Fanfarrias en la puerta de la iglesia</p>
+          <p>con el órgano afinado.</p>
+          <p>Resurgen los enigmas del pasado.</p>
+          <p>Solitaria la melodía de Gonzalo.</p>
         </div>
 
-        <div id="continue-button" style="display: none;">
+        <div class="fragmento-final" id="fragmento-final" style="display: none;">
+          <p><strong>Fragmento del Mensaje:</strong><br>Y en la penumbra de la nave, la fe resonó.</p>
+          <p><strong>QR:</strong> IGLESIA-1300</p>
+        </div>
+
+        <div id="continue-button" style="display: none; text-align: center; margin-top: 20px;">
           <button class="action-btn" onclick="location.href='felicitaciones.html?stop=iglesia'">Continuar aventura</button>
         </div>
       </div>
     </section>
 
-    <!-- Sonidos -->
-    <audio id="organ-do" src="sounds/organ-do.mp3" preload="auto"></audio>
-    <audio id="organ-re" src="sounds/organ-re.mp3" preload="auto"></audio>
-    <audio id="organ-mi" src="sounds/organ-mi.mp3" preload="auto"></audio>
-    <audio id="organ-fa" src="sounds/organ-fa.mp3" preload="auto"></audio>
-    <audio id="organ-sol" src="sounds/organ-sol.mp3" preload="auto"></audio>
-    <audio id="organ-la" src="sounds/organ-la.mp3" preload="auto"></audio>
-    <audio id="organ-si" src="sounds/organ-si.mp3" preload="auto"></audio>
+    <!-- Audios -->
     <audio id="organ-full" src="sounds/organ-full.mp3" preload="auto"></audio>
-    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-
-    <footer>
-      <p>© 2025 La Bodega Medieval |
-        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
-      </p>
-    </footer>
-
     <script>
       const secuenciaCorrecta = ["do", "fa", "re", "sol"];
       let entradaUsuario = [];
-
+      
       document.querySelectorAll('.white-key, .black-key').forEach(key => {
         key.addEventListener('click', () => {
           const nota = key.dataset.note;
           entradaUsuario.push(nota);
 
-          // Reproducir sonido con nueva instancia para evitar latencia
-          const sonido = document.getElementById(`organ-${nota}`);
-          if (sonido) {
-            const clone = sonido.cloneNode();
-            clone.play();
-          }
+          const audio = new Audio(`sounds/organ-${nota}.mp3`);
+          audio.play();
 
           key.classList.add('active');
           setTimeout(() => key.classList.remove('active'), 300);
 
           if (entradaUsuario.length === secuenciaCorrecta.length) {
             if (JSON.stringify(entradaUsuario) === JSON.stringify(secuenciaCorrecta)) {
-              document.getElementById("vitraux-feedback").textContent = "🎶 ¡Has reproducido la melodía sagrada!";
               document.getElementById("fragmento-final").style.display = "block";
               document.getElementById("continue-button").style.display = "block";
               localStorage.setItem("iglesia-completed", "true");
@@ -204,8 +187,6 @@
           } else {
             document.getElementById('location-status').textContent = '❌ No estás cerca de la iglesia.';
           }
-        }, () => {
-          document.getElementById('location-status').textContent = '⚠️ No se pudo obtener tu ubicación.';
         });
       }
 
@@ -220,6 +201,10 @@
         }
       }
     </script>
+
+    <footer>
+      <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
+    </footer>
   </div>
 </body>
 </html>
