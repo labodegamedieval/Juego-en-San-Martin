@@ -2,116 +2,36 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>⛪ Iglesia de San Martín</title>
-  <link rel="stylesheet" href="styles/style.css"/>
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🏟️ Plaza de Toros</title>
+  <link rel="icon" href="images/escudo-borrado.jpg" type="image/jpeg" />
   <style>
     body {
-      font-family: 'Georgia', serif;
       background: url('images/pergamino.jpg') no-repeat center center fixed;
       background-size: cover;
+      font-family: Georgia, serif;
+      color: #3b241b;
       margin: 0;
       padding: 0;
     }
 
     .container {
-      max-width: 960px;
+      max-width: 900px;
       margin: auto;
-      background: rgba(255,248,228,0.95);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    }
-
-    .organ-wrapper {
-      display: flex;
-      justify-content: center;
-      flex-wrap: nowrap;
-      gap: 2px;
-      margin-top: 20px;
-      position: relative;
-      height: 160px;
-      overflow-x: auto;
-    }
-
-    .white-key {
-      width: 40px;
-      height: 160px;
-      background: #fff;
-      border: 1px solid #444;
-      font-size: 12px;
-      font-weight: bold;
-      text-align: center;
-      line-height: 160px;
-      z-index: 1;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .white-key.active {
-      background: #ffe58a;
-    }
-
-    .black-key {
-      width: 25px;
-      height: 100px;
-      background: #111;
-      position: absolute;
-      top: 0;
-      z-index: 2;
-      border-radius: 4px;
-      font-size: 10px;
-      color: white;
-      text-align: center;
-      line-height: 100px;
-      cursor: pointer;
-    }
-
-    .black-key.active {
-      background: #ffbf00;
-    }
-
-    .fragmento-final {
-      margin-top: 20px;
-      background: url('images/pergamino.png') center center no-repeat;
-      background-size: cover;
-      padding: 40px;
-      text-align: center;
-      font-size: 1.4em;
-      font-weight: bold;
-      border: none;
-      border-radius: 12px;
-    }
-
-    .pista-box {
-      margin-top: 15px;
-      display: none;
-      background: url('images/pergamino.png') center center no-repeat;
-      background-size: cover;
+      background: rgba(255, 248, 228, 0.96);
+      border-radius: 16px;
       padding: 30px;
-      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
       text-align: center;
-      font-style: italic;
-      font-size: 1.1em;
-      line-height: 1.8;
-      font-weight: bold;
     }
 
-    .action-btn {
-      display: block;
-      margin: 15px auto;
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #dec79b;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
-      cursor: pointer;
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
     }
 
     .carousel {
-      position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     .carousel img {
@@ -121,101 +41,171 @@
     }
 
     .carousel p {
-      font-style: italic;
       text-align: center;
+      font-style: italic;
       margin-top: 10px;
+    }
+
+    canvas {
+      border: 3px solid #5e3b1b;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+      background: url('images/caseta-feria.png') center center no-repeat;
+      background-size: cover;
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+    }
+
+    #score-display {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    #fragmento {
+      display: none;
+      margin: 20px auto;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: 100% auto;
+      background-repeat: no-repeat;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 1.2em;
+      font-weight: bold;
+      border: 2px solid #6b3e2e;
+      border-radius: 12px;
+      width: 95%;
+      max-width: 750px;
+      box-sizing: border-box;
+    }
+
+    .action-btn {
+      display: none;
+      margin: 30px auto 20px;
+      padding: 12px 20px;
+      font-size: 18px;
+      background-color: #d6b88a;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>⛪ Iglesia de San Martín</h1>
-
+    <h1>🏟️ Plaza de Toros</h1>
     <div class="carousel">
-      <img src="images/retablo.jpg" alt="Retablo" />
-      <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si la iglesia está cerrada, te va a interesar este link. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+      <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
+      <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
+      <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
+      <p><a href="https://sanmartindelcastanar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
+      <p>🎪 ¡Bienvenido a la caseta de puntería! Acierta a la copa, el escudo y el racimo de uvas para revelar el secreto oculto entre aplausos y capeas.</p>
     </div>
 
-    <h2>🎼 Reto del Órgano</h2>
-    <p>🎹 Toca las teclas del órgano en el orden correcto para desvelar el mensaje oculto.</p>
-
-    <div class="organ-wrapper">
-      <div class="white-key" data-note="do">DO</div>
-      <div class="black-key" style="left: 28px;" data-note="do#">DO#</div>
-      <div class="white-key" data-note="re">RE</div>
-      <div class="black-key" style="left: 68px;" data-note="re#">RE#</div>
-      <div class="white-key" data-note="mi">MI</div>
-      <div class="white-key" data-note="fa">FA</div>
-      <div class="black-key" style="left: 148px;" data-note="fa#">FA#</div>
-      <div class="white-key" data-note="sol">SOL</div>
-      <div class="black-key" style="left: 188px;" data-note="sol#">SOL#</div>
-      <div class="white-key" data-note="la">LA</div>
-      <div class="black-key" style="left: 228px;" data-note="la#">LA#</div>
-      <div class="white-key" data-note="si">SI</div>
-    </div>
-
-    <button class="action-btn" onclick="document.getElementById('pista').style.display='block'">🕯️ Ver pista</button>
-
-    <div id="pista" class="pista-box">
-      Domingo de misterio en el pueblo,<br>
-      las campanas tañen al alba.<br>
-      Fanfarrias en la puerta de la iglesia<br>
-      con el órgano afinado.<br>
-      Resurgen los enigmas del pasado.<br>
-      Solitaria la melodía de Gonzalo.
-    </div>
-
-    <p id="feedback" class="pista"></p>
-
-    <div class="fragmento-final" id="fragmento-final" style="display: none;">
-      <p><strong>Fragmento del Mensaje:</strong><br><span id="message-piece" style="font-size:1.4em">la fe del pueblo guía las almas...</span></p>
-      <p><strong>QR:</strong> IGLESIA-1300</p>
-    </div>
-
-    <div id="continue-button" style="display: none; text-align:center;">
-      <button class="action-btn" onclick="location.href='felicitaciones.html?stop=iglesia'">Continuar aventura</button>
-    </div>
+    <canvas id="gameCanvas" width="600" height="360"></canvas>
+    <div id="score-display">Puntuación: 0 / 3</div>
+    <div id="fragmento">📜 Fragmento revelado: "...en..."</div>
+    <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
   </div>
 
-  <audio id="organ-do" src="sounds/organ-do.mp3"></audio>
-  <audio id="organ-re" src="sounds/organ-re.mp3"></audio>
-  <audio id="organ-mi" src="sounds/organ-mi.mp3"></audio>
-  <audio id="organ-fa" src="sounds/organ-fa.mp3"></audio>
-  <audio id="organ-sol" src="sounds/organ-sol.mp3"></audio>
-  <audio id="organ-la" src="sounds/organ-la.mp3"></audio>
-  <audio id="organ-si" src="sounds/organ-si.mp3"></audio>
-  <audio id="organ-full" src="sounds/organ-full.mp3"></audio>
+  <audio id="hit-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+  <audio id="miss-sound" src="sounds/error.mp3" preload="auto"></audio>
+  <audio id="arrow-sound" src="sounds/arrow.mp3" preload="auto"></audio>
 
   <script>
-    const secuenciaCorrecta = ["do", "fa", "re", "sol"];
-    let entradaUsuario = [];
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const scoreDisplay = document.getElementById("score-display");
+    const fragmento = document.getElementById("fragmento");
+    const btn = document.getElementById("continue-button");
+    const hitSound = document.getElementById("hit-sound");
+    const missSound = document.getElementById("miss-sound");
+    const arrowSound = document.getElementById("arrow-sound");
 
-    document.querySelectorAll('.white-key, .black-key').forEach(key => {
-      key.addEventListener('click', () => {
-        const nota = key.dataset.note;
-        entradaUsuario.push(nota);
+    const objetivos = ["🍷", "🛡️", "🍇", "🐂", "⚔️", "🎭", "🎯", "🥇", "🏹"];
+    const objetivosClave = new Set(["🍷", "🛡️", "🍇"]);
+    const aciertos = new Set();
+    const blancos = [];
+    const filas = [80, 180, 280];
+    const velocidad = 1.8;
 
-        const sonido = document.getElementById(`organ-${nota}`);
-        if (sonido) {
-          const clone = sonido.cloneNode();
-          clone.play();
+    for (let y of filas) {
+      for (let i = 0; i < 6; i++) {
+        blancos.push({
+          x: -Math.random() * 600,
+          y,
+          icono: objetivos[Math.floor(Math.random() * objetivos.length)],
+          roto: false,
+          alpha: 1,
+          rebote: false
+        });
+      }
+    }
+
+    function dibujar() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      blancos.forEach(b => {
+        if (!b.roto) {
+          ctx.globalAlpha = 1;
+          ctx.font = "48px serif";
+          ctx.fillText(b.icono, b.x, b.y);
+        } else if (b.alpha > 0) {
+          ctx.globalAlpha = b.alpha;
+          ctx.font = "48px serif";
+          ctx.fillText(b.icono, b.x, b.y);
+          b.alpha -= 0.02;
         }
-
-        key.classList.add('active');
-        setTimeout(() => key.classList.remove('active'), 300);
-
-        if (entradaUsuario.length === secuenciaCorrecta.length) {
-          if (JSON.stringify(entradaUsuario) === JSON.stringify(secuenciaCorrecta)) {
-            document.getElementById("feedback").textContent = "🎶 ¡Melodía correcta!";
-            document.getElementById("fragmento-final").style.display = "block";
-            document.getElementById("continue-button").style.display = "block";
-            document.getElementById("organ-full").play();
-            localStorage.setItem("iglesia-completed", "true");
-          }
-          entradaUsuario = [];
+        b.x += velocidad;
+        if (b.x > canvas.width + 40) {
+          b.x = -Math.random() * 600;
+          b.icono = objetivos[Math.floor(Math.random() * objetivos.length)];
+          b.roto = false;
+          b.alpha = 1;
         }
       });
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(dibujar);
+    }
+
+    function disparar(x, y) {
+      arrowSound.play();
+      let acertado = false;
+      blancos.forEach(b => {
+        if (!b.roto && Math.abs(x - b.x) < 35 && Math.abs(y - b.y) < 35) {
+          if (objetivosClave.has(b.icono)) {
+            aciertos.add(b.icono);
+            b.roto = true;
+            acertado = true;
+          }
+        }
+      });
+      setTimeout(() => {
+        if (acertado) hitSound.play();
+        else missSound.play();
+      }, 120);
+      scoreDisplay.textContent = `Puntuación: ${aciertos.size} / 3`;
+      if (aciertos.size === 3) {
+        fragmento.style.display = "block";
+        btn.style.display = "block";
+        localStorage.setItem("plaza-completed", "true");
+      }
+    }
+
+    canvas.addEventListener("pointerdown", e => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
+      const y = (e.clientY || e.touches?.[0]?.clientY) - rect.top;
+      disparar(x * canvas.width / rect.width, y * canvas.height / rect.height);
     });
+
+    dibujar();
   </script>
 </body>
 </html>
