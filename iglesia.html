@@ -2,209 +2,220 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>⛪ Iglesia de San Martín</title>
-  <link rel="stylesheet" href="styles/style.css" />
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: url('images/pergamino.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: auto;
+      background: rgba(255,248,228,0.95);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
     .organ-wrapper {
-      position: relative;
       display: flex;
       justify-content: center;
-      margin: 20px auto;
-      height: 180px;
+      flex-wrap: nowrap;
+      gap: 2px;
+      margin-top: 20px;
+      position: relative;
+      height: 160px;
+      overflow-x: auto;
     }
+
     .white-key {
       width: 40px;
-      height: 180px;
-      background: white;
+      height: 160px;
+      background: #fff;
       border: 1px solid #444;
-      z-index: 1;
-      text-align: center;
       font-size: 12px;
       font-weight: bold;
+      text-align: center;
       line-height: 160px;
-      cursor: pointer;
+      z-index: 1;
       position: relative;
+      cursor: pointer;
     }
+
     .white-key.active {
       background: #ffe58a;
     }
+
     .black-key {
       width: 25px;
       height: 100px;
-      background: black;
-      color: white;
-      text-align: center;
-      line-height: 100px;
-      font-size: 10px;
+      background: #111;
       position: absolute;
       top: 0;
       z-index: 2;
       border-radius: 4px;
+      font-size: 10px;
+      color: white;
+      text-align: center;
+      line-height: 100px;
       cursor: pointer;
     }
+
     .black-key.active {
       background: #ffbf00;
     }
-    .fragmento-final, .pista-container {
+
+    .fragmento-final {
+      margin-top: 20px;
       background: url('images/pergamino.png') center center no-repeat;
       background-size: cover;
-      border: 2px solid #6b3e2e;
-      border-radius: 12px;
-      padding: 30px;
-      margin: 20px auto;
-      max-width: 600px;
+      padding: 40px;
       text-align: center;
+      font-size: 1.4em;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
     }
-    .pista-container {
+
+    .pista-box {
+      margin-top: 15px;
       display: none;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: cover;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
       font-style: italic;
-      line-height: 1.6;
+      font-size: 1.1em;
+      line-height: 1.8;
+      font-weight: bold;
     }
+
+    .action-btn {
+      display: block;
+      margin: 15px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #dec79b;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .carousel {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
     .carousel img {
       width: 100%;
       border-radius: 10px;
       border: 2px solid #6b3e2e;
     }
+
     .carousel p {
-      text-align: center;
       font-style: italic;
+      text-align: center;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>⛪ Iglesia de San Martín</h1>
-      <div class="music-control">
-        <button class="music-btn"><span class="music-icon">🎵</span> Música</button>
-      </div>
-    </header>
+    <h1>⛪ Iglesia de San Martín</h1>
 
-    <section id="content">
-      <div id="location-check">
-        <h2>Verifica tu ubicación</h2>
-        <p>Colócate frente a la puerta gótico-mudéjar de la iglesia.</p>
-        <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
-        <p>O escribe el nombre:</p>
-        <input type="text" id="location-input" placeholder="Ej: Iglesia" />
-        <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
-        <p id="location-status"></p>
-      </div>
+    <div class="carousel">
+      <img src="images/retablo.jpg" alt="Retablo" />
+      <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si la iglesia está cerrada, te va a interesar este link. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+    </div>
 
-      <div id="game-content" style="display: none;">
-        <div class="carousel">
-          <div class="slide">
-            <img src="images/retablo.jpg" alt="Interior de la Iglesia" />
-            <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si está cerrada: <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">+ info</a></p>
-          </div>
-          <div class="slide">
-            <img src="images/iglesia.jpg" alt="Exterior de la Iglesia" />
-            <p><strong>Fachada:</strong> Entrada de piedra y ladrillo con campanario de cinco campanas.</p>
-          </div>
-        </div>
+    <h2>🎼 Reto del Órgano</h2>
+    <p>🎹 Toca las teclas del órgano en el orden correcto para desvelar el mensaje oculto.</p>
 
-        <h2>🎼 Reto del Órgano</h2>
-        <p>🎹 Toca las teclas del órgano siguiendo la secuencia secreta.</p>
-        <button class="action-btn" onclick="document.getElementById('pista').style.display='block'">🗳️ Ver pista</button>
+    <div class="organ-wrapper">
+      <div class="white-key" data-note="do">DO</div>
+      <div class="black-key" style="left: 28px;" data-note="do#">DO#</div>
+      <div class="white-key" data-note="re">RE</div>
+      <div class="black-key" style="left: 68px;" data-note="re#">RE#</div>
+      <div class="white-key" data-note="mi">MI</div>
+      <div class="white-key" data-note="fa">FA</div>
+      <div class="black-key" style="left: 148px;" data-note="fa#">FA#</div>
+      <div class="white-key" data-note="sol">SOL</div>
+      <div class="black-key" style="left: 188px;" data-note="sol#">SOL#</div>
+      <div class="white-key" data-note="la">LA</div>
+      <div class="black-key" style="left: 228px;" data-note="la#">LA#</div>
+      <div class="white-key" data-note="si">SI</div>
+    </div>
 
-        <div class="organ-wrapper">
-          <div class="white-key" data-note="do">DO</div>
-          <div class="black-key" style="left: 28px;" data-note="do#">DO#</div>
-          <div class="white-key" data-note="re">RE</div>
-          <div class="black-key" style="left: 68px;" data-note="re#">RE#</div>
-          <div class="white-key" data-note="mi">MI</div>
-          <div class="white-key" data-note="fa">FA</div>
-          <div class="black-key" style="left: 148px;" data-note="fa#">FA#</div>
-          <div class="white-key" data-note="sol">SOL</div>
-          <div class="black-key" style="left: 188px;" data-note="sol#">SOL#</div>
-          <div class="white-key" data-note="la">LA</div>
-          <div class="black-key" style="left: 228px;" data-note="la#">LA#</div>
-          <div class="white-key" data-note="si">SI</div>
-        </div>
+    <button class="action-btn" onclick="document.getElementById('pista').style.display='block'">🕯️ Ver pista</button>
 
-        <div id="pista" class="pista-container">
-          <p>Domingo de misterio en el pueblo</p>
-          <p>las campanas tañen al alba.</p>
-          <p>Fanfarrias en la puerta de la iglesia</p>
-          <p>con el órgano afinado.</p>
-          <p>Resurgen los enigmas del pasado.</p>
-          <p>Solitaria la melodía de Gonzalo.</p>
-        </div>
+    <div id="pista" class="pista-box">
+      Domingo de misterio en el pueblo,<br>
+      las campanas tañen al alba.<br>
+      Fanfarrias en la puerta de la iglesia<br>
+      con el órgano afinado.<br>
+      Resurgen los enigmas del pasado.<br>
+      Solitaria la melodía de Gonzalo.
+    </div>
 
-        <div class="fragmento-final" id="fragmento-final" style="display: none;">
-          <p><strong>Fragmento del Mensaje:</strong><br>Y en la penumbra de la nave, la fe resonó.</p>
-          <p><strong>QR:</strong> IGLESIA-1300</p>
-        </div>
+    <p id="feedback" class="pista"></p>
 
-        <div id="continue-button" style="display: none; text-align: center; margin-top: 20px;">
-          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=iglesia'">Continuar aventura</button>
-        </div>
-      </div>
-    </section>
+    <div class="fragmento-final" id="fragmento-final" style="display: none;">
+      <p><strong>Fragmento del Mensaje:</strong><br><span id="message-piece" style="font-size:1.4em">la fe del pueblo guía las almas...</span></p>
+      <p><strong>QR:</strong> IGLESIA-1300</p>
+    </div>
 
-    <!-- Audios -->
-    <audio id="organ-full" src="sounds/organ-full.mp3" preload="auto"></audio>
-    <script>
-      const secuenciaCorrecta = ["do", "fa", "re", "sol"];
-      let entradaUsuario = [];
-      
-      document.querySelectorAll('.white-key, .black-key').forEach(key => {
-        key.addEventListener('click', () => {
-          const nota = key.dataset.note;
-          entradaUsuario.push(nota);
-
-          const audio = new Audio(`sounds/organ-${nota}.mp3`);
-          audio.play();
-
-          key.classList.add('active');
-          setTimeout(() => key.classList.remove('active'), 300);
-
-          if (entradaUsuario.length === secuenciaCorrecta.length) {
-            if (JSON.stringify(entradaUsuario) === JSON.stringify(secuenciaCorrecta)) {
-              document.getElementById("fragmento-final").style.display = "block";
-              document.getElementById("continue-button").style.display = "block";
-              localStorage.setItem("iglesia-completed", "true");
-              document.getElementById("organ-full").play();
-            }
-            entradaUsuario = [];
-          }
-        });
-      });
-
-      function checkLocation() {
-        navigator.geolocation.getCurrentPosition(position => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          const iglesiaLat = 40.521341;
-          const iglesiaLon = -6.063827;
-          const distance = Math.sqrt(Math.pow(lat - iglesiaLat, 2) + Math.pow(lon - iglesiaLon, 2));
-          if (distance < 0.002) {
-            document.getElementById('location-status').textContent = '✅ Ubicación confirmada.';
-            document.getElementById('game-content').style.display = 'block';
-            document.getElementById('location-check').style.display = 'none';
-          } else {
-            document.getElementById('location-status').textContent = '❌ No estás cerca de la iglesia.';
-          }
-        });
-      }
-
-      function checkLocationManual() {
-        const input = document.getElementById('location-input').value.trim().toLowerCase();
-        if (input === 'iglesia') {
-          document.getElementById('location-status').textContent = '✅ Acceso concedido por verificación manual.';
-          document.getElementById('game-content').style.display = 'block';
-          document.getElementById('location-check').style.display = 'none';
-        } else {
-          document.getElementById('location-status').textContent = '❌ Nombre incorrecto.';
-        }
-      }
-    </script>
-
-    <footer>
-      <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
-    </footer>
+    <div id="continue-button" style="display: none; text-align:center;">
+      <button class="action-btn" onclick="location.href='felicitaciones.html?stop=iglesia'">Continuar aventura</button>
+    </div>
   </div>
+
+  <audio id="organ-do" src="sounds/organ-do.mp3"></audio>
+  <audio id="organ-re" src="sounds/organ-re.mp3"></audio>
+  <audio id="organ-mi" src="sounds/organ-mi.mp3"></audio>
+  <audio id="organ-fa" src="sounds/organ-fa.mp3"></audio>
+  <audio id="organ-sol" src="sounds/organ-sol.mp3"></audio>
+  <audio id="organ-la" src="sounds/organ-la.mp3"></audio>
+  <audio id="organ-si" src="sounds/organ-si.mp3"></audio>
+  <audio id="organ-full" src="sounds/organ-full.mp3"></audio>
+
+  <script>
+    const secuenciaCorrecta = ["do", "fa", "re", "sol"];
+    let entradaUsuario = [];
+
+    document.querySelectorAll('.white-key, .black-key').forEach(key => {
+      key.addEventListener('click', () => {
+        const nota = key.dataset.note;
+        entradaUsuario.push(nota);
+
+        const sonido = document.getElementById(`organ-${nota}`);
+        if (sonido) {
+          const clone = sonido.cloneNode();
+          clone.play();
+        }
+
+        key.classList.add('active');
+        setTimeout(() => key.classList.remove('active'), 300);
+
+        if (entradaUsuario.length === secuenciaCorrecta.length) {
+          if (JSON.stringify(entradaUsuario) === JSON.stringify(secuenciaCorrecta)) {
+            document.getElementById("feedback").textContent = "🎶 ¡Melodía correcta!";
+            document.getElementById("fragmento-final").style.display = "block";
+            document.getElementById("continue-button").style.display = "block";
+            document.getElementById("organ-full").play();
+            localStorage.setItem("iglesia-completed", "true");
+          }
+          entradaUsuario = [];
+        }
+      });
+    });
+  </script>
 </body>
 </html>
