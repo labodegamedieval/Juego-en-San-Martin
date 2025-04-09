@@ -55,7 +55,7 @@
 
     .black-key {
       width: 25px;
-      height: 100px;
+      height: 80px; /* Teclas negras más cortas */
       background: #111;
       position: absolute;
       top: 0;
@@ -64,7 +64,7 @@
       font-size: 10px;
       color: white;
       text-align: center;
-      line-height: 100px;
+      line-height: 80px; /* Teclas negras más cortas */
       cursor: pointer;
     }
 
@@ -96,6 +96,7 @@
       font-size: 1.1em;
       line-height: 1.8;
       font-weight: bold;
+      width: 90%; /* Más ancho en móvil */
     }
 
     .action-btn {
@@ -125,15 +126,32 @@
       text-align: center;
       margin-top: 10px;
     }
+
+    @media screen and (max-width: 768px) {
+      .pista-box {
+        width: 100%; /* Asegura que el pergamino se ajuste en móvil */
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>⛪ Iglesia de San Martín</h1>
 
+    <!-- Carrusel con tres fotos, texto y enlaces -->
     <div class="carousel">
       <img src="images/retablo.jpg" alt="Retablo" />
       <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si la iglesia está cerrada, te va a interesar este link. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+    </div>
+
+    <div class="carousel">
+      <img src="images/fachada.jpg" alt="Fachada" />
+      <p><strong>Fachada:</strong> Exquisita arquitectura medieval, una joya del pueblo. Descubre más sobre la iglesia en <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">este enlace</a>.</p>
+    </div>
+
+    <div class="carousel">
+      <img src="images/vitrail.jpg" alt="Vitrail" />
+      <p><strong>Vitrales:</strong> Preciosos vitrales de la iglesia que narran historias bíblicas. Conoce su historia <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">aquí</a>.</p>
     </div>
 
     <h2>🎼 Reto del Órgano</h2>
@@ -168,7 +186,7 @@
     <p id="feedback" class="pista"></p>
 
     <div class="fragmento-final" id="fragmento-final" style="display: none;">
-      <p><strong>Fragmento del Mensaje:</strong><br><span id="message-piece" style="font-size:1.4em">la fe del pueblo guía las almas...</span></p>
+      <p><strong>Fragmento del Mensaje:</strong><br><span id="message-piece" style="font-size:1.4em">la</span></p>
       <p><strong>QR:</strong> IGLESIA-1300</p>
     </div>
 
