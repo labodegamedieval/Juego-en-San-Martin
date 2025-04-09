@@ -148,5 +148,36 @@
         });
       });
     </script>
+    <script>
+  function checkLocation() {
+    navigator.geolocation.getCurrentPosition(position => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const iglesiaLat = 40.521341;
+      const iglesiaLon = -6.063827;
+      const distance = Math.sqrt(Math.pow(lat - iglesiaLat, 2) + Math.pow(lon - iglesiaLon, 2));
+      if (distance < 0.002) {
+        document.getElementById('location-status').textContent = '✅ Ubicación confirmada.';
+        document.getElementById('game-content').style.display = 'block';
+        document.getElementById('location-check').style.display = 'none';
+      } else {
+        document.getElementById('location-status').textContent = '❌ No estás cerca de la iglesia.';
+      }
+    }, () => {
+      document.getElementById('location-status').textContent = '⚠️ No se pudo obtener tu ubicación.';
+    });
+  }
+
+  function checkLocationManual() {
+    const input = document.getElementById('location-input').value.trim().toLowerCase();
+    if (input === 'iglesia') {
+      document.getElementById('location-status').textContent = '✅ Acceso concedido por verificación manual.';
+      document.getElementById('game-content').style.display = 'block';
+      document.getElementById('location-check').style.display = 'none';
+    } else {
+      document.getElementById('location-status').textContent = '❌ Nombre incorrecto.';
+    }
+  }
+</script>
 </body>
 </html>
