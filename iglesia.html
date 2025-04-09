@@ -10,10 +10,9 @@
     .organ-container {
       display: flex;
       justify-content: center;
-      flex-wrap: nowrap;
-      gap: 4px;
-      margin: 20px auto;
       position: relative;
+      margin: 20px auto;
+      height: 160px;
     }
 
     .key {
@@ -22,18 +21,12 @@
       background: #fff;
       border: 1px solid #444;
       border-radius: 4px;
+      position: relative;
+      z-index: 1;
       text-align: center;
       font-size: 12px;
       font-weight: bold;
-      position: relative;
-      z-index: 1;
-    }
-
-    .key span {
-      position: absolute;
-      bottom: 6px;
-      left: 0;
-      right: 0;
+      padding-top: 135px;
     }
 
     .key.active {
@@ -45,13 +38,20 @@
       height: 100px;
       background: #111;
       position: absolute;
-      top: 0;
       z-index: 2;
+      top: 0;
       border-radius: 4px;
+      color: #fff;
+      text-align: center;
+      font-size: 10px;
+      padding-top: 80px;
     }
 
-    .black-key span {
-      display: none;
+    .key span {
+      position: absolute;
+      bottom: 6px;
+      left: 0;
+      right: 0;
     }
 
     .pista {
@@ -100,20 +100,18 @@
         </div>
 
         <h2>🎼 Reto del Órgano</h2>
-        <p>🎹 Toca las teclas del antiguo órgano siguiendo la secuencia secreta.<br><span class="pista">Pista: Domingo de fiesta tañen con el alba lass campanas. Fanfarrias en la puerta de la iglesia. Resucitan las notas del organo. Solitaria es la melodìa. </span></p>
+        <p>🎹 Toca las teclas del antiguo órgano siguiendo la secuencia secreta.<br><span class="pista">Pista: Domingo de fiesta, hoy tañen al alba las campanas. Fanfarrias en la puerta de la iglesia. Resucitan las notas del órgano. Solitaria es la melodía</span></p>
 
-        <div class="organ-container">
+        <div class="organ-container" id="organ-container">
+          <!-- Teclas blancas -->
           <div class="key" data-note="do"><span>DO</span></div>
-          <div class="black-key" style="left: 28px;"></div>
           <div class="key" data-note="re"><span>RE</span></div>
-          <div class="black-key" style="left: 68px;"></div>
           <div class="key" data-note="mi"><span>MI</span></div>
           <div class="key" data-note="fa"><span>FA</span></div>
-          <div class="black-key" style="left: 138px;"></div>
           <div class="key" data-note="sol"><span>SOL</span></div>
-          <div class="black-key" style="left: 178px;"></div>
           <div class="key" data-note="la"><span>LA</span></div>
           <div class="key" data-note="si"><span>SI</span></div>
+          <!-- Teclas negras posicionadas dinámicamente con JS -->
         </div>
 
         <p id="vitraux-feedback" class="pista"></p>
@@ -130,6 +128,7 @@
       </div>
     </section>
 
+    <!-- Audio -->
     <audio id="organ-do" src="sounds/organ-do.mp3" preload="auto"></audio>
     <audio id="organ-re" src="sounds/organ-re.mp3" preload="auto"></audio>
     <audio id="organ-mi" src="sounds/organ-mi.mp3" preload="auto"></audio>
@@ -156,10 +155,10 @@
           const nota = key.dataset.note;
           entradaUsuario.push(nota);
 
-          const sonido = document.getElementById(`organ-${nota}`);
-          if (sonido) {
-            sonido.currentTime = 0;
-            sonido.play();
+          const sonidoOriginal = document.getElementById(`organ-${nota}`);
+          if (sonidoOriginal) {
+            const clone = sonidoOriginal.cloneNode();
+            clone.play().catch(e => console.log(e));
           }
 
           key.classList.add('active');
@@ -179,6 +178,18 @@
             entradaUsuario = [];
           }
         });
+      });
+
+      // Agregar teclas negras sobre las blancas
+      const container = document.getElementById("organ-container");
+      const blackPositions = [1, 2, 4, 5, 6]; // entre DO-RE, RE-MI, FA-SOL, SOL-LA, LA-SI
+      const blackLabels = ["DO#", "RE#", "FA#", "SOL#", "LA#"];
+      blackPositions.forEach((pos, i) => {
+        const blackKey = document.createElement("div");
+        blackKey.className = "black-key";
+        blackKey.style.left = `${(pos * 44) - 12}px`;
+        blackKey.innerText = blackLabels[i];
+        container.appendChild(blackKey);
       });
 
       function checkLocation() {
