@@ -7,29 +7,29 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    .organ-container {
+    .organ-wrapper {
       display: flex;
       justify-content: center;
+      margin-top: 20px;
       position: relative;
-      margin: 20px auto;
       height: 160px;
     }
 
-    .key {
+    .white-key {
       width: 40px;
       height: 160px;
       background: #fff;
       border: 1px solid #444;
-      border-radius: 4px;
       position: relative;
       z-index: 1;
-      text-align: center;
       font-size: 12px;
       font-weight: bold;
-      padding-top: 135px;
+      text-align: center;
+      line-height: 160px;
+      cursor: pointer;
     }
 
-    .key.active {
+    .white-key.active {
       background: #ffe58a;
     }
 
@@ -38,20 +38,18 @@
       height: 100px;
       background: #111;
       position: absolute;
-      z-index: 2;
       top: 0;
+      z-index: 2;
       border-radius: 4px;
-      color: #fff;
-      text-align: center;
+      color: white;
       font-size: 10px;
-      padding-top: 80px;
+      text-align: center;
+      line-height: 100px;
+      cursor: pointer;
     }
 
-    .key span {
-      position: absolute;
-      bottom: 6px;
-      left: 0;
-      right: 0;
+    .black-key.active {
+      background: #ffbf00;
     }
 
     .pista {
@@ -59,6 +57,18 @@
       font-style: italic;
       color: #444;
       text-align: center;
+    }
+
+    .fragmento-final {
+      margin-top: 20px;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: contain;
+      padding: 40px;
+      text-align: center;
+      font-size: 1.2em;
+      font-weight: bold;
+      border: 2px solid #6b3e2e;
+      border-radius: 12px;
     }
   </style>
 </head>
@@ -100,18 +110,21 @@
         </div>
 
         <h2>🎼 Reto del Órgano</h2>
-        <p>🎹 Toca las teclas del antiguo órgano siguiendo la secuencia secreta.<br><span class="pista">Pista: Domingo de fiesta, hoy tañen al alba las campanas. Fanfarrias en la puerta de la iglesia. Resucitan las notas del órgano. Solitaria es la melodía</span></p>
+        <p>🎹 Toca las teclas del antiguo órgano siguiendo la secuencia secreta.<br><span class="pista">Pista: Las campanas de San Martín tañen con el alba: DO, FA, RE, SOL</span></p>
 
-        <div class="organ-container" id="organ-container">
-          <!-- Teclas blancas -->
-          <div class="key" data-note="do"><span>DO</span></div>
-          <div class="key" data-note="re"><span>RE</span></div>
-          <div class="key" data-note="mi"><span>MI</span></div>
-          <div class="key" data-note="fa"><span>FA</span></div>
-          <div class="key" data-note="sol"><span>SOL</span></div>
-          <div class="key" data-note="la"><span>LA</span></div>
-          <div class="key" data-note="si"><span>SI</span></div>
-          <!-- Teclas negras posicionadas dinámicamente con JS -->
+        <div class="organ-wrapper">
+          <div class="white-key" data-note="do">DO</div>
+          <div class="black-key" style="left: 28px;" data-note="do#">DO#</div>
+          <div class="white-key" data-note="re">RE</div>
+          <div class="black-key" style="left: 68px;" data-note="re#">RE#</div>
+          <div class="white-key" data-note="mi">MI</div>
+          <div class="white-key" data-note="fa">FA</div>
+          <div class="black-key" style="left: 148px;" data-note="fa#">FA#</div>
+          <div class="white-key" data-note="sol">SOL</div>
+          <div class="black-key" style="left: 188px;" data-note="sol#">SOL#</div>
+          <div class="white-key" data-note="la">LA</div>
+          <div class="black-key" style="left: 228px;" data-note="la#">LA#</div>
+          <div class="white-key" data-note="si">SI</div>
         </div>
 
         <p id="vitraux-feedback" class="pista"></p>
@@ -128,7 +141,7 @@
       </div>
     </section>
 
-    <!-- Audio -->
+    <!-- Sonidos -->
     <audio id="organ-do" src="sounds/organ-do.mp3" preload="auto"></audio>
     <audio id="organ-re" src="sounds/organ-re.mp3" preload="auto"></audio>
     <audio id="organ-mi" src="sounds/organ-mi.mp3" preload="auto"></audio>
@@ -137,12 +150,11 @@
     <audio id="organ-la" src="sounds/organ-la.mp3" preload="auto"></audio>
     <audio id="organ-si" src="sounds/organ-si.mp3" preload="auto"></audio>
     <audio id="organ-full" src="sounds/organ-full.mp3" preload="auto"></audio>
-    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
 
     <footer>
       <p>© 2025 La Bodega Medieval |
-        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita </a>
+        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
       </p>
     </footer>
 
@@ -150,15 +162,16 @@
       const secuenciaCorrecta = ["do", "fa", "re", "sol"];
       let entradaUsuario = [];
 
-      document.querySelectorAll('.key').forEach(key => {
+      document.querySelectorAll('.white-key, .black-key').forEach(key => {
         key.addEventListener('click', () => {
           const nota = key.dataset.note;
           entradaUsuario.push(nota);
 
-          const sonidoOriginal = document.getElementById(`organ-${nota}`);
-          if (sonidoOriginal) {
-            const clone = sonidoOriginal.cloneNode();
-            clone.play().catch(e => console.log(e));
+          // Reproducir sonido con nueva instancia para evitar latencia
+          const sonido = document.getElementById(`organ-${nota}`);
+          if (sonido) {
+            const clone = sonido.cloneNode();
+            clone.play();
           }
 
           key.classList.add('active');
@@ -171,25 +184,10 @@
               document.getElementById("continue-button").style.display = "block";
               localStorage.setItem("iglesia-completed", "true");
               document.getElementById("organ-full").play();
-            } else {
-              document.getElementById("vitraux-feedback").textContent = "❌ Esa no era la secuencia. Vuelve a intentarlo.";
-              document.getElementById("error-sound").play();
             }
             entradaUsuario = [];
           }
         });
-      });
-
-      // Agregar teclas negras sobre las blancas
-      const container = document.getElementById("organ-container");
-      const blackPositions = [1, 2, 4, 5, 6]; // entre DO-RE, RE-MI, FA-SOL, SOL-LA, LA-SI
-      const blackLabels = ["DO#", "RE#", "FA#", "SOL#", "LA#"];
-      blackPositions.forEach((pos, i) => {
-        const blackKey = document.createElement("div");
-        blackKey.className = "black-key";
-        blackKey.style.left = `${(pos * 44) - 12}px`;
-        blackKey.innerText = blackLabels[i];
-        container.appendChild(blackKey);
       });
 
       function checkLocation() {
