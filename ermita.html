@@ -7,150 +7,508 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    .vela-container {
-      text-align: center;
-      margin-top: 20px;
+    /* Estilos generales (similares a Iglesia) */
+    body {
+      font-family: 'Georgia', serif;
+      background: url('images/pergamino.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
     }
-    .vela-img {
-      width: 80px;
-      height: auto;
+    .container {
+      max-width: 960px;
+      margin: auto;
+      background: rgba(255,248,228,0.95);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+    /* Sección de desbloqueo */
+    #location-check {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    #location-check h2 { margin-bottom: 10px; }
+    #location-check p { margin: 10px 0; }
+    #location-input {
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      margin: 10px;
+    }
+    #location-status {
+      margin-top: 10px;
+      font-size: 1.1em;
+      color: red;
+    }
+    /* Carrusel */
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+    .carousel-slides {
+      display: flex;
       transition: transform 0.5s ease;
     }
-    .vela-grande {
-      transform: scale(1.5);
+    .carousel-slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      text-align: center;
     }
-    .vela-btn {
-      background: #8b0000;
-      color: #fff;
-      padding: 12px 20px;
-      font-size: 18px;
+    .carousel-slide img {
+      width: 100%;
+      height: 300px; /* Tamaño fijo para todas las imágenes */
+      object-fit: cover;
+      display: block;
+      border-radius: 10px;
+      border: 2px solid #6b3e2e;
+    }
+    .carousel-slide p {
+      font-style: italic;
+      margin-top: 10px;
+    }
+    .carousel-prev, .carousel-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.7);
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+    }
+    .carousel-prev { left: 10px; }
+    .carousel-next { right: 10px; }
+    h2 { margin-top: 10px; }
+    /* Piano (opcional, se deja si se quiere conservar la misma interfaz) */
+    .organ-wrapper {
+      display: flex;
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 2px;
+      margin-top: 20px;
+      position: relative;
+      height: 140px;
+      overflow-x: auto;
+    }
+    .white-key {
+      width: 40px;
+      height: 140px;
+      background: #fff;
+      border: 1px solid #444;
+      font-size: 12px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 140px;
+      z-index: 1;
+      position: relative;
+      cursor: pointer;
+    }
+    .white-key.active { background: #ffe58a; }
+    .black-key {
+      width: 25px;
+      height: 60px;
+      background: #111;
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      border-radius: 4px;
+      font-size: 10px;
+      color: white;
+      text-align: center;
+      line-height: 60px;
+      cursor: pointer;
+    }
+    .black-key.active { background: #ffbf00; }
+    .organ-wrapper .black-key[data-note="do#"] { left: 48px; }
+    .organ-wrapper .black-key[data-note="re#"] { left: 95px; }
+    .organ-wrapper .black-key[data-note="fa#"] { left: 175px; }
+    .organ-wrapper .black-key[data-note="sol#"] { left: 224px; }
+    .organ-wrapper .black-key[data-note="la#"] { left: 270px; }
+    /* Nueva sección: Reto del Enigma */
+    #challenge-section {
+      text-align: center;
+      margin: 30px auto;
+      padding: 20px;
+      border: 2px dashed #5e3b1b;
+      max-width: 600px;
+      border-radius: 10px;
+      background: #fff7e0;
+    }
+    #challenge-section h2 { margin-bottom: 10px; }
+    .enigma-btn {
+      font-size: 24px;
+      padding: 10px 15px;
+      margin: 5px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      background: #8b0000;
+      color: #fff;
+      transition: background 0.3s;
+    }
+    .enigma-btn:hover { background: #a00000; }
+    #challenge-status { margin-top: 10px; font-size: 1.1em; }
+    /* Quiz: se oculta hasta que se resuelve el reto */
+    #quiz-section {
+      display: none;
+      margin: 30px auto;
+      max-width: 600px;
+      padding: 20px;
+      border: 2px dashed #5e3b1b;
+      border-radius: 10px;
+      background: #fff7e0;
+      text-align: center;
+    }
+    .quiz-question {
+      margin: 20px 0;
+    }
+    .quiz-option {
+      display: block;
+      padding: 8px 12px;
+      margin: 8px auto;
+      width: 80%;
+      font-size: 16px;
+      border: 2px solid #5e3b1b;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #e2c79c;
+    }
+    .quiz-option:hover { background: #d6b88a; }
+    /* Fragmento y pista (similares a Iglesia) */
+    .fragmento-final {
+      margin: 20px auto;
+      display: none;
+      max-width: 600px;
+      text-align: center;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: cover;
+      padding: 40px 20px;
+      font-style: italic;
+      font-size: 1.4em;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+    }
+    .pista-box {
+      margin: 30px auto;
+      display: none;
+      max-width: 600px;
+      text-align: center;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: cover;
+      padding: 80px 40px;
+      border-radius: 10px;
+      font-style: italic;
+      font-size: 1.1em;
+      line-height: 1.8;
+      font-weight: bold;
+    }
+    .action-btn {
+      display: block;
+      margin: 15px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #dec79b;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    @media screen and (max-width: 768px) {
+      .pista-box, .fragmento-final, #challenge-section, #quiz-section {
+        max-width: 90%;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>🙏 Ermita del Socorro</h1>
-      <div class="music-control">
-        <button class="music-btn"><span class="music-icon">🎵</span> Música</button>
-      </div>
-    </header>
-
-    <section id="content">
-      <div class="stop-icon">🙏</div>
-
-      <div id="location-check">
-        <h2>Verifica tu ubicación</h2>
-        <p>Acércate a la puerta de la ermita para continuar.</p>
-        <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
-        <p>O escribe el nombre:</p>
-        <input type="text" id="location-input" placeholder="Ej: Ermita" />
-        <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
-        <p id="location-status"></p>
-        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
-      </div>
-
-      <div id="game-content" style="display: none;">
-        <div class="carousel">
-          <div class="slide active">
+    <!-- Sección de desbloqueo -->
+    <div id="location-check">
+      <h2>Verifica tu ubicación</h2>
+      <p>Acércate a la puerta de la ermita para continuar.</p>
+      <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
+      <p>O escribe el nombre:</p>
+      <input type="text" id="location-input" placeholder="Ej: Ermita" />
+      <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
+      <p id="location-status"></p>
+      <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" alt="Flecha de dirección" />
+    </div>
+    
+    <!-- Contenido oculto hasta el desbloqueo -->
+    <div id="game-content" style="display: none;">
+      <!-- Carrusel integrado -->
+      <div class="carousel-container">
+        <div class="carousel-slides">
+          <div class="carousel-slide">
             <img src="images/ermita-exterior.jpg" alt="Ermita" />
             <p><strong>Exterior:</strong> Ermita del siglo XV junto al río Canderuelo, lugar de recogimiento.</p>
           </div>
-          <div class="slide">
+          <div class="carousel-slide">
             <img src="images/ermita-puerta.jpg" alt="Puerta" />
             <p><strong>Entrada:</strong> En honor a San Sebastián y la Virgen del Socorro. <a href="http://www.sanmartindelcastañar.es/" target="_blank">Más info</a></p>
           </div>
-          <button class="carousel-btn prev-slide">←</button>
-          <button class="carousel-btn next-slide">→</button>
         </div>
+        <button class="carousel-prev">&#10094;</button>
+        <button class="carousel-next">&#10095;</button>
+      </div>
 
-        <div class="vela-container">
-          <h2>🕯️ Ritual de la Vela</h2>
-          <p>Mantén pulsado el botón para avivar la llama y revelar el mensaje oculto.</p>
-          <img src="images/vela.png" id="vela-img" class="vela-img" alt="Vela encendida">
-          <br/><br/>
-          <button class="vela-btn" id="vela-btn">Mantén pulsado</button>
-          <p id="vela-status" style="margin-top:10px;"></p>
-        </div>
+      <!-- Reto nuevo: Enigma del Socorro -->
+      <div id="challenge-section">
+        <h2>Reto del Enigma del Socorro</h2>
+        <p>Selecciona el símbolo sagrado que protege esta ermita:</p>
+        <button class="enigma-btn" data-answer="cross">✝</button>
+        <button class="enigma-btn" data-answer="icon">☦</button>
+        <button class="enigma-btn" data-answer="other">☪</button>
+        <p id="challenge-status"></p>
+      </div>
 
-        <div class="fragmento-final">
-          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">sin</span></p>
-          <p><strong>QR en el pueblo:</strong> ERMITA-1500</p>
-          <p><strong>Dato Curioso:</strong> En tiempos antiguos, los vecinos subían con velas encendidas a pedir protección frente a tormentas.</p>
-        </div>
-
-        <div id="continue-button" style="display: none;">
-          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=ermita'">Continuar búsqueda</button>
+      <!-- Quiz con 3 preguntas -->
+      <div id="quiz-section">
+        <h2>Quiz: Conoce tu entorno</h2>
+        <div id="quiz-content">
+          <!-- Se cargarán las preguntas dinámicamente -->
         </div>
       </div>
-    </section>
 
-    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
-    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
-    <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
-    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+      <!-- Fragmento y continue button -->
+      <div class="fragmento-final" id="fragmento-final">
+        <p><strong>Fragmento del Mensaje:</strong><br>
+          <span id="message-piece" style="font-size:1.4em">sin</span>
+        </p>
+        <p><strong>QR en el pueblo:</strong> ERMITA-1500</p>
+        <p><strong>Dato Curioso:</strong> En tiempos antiguos, los vecinos subían con velas encendidas a pedir protección.</p>
+      </div>
 
-    <footer>
-      <p>© 2025 La Bodega Medieval |
-        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
-      </p>
-    </footer>
+      <div id="continue-button" style="display: none; text-align: center;">
+        <button class="action-btn" onclick="location.href='felicitaciones.html?stop=ermita'">
+          Continuar búsqueda
+        </button>
+      </div>
+    </div>
+  </div>
 
-    <script src="scripts/script.js"></script>
-    <script>
-      const velaBtn = document.getElementById("vela-btn");
-      const velaImg = document.getElementById("vela-img");
-      const velaStatus = document.getElementById("vela-status");
-      let holdTimer;
+  <!-- Audio -->
+  <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
+  <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
+  <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+  <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
 
-      velaBtn.addEventListener("mousedown", () => {
-        velaStatus.textContent = "🔥 Avivando la llama...";
-        holdTimer = setTimeout(() => {
-          velaImg.classList.add("vela-grande");
-          velaStatus.textContent = "✅ El mensaje ha sido revelado.";
-          document.getElementById("message-piece").style.display = "inline";
-          document.getElementById("continue-button").style.display = "block";
-          localStorage.setItem("ermita-completed", "true");
+  <script>
+    // VARIABLES DEL RETO Y QUIZ
+    let challengeCompleted = false;
+    let quizCompleted = false;
+    // Preguntas del quiz
+    const quizQuestions = [
+      {
+        question: "¿Cuál era la función principal de la calzada romana en esta zona?",
+        options: [
+          "Transporte militar",
+          "Conectar ciudades y facilitar el comercio",
+          "Uso exclusivamente ceremonial"
+        ],
+        correct: 1
+      },
+      {
+        question: "¿Qué se suele encontrar inscrito en una estela romana funeraria?",
+        options: [
+          "Nombre y elogios del difunto",
+          "Datos sobre obras públicas",
+          "Recetas de cocina"
+        ],
+        correct: 0
+      },
+      {
+        question: "¿Cuál era la función del 'humilladero' en la ermita?",
+        options: [
+          "Lugar de recogimiento y penitencia",
+          "Espacio de celebración festiva",
+          "Almacenamiento de ofrendas"
+        ],
+        correct: 0
+      }
+    ];
+    let currentQuizIndex = 0;
+    
+    // Función para reproducir sonido
+    function playSound(id) {
+      const sound = document.getElementById(id);
+      if(sound) { sound.play(); }
+    }
+    
+    // RETO: Enigma del Socorro
+    const enigmaButtons = document.querySelectorAll(".enigma-btn");
+    enigmaButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (btn.dataset.answer === "cross") {
+          document.getElementById("challenge-status").textContent = "✅ Correcto. ¡Has resuelto el enigma!";
           playSound("cheers-sound");
-        }, 5000);
-      });
-
-      velaBtn.addEventListener("mouseup", () => {
-        clearTimeout(holdTimer);
-        if (!velaImg.classList.contains("vela-grande")) {
-          velaStatus.textContent = "❌ Tienes que mantener pulsado más tiempo.";
+          // Oculta el reto y muestra el quiz
+          document.getElementById("challenge-section").style.display = "none";
+          document.getElementById("quiz-section").style.display = "block";
+          loadQuizQuestion();
+        } else {
+          document.getElementById("challenge-status").textContent = "❌ Incorrecto. Inténtalo de nuevo.";
           playSound("error-sound");
         }
       });
-
-      velaBtn.addEventListener("touchstart", (e) => {
-        e.preventDefault();
-        velaStatus.textContent = "🔥 Avivando la llama...";
-        holdTimer = setTimeout(() => {
-          velaImg.classList.add("vela-grande");
-          velaStatus.textContent = "✅ El mensaje ha sido revelado.";
-          document.getElementById("message-piece").style.display = "inline";
-          document.getElementById("continue-button").style.display = "block";
-          localStorage.setItem("ermita-completed", "true");
-          playSound("cheers-sound");
-        }, 5000);
-      });
-
-      velaBtn.addEventListener("touchend", () => {
-        clearTimeout(holdTimer);
-        if (!velaImg.classList.contains("vela-grande")) {
-          velaStatus.textContent = "❌ Tienes que mantener pulsado más tiempo.";
-          playSound("error-sound");
-        }
-      });
-    </script>
-
-    <script>
-  localStorage.setItem("ermita-completed", "true");
-</script>
-
+    });
+    
+    // QUIZ: Cargar pregunta actual
+    function loadQuizQuestion() {
+      const quizContent = document.getElementById("quiz-content");
+      quizContent.innerHTML = "";
+      if (currentQuizIndex < quizQuestions.length) {
+        const current = quizQuestions[currentQuizIndex];
+        const qDiv = document.createElement("div");
+        qDiv.className = "quiz-question";
+        qDiv.innerHTML = `<p>${current.question}</p>`;
+        current.options.forEach((opt, index) => {
+          const btn = document.createElement("button");
+          btn.className = "quiz-option";
+          btn.textContent = opt;
+          btn.addEventListener("click", () => { checkQuizAnswer(index); });
+          qDiv.appendChild(btn);
+        });
+        quizContent.appendChild(qDiv);
+      } else {
+        // Si se completó el quiz, se marca quizCompleted y se ejecuta completeStop()
+        quizCompleted = true;
+        completeStop();
+      }
+    }
+    
+    function checkQuizAnswer(selectedIndex) {
+      const current = quizQuestions[currentQuizIndex];
+      if (selectedIndex === current.correct) {
+        playSound("success-sound");
+        currentQuizIndex++;
+        loadQuizQuestion();
+      } else {
+        playSound("error-sound");
+        alert("Respuesta incorrecta. Inténtalo nuevamente.");
+      }
+    }
+    
+    // Función que completa la parada (se llama desde el reto musical o, en este caso, desde el quiz)
+    function completeStop() {
+      document.getElementById("feedback").textContent = "🎶 ¡Enigma resuelto y quiz completado!";
+      document.getElementById("fragmento-final").style.display = "block";
+      document.getElementById("continue-button").style.display = "block";
+      playSound("cheers-sound");
+      // Guarda que se completó la parada en localStorage (para la crónica)
+      localStorage.setItem("ermita-completed", "true");
+      // Actualiza la crónica con el fragmento descubierto ("sin")
+      updateChronicle();
+      // Actualiza el ranking (se asume que el nombre ya se guardó en index)
+      updateRanking();
+      challengeCompleted = true;
+    }
+    
+    // Actualiza la crónica guardando el fragmento descubierto ("sin")
+    function updateChronicle() {
+      localStorage.setItem("cronica_ermita", document.getElementById("message-piece").textContent);
+      console.log("Crónica actualizada con el fragmento:", document.getElementById("message-piece").textContent);
+    }
+    
+    // Actualiza el ranking con el progreso sin solicitar el nombre (ya obtenido)
+    function updateRanking() {
+      const username = localStorage.getItem("username");
+      if (!username) {
+        console.error("No se encontró el nombre del usuario.");
+        return;
+      }
+      let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+      ranking.push({ stop: "ermita", fragmento: document.getElementById("message-piece").textContent, name: username });
+      localStorage.setItem("ranking", JSON.stringify(ranking));
+      console.log("Ranking actualizado:", ranking);
+    }
+    
+    // MÉTODOS DE DESBLOQUEO POR GPS, MANUAL Y QR (paralelo al ejemplo de Iglesia)
+    const targetLat = 40.123456;    // Reemplaza con la latitud real de la Ermita
+    const targetLon = -3.123456;     // Reemplaza con la longitud real de la Ermita
+    const thresholdDistance = 50;    // Distancia en metros permitida
+    
+    function checkLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
+      } else {
+        document.getElementById("location-status").textContent = "Tu navegador no soporta geolocalización.";
+      }
+    }
+    
+    function geoSuccess(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const distance = calculateDistance(lat, lon, targetLat, targetLon);
+      if (distance <= thresholdDistance) {
+        unlockStop();
+      } else {
+        document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Ermita.";
+      }
+    }
+    
+    function locationError(err) {
+      document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
+    }
+    
+    // Fórmula de Haversine para calcular la distancia (en metros)
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const toRad = (x) => x * Math.PI / 180;
+      const φ1 = toRad(lat1);
+      const φ2 = toRad(lat2);
+      const Δφ = toRad(lat2 - lat1);
+      const Δλ = toRad(lon2 - lon1);
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+    
+    function checkLocationManual() {
+      const input = document.getElementById("location-input").value.trim().toLowerCase();
+      if (input === "ermita" || input === "ermita del socorro") {
+        unlockStop();
+      } else {
+        document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
+      }
+    }
+    
+    // Función para mostrar el contenido desbloqueado
+    function unlockStop() {
+      document.getElementById("location-check").style.display = "none";
+      document.getElementById("game-content").style.display = "block";
+    }
+    
+    // Desbloqueo automático si la URL contiene "stop=ermita" o "unlock" (por ejemplo, al escanear un QR)
+    window.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if(urlParams.get("stop") === "ermita" || urlParams.has("unlock")) {
+        unlockStop();
+      }
+    });
+    
+    // Script para el carrusel (similar al de Iglesia)
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    document.querySelector('.carousel-prev').addEventListener('click', () => {
+      currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+      updateCarousel();
+    });
+    document.querySelector('.carousel-next').addEventListener('click', () => {
+      currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
+      updateCarousel();
+    });
+    function updateCarousel() {
+      const carouselSlides = document.querySelector('.carousel-slides');
+      carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
+    }
+  </script>
 </body>
 </html>
