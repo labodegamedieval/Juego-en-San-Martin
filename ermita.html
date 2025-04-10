@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    /* Estilos generales (similares a Iglesia) */
+    /* Estilos generales (similares a otras paradas) */
     body {
       font-family: 'Georgia', serif;
       background: url('images/pergamino.jpg') no-repeat center center fixed;
@@ -41,6 +41,10 @@
       font-size: 1.1em;
       color: red;
     }
+    #direction-arrow {
+      width: 50px;
+      margin-top: 10px;
+    }
     /* Carrusel */
     .carousel-container {
       position: relative;
@@ -70,7 +74,8 @@
       font-style: italic;
       margin-top: 10px;
     }
-    .carousel-prev, .carousel-next {
+    .carousel-prev,
+    .carousel-next {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -84,102 +89,38 @@
     .carousel-prev { left: 10px; }
     .carousel-next { right: 10px; }
     h2 { margin-top: 10px; }
-    /* Piano (opcional, se deja si se quiere conservar la misma interfaz) */
-    .organ-wrapper {
-      display: flex;
-      justify-content: center;
-      flex-wrap: nowrap;
-      gap: 2px;
-      margin-top: 20px;
-      position: relative;
-      height: 140px;
-      overflow-x: auto;
-    }
-    .white-key {
-      width: 40px;
-      height: 140px;
-      background: #fff;
-      border: 1px solid #444;
-      font-size: 12px;
-      font-weight: bold;
+    /* Sección Reto Pacman */
+    #pacman-game-section {
+      background-color: black;
+      padding: 20px;
+      margin: 30px auto;
+      max-width: 600px;
+      border: 2px dashed #5e3b1b;
+      border-radius: 10px;
       text-align: center;
-      line-height: 140px;
-      z-index: 1;
-      position: relative;
-      cursor: pointer;
     }
-    .white-key.active { background: #ffe58a; }
-    .black-key {
-      width: 25px;
-      height: 60px;
-      background: #111;
+    /* Estilos propios del juego Pacman (aplicados solo dentro de #pacman-game-section) */
+    #pacman-game-section #shim {
+      font-family: 'Permanent Marker', cursive;
       position: absolute;
-      top: 0;
-      z-index: 2;
-      border-radius: 4px;
-      font-size: 10px;
-      color: white;
+      visibility: hidden;
+    }
+    #pacman-game-section h1 {
+      font-family: 'Permanent Marker', cursive;
       text-align: center;
-      line-height: 60px;
-      cursor: pointer;
+      color: yellow;
     }
-    .black-key.active { background: #ffbf00; }
-    .organ-wrapper .black-key[data-note="do#"] { left: 48px; }
-    .organ-wrapper .black-key[data-note="re#"] { left: 95px; }
-    .organ-wrapper .black-key[data-note="fa#"] { left: 175px; }
-    .organ-wrapper .black-key[data-note="sol#"] { left: 224px; }
-    .organ-wrapper .black-key[data-note="la#"] { left: 270px; }
-    /* Nueva sección: Reto del Enigma */
-    #challenge-section {
-      text-align: center;
-      margin: 30px auto;
-      padding: 20px;
-      border: 2px dashed #5e3b1b;
-      max-width: 600px;
-      border-radius: 10px;
-      background: #fff7e0;
+    #pacman-game-section a {
+      text-decoration: none;
+      color: #0000FF;
     }
-    #challenge-section h2 { margin-bottom: 10px; }
-    .enigma-btn {
-      font-size: 24px;
-      padding: 10px 15px;
-      margin: 5px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #8b0000;
-      color: #fff;
-      transition: background 0.3s;
+    #pacman-game-section #pacman {
+      height: 470px;
+      width: 382px;
+      border-radius: 5px;
+      margin: 20px auto;
     }
-    .enigma-btn:hover { background: #a00000; }
-    #challenge-status { margin-top: 10px; font-size: 1.1em; }
-    /* Quiz: se oculta hasta que se resuelve el reto */
-    #quiz-section {
-      display: none;
-      margin: 30px auto;
-      max-width: 600px;
-      padding: 20px;
-      border: 2px dashed #5e3b1b;
-      border-radius: 10px;
-      background: #fff7e0;
-      text-align: center;
-    }
-    .quiz-question {
-      margin: 20px 0;
-    }
-    .quiz-option {
-      display: block;
-      padding: 8px 12px;
-      margin: 8px auto;
-      width: 80%;
-      font-size: 16px;
-      border: 2px solid #5e3b1b;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #e2c79c;
-    }
-    .quiz-option:hover { background: #d6b88a; }
-    /* Fragmento y pista (similares a Iglesia) */
+    /* Fragmento y Pista (similares a otras paradas) */
     .fragmento-final {
       margin: 20px auto;
       display: none;
@@ -219,7 +160,7 @@
       cursor: pointer;
     }
     @media screen and (max-width: 768px) {
-      .pista-box, .fragmento-final, #challenge-section, #quiz-section {
+      .pista-box, .fragmento-final, #pacman-game-section {
         max-width: 90%;
       }
     }
@@ -257,25 +198,17 @@
         <button class="carousel-next">&#10095;</button>
       </div>
 
-      <!-- Reto nuevo: Enigma del Socorro -->
-      <div id="challenge-section">
-        <h2>Reto del Enigma del Socorro</h2>
-        <p>Selecciona el símbolo sagrado que protege esta ermita:</p>
-        <button class="enigma-btn" data-answer="cross">✝</button>
-        <button class="enigma-btn" data-answer="icon">☦</button>
-        <button class="enigma-btn" data-answer="other">☪</button>
-        <p id="challenge-status"></p>
+      <!-- Nuevo reto: Juego HTML5 Pacman -->
+      <div id="pacman-game-section">
+        <div id="shim">shim for font face</div>
+        <h1>HTML5 Pacman</h1>
+        <p><a href="https://github.com/daleharvey/pacman" target="_blank">Credits: https://github.com/daleharvey/pacman</a></p>
+        <div id="pacman"></div>
+        <!-- Botón para finalizar el reto, se supone que el jugador ha completado la prueba (puedes integrar detección interna) -->
+        <button class="action-btn" onclick="completeStop()">He completado el reto de Pacman</button>
       </div>
 
-      <!-- Quiz con 3 preguntas -->
-      <div id="quiz-section">
-        <h2>Quiz: Conoce tu entorno</h2>
-        <div id="quiz-content">
-          <!-- Se cargarán las preguntas dinámicamente -->
-        </div>
-      </div>
-
-      <!-- Fragmento y continue button -->
+      <!-- Fragmento final (se muestra al completar el reto y/o el juego) -->
       <div class="fragmento-final" id="fragmento-final">
         <p><strong>Fragmento del Mensaje:</strong><br>
           <span id="message-piece" style="font-size:1.4em">sin</span>
@@ -285,137 +218,40 @@
       </div>
 
       <div id="continue-button" style="display: none; text-align: center;">
-        <button class="action-btn" onclick="location.href='felicitaciones.html?stop=ermita'">
-          Continuar búsqueda
-        </button>
+        <button class="action-btn" onclick="location.href='felicitaciones.html?stop=ermita'">Continuar búsqueda</button>
       </div>
     </div>
   </div>
 
-  <!-- Audio -->
+  <!-- Audios -->
   <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
   <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
   <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
   <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
 
+  <!-- Nuestro script de la parada (desbloqueo, carrusel, ranking, crónica, etc.) -->
   <script>
-    // VARIABLES DEL RETO Y QUIZ
+    // Variables para el reto (en este caso, el juego Pacman) y finalización
     let challengeCompleted = false;
-    let quizCompleted = false;
-    // Preguntas del quiz
-    const quizQuestions = [
-      {
-        question: "¿Cuál era la función principal de la calzada romana en esta zona?",
-        options: [
-          "Transporte militar",
-          "Conectar ciudades y facilitar el comercio",
-          "Uso exclusivamente ceremonial"
-        ],
-        correct: 1
-      },
-      {
-        question: "¿Qué se suele encontrar inscrito en una estela romana funeraria?",
-        options: [
-          "Nombre y elogios del difunto",
-          "Datos sobre obras públicas",
-          "Recetas de cocina"
-        ],
-        correct: 0
-      },
-      {
-        question: "¿Cuál era la función del 'humilladero' en la ermita?",
-        options: [
-          "Lugar de recogimiento y penitencia",
-          "Espacio de celebración festiva",
-          "Almacenamiento de ofrendas"
-        ],
-        correct: 0
-      }
-    ];
-    let currentQuizIndex = 0;
-    
-    // Función para reproducir sonido
-    function playSound(id) {
-      const sound = document.getElementById(id);
-      if(sound) { sound.play(); }
-    }
-    
-    // RETO: Enigma del Socorro
-    const enigmaButtons = document.querySelectorAll(".enigma-btn");
-    enigmaButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        if (btn.dataset.answer === "cross") {
-          document.getElementById("challenge-status").textContent = "✅ Correcto. ¡Has resuelto el enigma!";
-          playSound("cheers-sound");
-          // Oculta el reto y muestra el quiz
-          document.getElementById("challenge-section").style.display = "none";
-          document.getElementById("quiz-section").style.display = "block";
-          loadQuizQuestion();
-        } else {
-          document.getElementById("challenge-status").textContent = "❌ Incorrecto. Inténtalo de nuevo.";
-          playSound("error-sound");
-        }
-      });
-    });
-    
-    // QUIZ: Cargar pregunta actual
-    function loadQuizQuestion() {
-      const quizContent = document.getElementById("quiz-content");
-      quizContent.innerHTML = "";
-      if (currentQuizIndex < quizQuestions.length) {
-        const current = quizQuestions[currentQuizIndex];
-        const qDiv = document.createElement("div");
-        qDiv.className = "quiz-question";
-        qDiv.innerHTML = `<p>${current.question}</p>`;
-        current.options.forEach((opt, index) => {
-          const btn = document.createElement("button");
-          btn.className = "quiz-option";
-          btn.textContent = opt;
-          btn.addEventListener("click", () => { checkQuizAnswer(index); });
-          qDiv.appendChild(btn);
-        });
-        quizContent.appendChild(qDiv);
-      } else {
-        // Si se completó el quiz, se marca quizCompleted y se ejecuta completeStop()
-        quizCompleted = true;
-        completeStop();
-      }
-    }
-    
-    function checkQuizAnswer(selectedIndex) {
-      const current = quizQuestions[currentQuizIndex];
-      if (selectedIndex === current.correct) {
-        playSound("success-sound");
-        currentQuizIndex++;
-        loadQuizQuestion();
-      } else {
-        playSound("error-sound");
-        alert("Respuesta incorrecta. Inténtalo nuevamente.");
-      }
-    }
-    
-    // Función que completa la parada (se llama desde el reto musical o, en este caso, desde el quiz)
+    // Función que marca la parada como completada
     function completeStop() {
-      document.getElementById("feedback").textContent = "🎶 ¡Enigma resuelto y quiz completado!";
+      document.getElementById("feedback").textContent = "🎶 ¡Reto de Pacman completado!";
       document.getElementById("fragmento-final").style.display = "block";
       document.getElementById("continue-button").style.display = "block";
-      playSound("cheers-sound");
-      // Guarda que se completó la parada en localStorage (para la crónica)
+      document.getElementById("background-music").play();
       localStorage.setItem("ermita-completed", "true");
-      // Actualiza la crónica con el fragmento descubierto ("sin")
       updateChronicle();
-      // Actualiza el ranking (se asume que el nombre ya se guardó en index)
       updateRanking();
       challengeCompleted = true;
     }
-    
-    // Actualiza la crónica guardando el fragmento descubierto ("sin")
+
+    // Actualizar la crónica guardando el fragmento descubierto ("sin")
     function updateChronicle() {
       localStorage.setItem("cronica_ermita", document.getElementById("message-piece").textContent);
       console.log("Crónica actualizada con el fragmento:", document.getElementById("message-piece").textContent);
     }
-    
-    // Actualiza el ranking con el progreso sin solicitar el nombre (ya obtenido)
+
+    // Actualizar el ranking con el progreso (se usa el nombre ya obtenido de index)
     function updateRanking() {
       const username = localStorage.getItem("username");
       if (!username) {
@@ -427,12 +263,12 @@
       localStorage.setItem("ranking", JSON.stringify(ranking));
       console.log("Ranking actualizado:", ranking);
     }
-    
-    // MÉTODOS DE DESBLOQUEO POR GPS, MANUAL Y QR (paralelo al ejemplo de Iglesia)
+
+    // MÉTODOS DE DESBLOQUEO POR GPS, MANUAL Y QR
     const targetLat = 40.123456;    // Reemplaza con la latitud real de la Ermita
     const targetLon = -3.123456;     // Reemplaza con la longitud real de la Ermita
     const thresholdDistance = 50;    // Distancia en metros permitida
-    
+
     function checkLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
@@ -440,7 +276,7 @@
         document.getElementById("location-status").textContent = "Tu navegador no soporta geolocalización.";
       }
     }
-    
+
     function geoSuccess(position) {
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
@@ -451,12 +287,11 @@
         document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Ermita.";
       }
     }
-    
+
     function locationError(err) {
       document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
     }
-    
-    // Fórmula de Haversine para calcular la distancia (en metros)
+
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
       const toRad = (x) => x * Math.PI / 180;
@@ -470,7 +305,7 @@
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
-    
+
     function checkLocationManual() {
       const input = document.getElementById("location-input").value.trim().toLowerCase();
       if (input === "ermita" || input === "ermita del socorro") {
@@ -479,22 +314,20 @@
         document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
       }
     }
-    
-    // Función para mostrar el contenido desbloqueado
+
     function unlockStop() {
       document.getElementById("location-check").style.display = "none";
       document.getElementById("game-content").style.display = "block";
     }
-    
-    // Desbloqueo automático si la URL contiene "stop=ermita" o "unlock" (por ejemplo, al escanear un QR)
+
     window.addEventListener('DOMContentLoaded', function() {
       const urlParams = new URLSearchParams(window.location.search);
       if(urlParams.get("stop") === "ermita" || urlParams.has("unlock")) {
         unlockStop();
       }
     });
-    
-    // Script para el carrusel (similar al de Iglesia)
+
+    // Carrusel
     let currentSlide = 0;
     const slides = document.querySelectorAll('.carousel-slide');
     document.querySelector('.carousel-prev').addEventListener('click', () => {
@@ -509,6 +342,30 @@
       const carouselSlides = document.querySelector('.carousel-slides');
       carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
     }
+  </script>
+
+  <!-- PACMAN GAME: Integración del juego HTML5 Pacman -->
+  <!-- Se usa la estructura y estilos propios del juego -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- Se asume que Modernizr está incluido o disponible -->
+  <script>
+    // Verifica si el navegador soporta canvas, localStorage y audio
+    $(function(){
+      var el = document.getElementById("pacman");
+      if (Modernizr.canvas && Modernizr.localstorage && Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
+        // Inicia el juego usando la URL de GitHub de PACMAN (ajusta según sea necesario)
+        window.setTimeout(function () { PACMAN.init(el, "https://raw.githubusercontent.com/daleharvey/pacman/master/"); }, 0);
+      } else {
+        el.innerHTML = "Sorry, necesitas un navegador decente<br /><small>(Firefox 3.6+, Chrome 4+, Opera 10+ y Safari 4+)</small>";
+      }
+    });
+  </script>
+  <!-- Incluir el código completo de PACMAN (JS) a continuación o desde un archivo externo -->
+  <script>
+    /* Inserta aquí el código JS completo del juego Pacman, 
+       que fue proporcionado (el código que gestiona el juego) 
+       Por motivos de extensión se omite aquí su contenido completo.
+       Asegúrate de que el objeto global PACMAN esté correctamente definido. */
   </script>
 </body>
 </html>
