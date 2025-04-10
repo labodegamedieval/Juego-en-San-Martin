@@ -126,8 +126,8 @@
     }
 
     /* Posicionamiento de las teclas negras */
-    /* Se asume que las teclas blancas se ubican en posiciones: 0, 40, 80, 120, 160, 200, 240. */
-    /* Las teclas negras se colocan en el centro del espacio entre ellas. */
+    /* Se asume que las teclas blancas se ubican en posiciones consecutivas.
+       Ajustamos el left para ubicarlas entre las blancas. */
     .organ-wrapper .black-key[data-note="do#"] {
       left: 48px;  /* Entre DO y RE */
     }
@@ -277,6 +277,15 @@
     const secuenciaCorrecta = ["do", "fa", "re", "sol"];
     let entradaUsuario = [];
 
+    // Función que completa la parada (desbloquea y muestra el fragmento final)
+    function completeStop() {
+      document.getElementById("feedback").textContent = "🎶 ¡Melodía correcta!";
+      document.getElementById("fragmento-final").style.display = "block";
+      document.getElementById("continue-button").style.display = "block";
+      document.getElementById("organ-full").play();
+      challengeCompleted = true;
+    }
+
     // Se procesan solo los clicks si el reto aún no se ha completado
     document.querySelectorAll('.white-key, .black-key').forEach(key => {
       key.addEventListener('click', () => {
@@ -296,15 +305,20 @@
 
         if (entradaUsuario.length === secuenciaCorrecta.length) {
           if (JSON.stringify(entradaUsuario) === JSON.stringify(secuenciaCorrecta)) {
-            document.getElementById("feedback").textContent = "🎶 ¡Melodía correcta!";
-            document.getElementById("fragmento-final").style.display = "block";
-            document.getElementById("continue-button").style.display = "block";
-            document.getElementById("organ-full").play();
-            challengeCompleted = true;  // Marcar reto completado
+            completeStop();
           }
           entradaUsuario = [];
         }
       });
+    });
+
+    // Comprobar si se debe desbloquear automáticamente (por QR, GPS o método manual)
+    window.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      // Si el query string tiene "stop=iglesia" o "unlock" se desbloquea la parada
+      if(urlParams.get("stop") === "iglesia" || urlParams.has("unlock")) {
+        completeStop();
+      }
     });
 
     // Script para el carrusel
