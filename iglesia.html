@@ -76,6 +76,7 @@
       margin-top: 10px;
     }
 
+    /* Ajuste en el piano */
     .organ-wrapper {
       display: flex;
       justify-content: center;
@@ -83,19 +84,19 @@
       gap: 2px;
       margin-top: 20px;
       position: relative;
-      height: 160px;
+      height: 140px; /* Se reduce la altura para ajustarse a las teclas blancas */
       overflow-x: auto;
     }
 
     .white-key {
       width: 40px;
-      height: 160px;
+      height: 140px; /* Teclas blancas un poco más cortas */
       background: #fff;
       border: 1px solid #444;
       font-size: 12px;
       font-weight: bold;
       text-align: center;
-      line-height: 160px;
+      line-height: 140px; /* Centra el texto verticalmente */
       z-index: 1;
       position: relative;
       cursor: pointer;
@@ -107,7 +108,7 @@
 
     .black-key {
       width: 25px;
-      height: 60px;  /* Teclas negras más cortas */
+      height: 60px;  /* Teclas negras permanecen iguales */
       background: #111;
       position: absolute;
       top: 0;
@@ -116,12 +117,31 @@
       font-size: 10px;
       color: white;
       text-align: center;
-      line-height: 60px;  /* Teclas negras más cortas */
+      line-height: 60px;  /* Centra el texto verticalmente */
       cursor: pointer;
     }
 
     .black-key.active {
       background: #ffbf00;
+    }
+
+    /* Posicionamiento de las teclas negras */
+    /* Asumimos que las teclas blancas se ubican en 0, 40, 80, 120, 160, 200, 240 */
+    /* Se colocan en el centro del espacio entre ellas */
+    .organ-wrapper .black-key[data-note="do#"] {
+      left: 28px;  /* Entre DO y RE */
+    }
+    .organ-wrapper .black-key[data-note="re#"] {
+      left: 60px;  /* Entre RE y MI */
+    }
+    .organ-wrapper .black-key[data-note="fa#"] {
+      left: 100px; /* Entre MI y FA */
+    }
+    .organ-wrapper .black-key[data-note="sol#"] {
+      left: 140px; /* Entre FA y SOL */
+    }
+    .organ-wrapper .black-key[data-note="la#"] {
+      left: 180px; /* Entre SOL y LA */
     }
 
     .fragmento-final {
@@ -137,15 +157,15 @@
       border-radius: 12px;
     }
 
-    /* Ajustes en la pista: fondo (pergamino) y texto centrados con mayor padding vertical */
+    /* Pista: pergamino y texto centrados con respecto al botón */
     .pista-box {
-      margin-top: 30px;
+      margin: 30px auto; /* Centrado y margen superior */
       display: none;
-      width: 100%;
+      max-width: 600px; /* Ancho máximo para centrarlo en el contenedor */
       text-align: center;
       background: url('images/pergamino.png') center center no-repeat;
       background-size: cover;
-      padding: 60px 30px;  /* Se aumenta el padding vertical */
+      padding: 60px 30px;  /* Mayor padding vertical */
       border-radius: 10px;
       font-style: italic;
       font-size: 1.1em;
@@ -166,7 +186,7 @@
 
     @media screen and (max-width: 768px) {
       .pista-box {
-        width: 100%;
+        max-width: 90%;
       }
     }
   </style>
@@ -200,16 +220,16 @@
 
     <div class="organ-wrapper">
       <div class="white-key" data-note="do">DO</div>
-      <div class="black-key" style="left: 28px;" data-note="do#">DO#</div>
+      <div class="black-key" data-note="do#">DO#</div>
       <div class="white-key" data-note="re">RE</div>
-      <div class="black-key" style="left: 68px;" data-note="re#">RE#</div>
+      <div class="black-key" data-note="re#">RE#</div>
       <div class="white-key" data-note="mi">MI</div>
       <div class="white-key" data-note="fa">FA</div>
-      <div class="black-key" style="left: 148px;" data-note="fa#">FA#</div>
+      <div class="black-key" data-note="fa#">FA#</div>
       <div class="white-key" data-note="sol">SOL</div>
-      <div class="black-key" style="left: 188px;" data-note="sol#">SOL#</div>
+      <div class="black-key" data-note="sol#">SOL#</div>
       <div class="white-key" data-note="la">LA</div>
-      <div class="black-key" style="left: 228px;" data-note="la#">LA#</div>
+      <div class="black-key" data-note="la#">LA#</div>
       <div class="white-key" data-note="si">SI</div>
     </div>
 
