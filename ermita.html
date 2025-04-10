@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    /* Estilos generales (similares a otras paradas) */
     body {
       font-family: 'Georgia', serif;
       background: url('images/pergamino.jpg') no-repeat center center fixed;
@@ -23,17 +22,12 @@
       padding: 20px;
       box-shadow: 0 0 15px rgba(0,0,0,0.3);
     }
-    /* Sección de desbloqueo */
     #location-check {
       text-align: center;
       margin-bottom: 30px;
     }
-    #location-check h2 {
-      margin-bottom: 10px;
-    }
-    #location-check p {
-      margin: 10px 0;
-    }
+    #location-check h2 { margin-bottom: 10px; }
+    #location-check p { margin: 10px 0; }
     #location-input {
       padding: 8px;
       font-size: 16px;
@@ -49,7 +43,6 @@
       width: 50px;
       margin-top: 10px;
     }
-    /* Carrusel */
     .carousel-container {
       position: relative;
       overflow: hidden;
@@ -68,7 +61,7 @@
     }
     .carousel-slide img {
       width: 100%;
-      height: 300px; /* Tamaño fijo para todas las imágenes */
+      height: 300px;
       object-fit: cover;
       display: block;
       border-radius: 10px;
@@ -92,43 +85,49 @@
     .carousel-prev { left: 10px; }
     .carousel-next { right: 10px; }
     h2 { margin-top: 10px; }
-    /* Crucigrama */
-    #crossword-section {
+    #letter-soup-container {
       margin: 30px auto;
       max-width: 600px;
-      padding: 20px;
-      border: 2px dashed #5e3b1b;
-      border-radius: 10px;
-      background: #fff7e0;
-      text-align: left;
-    }
-    #crossword-section h2 {
       text-align: center;
-      margin-bottom: 10px;
     }
-    .clue {
-      margin: 10px 0;
+    #letter-soup-container table {
+      border-collapse: collapse;
+      margin: auto;
     }
-    .clue span {
-      font-weight: bold;
-    }
-    .answer-input {
-      width: 100%;
-      padding: 8px;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-    .action-btn {
-      display: block;
-      margin: 15px auto;
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #dec79b;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
+    #letter-soup-container td {
+      border: 1px solid #5e3b1b;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 18px;
       cursor: pointer;
+      user-select: none;
     }
-    /* Pista para el crucigrama: iconos y texto de temática romana */
+    .selected {
+      background-color: yellow !important;
+    }
+    .found {
+      background-color: lightgreen !important;
+    }
+    #word-list {
+      margin: 15px auto;
+      max-width: 600px;
+      text-align: left;
+      font-size: 16px;
+    }
+    #word-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    #word-list li {
+      padding: 5px;
+      border-bottom: 1px solid #ccc;
+    }
+    .word-found {
+      text-decoration: line-through;
+      color: green;
+    }
     #crossword-hint {
       display: none;
       text-align: center;
@@ -144,7 +143,6 @@
       vertical-align: middle;
       margin: 0 5px;
     }
-    /* Fragmento y Continue */
     .fragmento-final {
       margin: 20px auto;
       display: none;
@@ -173,8 +171,18 @@
       line-height: 1.8;
       font-weight: bold;
     }
+    .action-btn {
+      display: block;
+      margin: 15px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #dec79b;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      cursor: pointer;
+    }
     @media screen and (max-width: 768px) {
-      #crossword-section, #crossword-hint, .pista-box, .fragmento-final {
+      #letter-soup-container, #word-list, #crossword-hint, .pista-box, .fragmento-final {
         max-width: 90%;
       }
     }
@@ -182,7 +190,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- Sección de desbloqueo -->
     <div id="location-check">
       <h2>Verifica tu ubicación</h2>
       <p>Acércate a la puerta de la ermita para continuar.</p>
@@ -193,29 +200,28 @@
       <p id="location-status"></p>
       <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" alt="Flecha de dirección" />
     </div>
-    
-    <!-- Contenido oculto hasta el desbloqueo -->
     <div id="game-content" style="display: none;">
-      <!-- Carrusel integrado -->
       <div class="carousel-container">
         <div class="carousel-slides">
           <div class="carousel-slide">
-            <img src="images/ermita-exterior.jpg" alt="Ermita" />
-            <p><strong>Exterior:</strong> Ermita del siglo XV junto al río Canderuelo, lugar de recogimiento.</p>
+            <img src="images/ermita-exterior.jpg" alt="Ermita Exterior" />
+            <p><strong>Exterior:</strong> Ermita del siglo XV junto al río Canderuelo. <a href="http://www.ermitadelsocorro.es/exterior" target="_blank">Más info</a></p>
           </div>
           <div class="carousel-slide">
-            <img src="images/ermita-puerta.jpg" alt="Puerta" />
-            <p><strong>Entrada:</strong> En honor a San Sebastián y la Virgen del Socorro. <a href="http://www.sanmartindelcastañar.es/" target="_blank">Más info</a></p>
+            <img src="images/ermita-puerta.jpg" alt="Puerta de la Ermita" />
+            <p><strong>Entrada:</strong> En honor a San Sebastián y la Virgen del Socorro. <a href="http://www.ermitadelsocorro.es/entrada" target="_blank">Más info</a></p>
+          </div>
+          <div class="carousel-slide">
+            <img src="images/ermita-interior.jpg" alt="Interior de la Ermita" />
+            <p><strong>Interior:</strong> Descubre detalles históricos y ornamentales del templo. <a href="http://www.ermitadelsocorro.es/interior" target="_blank">Más info</a></p>
           </div>
         </div>
         <button class="carousel-prev">&#10094;</button>
         <button class="carousel-next">&#10095;</button>
       </div>
-
-      <!-- Nueva sección: Crucigrama interactivo -->
       <div id="crossword-section">
         <h2>Crucigrama Romano</h2>
-        <p>Resuelve el crucigrama respondiendo las siguientes pistas. Debes responder las cuatro palabras para completar el reto.</p>
+        <p>Resuelve el crucigrama respondiendo las siguientes pistas. Completa las 4 palabras.</p>
         <div class="clue">
           <p><span>1.</span> (Horizontal) Camino romano que conectaba ciudades y facilitaba el comercio.</p>
           <input type="text" id="answer1" class="answer-input" placeholder="Respuesta 1" />
@@ -235,12 +241,10 @@
         <button class="action-btn" onclick="checkCrossword()">Comprobar crucigrama</button>
         <button class="action-btn" onclick="toggleHint()">Ver pista</button>
         <div id="crossword-hint">
-          <p>Iconos: <img src="images/icono-espada.png" alt="Espada"> <img src="images/icono-coliseo.png" alt="Coliseo"> <img src="images/icono-via.png" alt="Via Romana"> <img src="images/icono-estela.png" alt="Estela"></p>
+          <p>Iconos: <img src="images/icono-espada.png" alt="Espada"> <img src="images/icono-coliseo.png" alt="Coliseo"> <img src="images/icono-via.png" alt="Vía Romana"> <img src="images/icono-estela.png" alt="Estela"></p>
           <p>Consejo: Relaciona las pistas con símbolos y elementos del mundo romano.</p>
         </div>
       </div>
-
-      <!-- Fragmento final y botón para continuar -->
       <div class="fragmento-final" id="fragmento-final">
         <p><strong>Fragmento del Mensaje:</strong><br>
           <span id="message-piece" style="font-size:1.4em">sin</span>
@@ -253,62 +257,31 @@
       </div>
     </div>
   </div>
-
-  <!-- Audios -->
   <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
   <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
   <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
   <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-
   <script>
-    // Variables para el reto y crucigrama
     let challengeCompleted = false;
-    // Respuestas correctas (en minúsculas)
-    const correctAnswers = {
-      answer1: "calzada",  // Camino romano
-      answer2: "estela",   // Objeto funerario
-      answer3: "ermita",   // Templo modesto
-      answer4: "romana"    // Relativo a Roma
-    };
-
-    // Función para alternar la visualización de la pista (iconos y consejo)
+    const correctAnswers = { answer1: "calzada", answer2: "estela", answer3: "ermita", answer4: "romana" };
     function toggleHint() {
       const hint = document.getElementById("crossword-hint");
-      if (hint.style.display === "none" || hint.style.display === "") {
-        hint.style.display = "block";
-      } else {
-        hint.style.display = "none";
-      }
+      hint.style.display = (hint.style.display === "none" || hint.style.display === "") ? "block" : "none";
     }
-
-    // Función para comprobar las respuestas del crucigrama
     function checkCrossword() {
       let allCorrect = true;
       for (const key in correctAnswers) {
         const userAnswer = document.getElementById(key).value.trim().toLowerCase();
-        if (userAnswer !== correctAnswers[key]) {
-          allCorrect = false;
-          break;
-        }
+        if (userAnswer !== correctAnswers[key]) { allCorrect = false; break; }
       }
-      if (allCorrect) {
-        // Si se acierta el crucigrama, se completa la parada
-        completeStop();
-      } else {
-        playSound("error-sound");
-        alert("Alguna de las respuestas es incorrecta. Revisa tus respuestas y vuelve a intentarlo.");
-      }
+      if (allCorrect) { completeStop(); }
+      else { playSound("error-sound"); alert("Alguna de las respuestas es incorrecta. Revisa tus respuestas y vuelve a intentarlo."); }
     }
-
-    // Función para reproducir sonido
     function playSound(id) {
       const sound = document.getElementById(id);
       if (sound) { sound.play(); }
     }
-
-    // Función que completa la parada (se llama cuando se resuelve el crucigrama)
     function completeStop() {
-      document.getElementById("feedback").textContent = "🎶 ¡Crucigrama resuelto!";
       document.getElementById("fragmento-final").style.display = "block";
       document.getElementById("continue-button").style.display = "block";
       playSound("cheers-sound");
@@ -317,31 +290,21 @@
       updateRanking();
       challengeCompleted = true;
     }
-
-    // Actualiza la crónica guardando el fragmento descubierto ("sin")
     function updateChronicle() {
       localStorage.setItem("cronica_ermita", document.getElementById("message-piece").textContent);
       console.log("Crónica actualizada con el fragmento:", document.getElementById("message-piece").textContent);
     }
-
-    // Actualiza el ranking con el progreso (usando el nombre ya guardado en index)
     function updateRanking() {
       const username = localStorage.getItem("username");
-      if (!username) {
-        console.error("No se encontró el nombre del usuario.");
-        return;
-      }
+      if (!username) { console.error("No se encontró el nombre del usuario."); return; }
       let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
       ranking.push({ stop: "ermita", fragmento: document.getElementById("message-piece").textContent, name: username });
       localStorage.setItem("ranking", JSON.stringify(ranking));
       console.log("Ranking actualizado:", ranking);
     }
-
-    // MÉTODOS DE DESBLOQUEO POR GPS, MANUAL Y QR
-    const targetLat = 40.123456;    // Reemplaza con la latitud real de la Ermita
-    const targetLon = -3.123456;     // Reemplaza con la longitud real de la Ermita
-    const thresholdDistance = 50;    // Distancia en metros permitida
-
+    const targetLat = 40.123456;
+    const targetLon = -3.123456;
+    const thresholdDistance = 50;
     function checkLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
@@ -349,58 +312,179 @@
         document.getElementById("location-status").textContent = "Tu navegador no soporta geolocalización.";
       }
     }
-
     function geoSuccess(position) {
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
       const distance = calculateDistance(lat, lon, targetLat, targetLon);
-      if (distance <= thresholdDistance) {
-        unlockStop();
-      } else {
-        document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Ermita.";
-      }
+      if (distance <= thresholdDistance) { unlockStop(); }
+      else { document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Ermita."; }
     }
-
     function locationError(err) {
       document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
     }
-
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
       const toRad = (x) => x * Math.PI / 180;
-      const φ1 = toRad(lat1);
-      const φ2 = toRad(lat2);
-      const Δφ = toRad(lat2 - lat1);
-      const Δλ = toRad(lon2 - lon1);
-      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                Math.cos(φ1) * Math.cos(φ2) *
-                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const φ1 = toRad(lat1), φ2 = toRad(lat2);
+      const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
+      const a = Math.sin(Δφ/2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) ** 2;
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
-
     function checkLocationManual() {
       const input = document.getElementById("location-input").value.trim().toLowerCase();
-      if (input === "ermita" || input === "ermita del socorro") {
-        unlockStop();
-      } else {
-        document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
-      }
+      if (input === "ermita" || input === "ermita del socorro") { unlockStop(); }
+      else { document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente."; }
     }
-
     function unlockStop() {
       document.getElementById("location-check").style.display = "none";
       document.getElementById("game-content").style.display = "block";
+      initLetterSoup();
     }
-
     window.addEventListener('DOMContentLoaded', function() {
       const urlParams = new URLSearchParams(window.location.search);
-      if(urlParams.get("stop") === "ermita" || urlParams.has("unlock")) {
-        unlockStop();
-      }
+      if(urlParams.get("stop") === "ermita" || urlParams.has("unlock")) { unlockStop(); }
     });
-
-    // Carrusel
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    document.querySelector('.carousel-prev').addEventListener('click', () => {
+      currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+      updateCarousel();
+    });
+    document.querySelector('.carousel-next').addEventListener('click', () => {
+      currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
+      updateCarousel();
+    });
+    function updateCarousel() {
+      const carouselSlides = document.querySelector('.carousel-slides');
+      carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
+    }
+    const gridRows = 12, gridCols = 12;
+    let letterGrid = [];
+    const targetWords = { calzada: false, estela: false, ermita: false, romana: false };
+    function initLetterSoup() {
+      letterGrid = new Array(gridRows);
+      for (let i = 0; i < gridRows; i++) {
+        letterGrid[i] = new Array(gridCols).fill('');
+      }
+      insertWord("calzada", 2, 2, 0, 1);
+      insertWord("estela", 4, 4, 1, 0);
+      insertWord("ermita", 6, 0, 1, 1);
+      insertWord("romana", 10, 6, 0, 1);
+      fillRandomLetters();
+      drawLetterSoup();
+      updateWordList();
+    }
+    function insertWord(word, row, col, dr, dc) {
+      word = word.toLowerCase();
+      for (let i = 0; i < word.length; i++) {
+        if (row < gridRows && col < gridCols) {
+          letterGrid[row][col] = word[i];
+          row += dr;
+          col += dc;
+        }
+      }
+    }
+    function fillRandomLetters() {
+      const letters = "abcdefghijklmnopqrstuvwxyz";
+      for (let i = 0; i < gridRows; i++) {
+        for (let j = 0; j < gridCols; j++) {
+          if (letterGrid[i][j] === "") {
+            letterGrid[i][j] = letters.charAt(Math.floor(Math.random() * letters.length));
+          }
+        }
+      }
+    }
+    function drawLetterSoup() {
+      const container = document.getElementById("letter-soup-container");
+      container.innerHTML = "";
+      const table = document.createElement("table");
+      for (let i = 0; i < gridRows; i++) {
+        const tr = document.createElement("tr");
+        for (let j = 0; j < gridCols; j++) {
+          const td = document.createElement("td");
+          td.textContent = letterGrid[i][j].toUpperCase();
+          td.setAttribute("data-row", i);
+          td.setAttribute("data-col", j);
+          td.addEventListener("mousedown", handleMouseDown);
+          td.addEventListener("mouseover", handleMouseOver);
+          td.addEventListener("mouseup", handleMouseUp);
+          tr.appendChild(td);
+        }
+        table.appendChild(tr);
+      }
+      container.appendChild(table);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
+    let isMouseDown = false;
+    let selectedCells = [];
+    let startCell = null;
+    let currentDirection = null;
+    function handleMouseDown(e) {
+      isMouseDown = true;
+      selectedCells = [];
+      const tds = document.querySelectorAll("#letter-soup-container td");
+      tds.forEach(td => td.classList.remove("selected"));
+      startCell = { row: parseInt(this.getAttribute("data-row")), col: parseInt(this.getAttribute("data-col")) };
+      selectedCells.push(startCell);
+      this.classList.add("selected");
+    }
+    function handleMouseOver(e) {
+      if (!isMouseDown) return;
+      const row = parseInt(this.getAttribute("data-row"));
+      const col = parseInt(this.getAttribute("data-col"));
+      const last = selectedCells[selectedCells.length - 1];
+      const dRow = row - last.row;
+      const dCol = col - last.col;
+      if (Math.abs(dRow) <= 1 && Math.abs(dCol) <= 1 && (Math.abs(dRow) + Math.abs(dCol) !== 0)) {
+        if (selectedCells.length === 1) { currentDirection = { dRow: dRow, dCol: dCol }; }
+        else { if (dRow !== currentDirection.dRow || dCol !== currentDirection.dCol) return; }
+        if (!selectedCells.some(cell => cell.row === row && cell.col === col)) {
+          selectedCells.push({ row: row, col: col });
+          this.classList.add("selected");
+        }
+      }
+    }
+    function handleMouseUp(e) {
+      if (!isMouseDown) return;
+      isMouseDown = false;
+      let word = "";
+      selectedCells.forEach(cell => { word += letterGrid[cell.row][cell.col]; });
+      word = word.toLowerCase();
+      for (let target in targetWords) {
+        if (!targetWords[target] && (word === target || word.split("").reverse().join("") === target)) {
+          targetWords[target] = true;
+          markCellsAsFound(selectedCells);
+          updateWordList();
+          playSound("success-sound");
+          break;
+        }
+      }
+      const tds = document.querySelectorAll("#letter-soup-container td");
+      tds.forEach(td => td.classList.remove("selected"));
+      selectedCells = [];
+      if (Object.values(targetWords).every(val => val === true)) { completeStop(); }
+    }
+    function markCellsAsFound(cells) {
+      cells.forEach(cell => {
+        const selector = `td[data-row="${cell.row}"][data-col="${cell.col}"]`;
+        const td = document.querySelector(selector);
+        if (td) { td.classList.add("found"); }
+      });
+    }
+    function updateWordList() {
+      const list = document.getElementById("word-list");
+      for (let word in targetWords) {
+        const li = document.getElementById("w-" + word);
+        if (li) { if (targetWords[word]) { li.classList.add("word-found"); } else { li.classList.remove("word-found"); } }
+      }
+    }
+    function checkAllWords() {
+      if (Object.values(targetWords).every(val => val === true)) { completeStop(); }
+      else { alert("Aún faltan palabras por encontrar. ¡Sigue buscando!"); }
+    }
+  </script>
+  <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll('.carousel-slide');
     document.querySelector('.carousel-prev').addEventListener('click', () => {
@@ -416,6 +500,87 @@
       carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
     }
   </script>
-  <!-- Incluir el código del juego Pacman original se omite ya que se sustituyó por el crucigrama -->
+  <script>
+    let challengeCompleted = false;
+    function completeStop() {
+      document.getElementById("fragmento-final").style.display = "block";
+      document.getElementById("continue-button").style.display = "block";
+      playSound("cheers-sound");
+      localStorage.setItem("ermita-completed", "true");
+      updateChronicle();
+      updateRanking();
+      challengeCompleted = true;
+    }
+    function updateChronicle() {
+      localStorage.setItem("cronica_ermita", document.getElementById("message-piece").textContent);
+      console.log("Crónica actualizada con el fragmento:", document.getElementById("message-piece").textContent);
+    }
+    function updateRanking() {
+      const username = localStorage.getItem("username");
+      if (!username) { console.error("No se encontró el nombre del usuario."); return; }
+      let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+      ranking.push({ stop: "ermita", fragmento: document.getElementById("message-piece").textContent, name: username });
+      localStorage.setItem("ranking", JSON.stringify(ranking));
+      console.log("Ranking actualizado:", ranking);
+    }
+    function playSound(id) {
+      const sound = document.getElementById(id);
+      if (sound) { sound.play(); }
+    }
+    const targetLat = 40.123456;
+    const targetLon = -3.123456;
+    const thresholdDistance = 50;
+    function checkLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
+      } else {
+        document.getElementById("location-status").textContent = "Tu navegador no soporta geolocalización.";
+      }
+    }
+    function geoSuccess(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const distance = calculateDistance(lat, lon, targetLat, targetLon);
+      if (distance <= thresholdDistance) { unlockStop(); }
+      else { document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Ermita."; }
+    }
+    function locationError(err) {
+      document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
+    }
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const toRad = (x) => x * Math.PI / 180;
+      const φ1 = toRad(lat1), φ2 = toRad(lat2);
+      const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
+      const a = Math.sin(Δφ/2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) ** 2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+    function checkLocationManual() {
+      const input = document.getElementById("location-input").value.trim().toLowerCase();
+      if (input === "ermita" || input === "ermita del socorro") { unlockStop(); }
+      else { document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente."; }
+    }
+    function unlockStop() {
+      document.getElementById("location-check").style.display = "none";
+      document.getElementById("game-content").style.display = "block";
+      initLetterSoup();
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if(urlParams.get("stop") === "ermita" || urlParams.has("unlock")) { unlockStop(); }
+    });
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(function(){
+      var el = document.getElementById("pacman");
+      if(Modernizr.canvas && Modernizr.localstorage && Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
+        window.setTimeout(function () { PACMAN.init(el, "https://raw.githubusercontent.com/daleharvey/pacman/master/"); }, 0);
+      } else {
+        el.innerHTML = "Sorry, necesitas un navegador decente<br /><small>(Firefox 3.6+, Chrome 4+, Opera 10+ y Safari 4+)</small>";
+      }
+    });
+  </script>
 </body>
 </html>
