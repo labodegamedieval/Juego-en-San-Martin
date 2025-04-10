@@ -23,7 +23,28 @@
       padding: 20px;
       box-shadow: 0 0 15px rgba(0,0,0,0.3);
     }
-
+    /* Sección de desbloqueo */
+    #location-check {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    #location-check h2 {
+      margin-bottom: 10px;
+    }
+    #location-check p {
+      margin: 10px 0;
+    }
+    #location-input {
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      margin: 10px;
+    }
+    #location-status {
+      margin-top: 10px;
+      font-size: 1.1em;
+      color: red;
+    }
     /* Carrusel */
     .carousel-container {
       position: relative;
@@ -32,18 +53,15 @@
       margin-bottom: 10px;
       border-radius: 10px;
     }
-
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease;
     }
-
     .carousel-slide {
       min-width: 100%;
       box-sizing: border-box;
       text-align: center;
     }
-
     .carousel-slide img {
       width: 100%;
       height: 300px; /* Tamaño fijo para todas las imágenes */
@@ -52,12 +70,10 @@
       border-radius: 10px;
       border: 2px solid #6b3e2e;
     }
-
     .carousel-slide p {
       font-style: italic;
       margin-top: 10px;
     }
-
     .carousel-prev, .carousel-next {
       position: absolute;
       top: 50%;
@@ -71,12 +87,10 @@
     }
     .carousel-prev { left: 10px; }
     .carousel-next { right: 10px; }
-
     h2 {
       margin-top: 10px;
     }
-
-    /* Ajuste en el piano */
+    /* Piano */
     .organ-wrapper {
       display: flex;
       justify-content: center;
@@ -87,7 +101,6 @@
       height: 140px; /* Teclas blancas un poco más cortas */
       overflow-x: auto;
     }
-
     .white-key {
       width: 40px;
       height: 140px;    /* Menor altura para ver mejor el borde inferior */
@@ -101,14 +114,12 @@
       position: relative;
       cursor: pointer;
     }
-
     .white-key.active {
       background: #ffe58a;
     }
-
     .black-key {
       width: 25px;
-      height: 60px;  /* Se mantienen las teclas negras en 60px */
+      height: 60px;  /* Las teclas negras se mantienen en 60px */
       background: #111;
       position: absolute;
       top: 0;
@@ -117,17 +128,13 @@
       font-size: 10px;
       color: white;
       text-align: center;
-      line-height: 60px;  /* Centra el texto verticalmente */
+      line-height: 60px;
       cursor: pointer;
     }
-
     .black-key.active {
       background: #ffbf00;
     }
-
     /* Posicionamiento de las teclas negras */
-    /* Se asume que las teclas blancas se ubican en posiciones consecutivas.
-       Ajustamos el left para ubicarlas entre las blancas. */
     .organ-wrapper .black-key[data-note="do#"] {
       left: 48px;  /* Entre DO y RE */
     }
@@ -143,11 +150,11 @@
     .organ-wrapper .black-key[data-note="la#"] {
       left: 270px; /* Entre SOL y LA */
     }
-
+    /* Fragmento y Pista */
     .fragmento-final {
-      margin: 20px auto;  /* Centrado horizontal y margen vertical */
+      margin: 20px auto;
       display: none;
-      max-width: 600px;   /* Misma anchura que la pista */
+      max-width: 600px;
       text-align: center;
       background: url('images/pergamino.png') center center no-repeat;
       background-size: cover;
@@ -158,23 +165,20 @@
       border: none;
       border-radius: 10px;
     }
-
-    /* Pista: pergamino y texto centrados (respecto al botón) */
     .pista-box {
-      margin: 30px auto; /* Centrado y margen superior */
+      margin: 30px auto;
       display: none;
-      max-width: 600px;  /* Ancho máximo para centrarlo en el contenedor */
+      max-width: 600px;
       text-align: center;
       background: url('images/pergamino.png') center center no-repeat;
       background-size: cover;
-      padding: 80px 40px;  /* Mayor padding vertical para alargar el pergamino */
+      padding: 80px 40px;
       border-radius: 10px;
       font-style: italic;
       font-size: 1.1em;
       line-height: 1.8;
       font-weight: bold;
     }
-
     .action-btn {
       display: block;
       margin: 15px auto;
@@ -185,7 +189,6 @@
       border-radius: 10px;
       cursor: pointer;
     }
-
     @media screen and (max-width: 768px) {
       .pista-box, .fragmento-final {
         max-width: 90%;
@@ -195,70 +198,82 @@
 </head>
 <body>
   <div class="container">
-    <h1>⛪ Iglesia de San Martín</h1>
-
-    <!-- Carrusel integrado -->
-    <div class="carousel-container">
-      <div class="carousel-slides">
-        <div class="carousel-slide">
-          <img src="images/retablo.jpg" alt="Retablo" />
-          <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si la iglesia está cerrada, te va a interesar este link. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+    <!-- Sección de desbloqueo -->
+    <div id="location-check">
+      <h2>Verifica tu ubicación</h2>
+      <p>Acércate a la Iglesia de San Martín y verifica tu posición para continuar.</p>
+      <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
+      <p>O escribe el nombre:</p>
+      <input type="text" id="location-input" placeholder="Ej: Iglesia" />
+      <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
+      <p id="location-status"></p>
+    </div>
+    
+    <!-- Contenido oculto hasta el desbloqueo -->
+    <div id="game-content" style="display: none;">
+      <!-- Carrusel integrado -->
+      <div class="carousel-container">
+        <div class="carousel-slides">
+          <div class="carousel-slide">
+            <img src="images/retablo.jpg" alt="Retablo" />
+            <p><strong>Interior:</strong> Retablos barrocos, capilla del Evangelio y arcos gótico-mudéjar únicos. Si la iglesia está cerrada, te va a interesar este link. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+          </div>
+          <div class="carousel-slide">
+            <img src="images/iglesia.jpg" alt="Fachada" />
+            <p><strong>Fachada:</strong> Exquisita arquitectura medieval, una joya del pueblo. Descubre más sobre la iglesia en <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">este enlace</a>.</p>
+          </div>
+          <div class="carousel-slide">
+            <img src="images/campanario.jpeg" alt="Campanario" />
+            <p><strong>Campanario:</strong> Conoce la imponente vista del campanario, mostrado a la par de las demás imágenes, con la misma dimensión. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+          </div>
         </div>
-        <div class="carousel-slide">
-          <img src="images/iglesia.jpg" alt="Fachada" />
-          <p><strong>Fachada:</strong> Exquisita arquitectura medieval, una joya del pueblo. Descubre más sobre la iglesia en <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">este enlace</a>.</p>
-        </div>
-        <div class="carousel-slide">
-          <img src="images/campanario.jpeg" alt="Campanario" />
-          <p><strong>Campanario:</strong> Conoce la imponente vista del campanario, mostrado a la par de las demás imágenes, con la misma dimensión. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
-        </div>
+        <button class="carousel-prev">&#10094;</button>
+        <button class="carousel-next">&#10095;</button>
       </div>
-      <button class="carousel-prev">&#10094;</button>
-      <button class="carousel-next">&#10095;</button>
-    </div>
 
-    <h2>🎼 Reto del Órgano</h2>
-    <p>🎹 Toca las teclas del órgano en el orden correcto para desvelar el mensaje oculto.</p>
+      <h2>🎼 Reto del Órgano</h2>
+      <p>🎹 Toca las teclas del órgano en el orden correcto para desvelar el mensaje oculto.</p>
 
-    <div class="organ-wrapper">
-      <div class="white-key" data-note="do">DO</div>
-      <div class="black-key" data-note="do#">DO#</div>
-      <div class="white-key" data-note="re">RE</div>
-      <div class="black-key" data-note="re#">RE#</div>
-      <div class="white-key" data-note="mi">MI</div>
-      <div class="white-key" data-note="fa">FA</div>
-      <div class="black-key" data-note="fa#">FA#</div>
-      <div class="white-key" data-note="sol">SOL</div>
-      <div class="black-key" data-note="sol#">SOL#</div>
-      <div class="white-key" data-note="la">LA</div>
-      <div class="black-key" data-note="la#">LA#</div>
-      <div class="white-key" data-note="si">SI</div>
-    </div>
+      <div class="organ-wrapper">
+        <div class="white-key" data-note="do">DO</div>
+        <div class="black-key" data-note="do#">DO#</div>
+        <div class="white-key" data-note="re">RE</div>
+        <div class="black-key" data-note="re#">RE#</div>
+        <div class="white-key" data-note="mi">MI</div>
+        <div class="white-key" data-note="fa">FA</div>
+        <div class="black-key" data-note="fa#">FA#</div>
+        <div class="white-key" data-note="sol">SOL</div>
+        <div class="black-key" data-note="sol#">SOL#</div>
+        <div class="white-key" data-note="la">LA</div>
+        <div class="black-key" data-note="la#">LA#</div>
+        <div class="white-key" data-note="si">SI</div>
+      </div>
 
-    <button class="action-btn" onclick="document.getElementById('pista').style.display='block'">🕯️ Ver pista</button>
+      <button class="action-btn" onclick="document.getElementById('pista').style.display='block'">🕯️ Ver pista</button>
 
-    <div id="pista" class="pista-box">
-      DoMINGO de misterio en el pueblo,<br>
-      las campanas tañen al alba.<br>
-      FaNFARRIAS en la puerta de la iglesia<br>
-      con el órgano afinado.<br>
-      ReSURGEN los enigmas del pasado.<br>
-      SolITARIA la melodía de Gonzalo.
-    </div>
+      <div id="pista" class="pista-box">
+        DoMINGO de misterio en el pueblo,<br>
+        las campanas tañen al alba.<br>
+        FaNFARRIAS en la puerta de la iglesia<br>
+        con el órgano afinado.<br>
+        ReSURGEN los enigmas del pasado.<br>
+        SolITARIA la melodía de Gonzalo.
+      </div>
 
-    <p id="feedback" class="pista"></p>
+      <p id="feedback" class="pista"></p>
 
-    <div class="fragmento-final" id="fragmento-final">
-      <p><strong>Fragmento del Mensaje:</strong><br>
-         <span id="message-piece" style="font-size:1.4em">la</span>
-      </p>
-      <p><strong>QR:</strong> IGLESIA-1300</p>
-    </div>
+      <div class="fragmento-final" id="fragmento-final">
+        <p><strong>Fragmento del Mensaje:</strong><br>
+           <span id="message-piece" style="font-size:1.4em">la</span>
+        </p>
+        <p><strong>QR:</strong> IGLESIA-1300</p>
+      </div>
 
-    <div id="continue-button" style="display: none; text-align: center;">
-      <button class="action-btn" onclick="location.href='felicitaciones.html?stop=iglesia'">
-        Continuar aventura
-      </button>
+      <div id="continue-button" style="display: none; text-align: center;">
+        <button class="action-btn" onclick="location.href='felicitaciones.html?stop=iglesia'">
+          Continuar aventura
+        </button>
+      </div>
     </div>
   </div>
 
@@ -272,12 +287,12 @@
   <audio id="organ-full" src="sounds/organ-full.mp3"></audio>
 
   <script>
-    // Variable para evitar que el reto se reactive una vez completado
+    // Variables para el reto musical
     let challengeCompleted = false;
     const secuenciaCorrecta = ["do", "fa", "re", "sol"];
     let entradaUsuario = [];
 
-    // Función que completa la parada (desbloquea y muestra el fragmento final)
+    // Función que completa la parada (desbloquea y muestra el contenido)
     function completeStop() {
       document.getElementById("feedback").textContent = "🎶 ¡Melodía correcta!";
       document.getElementById("fragmento-final").style.display = "block";
@@ -286,10 +301,10 @@
       challengeCompleted = true;
     }
 
-    // Se procesan solo los clicks si el reto aún no se ha completado
+    // Eventos para el reto musical
     document.querySelectorAll('.white-key, .black-key').forEach(key => {
       key.addEventListener('click', () => {
-        if(challengeCompleted) return;  // Si ya se completó, no hacemos nada
+        if(challengeCompleted) return;
 
         const nota = key.dataset.note;
         entradaUsuario.push(nota);
@@ -312,29 +327,83 @@
       });
     });
 
-    // Comprobar si se debe desbloquear automáticamente (por QR, GPS o método manual)
+    // Métodos de desbloqueo por GPS, manual y QR (este último mediante parámetro en la URL)
+    const targetLat = 40.123456;    // Reemplaza con la latitud real de la Iglesia
+    const targetLon = -3.123456;     // Reemplaza con la longitud real de la Iglesia
+    const thresholdDistance = 50;    // Distancia en metros permitida
+
+    function checkLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, locationError);
+      } else {
+        document.getElementById("location-status").textContent = "Tu navegador no soporta geolocalización.";
+      }
+    }
+
+    function success(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const distance = calculateDistance(lat, lon, targetLat, targetLon);
+      if (distance <= thresholdDistance) {
+        unlockStop();
+      } else {
+        document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Iglesia de San Martín.";
+      }
+    }
+
+    function locationError(err) {
+      document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
+    }
+
+    // Fórmula de Haversine para calcular la distancia (en metros)
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const toRad = (x) => x * Math.PI / 180;
+      const φ1 = toRad(lat1);
+      const φ2 = toRad(lat2);
+      const Δφ = toRad(lat2 - lat1);
+      const Δλ = toRad(lon2 - lon1);
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function checkLocationManual() {
+      const input = document.getElementById("location-input").value.trim().toLowerCase();
+      if (input === "iglesia" || input === "iglesia de san martín") {
+        unlockStop();
+      } else {
+        document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
+      }
+    }
+
+    // Función para mostrar el contenido desbloqueado
+    function unlockStop() {
+      document.getElementById("location-check").style.display = "none";
+      document.getElementById("game-content").style.display = "block";
+    }
+
+    // Desbloqueo automático si la URL contiene "stop=iglesia" o "unlock" (por ejemplo, al escanear un QR)
     window.addEventListener('DOMContentLoaded', function() {
       const urlParams = new URLSearchParams(window.location.search);
-      // Si el query string tiene "stop=iglesia" o "unlock" se desbloquea la parada
       if(urlParams.get("stop") === "iglesia" || urlParams.has("unlock")) {
-        completeStop();
+        unlockStop();
       }
     });
 
     // Script para el carrusel
     let currentSlide = 0;
     const slides = document.querySelectorAll('.carousel-slide');
-
     document.querySelector('.carousel-prev').addEventListener('click', () => {
       currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
       updateCarousel();
     });
-
     document.querySelector('.carousel-next').addEventListener('click', () => {
       currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
       updateCarousel();
     });
-
     function updateCarousel() {
       const carouselSlides = document.querySelector('.carousel-slides');
       carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
