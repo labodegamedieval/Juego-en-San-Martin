@@ -216,15 +216,15 @@
         <div class="carousel-slides">
           <div class="carousel-slide">
             <img src="images/retablo.jpg" alt="Retablo" />
-            <p><strong>Interior:</strong> En el interior de la iglesia se puede apreciar un retablo con elaborados detalles que combinan arte sacro y tradición local. Además, en algunas de sus capillas se hallan restos de frescos que han sido objeto de restauración, evidenciando el esmero por conservar el patrimonio artístico. La intervención en su restauración ha permitido que los visitantes puedan apreciar de cerca la calidad de los acabados y la importancia de esta obra en el contexto regional. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+            <p><strong>Interior:</strong> En el interior de la iglesia se puede apreciar un retablo con elaborados detalles que combinan arte sacro y tradición local. Además, en algunas de sus capillas se hallan restos de frescos restaurados, evidenciando el esmero por conservar el patrimonio artístico. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
           </div>
           <div class="carousel-slide">
             <img src="images/iglesia.jpg" alt="Fachada" />
-            <p><strong>Fachada:</strong> Exquisita arquitectura medieval, una joya del pueblo.La Iglesia de San Martín del Castañar es uno de los referentes históricos del municipio. Se data, en gran parte, del siglo XIII y reúne elementos románicos y góticos. Destaca por su portada labrada y su inconfundible campanario, que marca el perfil del lugar. La estructura refleja la evolución de las técnicas constructivas, pasando de la austera simplicidad románica a las sutiles decoraciones góticas en sus elementos arquitectónicos. Descubre más sobre la iglesia en <a href="https://sanmartindelcastañar.es/iglesia-de-san-martin-de-tours/" target="_blank">este enlace</a>.</p>
+            <p><strong>Fachada:</strong> Exquisita arquitectura medieval y una joya histórica. La Iglesia de San Martín del Castañar, de origen del siglo XIII, reúne elementos románicos y góticos, y destaca por su portada labrada y su icónico campanario. <a href="https://sanmartindelcastañar.es/iglesia-de-san-martin-de-tours/" target="_blank">Más info</a></p>
           </div>
           <div class="carousel-slide">
             <img src="images/campanario.jpeg" alt="Campanario" />
-            <p><strong>Campanario:</strong> Fue añadido a la iglesia (origina­mente del siglo XIII) a finales del siglo XVI, en una época de reformas que integraron elementos renacentistas y góticos. Se trata de una espadaña de dos cuerpos. El nivel inferior alberga dos vanos con arcos de medio punto, mientras que el nivel superior contiene un tercer arco y está rematado por pináculos decorativos en forma de bola. Está construido en piedra labrada, siguiendo técnicas y estilos que reflejan la transición entre lo medieval y lo renacentista <a href="https://www.turismocastillayleon.com/es/patrimonio-cultura/iglesias-ermitas/iglesia-parroquial-san-martin-san-martin-castanar#:~:text=Esta%20iglesia%2C%20declarada%20monumento%20hist%C3%B3rico,armadura%20de%20la%20nave%20central" target="_blank">Más info</a></p>
+            <p><strong>Campanario:</strong> Añadido a finales del siglo XVI, la espadaña de dos cuerpos presenta dos vanos en la parte inferior y un tercer arco en la parte superior, rematada por pináculos decorativos. Construido en piedra labrada, es un ejemplo de la transición entre lo medieval y lo renacentista. <a href="https://www.turismocastillayleon.com/es/patrimonio-cultura/iglesias-ermitas/iglesia-parroquial-san-martin-san-martin-castanar#:~:text=Esta%20iglesia%2C%20declarada%20monumento%20hist%C3%B3rico,armadura%20de%20la%20nave%20central" target="_blank">Más info</a></p>
           </div>
         </div>
         <button class="carousel-prev">&#10094;</button>
@@ -298,7 +298,34 @@
       document.getElementById("fragmento-final").style.display = "block";
       document.getElementById("continue-button").style.display = "block";
       document.getElementById("organ-full").play();
+      // Actualiza la crónica con el fragmento descubierto
+      updateChronicle();
+      // Actualiza el ranking con el nombre y progreso del usuario
+      updateRanking();
       challengeCompleted = true;
+    }
+
+    // Actualizar la crónica guardando el fragmento descubierto
+    function updateChronicle() {
+      // Se guarda el fragmento "la" en localStorage (puedes adaptar el mecanismo según tu backend)
+      localStorage.setItem("cronica_iglesia", document.getElementById("message-piece").textContent);
+      console.log("Crónica actualizada con el fragmento:", document.getElementById("message-piece").textContent);
+    }
+
+    // Actualizar el ranking con el progreso de la parada
+    function updateRanking() {
+      // Se asume que el nombre del usuario se guardó previamente en localStorage (por ejemplo en una pantalla inicial)
+      let username = localStorage.getItem("username");
+      if (!username) {
+        username = prompt("Introduce tu nombre:");
+        localStorage.setItem("username", username);
+      }
+      // Recupera el ranking actual (como un array JSON) o inicia uno vacío
+      let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+      // Añadir o actualizar la entrada para esta parada "Iglesia" y fragmento "la"
+      ranking.push({ stop: "iglesia", fragmento: document.getElementById("message-piece").textContent, name: username });
+      localStorage.setItem("ranking", JSON.stringify(ranking));
+      console.log("Ranking actualizado:", ranking);
     }
 
     // Eventos para el reto musical
