@@ -28,8 +28,12 @@
       text-align: center;
       margin-bottom: 30px;
     }
-    #location-check h2 { margin-bottom: 10px; }
-    #location-check p { margin: 10px 0; }
+    #location-check h2 {
+      margin-bottom: 10px;
+    }
+    #location-check p {
+      margin: 10px 0;
+    }
     #location-input {
       padding: 8px;
       font-size: 16px;
@@ -74,8 +78,7 @@
       font-style: italic;
       margin-top: 10px;
     }
-    .carousel-prev,
-    .carousel-next {
+    .carousel-prev, .carousel-next {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -89,38 +92,59 @@
     .carousel-prev { left: 10px; }
     .carousel-next { right: 10px; }
     h2 { margin-top: 10px; }
-    /* Sección Reto Pacman */
-    #pacman-game-section {
-      background-color: black;
-      padding: 20px;
+    /* Crucigrama */
+    #crossword-section {
       margin: 30px auto;
       max-width: 600px;
+      padding: 20px;
       border: 2px dashed #5e3b1b;
       border-radius: 10px;
+      background: #fff7e0;
+      text-align: left;
+    }
+    #crossword-section h2 {
       text-align: center;
+      margin-bottom: 10px;
     }
-    /* Estilos propios del juego Pacman (aplicados solo dentro de #pacman-game-section) */
-    #pacman-game-section #shim {
-      font-family: 'Permanent Marker', cursive;
-      position: absolute;
-      visibility: hidden;
+    .clue {
+      margin: 10px 0;
     }
-    #pacman-game-section h1 {
-      font-family: 'Permanent Marker', cursive;
+    .clue span {
+      font-weight: bold;
+    }
+    .answer-input {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .action-btn {
+      display: block;
+      margin: 15px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #dec79b;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    /* Pista para el crucigrama: iconos y texto de temática romana */
+    #crossword-hint {
+      display: none;
       text-align: center;
-      color: yellow;
-    }
-    #pacman-game-section a {
-      text-decoration: none;
-      color: #0000FF;
-    }
-    #pacman-game-section #pacman {
-      height: 470px;
-      width: 382px;
-      border-radius: 5px;
       margin: 20px auto;
+      max-width: 600px;
+      padding: 10px;
+      font-style: italic;
+      font-size: 1.1em;
+      color: #5e3b1b;
     }
-    /* Fragmento y Pista (similares a otras paradas) */
+    #crossword-hint img {
+      width: 40px;
+      vertical-align: middle;
+      margin: 0 5px;
+    }
+    /* Fragmento y Continue */
     .fragmento-final {
       margin: 20px auto;
       display: none;
@@ -149,18 +173,8 @@
       line-height: 1.8;
       font-weight: bold;
     }
-    .action-btn {
-      display: block;
-      margin: 15px auto;
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #dec79b;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
-      cursor: pointer;
-    }
     @media screen and (max-width: 768px) {
-      .pista-box, .fragmento-final, #pacman-game-section {
+      #crossword-section, #crossword-hint, .pista-box, .fragmento-final {
         max-width: 90%;
       }
     }
@@ -198,17 +212,35 @@
         <button class="carousel-next">&#10095;</button>
       </div>
 
-      <!-- Nuevo reto: Juego HTML5 Pacman -->
-      <div id="pacman-game-section">
-        <div id="shim">shim for font face</div>
-        <h1>HTML5 Pacman</h1>
-        <p><a href="https://github.com/daleharvey/pacman" target="_blank">Credits: https://github.com/daleharvey/pacman</a></p>
-        <div id="pacman"></div>
-        <!-- Botón para finalizar el reto, se supone que el jugador ha completado la prueba (puedes integrar detección interna) -->
-        <button class="action-btn" onclick="completeStop()">He completado el reto de Pacman</button>
+      <!-- Nueva sección: Crucigrama interactivo -->
+      <div id="crossword-section">
+        <h2>Crucigrama Romano</h2>
+        <p>Resuelve el crucigrama respondiendo las siguientes pistas. Debes responder las cuatro palabras para completar el reto.</p>
+        <div class="clue">
+          <p><span>1.</span> (Horizontal) Camino romano que conectaba ciudades y facilitaba el comercio.</p>
+          <input type="text" id="answer1" class="answer-input" placeholder="Respuesta 1" />
+        </div>
+        <div class="clue">
+          <p><span>2.</span> (Vertical) Objeto funerario romano, inscrito en bronce, que conmemoraba al difunto.</p>
+          <input type="text" id="answer2" class="answer-input" placeholder="Respuesta 2" />
+        </div>
+        <div class="clue">
+          <p><span>3.</span> (Horizontal) Pequeño templo de culto, modesto y tradicional.</p>
+          <input type="text" id="answer3" class="answer-input" placeholder="Respuesta 3" />
+        </div>
+        <div class="clue">
+          <p><span>4.</span> (Vertical) Adjetivo que describe lo relacionado con la antigua Roma.</p>
+          <input type="text" id="answer4" class="answer-input" placeholder="Respuesta 4" />
+        </div>
+        <button class="action-btn" onclick="checkCrossword()">Comprobar crucigrama</button>
+        <button class="action-btn" onclick="toggleHint()">Ver pista</button>
+        <div id="crossword-hint">
+          <p>Iconos: <img src="images/icono-espada.png" alt="Espada"> <img src="images/icono-coliseo.png" alt="Coliseo"> <img src="images/icono-via.png" alt="Via Romana"> <img src="images/icono-estela.png" alt="Estela"></p>
+          <p>Consejo: Relaciona las pistas con símbolos y elementos del mundo romano.</p>
+        </div>
       </div>
 
-      <!-- Fragmento final (se muestra al completar el reto y/o el juego) -->
+      <!-- Fragmento final y botón para continuar -->
       <div class="fragmento-final" id="fragmento-final">
         <p><strong>Fragmento del Mensaje:</strong><br>
           <span id="message-piece" style="font-size:1.4em">sin</span>
@@ -216,7 +248,6 @@
         <p><strong>QR en el pueblo:</strong> ERMITA-1500</p>
         <p><strong>Dato Curioso:</strong> En tiempos antiguos, los vecinos subían con velas encendidas a pedir protección.</p>
       </div>
-
       <div id="continue-button" style="display: none; text-align: center;">
         <button class="action-btn" onclick="location.href='felicitaciones.html?stop=ermita'">Continuar búsqueda</button>
       </div>
@@ -229,29 +260,71 @@
   <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
   <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
 
-  <!-- Nuestro script de la parada (desbloqueo, carrusel, ranking, crónica, etc.) -->
   <script>
-    // Variables para el reto (en este caso, el juego Pacman) y finalización
+    // Variables para el reto y crucigrama
     let challengeCompleted = false;
-    // Función que marca la parada como completada
+    // Respuestas correctas (en minúsculas)
+    const correctAnswers = {
+      answer1: "calzada",  // Camino romano
+      answer2: "estela",   // Objeto funerario
+      answer3: "ermita",   // Templo modesto
+      answer4: "romana"    // Relativo a Roma
+    };
+
+    // Función para alternar la visualización de la pista (iconos y consejo)
+    function toggleHint() {
+      const hint = document.getElementById("crossword-hint");
+      if (hint.style.display === "none" || hint.style.display === "") {
+        hint.style.display = "block";
+      } else {
+        hint.style.display = "none";
+      }
+    }
+
+    // Función para comprobar las respuestas del crucigrama
+    function checkCrossword() {
+      let allCorrect = true;
+      for (const key in correctAnswers) {
+        const userAnswer = document.getElementById(key).value.trim().toLowerCase();
+        if (userAnswer !== correctAnswers[key]) {
+          allCorrect = false;
+          break;
+        }
+      }
+      if (allCorrect) {
+        // Si se acierta el crucigrama, se completa la parada
+        completeStop();
+      } else {
+        playSound("error-sound");
+        alert("Alguna de las respuestas es incorrecta. Revisa tus respuestas y vuelve a intentarlo.");
+      }
+    }
+
+    // Función para reproducir sonido
+    function playSound(id) {
+      const sound = document.getElementById(id);
+      if (sound) { sound.play(); }
+    }
+
+    // Función que completa la parada (se llama cuando se resuelve el crucigrama)
     function completeStop() {
-      document.getElementById("feedback").textContent = "🎶 ¡Reto de Pacman completado!";
+      document.getElementById("feedback").textContent = "🎶 ¡Crucigrama resuelto!";
       document.getElementById("fragmento-final").style.display = "block";
       document.getElementById("continue-button").style.display = "block";
-      document.getElementById("background-music").play();
+      playSound("cheers-sound");
       localStorage.setItem("ermita-completed", "true");
       updateChronicle();
       updateRanking();
       challengeCompleted = true;
     }
 
-    // Actualizar la crónica guardando el fragmento descubierto ("sin")
+    // Actualiza la crónica guardando el fragmento descubierto ("sin")
     function updateChronicle() {
       localStorage.setItem("cronica_ermita", document.getElementById("message-piece").textContent);
       console.log("Crónica actualizada con el fragmento:", document.getElementById("message-piece").textContent);
     }
 
-    // Actualizar el ranking con el progreso (se usa el nombre ya obtenido de index)
+    // Actualiza el ranking con el progreso (usando el nombre ya guardado en index)
     function updateRanking() {
       const username = localStorage.getItem("username");
       if (!username) {
@@ -343,29 +416,6 @@
       carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
     }
   </script>
-
-  <!-- PACMAN GAME: Integración del juego HTML5 Pacman -->
-  <!-- Se usa la estructura y estilos propios del juego -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <!-- Se asume que Modernizr está incluido o disponible -->
-  <script>
-    // Verifica si el navegador soporta canvas, localStorage y audio
-    $(function(){
-      var el = document.getElementById("pacman");
-      if (Modernizr.canvas && Modernizr.localstorage && Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
-        // Inicia el juego usando la URL de GitHub de PACMAN (ajusta según sea necesario)
-        window.setTimeout(function () { PACMAN.init(el, "https://raw.githubusercontent.com/daleharvey/pacman/master/"); }, 0);
-      } else {
-        el.innerHTML = "Sorry, necesitas un navegador decente<br /><small>(Firefox 3.6+, Chrome 4+, Opera 10+ y Safari 4+)</small>";
-      }
-    });
-  </script>
-  <!-- Incluir el código completo de PACMAN (JS) a continuación o desde un archivo externo -->
-  <script>
-    /* Inserta aquí el código JS completo del juego Pacman, 
-       que fue proporcionado (el código que gestiona el juego) 
-       Por motivos de extensión se omite aquí su contenido completo.
-       Asegúrate de que el objeto global PACMAN esté correctamente definido. */
-  </script>
+  <!-- Incluir el código del juego Pacman original se omite ya que se sustituyó por el crucigrama -->
 </body>
 </html>
