@@ -103,7 +103,7 @@
     }
     .white-key {
       width: 40px;
-      height: 140px;    /* Menor altura para ver mejor el borde inferior */
+      height: 140px;    /* Menor altura para que se aprecie el borde inferior */
       background: #fff;
       border: 1px solid #444;
       font-size: 12px;
@@ -216,15 +216,15 @@
         <div class="carousel-slides">
           <div class="carousel-slide">
             <img src="images/retablo.jpg" alt="Retablo" />
-            <p><strong>Interior:</strong> En el interior de la iglesia se puede apreciar un retablo con elaborados detalles que combinan arte sacro y tradición local. Además, en algunas de sus capillas se hallan restos de frescos restaurados, evidenciando el esmero por conservar el patrimonio artístico. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
+            <p><strong>Interior:</strong> En el interior de la iglesia se aprecia un retablo con elaborados detalles que combinan arte sacro y tradición local. Además, algunas capillas muestran frescos restaurados, evidenciando el esmero por conservar su patrimonio artístico. <a href="https://www.salamancamudejar.com/ruta-sur/" target="_blank">Más info</a></p>
           </div>
           <div class="carousel-slide">
             <img src="images/iglesia.jpg" alt="Fachada" />
-            <p><strong>Fachada:</strong> Exquisita arquitectura medieval y una joya histórica. La Iglesia de San Martín del Castañar, de origen del siglo XIII, reúne elementos románicos y góticos, y destaca por su portada labrada y su icónico campanario. <a href="https://sanmartindelcastañar.es/iglesia-de-san-martin-de-tours/" target="_blank">Más info</a></p>
+            <p><strong>Fachada:</strong> La Iglesia de San Martín del Castañar, de origen del siglo XIII, reúne elementos románicos y góticos, destacándose por su portada labrada y su icónico campanario. <a href="https://sanmartindelcastañar.es/iglesia-de-san-martin-de-tours/" target="_blank">Más info</a></p>
           </div>
           <div class="carousel-slide">
             <img src="images/campanario.jpeg" alt="Campanario" />
-            <p><strong>Campanario:</strong> Añadido a finales del siglo XVI, la espadaña de dos cuerpos presenta dos vanos en la parte inferior y un tercer arco en la parte superior, rematada por pináculos decorativos. Construido en piedra labrada, es un ejemplo de la transición entre lo medieval y lo renacentista. <a href="https://www.turismocastillayleon.com/es/patrimonio-cultura/iglesias-ermitas/iglesia-parroquial-san-martin-san-martin-castanar#:~:text=Esta%20iglesia%2C%20declarada%20monumento%20hist%C3%B3rico,armadura%20de%20la%20nave%20central" target="_blank">Más info</a></p>
+            <p><strong>Campanario:</strong> Añadido a finales del siglo XVI, su espadaña de dos cuerpos tiene dos vanos inferiores y un arco superior rematado con pináculos. Construido en piedra labrada, es un claro ejemplo de la transición entre lo medieval y lo renacentista. <a href="https://www.turismocastillayleon.com/es/patrimonio-cultura/iglesias-ermitas/iglesia-parroquial-san-martin-san-martin-castanar#:~:text=Esta%20iglesia%2C%20declarada%20monumento%20hist%C3%B3rico,armadura%20de%20la%20nave%20central" target="_blank">Más info</a></p>
           </div>
         </div>
         <button class="carousel-prev">&#10094;</button>
@@ -264,7 +264,7 @@
 
       <div class="fragmento-final" id="fragmento-final">
         <p><strong>Fragmento del Mensaje:</strong><br>
-           <span id="message-piece" style="font-size:1.4em">la</span>
+          <span id="message-piece" style="font-size:1.4em">la</span>
         </p>
         <p><strong>QR:</strong> IGLESIA-1300</p>
       </div>
@@ -298,31 +298,32 @@
       document.getElementById("fragmento-final").style.display = "block";
       document.getElementById("continue-button").style.display = "block";
       document.getElementById("organ-full").play();
-      // Actualiza la crónica con el fragmento descubierto
+
+      // Guarda que se completó la parada en localStorage (para la crónica)
+      localStorage.setItem("iglesia-completed", "true");
+
+      // Actualiza la crónica con el fragmento descubierto ("la")
       updateChronicle();
-      // Actualiza el ranking con el nombre y progreso del usuario
+      // Actualiza el ranking (se utiliza el nombre ya obtenido previamente en index)
       updateRanking();
+      
       challengeCompleted = true;
     }
 
-    // Actualizar la crónica guardando el fragmento descubierto
+    // Actualizar la crónica guardando el fragmento descubierto (en este caso, "la")
     function updateChronicle() {
-      // Se guarda el fragmento "la" en localStorage (puedes adaptar el mecanismo según tu backend)
       localStorage.setItem("cronica_iglesia", document.getElementById("message-piece").textContent);
       console.log("Crónica actualizada con el fragmento:", document.getElementById("message-piece").textContent);
     }
 
-    // Actualizar el ranking con el progreso de la parada
+    // Actualizar el ranking con el progreso de la parada sin solicitar el nombre (ya se obtuvo en index)
     function updateRanking() {
-      // Se asume que el nombre del usuario se guardó previamente en localStorage (por ejemplo en una pantalla inicial)
       let username = localStorage.getItem("username");
       if (!username) {
-        username = prompt("Introduce tu nombre:");
-        localStorage.setItem("username", username);
+        console.error("No se encontró el nombre del usuario en localStorage.");
+        return;
       }
-      // Recupera el ranking actual (como un array JSON) o inicia uno vacío
       let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
-      // Añadir o actualizar la entrada para esta parada "Iglesia" y fragmento "la"
       ranking.push({ stop: "iglesia", fragmento: document.getElementById("message-piece").textContent, name: username });
       localStorage.setItem("ranking", JSON.stringify(ranking));
       console.log("Ranking actualizado:", ranking);
@@ -332,19 +333,15 @@
     document.querySelectorAll('.white-key, .black-key').forEach(key => {
       key.addEventListener('click', () => {
         if(challengeCompleted) return;
-
         const nota = key.dataset.note;
         entradaUsuario.push(nota);
-
         const sonido = document.getElementById(`organ-${nota}`);
         if (sonido) {
           const clone = sonido.cloneNode();
           clone.play();
         }
-
         key.classList.add('active');
         setTimeout(() => key.classList.remove('active'), 300);
-
         if (entradaUsuario.length === secuenciaCorrecta.length) {
           if (JSON.stringify(entradaUsuario) === JSON.stringify(secuenciaCorrecta)) {
             completeStop();
