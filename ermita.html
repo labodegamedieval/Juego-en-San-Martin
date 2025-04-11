@@ -436,13 +436,11 @@
           td.addEventListener("mousedown", handleMouseDown);
           td.addEventListener("mouseover", handleMouseOver);
           td.addEventListener("mouseup", handleMouseUp);
-          // Eventos táctiles para móviles:
+          // Eventos táctiles para móviles: touchstart y touchend en cada celda
           td.addEventListener("touchstart", function(e){
             e.preventDefault();
             handleMouseDown.call(this, e);
           });
-          // Usar una función exclusiva para touchmove
-          td.addEventListener("touchmove", handleTouchMove, false);
           td.addEventListener("touchend", function(e){
             e.preventDefault();
             handleMouseUp.call(this, e);
@@ -452,23 +450,22 @@
         table.appendChild(tr);
       }
       container.appendChild(table);
+      // Listener de touchmove en el contenedor para detectar el arrastre
+      container.addEventListener("touchmove", handleTouchMove, {passive: false});
       document.addEventListener("mouseup", handleMouseUp);
     }
-
-function handleTouchMove(e) {
-  e.preventDefault();
-  // Obtiene la primera posición del toque
-  var touch = e.touches[0];
-  // Encuentra el elemento que se encuentra bajo las coordenadas táctiles
-  var elem = document.elementFromPoint(touch.clientX, touch.clientY);
-  // Nos aseguramos de que sea una celda de la sopa de letras
-  if (elem && elem.tagName === "TD" && elem.parentNode && elem.parentNode.parentNode &&
-      elem.parentNode.parentNode.id === "letter-soup-container") {
-    // Llamamos al mismo manejador de mouseover, usando el elemento encontrado
-    handleMouseOver.call(elem, e);
-  }
-}
-
+    
+    function handleTouchMove(e) {
+      e.preventDefault();
+      var touch = e.touches[0];
+      var elem = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (elem) {
+        let td = elem.closest("td");
+        if (td && document.getElementById("letter-soup-container").contains(td)) {
+          handleMouseOver.call(td, e);
+        }
+      }
+    }
     
     let isMouseDown = false;
     let selectedCells = [];
