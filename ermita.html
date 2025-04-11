@@ -4,24 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🙏 Ermita del Socorro</title>
+  <!-- Fuente medieval de Google -->
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    /* Estilos generales */
+    /* Estilos generales con toque medieval */
     body {
-      font-family: 'Georgia', serif;
+      font-family: 'MedievalSharp', Georgia, serif;
       background: url('images/pergamino.jpg') no-repeat center center fixed;
       background-size: cover;
       margin: 0;
       padding: 0;
+      color: #3c2a1e;
+      text-shadow: 1px 1px 2px #fff;
     }
     .container {
       max-width: 960px;
       margin: auto;
       background: rgba(255,248,228,0.95);
+      border: 3px double #5e3b1b;
       border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
     }
     .action-btn {
       display: block;
@@ -32,8 +37,9 @@
       border: 2px solid #5e3b1b;
       border-radius: 10px;
       cursor: pointer;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    /* Estilos para la verificación de ubicación */
+    /* Sección de verificación de ubicación */
     #location-check {
       text-align: center;
       margin-bottom: 30px;
@@ -45,6 +51,8 @@
       font-size: 16px;
       width: 200px;
       margin: 10px;
+      border: 1px solid #5e3b1b;
+      border-radius: 4px;
     }
     #location-status {
       margin-top: 10px;
@@ -62,6 +70,7 @@
       width: 100%;
       margin-bottom: 10px;
       border-radius: 10px;
+      border: 2px solid #5e3b1b;
     }
     .carousel-slides {
       display: flex;
@@ -93,10 +102,11 @@
     }
     .carousel-prev { left: 10px; }
     .carousel-next { right: 10px; }
-    /* Sección de información (texto explicativo e información artística/histórica) */
+    /* Sección de información adicional */
     #info-section {
       text-align: center;
       margin: 20px auto;
+      font-size: 1.1em;
     }
     /* Sopa de Letras */
     #letter-soup-game {
@@ -134,6 +144,7 @@
       font-size: 18px;
       cursor: pointer;
       user-select: none;
+      -webkit-user-select: none;
     }
     .selected { background-color: yellow !important; }
     .found { background-color: lightgreen !important; }
@@ -161,6 +172,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
     .card.flipped, .card.matched {
       background: #fff;
@@ -248,7 +260,7 @@
         <div class="memory-board" id="memory-board"></div>
       </div>
 
-      <!-- Fragmento Final (desplegado al completar ambos juegos) -->
+      <!-- Fragmento Final -->
       <div class="fragmento-final" id="fragmento-final">
         <p><strong>Fragmento del Mensaje:</strong><br>
           <span id="message-piece" style="font-size:1.4em"> sin</span>
@@ -377,12 +389,12 @@
       for (let i = 0; i < gridRows; i++) {
         letterGrid[i] = new Array(gridCols).fill('');
       }
-      // Inserción fija de palabras (ajusta posiciones/direcciones según convenga)
-      insertWord("calzada", 1, 1, 0, 1);
-      insertWord("estela", 3, 6, 0, 1);
-      insertWord("ermita", 4, 9, 1, 0);
-      insertWord("romana", 7, 2, 0, 1);
-      insertWord("socorro", 10, 2, 0, 1);
+      // Posicionamiento actualizado de cada palabra:
+      insertWord("calzada", 1, 1, 0, 1);     // horizontal en fila 1
+      insertWord("estela", 3, 6, 0, 1);      // horizontal en fila 3, columnas 6 a 11
+      insertWord("ermita", 4, 9, 1, 0);      // vertical en columna 9, de la fila 4 a 9
+      insertWord("romana", 7, 2, 0, 1);      // horizontal en fila 7
+      insertWord("socorro", 10, 2, 0, 1);    // horizontal en fila 10
       fillRandomLetters();
       drawLetterSoup();
     }
@@ -420,9 +432,14 @@
           td.textContent = letterGrid[i][j].toUpperCase();
           td.setAttribute("data-row", i);
           td.setAttribute("data-col", j);
+          // Eventos mouse
           td.addEventListener("mousedown", handleMouseDown);
           td.addEventListener("mouseover", handleMouseOver);
           td.addEventListener("mouseup", handleMouseUp);
+          // Eventos táctiles para dispositivos móviles
+          td.addEventListener("touchstart", function(e){ e.preventDefault(); handleMouseDown.call(this, e); });
+          td.addEventListener("touchmove", function(e){ e.preventDefault(); handleMouseOver.call(this, e); });
+          td.addEventListener("touchend", function(e){ e.preventDefault(); handleMouseUp.call(this, e); });
           tr.appendChild(td);
         }
         table.appendChild(tr);
@@ -477,11 +494,10 @@
       }
       document.querySelectorAll("#letter-soup-container td").forEach(td => td.classList.remove("selected"));
       selectedCells = [];
-      // Si se encontraron las 5 palabras, desbloquea el juego de memoria
+      // Si se encontraron las 5 palabras, se desbloquea el juego de memoria
       if (Object.values(targetWords).filter(v => v).length === 5) {
         letterSoupCompleted = true;
         document.getElementById("memory-game").style.display = "block";
-        // Inicializa el juego de memoria si aún no se ha hecho
         if (!document.getElementById("memory-board").hasChildNodes()) {
           initMemoryGame();
         }
