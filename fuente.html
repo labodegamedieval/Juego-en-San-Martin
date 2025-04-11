@@ -6,21 +6,173 @@
   <title>⛲ Fuente y Portalón</title>
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <style>
+    /* Estilos generales con toque clásico */
+    body {
+      font-family: Arial, sans-serif;
+      background: url('images/fondo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 960px;
+      margin: auto;
+      background: rgba(255,248,228,0.95);
+      border: 3px double #5e3b1b;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+    header h1 {
+      text-align: center;
+    }
+    .action-btn {
+      display: block;
+      margin: 15px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #dec79b;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    /* Ubicación */
+    #location-check {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    #location-check input {
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      margin: 10px;
+      border: 1px solid #5e3b1b;
+      border-radius: 4px;
+    }
+    #location-status {
+      margin-top: 10px;
+      font-size: 1.1em;
+      color: red;
+    }
+    #direction-arrow {
+      width: 50px;
+      margin-top: 10px;
+    }
+    /* Carrusel */
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+    }
+    .carousel-slides {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .slide img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #6b3e2e;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.7);
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+    }
+    .prev-slide { left: 10px; }
+    .next-slide { right: 10px; }
+    /* Minijuegos */
+    #canales-puzzle, #reto-caudal {
+      margin: 20px auto;
+      padding: 15px;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      background: #f9f1e6;
+    }
+    #canales-puzzle h2, #reto-caudal h2 {
+      text-align: center;
+    }
+    /* Estilos para el Puzzle de Tuberías */
+    #canales-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    /* Cada pieza del puzzle */
+    .puzzle-piece {
+      background: #f0e6d6;
+      border: 2px solid #5e3b1b;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 60px;
+      height: 60px;
+      margin: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s;
+    }
+    /* Reto del Caudal */
+    #caudal-container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #caudal-container img {
+      max-width: 100%;
+      display: block;
+      margin: auto;
+    }
+    #caudal-control {
+      margin-top: 10px;
+    }
+    /* Fragmento Final */
+    .fragmento-final {
+      margin: 20px auto;
+      display: none;
+      text-align: center;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: cover;
+      padding: 40px 20px;
+      font-style: italic;
+      font-size: 1.4em;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+    @media screen and (max-width: 768px) {
+      .container { max-width: 90%; }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>⛲ Fuente y Portalón</h1>
       <div class="music-control">
-        <button class="music-btn">
+        <button class="action-btn music-btn">
           <span class="music-icon">🎵</span> Pausar Música
         </button>
       </div>
     </header>
-
     <section id="content">
       <div class="stop-icon">⛲</div>
-
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
         <p>Acércate a la fuente y al portalón para continuar.</p>
@@ -29,73 +181,55 @@
         <input type="text" id="location-input" placeholder="Ej: Fuente y Portalón"/>
         <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
         <p id="location-status"></p>
-        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" />
+        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
-
       <div id="game-content" style="display:none;">
+        <!-- Carrusel -->
         <div class="carousel">
-          <div class="slide active">
-            <img src="images/portalon.jpg" alt="Portalón" />
-            <p><strong>Portalón:</strong> Lugar renacentista de reunión y comercio. Aún conserva inscripciones originales. <a href="https://sanmartindelcastañar.es/plaza-mayor-y-portalon/" target="_blank">Más info</a></p>
-          </div>
-          <div class="slide">
-            <img src="images/fuente-detalle.jpg" alt="Fuente" />
-            <p><strong>Fuente:</strong> De dos caños con decoración geométrica, construida en el siglo XVI.</p>
+          <div class="carousel-slides">
+            <div class="slide active">
+              <img src="images/portalon.jpg" alt="Portalón" />
+              <p><strong>Portalón:</strong> Lugar renacentista de reunión y comercio. Aún conserva inscripciones originales. <a href="https://sanmartindelcastañar.es/plaza-mayor-y-portalon/" target="_blank">Más info</a></p>
+            </div>
+            <div class="slide">
+              <img src="images/fuente-detalle.jpg" alt="Fuente" />
+              <p><strong>Fuente:</strong> De dos caños con decoración geométrica, construida en el siglo XVI.</p>
+            </div>
           </div>
           <button class="carousel-btn prev-slide">←</button>
           <button class="carousel-btn next-slide">→</button>
         </div>
 
-        <div class="visual-challenge">
-          <h2>Retos Visuales</h2>
-          <p>1. ¿Cuántos caños tiene la fuente?</p>
-          <div id="visual-opciones-1">
-            <button class="action-btn" onclick="checkVisualAnswer('Un caño','Dos caños',1)">Un caño</button>
-            <button class="action-btn" onclick="checkVisualAnswer('Dos caños','Dos caños',1)">Dos caños</button>
-            <button class="action-btn" onclick="checkVisualAnswer('Tres caños','Dos caños',1)">Tres caños</button>
-          </div>
-          <p id="visual-resultado-1"></p>
-
-          <p>2. ¿Qué decora los caños?</p>
-          <div id="visual-opciones-2">
-            <button class="action-btn" onclick="checkVisualAnswer('Flores','Geométricos',2)">Flores</button>
-            <button class="action-btn" onclick="checkVisualAnswer('Geométricos','Geométricos',2)">Geométricos</button>
-            <button class="action-btn" onclick="checkVisualAnswer('Animales','Geométricos',2)">Animales</button>
-          </div>
-          <p id="visual-resultado-2"></p>
+        <!-- Minijuego 1: Conecta los Canales (Puzzle de Tuberías) -->
+        <div id="canales-puzzle">
+          <h2>Conecta los Canales</h2>
+          <p>Rota las piezas para conectar el flujo de agua.</p>
+          <div id="canales-container"></div>
+          <button class="action-btn" id="check-canales-btn" onclick="checkCanales()">Comprobar Conexión</button>
+          <p id="canales-result"></p>
         </div>
 
-        <div class="quiz">
-          <h2>Quiz Histórico</h2>
-          <p>1. ¿En qué siglo se construyó esta fuente?</p>
-          <div id="quiz-opciones-1">
-            <button class="action-btn" onclick="checkAnswer('XV','XVI',1)">XV</button>
-            <button class="action-btn" onclick="checkAnswer('XVI','XVI',1)">XVI</button>
-            <button class="action-btn" onclick="checkAnswer('XVII','XVI',1)">XVII</button>
+        <!-- Minijuego 2: Reto del Caudal (Control de Flujo) -->
+        <div id="reto-caudal" style="display:none;">
+          <h2>Reto del Caudal</h2>
+          <p>Ajusta el caudal de la fuente para alcanzar el nivel correcto.</p>
+          <div id="caudal-container">
+            <!-- Imagen de la fuente; puedes sustituir por la que desees -->
+            <img src="images/fuente.jpg" alt="Fuente" id="fuente-image"/>
+            <div id="caudal-control">
+              <input type="range" id="flow-slider" min="0" max="100" value="50" oninput="updateFlow(this.value)">
+              <p>Nivel de Caudal: <span id="flow-level">50</span>%</p>
+            </div>
           </div>
-          <p id="quiz-resultado-1"></p>
-
-          <p>2. ¿Qué estilo es la fuente?</p>
-          <div id="quiz-opciones-2">
-            <button class="action-btn" onclick="checkAnswer('Renacentista','Renacentista',2)">Renacentista</button>
-            <button class="action-btn" onclick="checkAnswer('Gótico','Renacentista',2)">Gótico</button>
-            <button class="action-btn" onclick="checkAnswer('Barroco','Renacentista',2)">Barroco</button>
-          </div>
-          <p id="quiz-resultado-2"></p>
-
-          <p>3. ¿Qué río pasa cerca?</p>
-          <div id="quiz-opciones-3">
-            <button class="action-btn" onclick="checkAnswer('Canderuelo','Canderuelo',3)">Canderuelo</button>
-            <button class="action-btn" onclick="checkAnswer('Francia','Canderuelo',3)">Francia</button>
-            <button class="action-btn" onclick="checkAnswer('Tormes','Canderuelo',3)">Tormes</button>
-          </div>
-          <p id="quiz-resultado-3"></p>
+          <button class="action-btn" onclick="checkCaudal()">Confirmar Caudal</button>
+          <p id="caudal-result"></p>
         </div>
 
-        <div class="fragmento-final">
-          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">bodega</span></p>
-          <p><strong>QR en el pueblo:</strong> FUENTE-1600</p>
-          <p><strong>Dato Curioso:</strong> Durante siglos, los vecinos se reunían aquí a debatir decisiones del consejo.</p>
+        <!-- Fragmento Final -->
+        <div class="fragmento-final" id="fragmento-final">
+          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece">[Mensaje]</span></p>
+          <p><strong>QR Extra:</strong> FUENTE-EXTRA</p>
+          <p><strong>Dato Curioso:</strong> Durante siglos, este lugar ha sido testigo de reuniones y leyendas; se dice que el agua de la fuente tiene propiedades curativas y susurra historias antiguas.</p>
         </div>
 
         <div id="continue-button" style="display:none;">
@@ -103,22 +237,147 @@
         </div>
       </div>
     </section>
-
     <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
     <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-
     <footer>
       <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
     </footer>
 
-    <script src="scripts/script.js"></script>
-
     <script>
-  localStorage.setItem("fuente-completed", "true");
-</script>
-
+      /* --- Funciones de Ubicación --- */
+      const targetLat = 40.123456;
+      const targetLon = -3.123456;
+      const thresholdDistance = 50;
+      function checkLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
+        } else {
+          document.getElementById("location-status").textContent = "Tu navegador no soporta geolocalización.";
+        }
+      }
+      function geoSuccess(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const distance = calculateDistance(lat, lon, targetLat, targetLon);
+        if (distance <= thresholdDistance) { unlockStop(); }
+        else { document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Fuente y Portalón."; }
+      }
+      function locationError(err) {
+        document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
+      }
+      function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371e3;
+        const toRad = (x) => x * Math.PI / 180;
+        const φ1 = toRad(lat1), φ2 = toRad(lat2);
+        const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
+        const a = Math.sin(Δφ/2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) ** 2;
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+      }
+      function checkLocationManual() {
+        const input = document.getElementById("location-input").value.trim().toLowerCase();
+        if (input === "fuente y portalón") { unlockStop(); }
+        else { document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente."; }
+      }
+      function unlockStop() {
+        document.getElementById("location-check").style.display = "none";
+        document.getElementById("game-content").style.display = "block";
+        initCarousel();
+        initCanalesPuzzle();
+        playSound("background-music");
+      }
+      /* --- Carrusel --- */
+      let currentSlide = 0, slides;
+      function initCarousel() {
+        slides = document.querySelectorAll('.slide');
+        document.querySelector('.prev-slide').addEventListener('click', () => {
+          currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+          updateCarousel();
+        });
+        document.querySelector('.next-slide').addEventListener('click', () => {
+          currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
+          updateCarousel();
+        });
+      }
+      function updateCarousel() {
+        const carouselSlides = document.querySelector('.carousel-slides');
+        carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
+      }
+      /* --- Sonidos --- */
+      function playSound(id) {
+        const sound = document.getElementById(id);
+        if (sound) { sound.play(); }
+      }
+      /* --- Minijuego 1: Conecta los Canales (Puzzle de Tuberías) --- */
+      const puzzleRows = 3, puzzleCols = 3;
+      let puzzlePieces = [];
+      function initCanalesPuzzle() {
+        const container = document.getElementById("canales-container");
+        container.innerHTML = "";
+        puzzlePieces = [];
+        for (let i = 0; i < puzzleRows; i++) {
+          const rowDiv = document.createElement("div");
+          rowDiv.style.display = "flex";
+          for (let j = 0; j < puzzleCols; j++) {
+            const piece = document.createElement("div");
+            piece.classList.add("puzzle-piece");
+            // Cada pieza tendrá 60px x 60px (definido en CSS)
+            piece.dataset.rotation = 0;
+            // Asignamos una rotación inicial aleatoria (0, 90, 180, o 270)
+            const rotations = [0, 90, 180, 270];
+            let rotation = rotations[Math.floor(Math.random() * rotations.length)];
+            piece.dataset.rotation = rotation;
+            piece.style.transform = "rotate(" + rotation + "deg)";
+            piece.addEventListener("click", function(){
+              rotation = (rotation + 90) % 360;
+              piece.dataset.rotation = rotation;
+              piece.style.transform = "rotate(" + rotation + "deg)";
+            });
+            rowDiv.appendChild(piece);
+            puzzlePieces.push(piece);
+          }
+          container.appendChild(rowDiv);
+        }
+      }
+      function checkCanales() {
+        let correct = puzzlePieces.every(piece => parseInt(piece.dataset.rotation) === 0);
+        const resultEl = document.getElementById("canales-result");
+        if(correct) {
+          resultEl.textContent = "¡Conexión completada!";
+          // Desbloquea el siguiente minijuego
+          document.getElementById("canales-puzzle").style.display = "none";
+          document.getElementById("reto-caudal").style.display = "block";
+        } else {
+          resultEl.textContent = "Aún no se conecta correctamente. Inténtalo de nuevo.";
+        }
+      }
+      /* --- Minijuego 2: Reto del Caudal (Control de Flujo) --- */
+      const targetFlow = 70;  // Valor objetivo (por ejemplo, 70%)
+      function updateFlow(value) {
+        document.getElementById("flow-level").textContent = value;
+      }
+      function checkCaudal() {
+        const value = parseInt(document.getElementById("flow-slider").value);
+        const resultEl = document.getElementById("caudal-result");
+        if (Math.abs(value - targetFlow) <= 5) {
+          resultEl.textContent = "¡Nivel correcto!";
+          unlockFinalFragment();
+        } else {
+          resultEl.textContent = "Nivel incorrecto. Prueba nuevamente.";
+        }
+      }
+      function unlockFinalFragment() {
+        document.getElementById("fragmento-final").style.display = "block";
+        document.getElementById("continue-button").style.display = "block";
+      }
+    </script>
+    <script src="scripts/script.js"></script>
+    <script>
+      localStorage.setItem("fuente-completed", "true");
+    </script>
+  </div>
 </body>
 </html>
