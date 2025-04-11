@@ -6,8 +6,8 @@
   <title>⛲ Fuente y Portalón</title>
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+
   <style>
-    /* Estilos generales con toque clásico */
     body {
       font-family: Arial, sans-serif;
       background: url('images/fondo.jpg') no-repeat center center fixed;
@@ -29,8 +29,8 @@
       text-align: center;
     }
     .action-btn {
-      display: block;
-      margin: 15px auto;
+      display: inline-block;
+      margin: 5px auto;
       padding: 10px 20px;
       font-size: 16px;
       background: #dec79b;
@@ -39,7 +39,13 @@
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    /* Ubicación */
+    .music-control {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #content {
+      margin-top: 10px;
+    }
     #location-check {
       text-align: center;
       margin-bottom: 30px;
@@ -98,50 +104,60 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
-    /* Minijuegos */
-    #canales-puzzle, #reto-caudal {
+    /* Visual Challenge & Quiz (original sections) */
+    .visual-challenge, .quiz {
+      margin: 20px 0;
+    }
+    /* Nuevo Minijuego 1: Puzzle de tuberías */
+    #puzzle-tuberias {
+      display: none;
       margin: 20px auto;
       padding: 15px;
       border: 2px solid #5e3b1b;
       border-radius: 10px;
       background: #f9f1e6;
     }
-    #canales-puzzle h2, #reto-caudal h2 {
+    #puzzle-tuberias h2 {
       text-align: center;
     }
-    /* Estilos para el Puzzle de Tuberías */
-    #canales-container {
+    #puzzle-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 10px;
+      margin: 10px;
     }
-    /* Cada pieza del puzzle */
-    .puzzle-piece {
-      background: #f0e6d6;
+    .puzzle-row {
+      display: flex;
+    }
+    .pipe-piece {
+      width: 80px;
+      height: 80px;
+      margin: 3px;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      transition: transform 0.3s;
       border: 2px solid #5e3b1b;
       border-radius: 5px;
-      cursor: pointer;
-      width: 60px;
-      height: 60px;
-      margin: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s;
     }
-    /* Reto del Caudal */
-    #caudal-container {
+    /* Nuevo Minijuego 2: Puzzle de los cántaros (clásico puzzle de jarras de agua) */
+    #puzzle-cantaros {
+      display: none;
+      margin: 20px auto;
+      padding: 15px;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      background: #f9f1e6;
+    }
+    #puzzle-cantaros h2 {
       text-align: center;
-      margin-bottom: 10px;
     }
-    #caudal-container img {
-      max-width: 100%;
-      display: block;
-      margin: auto;
+    #cantaros-container {
+      text-align: center;
+      margin: 10px;
     }
-    #caudal-control {
-      margin-top: 10px;
+    .jug-status {
+      margin: 5px 0;
     }
     /* Fragmento Final */
     .fragmento-final {
@@ -152,15 +168,27 @@
       background-size: cover;
       padding: 40px 20px;
       font-style: italic;
-      font-size: 1.4em;
+      font-size: 1.2em;
       font-weight: bold;
       border-radius: 10px;
     }
+    #continue-button {
+      text-align: center;
+      margin-top: 15px;
+      display: none;
+    }
+    footer p {
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: 20px;
+    }
     @media screen and (max-width: 768px) {
       .container { max-width: 90%; }
+      .pipe-piece { width: 60px; height: 60px; }
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -171,8 +199,11 @@
         </button>
       </div>
     </header>
+
     <section id="content">
       <div class="stop-icon">⛲</div>
+
+      <!-- Verificación de Ubicación -->
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
         <p>Acércate a la fuente y al portalón para continuar.</p>
@@ -181,15 +212,22 @@
         <input type="text" id="location-input" placeholder="Ej: Fuente y Portalón"/>
         <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
         <p id="location-status"></p>
-        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
+        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección"/>
       </div>
+
+      <!-- Contenido principal (oculto hasta que se verifique la ubicación) -->
       <div id="game-content" style="display:none;">
+        
         <!-- Carrusel -->
         <div class="carousel">
           <div class="carousel-slides">
             <div class="slide active">
               <img src="images/portalon.jpg" alt="Portalón" />
-              <p><strong>Portalón:</strong> Lugar renacentista de reunión y comercio. Aún conserva inscripciones originales. <a href="https://sanmartindelcastañar.es/plaza-mayor-y-portalon/" target="_blank">Más info</a></p>
+              <p>
+                <strong>Portalón:</strong> Lugar renacentista de reunión y comercio. 
+                Aún conserva inscripciones originales.
+                <a href="https://sanmartindelcastañar.es/plaza-mayor-y-portalon/" target="_blank">Más info</a>
+              </p>
             </div>
             <div class="slide">
               <img src="images/fuente-detalle.jpg" alt="Fuente" />
@@ -200,57 +238,120 @@
           <button class="carousel-btn next-slide">→</button>
         </div>
 
-        <!-- Minijuego 1: Conecta los Canales (Puzzle de Tuberías) -->
-        <div id="canales-puzzle">
-          <h2>Conecta los Canales</h2>
-          <p>Rota las piezas para conectar el flujo de agua.</p>
-          <div id="canales-container"></div>
-          <button class="action-btn" id="check-canales-btn" onclick="checkCanales()">Comprobar Conexión</button>
-          <p id="canales-result"></p>
+        <!-- Visual Challenge (ejemplo) -->
+        <div class="visual-challenge">
+          <h2>Retos Visuales</h2>
+          <p>1. ¿Cuántos caños tiene la fuente?</p>
+          <div id="visual-opciones-1">
+            <button class="action-btn" onclick="checkVisualAnswer('Un caño','Dos caños',1)">Un caño</button>
+            <button class="action-btn" onclick="checkVisualAnswer('Dos caños','Dos caños',1)">Dos caños</button>
+            <button class="action-btn" onclick="checkVisualAnswer('Tres caños','Dos caños',1)">Tres caños</button>
+          </div>
+          <p id="visual-resultado-1"></p>
+
+          <p>2. ¿Qué decora los caños?</p>
+          <div id="visual-opciones-2">
+            <button class="action-btn" onclick="checkVisualAnswer('Flores','Geométricos',2)">Flores</button>
+            <button class="action-btn" onclick="checkVisualAnswer('Geométricos','Geométricos',2)">Geométricos</button>
+            <button class="action-btn" onclick="checkVisualAnswer('Animales','Geométricos',2)">Animales</button>
+          </div>
+          <p id="visual-resultado-2"></p>
         </div>
 
-        <!-- Minijuego 2: Reto del Caudal (Control de Flujo) -->
-        <div id="reto-caudal" style="display:none;">
-          <h2>Reto del Caudal</h2>
-          <p>Ajusta el caudal de la fuente para alcanzar el nivel correcto.</p>
-          <div id="caudal-container">
-            <!-- Imagen de la fuente; puedes sustituir por la que desees -->
-            <img src="images/fuente.jpg" alt="Fuente" id="fuente-image"/>
-            <div id="caudal-control">
-              <input type="range" id="flow-slider" min="0" max="100" value="50" oninput="updateFlow(this.value)">
-              <p>Nivel de Caudal: <span id="flow-level">50</span>%</p>
-            </div>
+        <!-- Quiz (ejemplo) -->
+        <div class="quiz">
+          <h2>Quiz Histórico</h2>
+          <p>1. ¿En qué siglo se construyó esta fuente?</p>
+          <div id="quiz-opciones-1">
+            <button class="action-btn" onclick="checkAnswer('XV','XVI',1)">XV</button>
+            <button class="action-btn" onclick="checkAnswer('XVI','XVI',1)">XVI</button>
+            <button class="action-btn" onclick="checkAnswer('XVII','XVI',1)">XVII</button>
           </div>
-          <button class="action-btn" onclick="checkCaudal()">Confirmar Caudal</button>
-          <p id="caudal-result"></p>
+          <p id="quiz-resultado-1"></p>
+
+          <p>2. ¿Qué estilo es la fuente?</p>
+          <div id="quiz-opciones-2">
+            <button class="action-btn" onclick="checkAnswer('Renacentista','Renacentista',2)">Renacentista</button>
+            <button class="action-btn" onclick="checkAnswer('Gótico','Renacentista',2)">Gótico</button>
+            <button class="action-btn" onclick="checkAnswer('Barroco','Renacentista',2)">Barroco</button>
+          </div>
+          <p id="quiz-resultado-2"></p>
+
+          <p>3. ¿Qué río pasa cerca?</p>
+          <div id="quiz-opciones-3">
+            <button class="action-btn" onclick="checkAnswer('Canderuelo','Canderuelo',3)">Canderuelo</button>
+            <button class="action-btn" onclick="checkAnswer('Francia','Canderuelo',3)">Francia</button>
+            <button class="action-btn" onclick="checkAnswer('Tormes','Canderuelo',3)">Tormes</button>
+          </div>
+          <p id="quiz-resultado-3"></p>
+        </div>
+
+        <!-- Nuevo: Minijuego 1 - Puzzle de tuberías -->
+        <div id="puzzle-tuberias">
+          <h2>Puzzle de Tuberías</h2>
+          <p>Haz clic en cada pieza para girarla y conecta el agua de un lado al otro.</p>
+          <div id="puzzle-container"></div>
+          <div style="text-align:center;">
+            <button class="action-btn" onclick="checkTuberias()">Comprobar Tuberías</button>
+          </div>
+          <p id="puzzle-tuberias-resultado" style="text-align:center; color:green; font-weight:bold;"></p>
+        </div>
+
+        <!-- Nuevo: Minijuego 2 - Puzzle de los cántaros -->
+        <div id="puzzle-cantaros">
+          <h2>Puzzle de Cántaros</h2>
+          <p>Logra medir exactamente 4 litros de agua usando un cántaro de 5L y otro de 3L.</p>
+          <div id="cantaros-container">
+            <div class="jug-status">
+              Cántaro A (5L): <span id="a-actual">0</span> L
+            </div>
+            <div class="jug-status">
+              Cántaro B (3L): <span id="b-actual">0</span> L
+            </div>
+            <button class="action-btn" onclick="fillA()">Llenar A (5L)</button>
+            <button class="action-btn" onclick="fillB()">Llenar B (3L)</button>
+            <br>
+            <button class="action-btn" onclick="emptyA()">Vaciar A</button>
+            <button class="action-btn" onclick="emptyB()">Vaciar B</button>
+            <br>
+            <button class="action-btn" onclick="pourAtoB()">Verter A → B</button>
+            <button class="action-btn" onclick="pourBtoA()">Verter B → A</button>
+          </div>
+          <p id="puzzle-cantaros-resultado" style="text-align:center; color:green; font-weight:bold;"></p>
         </div>
 
         <!-- Fragmento Final -->
         <div class="fragmento-final" id="fragmento-final">
-          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece">[Mensaje]</span></p>
-          <p><strong>QR Extra:</strong> FUENTE-EXTRA</p>
-          <p><strong>Dato Curioso:</strong> Durante siglos, este lugar ha sido testigo de reuniones y leyendas; se dice que el agua de la fuente tiene propiedades curativas y susurra historias antiguas.</p>
+          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="font-size:1.4em">bodega</span></p>
+          <p><strong>QR en el pueblo:</strong> FUENTE-1600</p>
+          <p><strong>Dato Curioso:</strong> Durante siglos, los vecinos se reunían aquí a debatir decisiones del consejo.</p>
         </div>
 
-        <div id="continue-button" style="display:none;">
+        <div id="continue-button">
           <button class="action-btn" onclick="location.href='felicitaciones.html?stop=fuente'">Continuar búsqueda</button>
         </div>
       </div>
     </section>
+
+    <!-- Audios -->
     <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
     <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+
     <footer>
       <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
     </footer>
 
     <script>
-      /* --- Funciones de Ubicación --- */
+      /*----------------------------------------*/
+      /* 1. VERIFICACIÓN DE UBICACIÓN           */
+      /*----------------------------------------*/
       const targetLat = 40.123456;
       const targetLon = -3.123456;
       const thresholdDistance = 50;
+
       function checkLocation() {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
@@ -262,8 +363,11 @@
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         const distance = calculateDistance(lat, lon, targetLat, targetLon);
-        if (distance <= thresholdDistance) { unlockStop(); }
-        else { document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Fuente y Portalón."; }
+        if (distance <= thresholdDistance) {
+          unlockStop();
+        } else {
+          document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Fuente y Portalón.";
+        }
       }
       function locationError(err) {
         document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
@@ -273,23 +377,29 @@
         const toRad = (x) => x * Math.PI / 180;
         const φ1 = toRad(lat1), φ2 = toRad(lat2);
         const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
-        const a = Math.sin(Δφ/2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) ** 2;
+        const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return R * c;
       }
       function checkLocationManual() {
         const input = document.getElementById("location-input").value.trim().toLowerCase();
-        if (input === "fuente y portalón") { unlockStop(); }
-        else { document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente."; }
+        if (input === "fuente y portalón" || input === "fuente y portalon") {
+          unlockStop();
+        } else {
+          document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
+        }
       }
       function unlockStop() {
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
         initCarousel();
-        initCanalesPuzzle();
+        initTuberiasPuzzle(); // <-- Llamamos a inicializar puzzle 1
         playSound("background-music");
       }
-      /* --- Carrusel --- */
+
+      /*----------------------------------------*/
+      /* 2. CARRUSEL                            */
+      /*----------------------------------------*/
       let currentSlide = 0, slides;
       function initCarousel() {
         slides = document.querySelectorAll('.slide');
@@ -306,78 +416,194 @@
         const carouselSlides = document.querySelector('.carousel-slides');
         carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
       }
-      /* --- Sonidos --- */
-      function playSound(id) {
-        const sound = document.getElementById(id);
-        if (sound) { sound.play(); }
+
+      /*----------------------------------------*/
+      /* 3. RETOS VISUALES Y QUIZ (YA EXISTEN)  */
+      /*----------------------------------------*/
+      function checkVisualAnswer(selected, correct, n) {
+        const result = document.getElementById('visual-resultado-'+n);
+        if(selected === correct) {
+          result.textContent = "¡Correcto!";
+          playSound("success-sound");
+        } else {
+          result.textContent = "Respuesta incorrecta...";
+          playSound("error-sound");
+        }
       }
-      /* --- Minijuego 1: Conecta los Canales (Puzzle de Tuberías) --- */
+      function checkAnswer(selected, correct, n) {
+        const result = document.getElementById('quiz-resultado-'+n);
+        if(selected === correct) {
+          result.textContent = "¡Correcto!";
+          playSound("success-sound");
+        } else {
+          result.textContent = "Incorrecto. Vuelve a intentarlo.";
+          playSound("error-sound");
+        }
+      }
+
+      /*----------------------------------------*/
+      /* 4. MINIJUEGO 1: PUZZLE DE TUBERÍAS     */
+      /*----------------------------------------*/
+      // Ejemplo: 3x3 con 4 posibles tipos de tubería
       const puzzleRows = 3, puzzleCols = 3;
+      const pipeTypes = ["pipe-straight","pipe-curve","pipe-t","pipe-cross"];
+      // En un puzzle real, cada celda sabría cómo conecta con sus vecinas;
+      // aquí simplificamos: la "solución" es que TODAS tengan rotation=0.
       let puzzlePieces = [];
-      function initCanalesPuzzle() {
-        const container = document.getElementById("canales-container");
-        container.innerHTML = "";
+
+      function initTuberiasPuzzle() {
+        document.getElementById("puzzle-tuberias").style.display = "block";
+        const puzzleCont = document.getElementById("puzzle-container");
+        puzzleCont.innerHTML = "";
         puzzlePieces = [];
-        for (let i = 0; i < puzzleRows; i++) {
+
+        for(let r=0; r < puzzleRows; r++){
           const rowDiv = document.createElement("div");
-          rowDiv.style.display = "flex";
-          for (let j = 0; j < puzzleCols; j++) {
+          rowDiv.classList.add("puzzle-row");
+          for(let c=0; c < puzzleCols; c++){
             const piece = document.createElement("div");
-            piece.classList.add("puzzle-piece");
-            // Cada pieza tendrá 60px x 60px (definido en CSS)
-            piece.dataset.rotation = 0;
-            // Asignamos una rotación inicial aleatoria (0, 90, 180, o 270)
-            const rotations = [0, 90, 180, 270];
-            let rotation = rotations[Math.floor(Math.random() * rotations.length)];
-            piece.dataset.rotation = rotation;
-            piece.style.transform = "rotate(" + rotation + "deg)";
-            piece.addEventListener("click", function(){
-              rotation = (rotation + 90) % 360;
-              piece.dataset.rotation = rotation;
-              piece.style.transform = "rotate(" + rotation + "deg)";
+            piece.classList.add("pipe-piece");
+            // Asignamos un tipo de tubería aleatorio
+            const randomType = pipeTypes[Math.floor(Math.random()*pipeTypes.length)];
+            piece.dataset.type = randomType;
+            // Asignamos un background-image correspondiente
+            // (Necesitas tener las imágenes en /images/pipes/. Ej: pipe-straight.png, pipe-curve.png, etc.)
+            piece.style.backgroundImage = `url('images/pipes/${randomType}.png')`;
+            
+            // Rotación inicial aleatoria (0, 90, 180, 270)
+            const possibleRotations = [0, 90, 180, 270];
+            let randomRot = possibleRotations[Math.floor(Math.random()*possibleRotations.length)];
+            piece.dataset.rotation = randomRot;
+            piece.style.transform = `rotate(${randomRot}deg)`;
+
+            // Al hacer clic, gira 90°
+            piece.addEventListener("click", () => {
+              const currentRot = parseInt(piece.dataset.rotation);
+              const newRot = (currentRot + 90) % 360;
+              piece.dataset.rotation = newRot;
+              piece.style.transform = `rotate(${newRot}deg)`;
             });
             rowDiv.appendChild(piece);
             puzzlePieces.push(piece);
           }
-          container.appendChild(rowDiv);
+          puzzleCont.appendChild(rowDiv);
         }
       }
-      function checkCanales() {
-        let correct = puzzlePieces.every(piece => parseInt(piece.dataset.rotation) === 0);
-        const resultEl = document.getElementById("canales-result");
-        if(correct) {
-          resultEl.textContent = "¡Conexión completada!";
-          // Desbloquea el siguiente minijuego
-          document.getElementById("canales-puzzle").style.display = "none";
-          document.getElementById("reto-caudal").style.display = "block";
+
+      function checkTuberias(){
+        // Solución simplificada: TODAS rotation=0
+        const puzzleResult = document.getElementById("puzzle-tuberias-resultado");
+        const allCorrect = puzzlePieces.every(p => parseInt(p.dataset.rotation) === 0);
+        
+        if(allCorrect){
+          puzzleResult.textContent = "¡Tuberías conectadas correctamente!";
+          playSound("coins-sound");
+          // Desbloquear Puzzle de Cántaros
+          document.getElementById("puzzle-tuberias").style.display = "none";
+          initCantarosPuzzle();
         } else {
-          resultEl.textContent = "Aún no se conecta correctamente. Inténtalo de nuevo.";
+          puzzleResult.textContent = "Aún hay tuberías mal orientadas. Sigue intentando.";
+          playSound("error-sound");
         }
       }
-      /* --- Minijuego 2: Reto del Caudal (Control de Flujo) --- */
-      const targetFlow = 70;  // Valor objetivo (por ejemplo, 70%)
-      function updateFlow(value) {
-        document.getElementById("flow-level").textContent = value;
+
+      /*----------------------------------------*/
+      /* 5. MINIJUEGO 2: PUZZLE DE CÁNTAROS     */
+      /*----------------------------------------*/
+      // Clásico puzzle: un cántaro de 5L, uno de 3L, queremos 4L en alguno.
+      let aCap = 5, bCap = 3; // capacidades
+      let aCur = 0, bCur = 0; // actuales
+      let puzzleCantarosCompleted = false;
+
+      function initCantarosPuzzle(){
+        document.getElementById("puzzle-cantaros").style.display = "block";
+        updateJugsDisplay();
       }
-      function checkCaudal() {
-        const value = parseInt(document.getElementById("flow-slider").value);
-        const resultEl = document.getElementById("caudal-result");
-        if (Math.abs(value - targetFlow) <= 5) {
-          resultEl.textContent = "¡Nivel correcto!";
+
+      function updateJugsDisplay(){
+        document.getElementById("a-actual").textContent = aCur;
+        document.getElementById("b-actual").textContent = bCur;
+      }
+
+      function fillA(){
+        aCur = aCap;
+        checkCantaros();
+      }
+      function fillB(){
+        bCur = bCap;
+        checkCantaros();
+      }
+      function emptyA(){
+        aCur = 0;
+        checkCantaros();
+      }
+      function emptyB(){
+        bCur = 0;
+        checkCantaros();
+      }
+      function pourAtoB(){
+        // Verter de A a B hasta vaciar A o llenar B
+        const spaceInB = bCap - bCur;
+        if(aCur <= spaceInB){
+          // todo A se pasa a B
+          bCur += aCur;
+          aCur = 0;
+        } else {
+          // B se llena y A sobra
+          aCur -= spaceInB;
+          bCur = bCap;
+        }
+        checkCantaros();
+      }
+      function pourBtoA(){
+        // Verter de B a A hasta vaciar B o llenar A
+        const spaceInA = aCap - aCur;
+        if(bCur <= spaceInA){
+          aCur += bCur;
+          bCur = 0;
+        } else {
+          bCur -= spaceInA;
+          aCur = aCap;
+        }
+        checkCantaros();
+      }
+
+      function checkCantaros(){
+        // Actualiza display
+        updateJugsDisplay();
+        // ¿Tenemos 4 litros en A o B?
+        const puzzleCantarosResultado = document.getElementById("puzzle-cantaros-resultado");
+        if(aCur === 4 || bCur === 4){
+          puzzleCantarosResultado.textContent = "¡Has logrado los 4 litros, excelente!";
+          playSound("coins-sound");
           unlockFinalFragment();
         } else {
-          resultEl.textContent = "Nivel incorrecto. Prueba nuevamente.";
+          puzzleCantarosResultado.textContent = "";
         }
       }
-      function unlockFinalFragment() {
-        document.getElementById("fragmento-final").style.display = "block";
-        document.getElementById("continue-button").style.display = "block";
+
+      /*----------------------------------------*/
+      /* 6. FRAGMENTO FINAL / CONTINUAR         */
+      /*----------------------------------------*/
+      function unlockFinalFragment(){
+        if(!puzzleCantarosCompleted){
+          puzzleCantarosCompleted = true;
+          document.getElementById("fragmento-final").style.display = "block";
+          document.getElementById("continue-button").style.display = "block";
+          playSound("cheers-sound");
+        }
       }
-    </script>
-    <script src="scripts/script.js"></script>
-    <script>
+
+      /*----------------------------------------*/
+      /* 7. SONIDOS Y LOCALSTORAGE              */
+      /*----------------------------------------*/
+      function playSound(id) {
+        const sound = document.getElementById(id);
+        if (sound) sound.play();
+      }
+
+      // Marcamos la parada como completada si fuera necesario
       localStorage.setItem("fuente-completed", "true");
     </script>
-  </div>
 </body>
 </html>
