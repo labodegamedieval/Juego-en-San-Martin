@@ -115,19 +115,23 @@
     }
     #letter-soup-game h2 { margin-bottom: 10px; }
     #letter-soup-game p { margin-bottom: 10px; }
-    #word-list {
-      margin: 15px auto;
-      max-width: 600px;
-      text-align: left;
+    /* Word Buttons: reemplaza la antigua lista y se centra en móvil */
+    #word-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .word-button {
+      background: #dec79b;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
       font-size: 16px;
-      list-style-type: none;
-      padding: 0;
+      padding: 8px 12px;
+      cursor: default;
     }
-    #word-list li {
-      padding: 5px;
-      border-bottom: 1px solid #ccc;
-    }
-    .word-found {
+    .word-button.word-found {
       text-decoration: line-through;
       color: green;
     }
@@ -164,11 +168,11 @@
       background: #dec79b;
       border: 2px solid #5e3b1b;
       border-radius: 10px;
-      padding: 10px;       /* Menos padding para mantener tamaño compacto */
-      font-size: 20px;     /* Tamaño de fuente reducido */
+      padding: 10px;
+      font-size: 20px;
       cursor: pointer;
       user-select: none;
-      height: 60px;        /* Altura reducida */
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -192,7 +196,7 @@
       border-radius: 10px;
     }
     @media screen and (max-width: 768px) {
-      #letter-soup-game, #word-list, .fragmento-final, #memory-game {
+      #letter-soup-game, .fragmento-final, #memory-game {
         max-width: 90%;
       }
     }
@@ -243,13 +247,13 @@
       <div id="letter-soup-game">
         <h2>Sopa de Letras</h2>
         <p>Encuentra las siguientes 5 palabras relacionadas con la parada:</p>
-        <ul id="word-list">
-          <li id="w-calzada">calzada</li>
-          <li id="w-estela">estela</li>
-          <li id="w-ermita">ermita</li>
-          <li id="w-romana">romana</li>
-          <li id="w-socorro">socorro</li>
-        </ul>
+        <div id="word-buttons">
+          <button class="word-button" id="w-calzada">calzada</button>
+          <button class="word-button" id="w-estela">estela</button>
+          <button class="word-button" id="w-ermita">ermita</button>
+          <button class="word-button" id="w-romana">romana</button>
+          <button class="word-button" id="w-socorro">socorro</button>
+        </div>
         <div id="letter-soup-container"></div>
       </div>
 
@@ -449,6 +453,7 @@
         }
         table.appendChild(tr);
       }
+      container.innerHTML = "";
       container.appendChild(table);
       // Listener de touchmove en el contenedor para detectar el arrastre
       container.addEventListener("touchmove", handleTouchMove, {passive: false});
@@ -535,10 +540,10 @@
     
     function updateWordList() {
       for (let word in targetWords) {
-        const li = document.getElementById("w-" + word);
-        if (li) {
-          if (targetWords[word]) li.classList.add("word-found");
-          else li.classList.remove("word-found");
+        const btn = document.getElementById("w-" + word);
+        if (btn) {
+          if (targetWords[word]) btn.classList.add("word-found");
+          else btn.classList.remove("word-found");
         }
       }
     }
