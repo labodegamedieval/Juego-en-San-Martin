@@ -66,7 +66,7 @@
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease;
-      width: 300%; /* 3 slides */
+      width: 300%; /* Para 3 slides */
     }
     .slide {
       flex: 0 0 100%;
@@ -107,7 +107,7 @@
       background-size: cover;
       position: relative;
     }
-    /* Caja de contenido para textos con legibilidad */
+    /* Caja para mejorar la legibilidad en los retos */
     .content-box {
       background: rgba(0, 0, 0, 0.8);
       color: #fff;
@@ -205,7 +205,8 @@
         </button>
       </div>
     </header>
-    <!-- Verificación de Ubicación -->
+    
+    <!-- Sección de Verificación de Ubicación -->
     <section id="content">
       <div class="stop-icon">🏰</div>
       <div id="location-check">
@@ -218,6 +219,7 @@
         <p id="location-status"></p>
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
+      
       <!-- Contenido principal (se muestra tras verificación) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
@@ -251,7 +253,8 @@
           <button class="carousel-btn prev-slide">&larr;</button>
           <button class="carousel-btn next-slide">&rarr;</button>
         </div>
-        <!-- Retos Visuales -->
+        
+        <!-- Resto de secciones: retos visuales, quiz, y luego el reto del castillo -->
         <div class="visual-challenge">
           <h2>Reto Visual</h2>
           <p>1. ¿Qué marcó la torre del homenaje?</p>
@@ -269,7 +272,7 @@
           </div>
           <p id="visual-resultado-2"></p>
         </div>
-        <!-- Quiz Histórico -->
+        
         <div class="quiz">
           <h2>Quiz Histórico</h2>
           <p>1. ¿En qué siglo nació este castillo?</p>
@@ -294,7 +297,8 @@
           </div>
           <p id="quiz-resultado-3"></p>
         </div>
-        <!-- Reto del Castillo: Laberinto y Reto del Cofre -->
+        
+        <!-- Reto del Castillo: Laberinto y Cofre -->
         <div id="castle-challenge" style="display: none;">
           <!-- Laberinto -->
           <div id="labyrinth-section">
@@ -323,7 +327,8 @@
             </div>
           </div>
         </div>
-        <!-- Fragmento Final (oculto hasta superar el reto) -->
+        
+        <!-- Fragmento Final -->
         <div class="fragmento-final" id="fragmento-final">
           <p>
             <strong>Fragmento del Mensaje:</strong>
@@ -334,6 +339,7 @@
             <strong>Dato Curioso:</strong> Aquí se han hallado monedas y cerámicas del siglo XIII.
           </p>
         </div>
+        
         <div id="continue-button" style="display:none;">
           <button class="action-btn" onclick="location.href='felicitaciones.html?stop=castillo'">
             Continuar búsqueda
@@ -341,18 +347,21 @@
         </div>
       </div>
     </section>
+    
     <!-- Audios -->
     <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
     <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+    
     <footer>
       <p>
         © 2025 La Bodega Medieval | 
         <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
       </p>
     </footer>
+    
     <script>
       /*----------------------------------------*/
       /* 1. VERIFICACIÓN DE UBICACIÓN           */
@@ -364,8 +373,7 @@
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
         } else {
-          document.getElementById("location-status").textContent =
-            "Tu navegador no soporta geolocalización.";
+          document.getElementById("location-status").textContent = "Tu navegador no soporta geolocalización.";
         }
       }
       function geoSuccess(position) {
@@ -375,20 +383,18 @@
         if (distance <= thresholdDistance) {
           unlockStop();
         } else {
-          document.getElementById("location-status").textContent =
-            "No estás lo suficientemente cerca del Castillo.";
+          document.getElementById("location-status").textContent = "No estás lo suficientemente cerca del Castillo.";
         }
       }
       function locationError(err) {
-        document.getElementById("location-status").textContent =
-          "Error al obtener tu ubicación: " + err.message;
+        document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
       }
       function calculateDistance(lat1, lon1, lat2, lon2) {
         const R = 6371e3;
         const toRad = (x) => x * Math.PI / 180;
         const φ1 = toRad(lat1), φ2 = toRad(lat2);
         const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
-        const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+        const a = Math.sin(Δφ/2)**2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2)**2;
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return R * c;
       }
@@ -397,15 +403,13 @@
         if (input === "castillo" || input === "castillo de gonzalo") {
           unlockStop();
         } else {
-          document.getElementById("location-status").textContent =
-            "Nombre incorrecto. Inténtalo nuevamente.";
+          document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
         }
       }
       function unlockStop() {
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
         initCarousel();
-        // Se muestran el carrusel, retos visuales y el quiz.
         playSound("background-music");
       }
       /*----------------------------------------*/
