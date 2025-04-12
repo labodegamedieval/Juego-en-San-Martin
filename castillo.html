@@ -98,7 +98,7 @@
       background-size: cover;
       position: relative;
     }
-    /* Caja de contenido para enmarcar la descripción y ayudar a la legibilidad */
+    /* Caja de contenido para enmarcar textos y mejorar legibilidad */
     .content-box {
       background: rgba(0, 0, 0, 0.8);
       color: #fff;
@@ -130,7 +130,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    /* Cofre (Reto del Cofre) */
+    /* Reto del Cofre */
     #chest-challenge {
       display: none;
       background: rgba(0, 0, 0, 0.7);
@@ -211,7 +211,7 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
 
-      <!-- Contenido principal (se muestra tras verificación) -->
+      <!-- Contenido principal (tras verificación) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -288,28 +288,30 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Minijuego Combinado: Laberinto y Reto del Cofre -->
+        <!-- Reto del Castillo (Laberinto y Reto del Cofre) -->
         <div id="castle-challenge" style="display: none;">
-          <!-- Sección del Laberinto -->
+          <!-- Laberinto del Castillo -->
           <div id="labyrinth-section">
             <div class="content-box">
               <h2>Laberinto del Castillo</h2>
-              <p>Usa las siguientes flechas para seguir el camino correcto hacia la sala secreta.</p>
+              <p>Desliza el dedo (o usa los botones) para seguir el camino correcto hacia la sala secreta.</p>
             </div>
-            <!-- Botones de dirección -->
+            <!-- Botones (opcionales, además de los gestos) -->
             <div id="direction-buttons">
               <button class="direction-btn" onclick="chooseDirection('N')">Norte</button>
               <button class="direction-btn" onclick="chooseDirection('S')">Sur</button>
               <button class="direction-btn" onclick="chooseDirection('E')">Este</button>
               <button class="direction-btn" onclick="chooseDirection('O')">Oeste</button>
             </div>
-            <p id="labyrinth-status" class="labyrinth-status"></p>
+            <p id="labyrinth-status"></p>
           </div>
-          <!-- Sección del Reto del Cofre -->
+
+          <!-- Reto del Cofre -->
           <div id="chest-challenge" style="display:none;">
             <div class="content-box">
               <h2>Reto del Cofre</h2>
-              <p>Has encontrado la sala secreta. Ingresa la clave para abrir el cofre antiguo.</p>
+              <p>Has encontrado la sala secreta. Ingresa la clave numérica para abrir el cofre antiguo.</p>
+              <p id="chest-hint" style="font-weight:bold; color:#fff;"></p>
               <input type="text" id="chest-key" placeholder="Ingrese la clave" />
               <br>
               <button class="action-btn" onclick="checkChestKey()">Abrir Cofre</button>
@@ -404,7 +406,7 @@
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
         initCarousel();
-        // Se muestran el carrusel, retos visuales y quiz.
+        // El resto (retos visuales y quiz) se muestran hasta que se contesten correctamente.
         playSound("background-music");
       }
 
@@ -431,7 +433,6 @@
       /*----------------------------------------*/
       /* 3. RETOS VISUALES Y QUIZ              */
       /*----------------------------------------*/
-      // Variables para el quiz
       let quiz1Correct = false, quiz2Correct = false, quiz3Correct = false;
       function checkVisualAnswer(selected, correct, n) {
         const result = document.getElementById('visual-resultado-' + n);
@@ -458,46 +459,81 @@
           if (n === 2) quiz2Correct = false;
           if (n === 3) quiz3Correct = false;
         }
-        // Si se contestan correctamente las tres preguntas, se muestra el reto del castillo.
+        // Si todas las preguntas del quiz son correctas, se muestra el minijuego del castillo.
         if (quiz1Correct && quiz2Correct && quiz3Correct) {
           document.querySelector('.quiz').style.display = "none";
           document.getElementById("castle-challenge").style.display = "block";
+          // Generamos la clave numérica aleatoria para el reto del cofre.
+          generateChestKey();
+          // Agregamos event listeners para swipe en el laberinto.
+          enableLaberintoSwipe();
         }
       }
 
       /*----------------------------------------*/
       /* 4. RETO DEL CASTILLO: LABERINTO Y COFRE */
       /*----------------------------------------*/
-      // Laberinto: Secuencia correcta (por ejemplo: ["E", "E", "S", "S", "O"])
+      // Laberinto: Secuencia correcta (por ejemplo, ["E", "E", "S", "S", "O"]).
       const correctPath = ["E", "E", "S", "S", "O"];
       let userPath = [];
       function chooseDirection(dir) {
         userPath.push(dir);
-        // Actualizamos el estado
         document.getElementById("labyrinth-status").textContent = "Camino: " + userPath.join(" - ");
-        // Comparamos la secuencia ingresada con la correcta.
+        // Comprobamos paso a paso.
         for (let i = 0; i < userPath.length; i++) {
           if (userPath[i] !== correctPath[i]) {
-            // Si hay error, reiniciamos
             document.getElementById("labyrinth-status").textContent = "Camino incorrecto. Inténtalo de nuevo.";
             userPath = [];
             return;
           }
         }
-        // Si se completó correctamente la secuencia
         if (userPath.length === correctPath.length) {
-          document.getElementById("labyrinth-status").textContent = "¡Laberinto resuelto! Has encontrado la pista para abrir el cofre.";
-          // Reiniciamos la secuencia para no permitir más cambios
-          userPath = [];
-          // Ocultamos el laberinto y mostramos el reto del cofre
+          document.getElementById("labyrinth-status").textContent = "¡Laberinto resuelto! Has encontrado la pista para el cofre.";
+          userPath = []; // Reiniciamos para evitar más cambios.
+          // Ocultamos el laberinto y mostramos el reto del cofre.
           document.getElementById("labyrinth-section").style.display = "none";
           document.getElementById("chest-challenge").style.display = "block";
         }
       }
+      // Habilitar swipe en dispositivos móviles para el laberinto.
+      function enableLaberintoSwipe() {
+        const labyrinth = document.getElementById("labyrinth-section");
+        let touchstartX = 0, touchstartY = 0, touchendX = 0, touchendY = 0;
+        const minSwipeDistance = 30; // píxeles mínimos
+        labyrinth.addEventListener('touchstart', (e) => {
+          touchstartX = e.changedTouches[0].screenX;
+          touchstartY = e.changedTouches[0].screenY;
+        }, false);
+        labyrinth.addEventListener('touchend', (e) => {
+          touchendX = e.changedTouches[0].screenX;
+          touchendY = e.changedTouches[0].screenY;
+          handleGesture();
+        }, false);
+        function handleGesture() {
+          const diffX = touchendX - touchstartX;
+          const diffY = touchendY - touchstartY;
+          if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (Math.abs(diffX) > minSwipeDistance) {
+              if (diffX > 0) chooseDirection("E");
+              else chooseDirection("O");
+            }
+          } else {
+            if (Math.abs(diffY) > minSwipeDistance) {
+              if (diffY > 0) chooseDirection("S");
+              else chooseDirection("N");
+            }
+          }
+        }
+      }
+      // Genera una clave numérica aleatoria (por ejemplo, entre 1300 y 1400)
+      let currentChestKey = 0;
+      function generateChestKey() {
+        currentChestKey = Math.floor(Math.random() * 101) + 1300;
+        document.getElementById("chest-hint").textContent = "Pista: La clave es el año " + currentChestKey;
+      }
       function checkChestKey() {
-        const key = document.getElementById("chest-key").value.trim().toLowerCase();
-        // La clave predefinida para abrir el cofre (puedes cambiarla)
-        if (key === "fortaleza") {
+        const key = document.getElementById("chest-key").value.trim();
+        if (key === currentChestKey.toString()) {
           document.getElementById("chest-status").textContent = "¡Cofre abierto! Has descifrado el enigma.";
           completeCastleChallenge();
         } else {
@@ -505,7 +541,6 @@
         }
       }
       function completeCastleChallenge() {
-        // Ocultamos el reto del castillo y desbloqueamos el fragmento final
         document.getElementById("castle-challenge").style.display = "none";
         unlockFinalFragment();
       }
