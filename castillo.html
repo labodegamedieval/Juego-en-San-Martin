@@ -66,11 +66,10 @@
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease;
-      /* Aseguramos que ocupe el ancho completo (3 slides = 300%) */
-      width: 300%;
+      width: 300%; /* 3 slides */
     }
     .slide {
-      min-width: 100%;
+      flex: 0 0 100%;
       box-sizing: border-box;
       text-align: center;
       padding: 10px;
@@ -108,6 +107,7 @@
       background-size: cover;
       position: relative;
     }
+    /* Caja de contenido para texto con legibilidad */
     .content-box {
       background: rgba(0, 0, 0, 0.8);
       color: #fff;
@@ -176,7 +176,7 @@
     @media screen and (max-width: 768px) {
       .container { max-width: 90%; }
     }
-    /* Adornos medievales */
+    /* Adornos medievales adicionales */
     .container:before {
       content: "⚔️";
       position: absolute;
@@ -220,7 +220,7 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
 
-      <!-- Contenido principal (tras verificación) -->
+      <!-- Contenido principal (se muestra tras verificación) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -229,15 +229,15 @@
               <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
               <p>
                 <strong>Entrada:</strong> Puerta del castillo, convertida en palacio en el siglo XV, con orígenes en fortificación del siglo XIII.<br>
-                <em>En 1834 se instaló un cementerio dentro de sus muros.</em>
+                <em>En 1834 se instaló un cementerio dentro de sus muros.</em><br>
                 <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
               </p>
             </div>
             <div class="slide">
               <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
               <p>
-                <strong>Torre del Homenaje:</strong> La torre, original de dos, fue reducida tras un rayo a principios del siglo XX.<br>
-                <em>En 1949 se declaró Bien de Interés Cultural.</em>
+                <strong>Torre del Homenaje:</strong> La torre, originalmente de dos, fue reducida tras un rayo a principios del siglo XX.<br>
+                <em>En 1949 se declaró Bien de Interés Cultural.</em><br>
                 <a href="https://sanmartindelcastañar.es/castillo-de-la-biosfera/" target="_blank">Más info</a>
               </p>
             </div>
@@ -245,7 +245,7 @@
               <img src="images/castillo-vista.jpg" alt="Vista desde el Castillo" />
               <p>
                 <strong>Vista:</strong> Desde este mirador se domina todo el valle, y hoy acoge el cementerio municipal.<br>
-                <em>La renovación se realizó en 2010 para transformar el castillo en un Centro de Interpretación de la Biosfera.</em>
+                <em>La renovación se realizó en 2010 para transformar el castillo en un Centro de Interpretación de la Biosfera.</em><br>
                 <a href="https://turismosierradefrancia.es/..." target="_blank">Más info</a>
               </p>
             </div>
@@ -299,7 +299,7 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Reto del Castillo: Laberinto y Reto del Cofre -->
+        <!-- Reto del Castillo: Laberinto y Cofre -->
         <div id="castle-challenge" style="display: none;">
           <!-- Laberinto -->
           <div id="labyrinth-section">
@@ -329,7 +329,7 @@
           </div>
         </div>
 
-        <!-- Fragmento Final (oculto hasta superar el reto del castillo) -->
+        <!-- Fragmento Final (oculto hasta superar el reto) -->
         <div class="fragmento-final" id="fragmento-final">
           <p>
             <strong>Fragmento del Mensaje:</strong>
@@ -468,13 +468,12 @@
           if (n === 2) quiz2Correct = false;
           if (n === 3) quiz3Correct = false;
         }
-        // Si las tres respuestas del quiz son correctas, mostramos el reto del castillo.
+        // Si las 3 respuestas del quiz son correctas, mostramos el reto del castillo.
         if (quiz1Correct && quiz2Correct && quiz3Correct) {
           document.querySelector('.quiz').style.display = "none";
           document.getElementById("castle-challenge").style.display = "block";
-          // Generamos la clave aleatoria para el reto del cofre.
+          // Generamos la clave para el cofre basada en una de las 3 fechas
           generateChestKey();
-          // Habilitamos los gestos swipe en el laberinto.
           enableLaberintoSwipe();
         }
       }
@@ -482,6 +481,7 @@
       /*----------------------------------------*/
       /* 4. RETO DEL CASTILLO: LABERINTO Y COFRE */
       /*----------------------------------------*/
+      // Secuencia correcta del laberinto
       const correctPath = ["E", "E", "S", "S", "O"];
       let userPath = [];
       function chooseDirection(dir) {
@@ -520,20 +520,18 @@
           const diffY = touchendY - touchstartY;
           if (Math.abs(diffX) > Math.abs(diffY)) {
             if (Math.abs(diffX) > minSwipeDistance) {
-              if (diffX > 0) chooseDirection("E");
-              else chooseDirection("O");
+              diffX > 0 ? chooseDirection("E") : chooseDirection("O");
             }
           } else {
             if (Math.abs(diffY) > minSwipeDistance) {
-              if (diffY > 0) chooseDirection("S");
-              else chooseDirection("N");
+              diffY > 0 ? chooseDirection("S") : chooseDirection("N");
             }
           }
         }
       }
       let currentChestKey = "";
       function generateChestKey() {
-        // Claves disponibles basadas en fechas
+        // Definimos las 3 fechas y su información
         const keys = [
           {
             date: "1834",
@@ -548,7 +546,6 @@
             clue: "la fecha en que se realizó la renovación que transformó el castillo en un Centro de Interpretación de la Biosfera."
           }
         ];
-        // Seleccionamos una clave aleatoria
         const randomIndex = Math.floor(Math.random() * keys.length);
         currentChestKey = keys[randomIndex].date;
         document.getElementById("chest-hint").textContent = "Pista: La clave corresponde a " + keys[randomIndex].clue;
