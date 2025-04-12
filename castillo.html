@@ -26,7 +26,9 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
       position: relative;
     }
-    header h1 { text-align: center; }
+    header h1 {
+      text-align: center;
+    }
     .action-btn {
       display: inline-block;
       margin: 5px;
@@ -38,8 +40,13 @@
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    .music-control { text-align: center; margin-bottom: 10px; }
-    #content { margin-top: 10px; }
+    .music-control {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #content {
+      margin-top: 10px;
+    }
     /* Ubicación */
     #location-check {
       text-align: center;
@@ -53,9 +60,16 @@
       border: 1px solid #5e3b1b;
       border-radius: 4px;
     }
-    #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
-    #direction-arrow { width: 50px; margin-top: 10px; }
-    /* Carrusel */
+    #location-status {
+      margin-top: 10px;
+      font-size: 1.1em;
+      color: red;
+    }
+    #direction-arrow {
+      width: 50px;
+      margin-top: 10px;
+    }
+    /* Carrusel (de la primera parte) */
     .carousel {
       position: relative;
       overflow: hidden;
@@ -66,7 +80,7 @@
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease;
-      /* Se ajustará el ancho en función del número de slides con JavaScript */
+      width: 300%;
     }
     .slide {
       flex: 0 0 100%;
@@ -98,10 +112,11 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
-    /* Resto de secciones se mantienen iguales */
-    .visual-challenge, .quiz { margin: 20px 0; }
-    
-    /* Reto del Castillo: Laberinto y Cofre (se mantienen) */
+    /* Resto de secciones (retos visuales, quiz) se mantienen */
+    .visual-challenge, .quiz {
+      margin: 20px 0;
+    }
+    /* --- Reto del Castillo --- */
     #castle-challenge {
       display: none;
       margin: 20px auto;
@@ -112,54 +127,63 @@
       background-size: cover;
       position: relative;
     }
-    .content-box {
-      background: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 1;
-    }
-    .content-box strong { color: #fff; }
-    #labyrinth-section {
-      background: rgba(0, 0, 0, 0.7);
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
+    /* Estilo para el laberinto (grid 5x5) */
+    #labyrinth-container {
+      display: grid;
+      grid-template-columns: repeat(5, 60px);
+      grid-template-rows: repeat(5, 60px);
+      gap: 4px;
+      justify-content: center;
       margin-bottom: 15px;
+    }
+    .lab-cell {
+      width: 60px;
+      height: 60px;
+      border: 1px solid #999;
       position: relative;
-      z-index: 1;
+      text-align: center;
+      line-height: 60px;
+      font-size: 24px;
+      background: #fff;
     }
-    #labyrinth-status { color: #fff; margin-top: 10px; }
-    .direction-btn {
-      margin: 5px;
-      padding: 10px 15px;
-      font-size: 16px;
-      background: #dec79b;
-      border: 2px solid #5e3b1b;
-      border-radius: 5px;
-      cursor: pointer;
+    .lab-wall {
+      background: #666;
     }
-    #chest-challenge {
+    .lab-exit {
+      background: #ffd;
+    }
+    /* La “pieza” del caballo se representará como un elemento */
+    .horse {
+      position: absolute;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      line-height: 60px;
+    }
+    /* --- CombLock (candado) --- */
+    #combination-lock {
       display: none;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 15px;
-      border-radius: 8px;
       text-align: center;
-      margin-bottom: 15px;
-      position: relative;
-      z-index: 1;
+      margin-top: 20px;
     }
-    #chest-key {
-      padding: 8px;
-      font-size: 16px;
-      width: 200px;
+    .dial {
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+      margin: 5px;
+      border: 2px solid #5e3b1b;
+      border-radius: 50%;
+      background: #dec79b;
+      font-size: 24px;
+      line-height: 60px;
+      cursor: pointer;
+      user-select: none;
+    }
+    #check-combination {
       margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
     }
+    /* Fragmento Final */
     .fragmento-final {
       margin: 20px auto;
       display: none;
@@ -184,6 +208,9 @@
     }
     @media screen and (max-width: 768px) {
       .container { max-width: 90%; }
+      #labyrinth-container { grid-template-columns: repeat(5, 50px); grid-template-rows: repeat(5, 50px); }
+      .lab-cell { width: 50px; height: 50px; line-height: 50px; font-size: 20px; }
+      .dial { width: 50px; height: 50px; line-height: 50px; font-size: 20px; }
     }
     /* Adornos medievales */
     .container:before {
@@ -229,9 +256,9 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
       
-      <!-- Contenido principal, que se muestra tras la verificación -->
+      <!-- Contenido principal (tras verificación) -->
       <div id="game-content" style="display:none;">
-        <!-- Carrusel en posición original -->
+        <!-- Carrusel principal -->
         <div class="carousel">
           <div class="carousel-slides" id="main-carousel">
             <div class="slide active">
@@ -308,61 +335,38 @@
           <p id="quiz-resultado-3"></p>
         </div>
         
-        <!-- Reto del Castillo: Laberinto, luego el Carrusel y, por último, el Reto del Cofre -->
+        <!-- Reto del Castillo: Laberinto, luego Carrusel y, por último, Reto del Cofre -->
         <div id="castle-challenge" style="display: none;">
           <!-- Laberinto -->
           <div id="labyrinth-section">
-            <div class="content-box">
-              <h2>Laberinto del Castillo</h2>
-              <p>Desliza el dedo (o usa los botones) para seguir el camino correcto hacia la sala secreta.</p>
-            </div>
+            <!-- Contenedor de laberinto (grid 5x5) -->
+            <div id="labyrinth-container"></div>
+            <p id="labyrinth-status"></p>
             <div id="direction-buttons">
               <button class="direction-btn" onclick="chooseDirection('N')">Norte</button>
               <button class="direction-btn" onclick="chooseDirection('S')">Sur</button>
               <button class="direction-btn" onclick="chooseDirection('E')">Este</button>
               <button class="direction-btn" onclick="chooseDirection('O')">Oeste</button>
             </div>
-            <p id="labyrinth-status"></p>
           </div>
-          <!-- Una vez resuelto el laberinto, se muestra el carrusel interno -->
-          <div id="castle-carousel" style="display:none; position:relative;">
-            <div class="carousel-slides" id="internal-carousel">
-              <div class="slide active">
-                <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
-                <p class="carousel-info">
-                  <strong>Entrada:</strong> Puerta de entrada del castillo, convertido en palacio por el conde de Miranda en el siglo XV. Está construido sobre una fortificación del siglo XIII.<br>
-                  <em>En 1834 se instaló un cementerio dentro de sus muros.</em><br>
-                  <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
-                </p>
-              </div>
-              <div class="slide">
-                <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
-                <p class="carousel-info">
-                  <strong>Torre del Homenaje:</strong> Originalmente había dos torres unidas por dependencias. Un rayo las redujo a comienzos del siglo XX, dejando restos de almenas.<br>
-                  <em>En 1949 se declaró Bien de Interés Cultural.</em><br>
-                  <a href="https://sanmartindelcastanar.es/castillo-de-la-biosfera/" target="_blank">Más info</a>
-                </p>
-              </div>
-              <div class="slide">
-                <img src="images/castillo-vista.jpg" alt="Vista desde el Castillo" />
-                <p class="carousel-info">
-                  <strong>Vista:</strong> Desde este mirador se domina todo el valle. Los muros acogen el cementerio municipal desde 1834.<br>
-                  <em>La renovación de 2010 transformó el castillo en un Centro de Interpretación de la Biosfera.</em><br>
-                  <a href="https://turismosierradefrancia.es/..." target="_blank">Más info</a>
-                </p>
-              </div>
+          <!-- Una vez resuelto el laberinto, se muestra el candado (combination lock) -->
+          <div id="combination-lock" style="display:none;">
+            <h2>Candado</h2>
+            <p>Gira los diales para formar la combinación correcta.</p>
+            <div id="dials">
+              <div class="dial" data-digit="0">0</div>
+              <div class="dial" data-digit="0">0</div>
+              <div class="dial" data-digit="0">0</div>
+              <div class="dial" data-digit="0">0</div>
             </div>
-            <button class="carousel-btn prev-slide" onclick="updateCarouselControl(-1)">&larr;</button>
-            <button class="carousel-btn next-slide" onclick="updateCarouselControl(1)">&rarr;</button>
-            <div id="continue-from-carousel" style="display:none; text-align:center; margin-top:10px;">
-              <button class="action-btn" onclick="proceedToChest()">Continuar</button>
-            </div>
+            <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
+            <p id="combination-status"></p>
           </div>
-          <!-- Reto del Cofre -->
+          <!-- Reto del Cofre tradicional (alternativa o complemento) -->
           <div id="chest-challenge" style="display:none;">
             <div class="content-box">
               <h2>Reto del Cofre</h2>
-              <p>Has encontrado la sala secreta. Ingresa la clave numérica para abrir el cofre antiguo.</p>
+              <p>Ingresa la clave numérica para abrir el cofre antiguo.</p>
               <p id="chest-hint" style="font-weight:bold; color:#fff;"></p>
               <input type="text" id="chest-key" placeholder="Ingrese la clave" />
               <br>
@@ -398,10 +402,7 @@
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
     
     <footer>
-      <p>
-        © 2025 La Bodega Medieval | 
-        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
-      </p>
+      <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
     </footer>
     
     <script>
@@ -459,7 +460,7 @@
       function unlockStop() {
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
-        // Se inicia la experiencia; el carrusel de inicio se muestra y se activa el resto.
+        // Inicia el carrusel principal
         initMainCarousel();
         playSound("background-music");
       }
@@ -469,12 +470,12 @@
       /*----------------------------------------*/
       function initMainCarousel() {
         let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-slides .slide');
+        const slides = document.querySelectorAll('#main-carousel .slide');
         const totalSlides = slides.length;
         const prevButton = document.querySelector('.prev-slide');
         const nextButton = document.querySelector('.next-slide');
-        const carouselContainer = document.querySelector('.carousel-slides');
-        // Forzamos el ancho total
+        const carouselContainer = document.querySelector('#main-carousel');
+        // Ajusta el ancho total
         carouselContainer.style.width = (totalSlides * 100) + '%';
         
         function updateCarousel() {
@@ -526,36 +527,97 @@
         if (quiz1Correct && quiz2Correct && quiz3Correct) {
           document.querySelector('.quiz').style.display = "none";
           document.getElementById("castle-challenge").style.display = "block";
-          generateChestKey();
+          // Inicia el minijuego del Castillo (laberinto, candado)
+          generateChestKey(); // se genera la clave para el candado (por si se usa el reto del cofre alternativo)
           enableLaberintoSwipe();
+          // Generamos el laberinto visual
+          generateLabyrinth();
         }
       }
       
       /*----------------------------------------*/
-      /* 4. RETO DEL CASTILLO: LABERINTO, CARRUSEL Y COFRE */
+      /* 4. MINIJUEGO DEL CASTILLO: LABERINTO y CANDADO */
       /*----------------------------------------*/
-      // Laberinto
-      const correctPath = ["E", "E", "S", "S", "O"];
-      let userPath = [];
+      // --- Laberinto visual ---
+      // Definimos una matriz de 5x5 (0 = camino, 1 = pared)
+      const labyrinthMatrix = [
+        [0,0,1,0,0],
+        [1,0,1,0,1],
+        [1,0,0,0,1],
+        [1,1,1,0,0],
+        [0,0,0,0,0]
+      ];
+      const LAB_ROWS = 5, LAB_COLS = 5;
+      let horsePosition = { row: 0, col: 0 };
+      let horseEl;
       
-      function chooseDirection(dir) {
-        userPath.push(dir);
-        document.getElementById("labyrinth-status").textContent = "Camino: " + userPath.join(" - ");
-        for (let i = 0; i < userPath.length; i++) {
-          if (userPath[i] !== correctPath[i]) {
-            document.getElementById("labyrinth-status").textContent = "Camino incorrecto. Inténtalo de nuevo.";
-            userPath = [];
-            return;
+      function generateLabyrinth() {
+        const container = document.getElementById("labyrinth-container");
+        container.innerHTML = "";
+        for (let r = 0; r < LAB_ROWS; r++) {
+          for (let c = 0; c < LAB_COLS; c++) {
+            const cell = document.createElement("div");
+            cell.classList.add("lab-cell");
+            // Si la matriz marca pared, agregamos clase
+            if (labyrinthMatrix[r][c] === 1) cell.classList.add("lab-wall");
+            // Si es la celda de salida (por ejemplo, abajo a la derecha), se marca como exit
+            if (r === LAB_ROWS - 1 && c === LAB_COLS - 1) cell.classList.add("lab-exit");
+            cell.dataset.row = r;
+            cell.dataset.col = c;
+            container.appendChild(cell);
           }
         }
-        if (userPath.length === correctPath.length) {
-          document.getElementById("labyrinth-status").textContent = "¡Laberinto resuelto! Has encontrado la pista para abrir el cofre.";
-          userPath = [];
-          document.getElementById("labyrinth-section").style.display = "none";
-          // Se muestra el carrusel interno
-          document.getElementById("castle-carousel").style.display = "block";
-          initCastleCarousel();
+        // Colocamos el caballo en la celda de entrada (0,0)
+        horsePosition = { row: 0, col: 0 };
+        horseEl = document.createElement("div");
+        horseEl.classList.add("horse");
+        // Seleccionamos aleatoriamente un emoji de caballo
+        const horseEmojis = ["🐎", "🏇", "🐴"];
+        horseEl.textContent = horseEmojis[Math.floor(Math.random() * horseEmojis.length)];
+        // Insertamos el caballo en la celda correspondiente
+        updateHorsePosition();
+      }
+      
+      function updateHorsePosition() {
+        // Buscar la celda que corresponde a horsePosition
+        const cells = document.querySelectorAll("#labyrinth-container .lab-cell");
+        cells.forEach(cell => {
+          if (parseInt(cell.dataset.row) === horsePosition.row && parseInt(cell.dataset.col) === horsePosition.col) {
+            cell.appendChild(horseEl);
+          }
+        });
+        // Si el caballo ha llegado a la salida, resolvemos el laberinto
+        if (horsePosition.row === LAB_ROWS - 1 && horsePosition.col === LAB_COLS - 1) {
+          // Laberinto resuelto: ocultamos la sección y mostramos el candado
+          document.getElementById("labyrinth-status").textContent = "¡Has llegado al cofre!";
+          setTimeout(() => {
+            document.getElementById("labyrinth-section").style.display = "none";
+            document.getElementById("combination-lock").style.display = "block";
+          }, 1000);
         }
+      }
+      
+      function moveHorse(direction) {
+        const newPos = { row: horsePosition.row, col: horsePosition.col };
+        if (direction === "N") newPos.row--;
+        if (direction === "S") newPos.row++;
+        if (direction === "E") newPos.col++;
+        if (direction === "O") newPos.col--;
+        // Verificamos que esté dentro de la matriz y que la celda sea camino (0)
+        if (newPos.row >= 0 && newPos.row < LAB_ROWS && newPos.col >= 0 && newPos.col < LAB_COLS) {
+          if (labyrinthMatrix[newPos.row][newPos.col] === 0) {
+            horsePosition = newPos;
+            updateHorsePosition();
+            document.getElementById("labyrinth-status").textContent = "Camino: (" + horsePosition.row + "," + horsePosition.col + ")";
+          } else {
+            document.getElementById("labyrinth-status").textContent = "¡No puedes ir por esa ruta!";
+          }
+        }
+      }
+      
+      // Función para manejar botones y gestos del laberinto
+      function chooseDirection(dir) {
+        moveHorse(dir);
       }
       
       function enableLaberintoSwipe() {
@@ -569,9 +631,6 @@
         labyrinth.addEventListener('touchend', (e) => {
           touchendX = e.changedTouches[0].screenX;
           touchendY = e.changedTouches[0].screenY;
-          handleGesture();
-        }, false);
-        function handleGesture() {
           const diffX = touchendX - touchstartX;
           const diffY = touchendY - touchstartY;
           if (Math.abs(diffX) > Math.abs(diffY)) {
@@ -583,42 +642,58 @@
               diffY > 0 ? chooseDirection("S") : chooseDirection("N");
             }
           }
+        }, false);
+      }
+      
+      // --- Candado (Combination Lock) ---
+      let secretCombination = "";
+      function generateCombinationLock() {
+        // Generamos una combinación de 4 dígitos aleatorios
+        secretCombination = "";
+        for (let i = 0; i < 4; i++) {
+          secretCombination += Math.floor(Math.random() * 10);
+        }
+        // (La pista puede ser mostrada aquí si se desea, pero en este ejemplo se deja en blanco)
+        console.log("Combinación secreta:", secretCombination);
+      }
+      
+      function initCombinationLock() {
+        // Se muestra el panel de candado y se genera la combinación secreta.
+        generateCombinationLock();
+        // Para cada dial, se asigna el valor inicial 0 (ya lo tiene en el HTML)
+        const dials = document.querySelectorAll(".dial");
+        dials.forEach(d => {
+          d.setAttribute("data-digit", "0");
+          d.textContent = "0";
+          d.addEventListener("click", () => {
+            // Al hacer click, incrementa el dígito (mod 10)
+            let current = parseInt(d.getAttribute("data-digit"));
+            current = (current + 1) % 10;
+            d.setAttribute("data-digit", current);
+            d.textContent = current;
+          });
+        });
+      }
+      
+      function checkCombination() {
+        // Se recogen los dígitos de los 4 diales
+        const dials = document.querySelectorAll(".dial");
+        let userCombination = "";
+        dials.forEach(d => {
+          userCombination += d.getAttribute("data-digit");
+        });
+        if (userCombination === secretCombination) {
+          document.getElementById("combination-status").textContent = "¡Candado desbloqueado!";
+          completeCastleChallenge();
+        } else {
+          document.getElementById("combination-status").textContent = "Combinación incorrecta. Inténtalo de nuevo.";
         }
       }
       
-      // Carrusel interno que se muestra tras el laberinto (dentro de #castle-carousel)
-      let carouselCurrentSlide = 0, carouselSlides;
-      function initCastleCarousel() {
-        carouselSlides = document.querySelectorAll('#castle-carousel .slide');
-        carouselCurrentSlide = 0;
-        // Forzamos el ancho total del contenedor interno
-        const carouselContainer = document.querySelector('#castle-carousel .carousel-slides');
-        carouselContainer.style.width = (carouselSlides.length * 100) + '%';
-        updateCastleCarousel();
-        document.querySelector('#castle-carousel .prev-slide').addEventListener('click', () => {
-          carouselCurrentSlide = (carouselCurrentSlide > 0) ? carouselCurrentSlide - 1 : carouselSlides.length - 1;
-          updateCastleCarousel();
-        });
-        document.querySelector('#castle-carousel .next-slide').addEventListener('click', () => {
-          carouselCurrentSlide = (carouselCurrentSlide < carouselSlides.length - 1) ? carouselCurrentSlide + 1 : 0;
-          updateCastleCarousel();
-        });
-        document.getElementById("continue-from-carousel").style.display = "block";
-      }
-      
-      function updateCastleCarousel() {
-        const carouselContainer = document.querySelector('#castle-carousel .carousel-slides');
-        carouselContainer.style.transform = 'translateX(' + (-carouselCurrentSlide * 100) + '%)';
-      }
-      
-      // Botón para pasar al reto del Cofre
-      function proceedToChest() {
-        document.getElementById("castle-carousel").style.display = "none";
-        document.getElementById("continue-from-carousel").style.display = "none";
-        document.getElementById("chest-challenge").style.display = "block";
-      }
-      
-      // Genera la clave numérica aleatoria basada en 3 fechas
+      /*----------------------------------------*/
+      /* 5. Reto del Cofre (alternativo)         */
+      /*----------------------------------------*/
+      // Se mantiene la función para el reto del cofre tradicional (opcional)
       let currentChestKey = "";
       function generateChestKey() {
         const keys = [
@@ -647,7 +722,7 @@
       }
       
       /*----------------------------------------*/
-      /* 5. FRAGMENTO FINAL / CONTINUAR         */
+      /* 6. Fragmento Final / Continuar         */
       /*----------------------------------------*/
       let challengeCompleted = false;
       function unlockFinalFragment() {
@@ -672,17 +747,12 @@
       }
       
       /*----------------------------------------*/
-      /* 6. SONIDOS                             */
+      /* 7. SONIDOS                             */
       /*----------------------------------------*/
       function playSound(id) {
         const sound = document.getElementById(id);
         if (sound) sound.play();
       }
-      
-      /*----------------------------------------*/
-      /* 7. LOCALSTORAGE                        */
-      /*----------------------------------------*/
-      localStorage.setItem("castillo-completed", "true");
       
       /*----------------------------------------*/
       /* 8. BOTÓN DE MÚSICA                      */
@@ -700,6 +770,13 @@
           }
         });
       });
+      
+      /*----------------------------------------*/
+      /* 9. LOCALSTORAGE                        */
+      /*----------------------------------------*/
+      localStorage.setItem("castillo-completed", "true");
+      
+      // Para iniciar el juego, el desbloqueo de la ubicación mostrará el contenido.
     </script>
   </div>
 </body>
