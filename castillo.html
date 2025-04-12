@@ -66,7 +66,7 @@
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease;
-      width: 300%; /* 3 slides */
+      width: 300%; /* Para 3 slides */
     }
     .slide {
       flex: 0 0 100%;
@@ -94,7 +94,7 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
-    /* Secciones Visuales y Quiz */
+    /* Retos Visuales y Quiz */
     .visual-challenge, .quiz { margin: 20px 0; }
     /* Minijuego: Reto del Castillo (Laberinto y Cofre) */
     #castle-challenge {
@@ -204,7 +204,8 @@
         </button>
       </div>
     </header>
-    <!-- Sección de Verificación -->
+    
+    <!-- Verificación de Ubicación -->
     <section id="content">
       <div class="stop-icon">🏰</div>
       <div id="location-check">
@@ -217,7 +218,8 @@
         <p id="location-status"></p>
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
-      <!-- Contenido principal, que se mostrará tras la verificación -->
+      
+      <!-- Contenido principal (oculto hasta verificación) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -225,7 +227,7 @@
             <div class="slide active">
               <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
               <p class="carousel-info">
-                <strong>Entrada:</strong> Puerta del castillo, convertida en palacio en el siglo XV, con orígenes en fortificación del siglo XIII.<br>
+                <strong>Entrada:</strong> Puerta de entrada del castillo, convertido en palacio por el conde de Miranda en el siglo XV. Está construido sobre una fortificación del siglo XIII.<br>
                 <em>En 1834 se instaló un cementerio dentro de sus muros.</em><br>
                 <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
               </p>
@@ -233,15 +235,15 @@
             <div class="slide">
               <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
               <p class="carousel-info">
-                <strong>Torre del Homenaje:</strong> La torre, originalmente de dos, fue reducida tras un rayo a principios del siglo XX.<br>
+                <strong>Torre del Homenaje:</strong> Originalmente había dos torres unidas por dependencias. En el catastro del Marqués de la Ensenada se describe el castillo como ruinoso. Un rayo alcanzó la torre que quedaba en pie a principios del siglo XX, dejando solo dos lienzos con restos de almenas.<br>
                 <em>En 1949 se declaró Bien de Interés Cultural.</em><br>
                 <a href="https://sanmartindelcastanar.es/castillo-de-la-biosfera/" target="_blank">Más info</a>
               </p>
             </div>
             <div class="slide">
-              <img src="images/castillo-vista.jpg" alt="Vista desde el Castillo" />
+              <img src="images/castillo-vista.jpg" alt="Vistas desde el Castillo" />
               <p class="carousel-info">
-                <strong>Vista:</strong> Desde este mirador se domina todo el valle, y hoy acoge el cementerio municipal.<br>
+                <strong>Vista:</strong> Desde este mirador se domina todo el valle. Es un mirador natural conectado a la muralla defensiva. Desde 1834, los muros del castillo acogen el cementerio municipal.<br>
                 <em>La renovación se realizó en 2010 para transformar el castillo en un Centro de Interpretación de la Biosfera.</em><br>
                 <a href="https://turismosierradefrancia.es/..." target="_blank">Más info</a>
               </p>
@@ -280,7 +282,7 @@
             <button class="action-btn" onclick="checkAnswer('XIV','XIII',1)">XIV</button>
           </div>
           <p id="quiz-resultado-1"></p>
-          <p>2. ¿Qué función tuvo el castillo desde el siglo XIX?</p>
+          <p>2. ¿Qué función tiene el castillo desde 1834?</p>
           <div id="quiz-opciones-2">
             <button class="action-btn" onclick="checkAnswer('Discoteca','Cementerio',2)">Discoteca</button>
             <button class="action-btn" onclick="checkAnswer('Cementerio','Cementerio',2)">Cementerio</button>
@@ -296,7 +298,7 @@
           <p id="quiz-resultado-3"></p>
         </div>
         
-        <!-- Reto del Castillo: Laberinto y Reto del Cofre -->
+        <!-- Reto del Castillo: Laberinto y Cofre -->
         <div id="castle-challenge" style="display: none;">
           <!-- Laberinto -->
           <div id="labyrinth-section">
@@ -333,9 +335,7 @@
             <span id="message-piece" style="font-size:1.4em; display:none;">Oculto</span>
           </p>
           <p><strong>QR en el pueblo:</strong> CASTILLO-1834</p>
-          <p>
-            <strong>Dato Curioso:</strong> Aquí se han hallado monedas y cerámicas del siglo XIII.
-          </p>
+          <p><strong>Dato Curioso:</strong> Aquí se han hallado monedas y cerámicas del siglo XIII.</p>
         </div>
         
         <div id="continue-button" style="display:none;">
@@ -407,10 +407,9 @@
       function unlockStop() {
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
-        initCarousel(); // Inicializa el carrusel al desbloquear el contenido.
+        initCarousel();
         playSound("background-music");
       }
-      
       /*----------------------------------------*/
       /* 2. CARRUSEL                            */
       /*----------------------------------------*/
@@ -430,7 +429,6 @@
         const carouselSlides = document.querySelector('.carousel-slides');
         carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
       }
-      
       /*----------------------------------------*/
       /* 3. RETOS VISUALES Y QUIZ              */
       /*----------------------------------------*/
@@ -467,7 +465,6 @@
           enableLaberintoSwipe();
         }
       }
-      
       /*----------------------------------------*/
       /* 4. RETO DEL CASTILLO: LABERINTO Y COFRE */
       /*----------------------------------------*/
