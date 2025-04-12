@@ -93,12 +93,12 @@
       padding: 15px;
       border: 2px solid #5e3b1b;
       border-radius: 10px;
-      /* Se utiliza la imagen de fondo original */
+      /* Se utiliza la imagen de fondo original, se ve completa */
       background: url('images/fondo.jpg') no-repeat center center;
       background-size: cover;
       position: relative;
     }
-    /* Caja de contenido para enmarcar el texto */
+    /* Caja de contenido enmarcada para la descripción */
     .content-box {
       background: rgba(0, 0, 0, 0.7);
       color: #fff;
@@ -122,7 +122,7 @@
     .jug { text-align: center; }
     .jug-label {
       font-weight: bold;
-      color: #fff; /* Texto en blanco */
+      color: #fff;
       margin-bottom: 5px;
     }
     .jug-container {
@@ -142,7 +142,7 @@
       background-color: #4d90fe;
       transition: height 0.5s ease;
     }
-    /* Texto de cantidad en blanco y negrita */
+    /* Texto de cantidad en blanco y strong */
     .jug-container + div { color: #fff; font-weight: bold; }
     /* Fragmento Final (el pergamino) */
     .fragmento-final {
@@ -208,7 +208,7 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección"/>
       </div>
 
-      <!-- Contenido principal (tras verificación) -->
+      <!-- Contenido principal (tras validación) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -319,7 +319,7 @@
         <!-- Fragmento Final (oculto hasta superar el reto) -->
         <div class="fragmento-final" id="fragmento-final">
           <p>
-            <strong>Fragmento del Mensaje:</strong>
+            <strong>Fragmento del Mensaje:</strong> 
             <span id="message-piece" style="font-size:1.4em">bodega</span>
           </p>
           <p><strong>QR en el pueblo:</strong> FUENTE-1600</p>
@@ -346,7 +346,9 @@
     <footer>
       <p>
         © 2025 La Bodega Medieval | 
-        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
+        <a href="https://www.labodegamedieval.es" target="_blank">
+          Reserva tu visita
+        </a>
       </p>
     </footer>
 
@@ -472,20 +474,20 @@
       function emptyB() { bCur = 0; checkCantaros(); }
       function pourAtoB() {
         const spaceInB = bCap - bCur;
-        if(aCur <= spaceInB) { bCur += aCur; aCur = 0; }
+        if (aCur <= spaceInB) { bCur += aCur; aCur = 0; }
         else { aCur -= spaceInB; bCur = bCap; }
         checkCantaros();
       }
       function pourBtoA() {
         const spaceInA = aCap - aCur;
-        if(bCur <= spaceInA) { aCur += bCur; bCur = 0; }
+        if (bCur <= spaceInA) { aCur += bCur; bCur = 0; }
         else { bCur -= spaceInA; aCur = aCap; }
         checkCantaros();
       }
       function checkCantaros() {
         updateJugsDisplay();
         const puzzleCantarosResultado = document.getElementById("puzzle-cantaros-resultado");
-        if(aCur === 4 || bCur === 4) {
+        if (aCur === 4 || bCur === 4) {
           puzzleCantarosResultado.textContent = "¡Has logrado los 4 litros, excelente!";
           playSound("coins-sound");
           unlockFinalFragment();
@@ -512,7 +514,7 @@
       }
       function updateRanking() {
         let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
-        ranking.push({stop: "fuente", score: 100});
+        ranking.push({ stop: "fuente", score: 100 });
         localStorage.setItem("ranking", JSON.stringify(ranking));
       }
 
@@ -528,6 +530,24 @@
       /* 7. LOCALSTORAGE                        */
       /*----------------------------------------*/
       localStorage.setItem("fuente-completed", "true");
+
+      /*----------------------------------------*/
+      /* 8. BOTÓN DE MÚSICA                      */
+      /*----------------------------------------*/
+      // Agregamos un event listener para el botón de pausar/reproducir música.
+      document.addEventListener('DOMContentLoaded', () => {
+        const musicBtn = document.querySelector('.music-btn');
+        const backgroundMusic = document.getElementById('background-music');
+        musicBtn.addEventListener('click', () => {
+          if (backgroundMusic.paused) {
+            backgroundMusic.play();
+            musicBtn.innerHTML = '<span class="music-icon">🎵</span> Pausar Música';
+          } else {
+            backgroundMusic.pause();
+            musicBtn.innerHTML = '<span class="music-icon">🔇</span> Reproducir Música';
+          }
+        });
+      });
     </script>
   </div>
 </body>
