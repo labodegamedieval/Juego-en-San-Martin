@@ -24,6 +24,7 @@
       border-radius: 12px;
       padding: 20px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      position: relative;
     }
     header h1 { text-align: center; }
     .action-btn {
@@ -92,7 +93,20 @@
       padding: 15px;
       border: 2px solid #5e3b1b;
       border-radius: 10px;
-      background: #f9f1e6;
+      /* Fondo del contenedor: usamos fondo.jpg con un overlay para facilitar la lectura */
+      background: url('images/fondo.jpg') no-repeat center center;
+      background-size: cover;
+      position: relative;
+    }
+    #puzzle-cantaros:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,248,228,0.9); /* overlay suave */
+      pointer-events: none;
     }
     #puzzle-cantaros h2 { text-align: center; }
     /* Contenedor visual de los cántaros */
@@ -101,6 +115,8 @@
       justify-content: center;
       gap: 30px;
       margin: 20px 0;
+      position: relative;
+      z-index: 1;
     }
     .jug { text-align: center; }
     .jug-label { font-weight: bold; margin-bottom: 5px; }
@@ -121,7 +137,7 @@
       background-color: #4d90fe;
       transition: height 0.5s ease;
     }
-    /* Fragmento Final: el pergamino */
+    /* Fragmento Final (oculto hasta superar el reto) */
     .fragmento-final {
       margin: 20px auto;
       display: none;
@@ -140,6 +156,24 @@
       .container { max-width: 90%; }
       .jug-container { width: 80px; height: 120px; }
     }
+
+    /* Adornos medievales adicionales */
+    .container:before {
+      content: "⚔️";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
+    }
+    .container:after {
+      content: "🛡️";
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
+    }
   </style>
 </head>
 
@@ -156,7 +190,6 @@
 
     <section id="content">
       <div class="stop-icon">⛲</div>
-
       <!-- Verificación de Ubicación -->
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
@@ -235,7 +268,7 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Minijuego: Puzzle de Cántaros -->
+        <!-- Minijuego: Puzzle de Cántaros (visual y medieval) -->
         <div id="puzzle-cantaros">
           <h2>Puzzle de Cántaros</h2>
           <p>
@@ -277,9 +310,7 @@
         </div>
 
         <div id="continue-button">
-          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=fuente'">
-            Continuar búsqueda
-          </button>
+          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=fuente'">Continuar búsqueda</button>
         </div>
       </div>
     </section>
@@ -292,9 +323,7 @@
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
 
     <footer>
-      <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">
-        Reserva tu visita</a>
-      </p>
+      <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
     </footer>
 
     <script>
@@ -308,8 +337,7 @@
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
         } else {
-          document.getElementById("location-status").textContent = 
-            "Tu navegador no soporta geolocalización.";
+          document.getElementById("location-status").textContent = "Tu navegador no soporta geolocalización.";
         }
       }
       function geoSuccess(position) {
@@ -319,13 +347,11 @@
         if (distance <= thresholdDistance) {
           unlockStop();
         } else {
-          document.getElementById("location-status").textContent = 
-            "No estás lo suficientemente cerca de la Fuente y Portalón.";
+          document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Fuente y Portalón.";
         }
       }
       function locationError(err) {
-        document.getElementById("location-status").textContent = 
-          "Error al obtener tu ubicación: " + err.message;
+        document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
       }
       function calculateDistance(lat1, lon1, lat2, lon2) {
         const R = 6371e3;
@@ -341,8 +367,7 @@
         if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") {
           unlockStop();
         } else {
-          document.getElementById("location-status").textContent = 
-            "Nombre incorrecto. Inténtalo nuevamente.";
+          document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
         }
       }
       function unlockStop() {
@@ -398,9 +423,8 @@
       }
 
       /*----------------------------------------*/
-      /* 4. MINIJUEGO: PUZZLE DE CÁNTAROS        */
+      /* 4. MINIJUEGO: PUZZLE DE CÁNTAROS         */
       /*----------------------------------------*/
-      // Variables para capacidades y cantidades.
       let aCap = 5, bCap = 3;
       let aCur = 0, bCur = 0;
       let puzzleCantarosCompleted = false;
@@ -420,20 +444,20 @@
       function emptyB() { bCur = 0; checkCantaros(); }
       function pourAtoB() {
         const spaceInB = bCap - bCur;
-        if(aCur <= spaceInB) { bCur += aCur; aCur = 0; }
+        if (aCur <= spaceInB) { bCur += aCur; aCur = 0; }
         else { aCur -= spaceInB; bCur = bCap; }
         checkCantaros();
       }
       function pourBtoA() {
         const spaceInA = aCap - aCur;
-        if(bCur <= spaceInA) { aCur += bCur; bCur = 0; }
+        if (bCur <= spaceInA) { aCur += bCur; bCur = 0; }
         else { bCur -= spaceInA; aCur = aCap; }
         checkCantaros();
       }
       function checkCantaros() {
         updateJugsDisplay();
         const puzzleCantarosResultado = document.getElementById("puzzle-cantaros-resultado");
-        if(aCur === 4 || bCur === 4) {
+        if (aCur === 4 || bCur === 4) {
           puzzleCantarosResultado.textContent = "¡Has logrado los 4 litros, excelente!";
           playSound("coins-sound");
           unlockFinalFragment();
@@ -450,18 +474,15 @@
           puzzleCantarosCompleted = true;
           document.getElementById("fragmento-final").style.display = "block";
           document.getElementById("continue-button").style.display = "block";
-          // Actualización de crónica y ranking
           updateChronicle();
           updateRanking();
           playSound("cheers-sound");
         }
       }
       function updateChronicle() {
-        // Ejemplo: guarda el mensaje final en localStorage
         localStorage.setItem("cronica_fuente", document.getElementById("message-piece").textContent);
       }
       function updateRanking() {
-        // Ejemplo simple: añade un objeto al ranking almacenado
         let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
         ranking.push({stop: "fuente", score: 100});
         localStorage.setItem("ranking", JSON.stringify(ranking));
