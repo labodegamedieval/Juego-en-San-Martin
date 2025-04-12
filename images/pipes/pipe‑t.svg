@@ -1,0 +1,6 @@
+<svg width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tubería vertical -->
+  <rect x="35" y="10" width="10" height="60" rx="2" ry="2" fill="#ccc" stroke="#5e3b1b" stroke-width="2"/>
+  <!-- Tubería horizontal (cabeza de la T) -->
+  <rect x="15" y="30" width="50" height="10" rx="2" ry="2" fill="#ccc" stroke="#5e3b1b" stroke-width="2"/>
+</svg>
