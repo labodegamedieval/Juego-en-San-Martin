@@ -6,13 +6,153 @@
   <title>🏰 Castillo</title>
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpg" href="images/escudo-borrado.jpg"/>
+  <style>
+    /* Estilos generales */
+    body {
+      font-family: Arial, sans-serif;
+      background: url('images/fondo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 960px;
+      margin: auto;
+      background: rgba(255,248,228,0.95);
+      border: 3px double #5e3b1b;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    header h1 { text-align: center; }
+    .action-btn {
+      display: inline-block;
+      margin: 5px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #dec79b;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .music-control { text-align: center; margin-bottom: 10px; }
+    #content { margin-top: 10px; }
+    /* Ubicación */
+    #location-check {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    #location-check input {
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      margin: 10px;
+      border: 1px solid #5e3b1b;
+      border-radius: 4px;
+    }
+    #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
+    #direction-arrow { width: 50px; margin-top: 10px; }
+    /* Carrusel */
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+    }
+    .carousel-slides { display: flex; transition: transform 0.5s ease; }
+    .slide { min-width: 100%; box-sizing: border-box; text-align: center; }
+    .slide img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #6e3b1b;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.7);
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+    }
+    .prev-slide { left: 10px; }
+    .next-slide { right: 10px; }
+    /* Secciones Visuales y Quiz */
+    .visual-challenge, .quiz { margin: 20px 0; }
+    /* Minijuego: Reto del Castillo (Placeholder) */
+    #castle-challenge {
+      display: none;
+      margin: 20px auto;
+      padding: 15px;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      background: url('images/fondo.jpg') no-repeat center center;
+      background-size: cover;
+      position: relative;
+    }
+    /* Caja de contenido para enmarcar el texto del reto */
+    #castle-challenge .content-box {
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    #castle-challenge .content-box strong { color: #fff; }
+    /* Fragmento Final (oculto hasta superar el reto) */
+    .fragmento-final {
+      margin: 20px auto;
+      display: none;
+      text-align: center;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: cover;
+      padding: 40px 20px;
+      font-style: italic;
+      font-size: 1.2em;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+    #continue-button { text-align: center; margin-top: 15px; display: none; }
+    footer p { text-align: center; font-size: 0.9em; margin-top: 20px; }
+    @media screen and (max-width: 768px) {
+      .container { max-width: 90%; }
+    }
+    /* Adornos medievales adicionales */
+    .container:before {
+      content: "⚔️";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
+    }
+    .container:after {
+      content: "🛡️";
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>🏰 Castillo de Gonzalo</h1>
       <div class="music-control">
-        <button class="music-btn">
+        <button class="action-btn music-btn">
           <span class="music-icon">🎵</span> Pausar Música
         </button>
       </div>
@@ -20,7 +160,7 @@
 
     <section id="content">
       <div class="stop-icon">🏰</div>
-
+      <!-- Verificación de Ubicación -->
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
         <p>Dirígete al castillo y acércate a la torre del homenaje para continuar.</p>
@@ -29,38 +169,42 @@
         <input type="text" id="location-input" placeholder="Ej: Castillo" />
         <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
         <p id="location-status"></p>
-        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
+        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
 
-      <!-- CONTENIDO OCULTO HASTA VERIFICAR -->
-      <div id="game-content" style="display: none;">
-
+      <!-- Contenido principal (se muestra tras verificación) -->
+      <div id="game-content" style="display:none;">
+        <!-- Carrusel -->
         <div class="carousel">
-          <div class="slide active">
-            <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
-            <p><strong>Entrada:</strong> Puerta de entrada del castillo, convertido en palacio por el conde de Miranda en el siglo XV. Está construido sobre una fortificación del siglo XIII. Defensa de la Sierra de Francia en tiempos de la Reconquista. Hoy en día es la sede del Centro de Interpretación de la Biosfera de las Sierras de Béjar y Francia.
-              <a href="https://www.miteco.gob.es/content/dam/miteco/es/parques-nacionales-oapn/reservas-biosfera/programa-mab-espana/ListRB_Sierras_de_Bejar_y_Francia_tcm30-280293.pdf" target="_blank">Más info</a>
-            </p>
+          <div class="carousel-slides">
+            <div class="slide active">
+              <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
+              <p>
+                <strong>Entrada:</strong> Puerta del castillo, convertida en palacio en el siglo XV, 
+                con orígenes en fortificación del siglo XIII. Defensa de la Sierra de Francia.
+                <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
+              </p>
+            </div>
+            <div class="slide">
+              <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
+              <p>
+                <strong>Torre del Homenaje:</strong> La torre, original de dos, fue reducida tras un rayo a principios del siglo XX.
+                <a href="https://sanmartindelcastañar.es/castillo-de-la-biosfera/" target="_blank">Más info</a>
+              </p>
+            </div>
+            <div class="slide">
+              <img src="images/castillo-vista.jpg" alt="Vista desde el castillo" />
+              <p>
+                <strong>Vista:</strong> Mirador natural desde donde se domina el valle, actualmente acoge el cementerio municipal.
+                <a href="https://turismosierradefrancia.es/..." target="_blank">Más info</a>
+              </p>
+            </div>
           </div>
-
-          <div class="slide">
-            <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
-            <p><strong>Torre:</strong> Originalmente había dos torres unidas por unas dependencias. Ya en el catastro del Marqués de la Ensenada se describe el castillo como ruinoso. Un rayo alcanzó la torre que quedaba en pie a principios del siglo XX, dejando solo dos lienzos con restos de almenas.
-              <a href="https://sanmartindelcastañar.es/castillo-de-la-biosfera/" target="_blank">Más info</a>
-            </p>
-          </div>
-
-          <div class="slide">
-            <img src="images/castillo-vista.jpg" alt="Vistas desde el castillo" />
-            <p><strong>Vista:</strong> Desde aquí se domina todo el valle. Mirador natural con conexión a la muralla defensiva. Desde 1834, los muros del castillo acogen el cementerio municipal.
-              <a href="https://turismosierradefrancia.es/cultura/centros-interpretacion-museos/centro-de-interpretacion-reserva-de-la-biosfera-de-las-sierras-de-bejar-y-francia/" target="_blank">Más info</a>
-            </p>
-          </div>
-
           <button class="carousel-btn prev-slide">←</button>
           <button class="carousel-btn next-slide">→</button>
         </div>
 
+        <!-- Retos Visuales -->
         <div class="visual-challenge">
           <h2>Retos Visuales</h2>
           <p>1. ¿Qué marcó la torre del homenaje?</p>
@@ -70,7 +214,6 @@
             <button class="action-btn" onclick="checkVisualAnswer('Terremoto','Rayo',1)">Terremoto</button>
           </div>
           <p id="visual-resultado-1"></p>
-
           <p>2. ¿Qué destaca en la entrada fortificada?</p>
           <div id="visual-opciones-2">
             <button class="action-btn" onclick="checkVisualAnswer('Arcos','Muralla',2)">Arcos</button>
@@ -80,6 +223,7 @@
           <p id="visual-resultado-2"></p>
         </div>
 
+        <!-- Quiz Histórico -->
         <div class="quiz">
           <h2>Quiz Histórico</h2>
           <p>1. ¿En qué siglo nació este castillo?</p>
@@ -89,7 +233,6 @@
             <button class="action-btn" onclick="checkAnswer('XIV','XIII',1)">XIV</button>
           </div>
           <p id="quiz-resultado-1"></p>
-
           <p>2. ¿Qué función tiene el castillo desde 1834?</p>
           <div id="quiz-opciones-2">
             <button class="action-btn" onclick="checkAnswer('Discoteca','Cementerio',2)">Discoteca</button>
@@ -97,7 +240,6 @@
             <button class="action-btn" onclick="checkAnswer('Museo','Cementerio',2)">Museo</button>
           </div>
           <p id="quiz-resultado-2"></p>
-
           <p>3. ¿Qué alberga hoy el castillo?</p>
           <div id="quiz-opciones-3">
             <button class="action-btn" onclick="checkAnswer('Museo','Centro de Interpretación',3)">Museo</button>
@@ -107,18 +249,39 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <div class="fragmento-final">
-          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="display:none;">Oculto</span></p>
+        <!-- Reto del Castillo (Minijuego placeholder) -->
+        <div id="castle-challenge" style="display: none;">
+          <div class="content-box">
+            <h2>Reto del Castillo</h2>
+            <p>
+              Demuestra tu destreza defendiendo la fortaleza.<br>
+              Cuando estés listo, haz clic en el botón para completar el reto.
+            </p>
+            <button class="action-btn" onclick="completeCastleChallenge()">Completar Reto</button>
+          </div>
+        </div>
+
+        <!-- Fragmento Final (oculto hasta superar el reto del castillo) -->
+        <div class="fragmento-final" id="fragmento-final">
+          <p>
+            <strong>Fragmento del Mensaje:</strong>
+            <span id="message-piece" style="font-size:1.4em; display:none;">Oculto</span>
+          </p>
           <p><strong>QR en el pueblo:</strong> CASTILLO-1834</p>
-          <p><strong>Dato Curioso:</strong> Aquí se han hallado monedas y cerámicas del siglo XIII.</p>
+          <p>
+            <strong>Dato Curioso:</strong> Aquí se han hallado monedas y cerámicas del siglo XIII.
+          </p>
         </div>
 
         <div id="continue-button" style="display:none;">
-          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=castillo'">Continuar búsqueda</button>
+          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=castillo'">
+            Continuar búsqueda
+          </button>
         </div>
       </div>
     </section>
 
+    <!-- Audios -->
     <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
@@ -126,16 +289,189 @@
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
 
     <footer>
-      <p>© 2025 La Bodega Medieval |
+      <p>
+        © 2025 La Bodega Medieval | 
         <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
       </p>
     </footer>
 
-    <script src="scripts/script.js"></script>
-  </div>
-  <script>
-  localStorage.setItem("castillo-completed", "true");
-</script>
+    <script>
+      /*----------------------------------------*/
+      /* 1. VERIFICACIÓN DE UBICACIÓN           */
+      /*----------------------------------------*/
+      const targetLat = 40.123456;
+      const targetLon = -3.123456;
+      const thresholdDistance = 50;
+      function checkLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
+        } else {
+          document.getElementById("location-status").textContent =
+            "Tu navegador no soporta geolocalización.";
+        }
+      }
+      function geoSuccess(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const distance = calculateDistance(lat, lon, targetLat, targetLon);
+        if (distance <= thresholdDistance) {
+          unlockStop();
+        } else {
+          document.getElementById("location-status").textContent =
+            "No estás lo suficientemente cerca del Castillo.";
+        }
+      }
+      function locationError(err) {
+        document.getElementById("location-status").textContent =
+          "Error al obtener tu ubicación: " + err.message;
+      }
+      function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371e3;
+        const toRad = (x) => x * Math.PI / 180;
+        const φ1 = toRad(lat1), φ2 = toRad(lat2);
+        const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
+        const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+      }
+      function checkLocationManual() {
+        const input = document.getElementById("location-input").value.trim().toLowerCase();
+        if (input === "castillo" || input === "castillo de gonzalo") {
+          unlockStop();
+        } else {
+          document.getElementById("location-status").textContent =
+            "Nombre incorrecto. Inténtalo nuevamente.";
+        }
+      }
+      function unlockStop() {
+        document.getElementById("location-check").style.display = "none";
+        document.getElementById("game-content").style.display = "block";
+        initCarousel();
+        // Mostramos el carrusel, retos visuales y quiz; el reto del castillo se desplegará
+        // solo después de responder correctamente el quiz.
+        playSound("background-music");
+      }
 
+      /*----------------------------------------*/
+      /* 2. CARRUSEL                            */
+      /*----------------------------------------*/
+      let currentSlide = 0, slides;
+      function initCarousel() {
+        slides = document.querySelectorAll('.slide');
+        document.querySelector('.prev-slide').addEventListener('click', () => {
+          currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+          updateCarousel();
+        });
+        document.querySelector('.next-slide').addEventListener('click', () => {
+          currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
+          updateCarousel();
+        });
+      }
+      function updateCarousel() {
+        const carouselSlides = document.querySelector('.carousel-slides');
+        carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
+      }
+
+      /*----------------------------------------*/
+      /* 3. RETOS VISUALES Y QUIZ              */
+      /*----------------------------------------*/
+      // Variables para el quiz
+      let quiz1Correct = false, quiz2Correct = false, quiz3Correct = false;
+      function checkVisualAnswer(selected, correct, n) {
+        const result = document.getElementById('visual-resultado-' + n);
+        if (selected === correct) {
+          result.textContent = "¡Correcto!";
+          playSound("success-sound");
+        } else {
+          result.textContent = "Respuesta incorrecta...";
+          playSound("error-sound");
+        }
+      }
+      function checkAnswer(selected, correct, n) {
+        const result = document.getElementById('quiz-resultado-' + n);
+        if (selected === correct) {
+          result.textContent = "¡Correcto!";
+          playSound("success-sound");
+          if (n === 1) quiz1Correct = true;
+          if (n === 2) quiz2Correct = true;
+          if (n === 3) quiz3Correct = true;
+        } else {
+          result.textContent = "Incorrecto. Vuelve a intentarlo.";
+          playSound("error-sound");
+          if (n === 1) quiz1Correct = false;
+          if (n === 2) quiz2Correct = false;
+          if (n === 3) quiz3Correct = false;
+        }
+        // Si las tres preguntas se contestan correctamente, mostramos el reto del castillo.
+        if (quiz1Correct && quiz2Correct && quiz3Correct) {
+          document.querySelector('.quiz').style.display = "none";
+          document.getElementById("castle-challenge").style.display = "block";
+        }
+      }
+
+      /*----------------------------------------*/
+      /* 4. RETO DEL CASTILLO (Minijuego Placeholder) */
+      /*----------------------------------------*/
+      function completeCastleChallenge() {
+        // Simulamos que se ha completado el reto correctamente.
+        // Aquí podrías integrar el minijuego definitivo relacionado con la temática de castillo.
+        document.getElementById("castle-challenge").style.display = "none";
+        unlockFinalFragment();
+      }
+
+      /*----------------------------------------*/
+      /* 5. FRAGMENTO FINAL / CONTINUAR         */
+      /*----------------------------------------*/
+      let puzzleCantarosCompleted = false; // en esta parada solo usamos el reto del castillo
+      function unlockFinalFragment() {
+        if (!puzzleCantarosCompleted) {
+          puzzleCantarosCompleted = true;
+          document.getElementById("fragmento-final").style.display = "block";
+          document.getElementById("continue-button").style.display = "block";
+          updateChronicle();
+          updateRanking();
+          playSound("cheers-sound");
+        }
+      }
+      function updateChronicle() {
+        localStorage.setItem("cronica_castillo", document.getElementById("message-piece").textContent);
+      }
+      function updateRanking() {
+        let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+        ranking.push({ stop: "castillo", score: 100 });
+        localStorage.setItem("ranking", JSON.stringify(ranking));
+      }
+
+      /*----------------------------------------*/
+      /* 6. SONIDOS                             */
+      /*----------------------------------------*/
+      function playSound(id) {
+        const sound = document.getElementById(id);
+        if (sound) sound.play();
+      }
+
+      /*----------------------------------------*/
+      /* 7. LOCALSTORAGE                        */
+      /*----------------------------------------*/
+      localStorage.setItem("castillo-completed", "true");
+
+      /*----------------------------------------*/
+      /* 8. BOTÓN DE MÚSICA                      */
+      /*----------------------------------------*/
+      document.addEventListener('DOMContentLoaded', () => {
+        const musicBtn = document.querySelector('.music-btn');
+        const backgroundMusic = document.getElementById('background-music');
+        musicBtn.addEventListener('click', () => {
+          if (backgroundMusic.paused) {
+            backgroundMusic.play();
+            musicBtn.innerHTML = '<span class="music-icon">🎵</span> Pausar Música';
+          } else {
+            backgroundMusic.pause();
+            musicBtn.innerHTML = '<span class="music-icon">🔇</span> Reproducir Música';
+          }
+        });
+      });
+    </script>
+  </div>
 </body>
 </html>
