@@ -26,9 +26,7 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
       position: relative;
     }
-    header h1 {
-      text-align: center;
-    }
+    header h1 { text-align: center; }
     .action-btn {
       display: inline-block;
       margin: 5px;
@@ -40,13 +38,8 @@
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    .music-control {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    #content {
-      margin-top: 10px;
-    }
+    .music-control { text-align: center; margin-bottom: 10px; }
+    #content { margin-top: 10px; }
     /* Ubicación */
     #location-check {
       text-align: center;
@@ -60,16 +53,9 @@
       border: 1px solid #5e3b1b;
       border-radius: 4px;
     }
-    #location-status {
-      margin-top: 10px;
-      font-size: 1.1em;
-      color: red;
-    }
-    #direction-arrow {
-      width: 50px;
-      margin-top: 10px;
-    }
-    /* Carrusel original */
+    #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
+    #direction-arrow { width: 50px; margin-top: 10px; }
+    /* Carrusel */
     .carousel {
       position: relative;
       overflow: hidden;
@@ -80,7 +66,7 @@
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease;
-      /* El ancho se calculará automáticamente sumando el 100% de cada slide */
+      /* Se ajustará el ancho en función del número de slides con JavaScript */
     }
     .slide {
       flex: 0 0 100%;
@@ -110,16 +96,12 @@
       padding: 8px;
       border-radius: 50%;
     }
-    .prev-slide {
-      left: 10px;
-    }
-    .next-slide {
-      right: 10px;
-    }
-    /* Resto de secciones (visual challenge, quiz, etc.) se mantienen igual */
+    .prev-slide { left: 10px; }
+    .next-slide { right: 10px; }
+    /* Resto de secciones se mantienen iguales */
     .visual-challenge, .quiz { margin: 20px 0; }
     
-    /* Reto del Castillo: Laberinto y Reto del Cofre */
+    /* Reto del Castillo: Laberinto y Cofre (se mantienen) */
     #castle-challenge {
       display: none;
       margin: 20px auto;
@@ -141,7 +123,6 @@
       z-index: 1;
     }
     .content-box strong { color: #fff; }
-    /* Laberinto */
     #labyrinth-section {
       background: rgba(0, 0, 0, 0.7);
       padding: 10px;
@@ -151,10 +132,7 @@
       position: relative;
       z-index: 1;
     }
-    #labyrinth-status {
-      color: #fff;
-      margin-top: 10px;
-    }
+    #labyrinth-status { color: #fff; margin-top: 10px; }
     .direction-btn {
       margin: 5px;
       padding: 10px 15px;
@@ -164,7 +142,6 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    /* Reto del Cofre */
     #chest-challenge {
       display: none;
       background: rgba(0, 0, 0, 0.7);
@@ -183,7 +160,6 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-    /* Fragmento Final */
     .fragmento-final {
       margin: 20px auto;
       display: none;
@@ -207,9 +183,7 @@
       margin-top: 20px;
     }
     @media screen and (max-width: 768px) {
-      .container {
-        max-width: 90%;
-      }
+      .container { max-width: 90%; }
     }
     /* Adornos medievales */
     .container:before {
@@ -255,11 +229,11 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
       
-      <!-- Contenido principal (se muestra tras verificación) -->
+      <!-- Contenido principal, que se muestra tras la verificación -->
       <div id="game-content" style="display:none;">
-        <!-- Carrusel en su posición original -->
+        <!-- Carrusel en posición original -->
         <div class="carousel">
-          <div class="carousel-slides">
+          <div class="carousel-slides" id="main-carousel">
             <div class="slide active">
               <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
               <p class="carousel-info">
@@ -334,7 +308,7 @@
           <p id="quiz-resultado-3"></p>
         </div>
         
-        <!-- Reto del Castillo: Laberinto, luego Carrusel y por último Cofre -->
+        <!-- Reto del Castillo: Laberinto, luego el Carrusel y, por último, el Reto del Cofre -->
         <div id="castle-challenge" style="display: none;">
           <!-- Laberinto -->
           <div id="labyrinth-section">
@@ -352,11 +326,11 @@
           </div>
           <!-- Una vez resuelto el laberinto, se muestra el carrusel interno -->
           <div id="castle-carousel" style="display:none; position:relative;">
-            <div class="carousel-slides">
+            <div class="carousel-slides" id="internal-carousel">
               <div class="slide active">
                 <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
                 <p class="carousel-info">
-                  <strong>Entrada:</strong> Puerta del castillo, convertido en palacio por el conde de Miranda en el siglo XV. Está construido sobre una fortificación del siglo XIII.<br>
+                  <strong>Entrada:</strong> Puerta de entrada del castillo, convertido en palacio por el conde de Miranda en el siglo XV. Está construido sobre una fortificación del siglo XIII.<br>
                   <em>En 1834 se instaló un cementerio dentro de sus muros.</em><br>
                   <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
                 </p>
@@ -413,7 +387,6 @@
             Continuar búsqueda
           </button>
         </div>
-        
       </div>
     </section>
     
@@ -486,19 +459,23 @@
       function unlockStop() {
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
+        // Se inicia la experiencia; el carrusel de inicio se muestra y se activa el resto.
+        initMainCarousel();
         playSound("background-music");
       }
       
       /*----------------------------------------*/
-      /* 2. CARRUSEL (para la sección de inicio) */
+      /* 2. CARRUSEL PRINCIPAL                  */
       /*----------------------------------------*/
-      document.addEventListener('DOMContentLoaded', function() {
+      function initMainCarousel() {
         let currentSlide = 0;
         const slides = document.querySelectorAll('.carousel-slides .slide');
         const totalSlides = slides.length;
         const prevButton = document.querySelector('.prev-slide');
         const nextButton = document.querySelector('.next-slide');
         const carouselContainer = document.querySelector('.carousel-slides');
+        // Forzamos el ancho total
+        carouselContainer.style.width = (totalSlides * 100) + '%';
         
         function updateCarousel() {
           carouselContainer.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
@@ -513,7 +490,7 @@
           currentSlide = (currentSlide < totalSlides - 1) ? currentSlide + 1 : 0;
           updateCarousel();
         });
-      });
+      }
       
       /*----------------------------------------*/
       /* 3. RETOS VISUALES Y QUIZ              */
@@ -575,7 +552,7 @@
           document.getElementById("labyrinth-status").textContent = "¡Laberinto resuelto! Has encontrado la pista para abrir el cofre.";
           userPath = [];
           document.getElementById("labyrinth-section").style.display = "none";
-          // Mostrar el carrusel interno
+          // Se muestra el carrusel interno
           document.getElementById("castle-carousel").style.display = "block";
           initCastleCarousel();
         }
@@ -609,11 +586,14 @@
         }
       }
       
-      // Carrusel interno en el reto (tras el laberinto)
+      // Carrusel interno que se muestra tras el laberinto (dentro de #castle-carousel)
       let carouselCurrentSlide = 0, carouselSlides;
       function initCastleCarousel() {
         carouselSlides = document.querySelectorAll('#castle-carousel .slide');
         carouselCurrentSlide = 0;
+        // Forzamos el ancho total del contenedor interno
+        const carouselContainer = document.querySelector('#castle-carousel .carousel-slides');
+        carouselContainer.style.width = (carouselSlides.length * 100) + '%';
         updateCastleCarousel();
         document.querySelector('#castle-carousel .prev-slide').addEventListener('click', () => {
           carouselCurrentSlide = (carouselCurrentSlide > 0) ? carouselCurrentSlide - 1 : carouselSlides.length - 1;
@@ -623,7 +603,6 @@
           carouselCurrentSlide = (carouselCurrentSlide < carouselSlides.length - 1) ? carouselCurrentSlide + 1 : 0;
           updateCastleCarousel();
         });
-        // Mostrar botón de continuar cuando se cargue el carrusel
         document.getElementById("continue-from-carousel").style.display = "block";
       }
       
@@ -632,7 +611,7 @@
         carouselContainer.style.transform = 'translateX(' + (-carouselCurrentSlide * 100) + '%)';
       }
       
-      // Botón para pasar al reto del cofre
+      // Botón para pasar al reto del Cofre
       function proceedToChest() {
         document.getElementById("castle-carousel").style.display = "none";
         document.getElementById("continue-from-carousel").style.display = "none";
