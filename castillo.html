@@ -63,8 +63,18 @@
       border: 2px solid #5e3b1b;
       border-radius: 10px;
     }
-    .carousel-slides { display: flex; transition: transform 0.5s ease; }
-    .slide { min-width: 100%; box-sizing: border-box; text-align: center; }
+    .carousel-slides {
+      display: flex;
+      transition: transform 0.5s ease;
+      /* Aseguramos que ocupe el ancho completo (3 slides = 300%) */
+      width: 300%;
+    }
+    .slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      padding: 10px;
+    }
     .slide img {
       width: 100%;
       height: 300px;
@@ -87,7 +97,7 @@
     .next-slide { right: 10px; }
     /* Secciones Visuales y Quiz */
     .visual-challenge, .quiz { margin: 20px 0; }
-    /* Minijuego: Reto del Castillo (Laberinto y Reto del Cofre) */
+    /* Minijuego: Reto del Castillo (Laberinto y Cofre) */
     #castle-challenge {
       display: none;
       margin: 20px auto;
@@ -98,7 +108,6 @@
       background-size: cover;
       position: relative;
     }
-    /* Caja de contenido para enmarcar textos y mejorar legibilidad */
     .content-box {
       background: rgba(0, 0, 0, 0.8);
       color: #fff;
@@ -110,7 +119,7 @@
       z-index: 1;
     }
     .content-box strong { color: #fff; }
-    /* Laberinto del Castillo */
+    /* Laberinto */
     #labyrinth-section {
       background: rgba(0, 0, 0, 0.7);
       padding: 10px;
@@ -167,7 +176,7 @@
     @media screen and (max-width: 768px) {
       .container { max-width: 90%; }
     }
-    /* Adornos medievales adicionales */
+    /* Adornos medievales */
     .container:before {
       content: "⚔️";
       position: absolute;
@@ -211,7 +220,7 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
 
-      <!-- Contenido principal (se muestra tras verificación) -->
+      <!-- Contenido principal (tras verificación) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -219,7 +228,7 @@
             <div class="slide active">
               <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
               <p>
-                <strong>Entrada:</strong> Puerta del castillo, convertida en palacio en el siglo XV, con orígenes en fortificación del siglo XIII. <br>
+                <strong>Entrada:</strong> Puerta del castillo, convertida en palacio en el siglo XV, con orígenes en fortificación del siglo XIII.<br>
                 <em>En 1834 se instaló un cementerio dentro de sus muros.</em>
                 <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
               </p>
@@ -227,7 +236,7 @@
             <div class="slide">
               <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
               <p>
-                <strong>Torre del Homenaje:</strong> La torre, original de dos, fue reducida tras un rayo a principios del siglo XX. <br>
+                <strong>Torre del Homenaje:</strong> La torre, original de dos, fue reducida tras un rayo a principios del siglo XX.<br>
                 <em>En 1949 se declaró Bien de Interés Cultural.</em>
                 <a href="https://sanmartindelcastañar.es/castillo-de-la-biosfera/" target="_blank">Más info</a>
               </p>
@@ -235,8 +244,8 @@
             <div class="slide">
               <img src="images/castillo-vista.jpg" alt="Vista desde el Castillo" />
               <p>
-                <strong>Vista:</strong> Desde este mirador se domina todo el valle, y hoy acoge el cementerio municipal. <br>
-                <em>La renovación que transformó el castillo en un Centro de Interpretación de la Biosfera se llevó a cabo en 2010.</em>
+                <strong>Vista:</strong> Desde este mirador se domina todo el valle, y hoy acoge el cementerio municipal.<br>
+                <em>La renovación se realizó en 2010 para transformar el castillo en un Centro de Interpretación de la Biosfera.</em>
                 <a href="https://turismosierradefrancia.es/..." target="_blank">Más info</a>
               </p>
             </div>
@@ -459,13 +468,13 @@
           if (n === 2) quiz2Correct = false;
           if (n === 3) quiz3Correct = false;
         }
-        // Si se contestan correctamente las 3 preguntas, se muestra el reto del castillo.
+        // Si las tres respuestas del quiz son correctas, mostramos el reto del castillo.
         if (quiz1Correct && quiz2Correct && quiz3Correct) {
           document.querySelector('.quiz').style.display = "none";
           document.getElementById("castle-challenge").style.display = "block";
-          // Generamos la clave numérica aleatoria (entre los 3 posibles) para el reto del cofre.
+          // Generamos la clave aleatoria para el reto del cofre.
           generateChestKey();
-          // Habilitamos gestos swipe en el laberinto
+          // Habilitamos los gestos swipe en el laberinto.
           enableLaberintoSwipe();
         }
       }
@@ -473,7 +482,6 @@
       /*----------------------------------------*/
       /* 4. RETO DEL CASTILLO: LABERINTO Y COFRE */
       /*----------------------------------------*/
-      // Laberinto: secuencia correcta (por ejemplo: ["E", "E", "S", "S", "O"])
       const correctPath = ["E", "E", "S", "S", "O"];
       let userPath = [];
       function chooseDirection(dir) {
@@ -494,7 +502,6 @@
           document.getElementById("chest-challenge").style.display = "block";
         }
       }
-      // Habilitar gestos swipe para el laberinto en móviles.
       function enableLaberintoSwipe() {
         const labyrinth = document.getElementById("labyrinth-section");
         let touchstartX = 0, touchstartY = 0, touchendX = 0, touchendY = 0;
@@ -524,14 +531,13 @@
           }
         }
       }
-      // Genera una clave numérica aleatoria usando 3 fechas y sus pistas (sin dar la fecha)
       let currentChestKey = "";
       function generateChestKey() {
-        // Claves disponibles
+        // Claves disponibles basadas en fechas
         const keys = [
           {
             date: "1834",
-            clue: "la fecha en que se instaló el cementerio dentro de los muros del castillo."
+            clue: "la fecha en que se instaló un cementerio dentro de los muros del castillo."
           },
           {
             date: "1949",
@@ -539,10 +545,10 @@
           },
           {
             date: "2010",
-            clue: "la fecha en que se realizó la renovación para transformar el castillo en un centro de interpretación de la biosfera."
+            clue: "la fecha en que se realizó la renovación que transformó el castillo en un Centro de Interpretación de la Biosfera."
           }
         ];
-        // Seleccionamos al azar una de las claves
+        // Seleccionamos una clave aleatoria
         const randomIndex = Math.floor(Math.random() * keys.length);
         currentChestKey = keys[randomIndex].date;
         document.getElementById("chest-hint").textContent = "Pista: La clave corresponde a " + keys[randomIndex].clue;
