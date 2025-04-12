@@ -86,7 +86,7 @@
     .next-slide { right: 10px; }
     /* Secciones Visuales y Quiz */
     .visual-challenge, .quiz { margin: 20px 0; }
-    /* Minijuego 1: Puzzle de Tuberías */
+    /* Minijuego 1: Puzzle de Tuberías (rediseñado) */
     #puzzle-tuberias {
       display: none;
       margin: 20px auto;
@@ -101,8 +101,7 @@
       font-style: italic;
       color: #555;
     }
-    /* Usamos una cuadrícula de 3 filas x 4 columnas.
-       En las filas 0 y 1, la celda de la columna 3 se deja vacía. */
+    /* Usamos una cuadrícula de 3 filas x 3 columnas con solución predefinida */
     #puzzle-container {
       display: flex;
       flex-direction: column;
@@ -121,12 +120,12 @@
       border: 2px solid #5e3b1b;
       border-radius: 5px;
     }
-    /* Clase para indicar que la pieza está en la orientación correcta */
+    /* Resalta la pieza correcta */
     .pipe-piece.correct {
       border-color: green;
       box-shadow: 0 0 8px green;
     }
-    /* Minijuego 2: Puzzle de Cántaros - Visual y Medieval */
+    /* Minijuego 2: Puzzle de Cántaros (visual y medieval) */
     #puzzle-cantaros {
       display: none;
       margin: 20px auto;
@@ -142,9 +141,7 @@
       gap: 30px;
       margin: 20px 0;
     }
-    .jug {
-      text-align: center;
-    }
+    .jug { text-align: center; }
     .jug-label { font-weight: bold; margin-bottom: 5px; }
     .jug-container {
       width: 100px;
@@ -212,7 +209,7 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección"/>
       </div>
 
-      <!-- Contenido principal (se muestra tras validación) -->
+      <!-- Contenido principal (tras verificación) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -278,12 +275,12 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Minijuego 1: Puzzle de Tuberías (más jugable y ambientado) -->
+        <!-- Minijuego 1: Puzzle de Tuberías (Rediseñado con solución predefinida) -->
         <div id="puzzle-tuberias">
           <h2>Puzzle de Tuberías</h2>
           <p>
-            Haz girar cada pieza para alinear el flujo del agua en la fila inferior.<br>
-            <span class="hint">Pista: El agua entra en el extremo izquierdo y debe llegar al extremo derecho de la fila inferior.</span>
+            Gira cada pieza hasta que todas estén en la orientación correcta.<br>
+            <span class="hint">Pista: La tubería debe permitir que el agua fluya desde la entrada (izquierda de la fila intermedia) hasta la salida (derecha de la misma fila).</span>
           </p>
           <div id="puzzle-container"></div>
           <div style="text-align:center;">
@@ -292,7 +289,7 @@
           <p id="puzzle-tuberias-resultado" style="text-align:center; color:green; font-weight:bold;"></p>
         </div>
 
-        <!-- Minijuego 2: Puzzle de Cántaros (más visual y ambientado) -->
+        <!-- Minijuego 2: Puzzle de Cántaros -->
         <div id="puzzle-cantaros">
           <h2>Puzzle de Cántaros</h2>
           <p>
@@ -449,65 +446,60 @@
       /*----------------------------------------*/
       /* 4. MINIJUEGO 1: PUZZLE DE TUBERÍAS     */
       /*----------------------------------------*/
-      // Cuadrícula de 3 filas x 4 columnas. En filas 0 y 1, la columna 3 se deja vacía.
-      const puzzleRows = 3, puzzleCols = 4;
-      const pipeTypes = ["pipe-straight", "pipe-curve", "pipe-t", "pipe-cross"];
-      let puzzlePieces = [];
+      // Usamos una cuadrícula de 3x3 con solución predefinida para cada celda.
+      const puzzleRows = 3, puzzleCols = 3;
+      // Definimos la solución preestablecida: cada celda tiene un tipo y un ángulo (en grados)
+      const solutionData = [
+        [ { type: "pipe-curve", solution: 0 },     { type: "pipe-straight", solution: 0 }, { type: "pipe-curve", solution: 270 } ],
+        [ { type: "pipe-straight", solution: 90 },   { type: "pipe-cross", solution: 0 },    { type: "pipe-straight", solution: 90 } ],
+        [ { type: "pipe-curve", solution: 90 },      { type: "pipe-straight", solution: 0 }, { type: "pipe-curve", solution: 180 } ]
+      ];
+      // Usamos los mismos tipos para determinar las imágenes (data URIs)
       const pipeImages = {
         "pipe-straight": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMTAiIHk9IjM1IiB3aWR0aD0iNjAiIGhlaWdodD0iMTAiIHJ4PSI1IiByeT0iNSIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+Cjwvc3ZnPg==",
         "pipe-curve": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTExMCw0MCBBMzAsMzAgMCAwLDAsNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVlM2IxYiIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+Cjwvc3ZnPg==",
-        "pipe-t": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMzUiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iNjAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+CiAgPHJlY3QgeD0iMTUiIHk9IjMwIiB3aWR0aD0iNTAiIGhlaWdodD0iMTAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+Cjwvc3ZnPg==",
-        "pipe-cross": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMzUiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iNjAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+CiAgPHJlY3QgeD0iMTUiIHk9IjM1IiB3aWR0aD0iNTAiIGhlaWdodD0iMTAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+Cjwvc3ZnPg=="
+        "pipe-t": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMzUiIHk9IjEwIiB3aWR0aD0iODAiIGhlaWdodD0iNjAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+CiAgPHJlY3QgeD0iMTUiIHk9IjMwIiB3aWR0aD0iNTAiIGhlaWdodD0iMTAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+Cjwvc3ZnPg==",
+        "pipe-cross": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMzUiIHk9IjEwIiB3aWR0aD0iODAiIGhlaWdodD0iNjAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+CiAgPHJlY3QgeD0iMTUiIHk9IjM1IiB3aWR0aD0iNTAiIGhlaWdodD0iMTAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+Cjwvc3ZnPg=="
       };
-
+      let puzzlePieces = [];
       function initTuberiasPuzzle() {
         document.getElementById("puzzle-tuberias").style.display = "block";
         const puzzleCont = document.getElementById("puzzle-container");
         puzzleCont.innerHTML = "";
         puzzlePieces = [];
-        // Recorremos filas (0 a 2) y columnas (0 a 3)
         for (let r = 0; r < puzzleRows; r++) {
           const rowDiv = document.createElement("div");
           rowDiv.classList.add("puzzle-row");
           for (let c = 0; c < puzzleCols; c++) {
-            // En filas 0 y 1, dejamos vacía la última columna (col 3)
-            if (r < 2 && c === puzzleCols - 1) {
-              const emptyCell = document.createElement("div");
-              emptyCell.style.width = "80px";
-              emptyCell.style.height = "80px";
-              emptyCell.style.margin = "3px";
-              rowDiv.appendChild(emptyCell);
-              continue;
-            }
+            const cellData = solutionData[r][c]; // Obtenemos el tipo y solución para esta celda
             const piece = document.createElement("div");
             piece.classList.add("pipe-piece");
-            // Asigna un tipo aleatorio
-            const randomType = pipeTypes[Math.floor(Math.random() * pipeTypes.length)];
-            piece.dataset.type = randomType;
-            piece.style.backgroundImage = `url('${pipeImages[randomType]}')`;
-            // Define un ángulo de solución aleatorio para esta pieza
+            // Asignamos el tipo y solución
+            piece.dataset.type = cellData.type;
+            piece.dataset.solution = cellData.solution;
+            piece.style.backgroundImage = `url('${pipeImages[cellData.type]}')`;
+            // Generamos una rotación inicial distinta a la solución
             const possibleRotations = [0, 90, 180, 270];
-            const solutionRot = possibleRotations[Math.floor(Math.random() * possibleRotations.length)];
-            piece.dataset.solution = solutionRot;
-            // Para hacer el reto más interesante, iniciamos con un ángulo distinto a la solución.
-            let initialRot = solutionRot;
-            while(initialRot === solutionRot) {
+            let initialRot = cellData.solution;
+            while(initialRot === cellData.solution) {
               initialRot = possibleRotations[Math.floor(Math.random() * possibleRotations.length)];
             }
             piece.dataset.rotation = initialRot;
             piece.style.transform = `rotate(${initialRot}deg)`;
-            // Al hacer clic, gira 90° y comprueba si alcanza la solución.
+            // Al hacer clic, rota 90° y se comprueba visualmente:
             piece.addEventListener("click", () => {
               const currentRot = parseInt(piece.dataset.rotation);
               const newRot = (currentRot + 90) % 360;
               piece.dataset.rotation = newRot;
               piece.style.transform = `rotate(${newRot}deg)`;
-              // Si alcanza la solución, añade una clase visual
+              // Si la rotación actual coincide con la solución, añade la clase "correct"
               if(newRot === parseInt(piece.dataset.solution)) {
                 piece.classList.add("correct");
               } else {
                 piece.classList.remove("correct");
               }
+              // Verifica si todas las piezas están correctas
+              checkTuberias();
             });
             rowDiv.appendChild(piece);
             puzzlePieces.push({ row: r, col: c, element: piece });
@@ -515,75 +507,24 @@
           puzzleCont.appendChild(rowDiv);
         }
       }
-
-      // Función que verifica la fila inferior (fila 2)
+      // Arreglo que define la solución preestablecida para el puzzle de tuberías.
+      const solutionData = [
+        [ { type: "pipe-curve", solution: 0 },      { type: "pipe-straight", solution: 0 }, { type: "pipe-curve", solution: 270 } ],
+        [ { type: "pipe-straight", solution: 90 },    { type: "pipe-cross", solution: 0 },    { type: "pipe-straight", solution: 90 } ],
+        [ { type: "pipe-curve", solution: 90 },       { type: "pipe-straight", solution: 0 }, { type: "pipe-curve", solution: 180 } ]
+      ];
       function checkTuberias() {
+        // Si todas las piezas están en la rotación de solución, el puzzle se resuelve.
+        let allCorrect = puzzlePieces.every(p => parseInt(p.element.dataset.rotation) === parseInt(p.element.dataset.solution));
         const puzzleResult = document.getElementById("puzzle-tuberias-resultado");
-        // Filtrar las piezas correspondientes a la fila 2
-        const row2Pieces = puzzlePieces.filter(p => p.row === 2);
-        row2Pieces.sort((a, b) => a.col - b.col);
-        let valid = true;
-        // Verificar que cada pieza en la fila 2 esté en su rotación solución
-        for (let i = 0; i < row2Pieces.length; i++) {
-          const currRot = parseInt(row2Pieces[i].element.dataset.rotation);
-          const solRot = parseInt(row2Pieces[i].element.dataset.solution);
-          if (currRot !== solRot) {
-            valid = false;
-            break;
-          }
-          // Además, comprobamos conexiones entre celdas:
-          // Para la primera celda, se exige conexión a la derecha; para la última, a la izquierda; y en intermedias, ambas.
-          const conns = getConnections(row2Pieces[i].element);
-          if(i === 0 && !conns.right) { valid = false; break; }
-          if(i === row2Pieces.length - 1 && !conns.left) { valid = false; break; }
-          if(i > 0 && i < row2Pieces.length - 1 && (!conns.left || !conns.right)) { valid = false; break; }
-          if(i < row2Pieces.length - 1) {
-            const nextConns = getConnections(row2Pieces[i+1].element);
-            if(!conns.right || !nextConns.left) {
-              valid = false;
-              break;
-            }
-          }
-        }
-        if(valid) {
+        if(allCorrect) {
           puzzleResult.textContent = "¡Tuberías conectadas correctamente!";
           playSound("coins-sound");
-          document.getElementById("puzzle-tuberias").style.display = "none";
-          initCantarosPuzzle();
-        } else {
-          puzzleResult.textContent = "La conexión en la fila inferior no es correcta. Revisa las piezas.";
-          playSound("error-sound");
+          setTimeout(() => {
+            document.getElementById("puzzle-tuberias").style.display = "none";
+            initCantarosPuzzle();
+          }, 1000);
         }
-      }
-
-      // Función que, según el tipo y la rotación actual, devuelve las conexiones (simplificado)
-      function getConnections(piece) {
-        const type = piece.dataset.type;
-        const rot = parseInt(piece.dataset.rotation) % 360;
-        let conns = { top: false, right: false, bottom: false, left: false };
-        if (type === "pipe-straight") {
-          // Horizontal en 0 y 180; vertical en 90 y 270.
-          if (rot === 0 || rot === 180) {
-            conns.left = true;
-            conns.right = true;
-          } else {
-            conns.top = true;
-            conns.bottom = true;
-          }
-        } else if (type === "pipe-curve") {
-          if(rot === 0) { conns.top = true; conns.right = true; }
-          else if(rot === 90) { conns.right = true; conns.bottom = true; }
-          else if(rot === 180) { conns.bottom = true; conns.left = true; }
-          else if(rot === 270) { conns.left = true; conns.top = true; }
-        } else if (type === "pipe-t") {
-          if(rot === 0) { conns.top = true; conns.left = true; conns.right = true; }
-          else if(rot === 90) { conns.top = true; conns.right = true; conns.bottom = true; }
-          else if(rot === 180) { conns.right = true; conns.bottom = true; conns.left = true; }
-          else if(rot === 270) { conns.bottom = true; conns.left = true; conns.top = true; }
-        } else if (type === "pipe-cross") {
-          conns.top = conns.right = conns.bottom = conns.left = true;
-        }
-        return conns;
       }
 
       /*----------------------------------------*/
@@ -608,20 +549,20 @@
       function emptyB() { bCur = 0; checkCantaros(); }
       function pourAtoB() {
         const spaceInB = bCap - bCur;
-        if (aCur <= spaceInB) { bCur += aCur; aCur = 0; }
+        if(aCur <= spaceInB) { bCur += aCur; aCur = 0; }
         else { aCur -= spaceInB; bCur = bCap; }
         checkCantaros();
       }
       function pourBtoA() {
         const spaceInA = aCap - aCur;
-        if (bCur <= spaceInA) { aCur += bCur; bCur = 0; }
+        if(bCur <= spaceInA) { aCur += bCur; bCur = 0; }
         else { bCur -= spaceInA; aCur = aCap; }
         checkCantaros();
       }
       function checkCantaros() {
         updateJugsDisplay();
         const puzzleCantarosResultado = document.getElementById("puzzle-cantaros-resultado");
-        if (aCur === 4 || bCur === 4) {
+        if(aCur === 4 || bCur === 4) {
           puzzleCantarosResultado.textContent = "¡Has logrado los 4 litros, excelente!";
           playSound("coins-sound");
           unlockFinalFragment();
