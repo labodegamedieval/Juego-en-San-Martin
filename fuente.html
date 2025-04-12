@@ -25,7 +25,9 @@
       padding: 20px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
     }
-    header h1 { text-align: center; }
+    header h1 {
+      text-align: center;
+    }
     .action-btn {
       display: inline-block;
       margin: 5px auto;
@@ -37,8 +39,13 @@
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    .music-control { text-align: center; margin-bottom: 10px; }
-    #content { margin-top: 10px; }
+    .music-control {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #content {
+      margin-top: 10px;
+    }
     /* Ubicación */
     #location-check {
       text-align: center;
@@ -52,8 +59,15 @@
       border: 1px solid #5e3b1b;
       border-radius: 4px;
     }
-    #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
-    #direction-arrow { width: 50px; margin-top: 10px; }
+    #location-status {
+      margin-top: 10px;
+      font-size: 1.1em;
+      color: red;
+    }
+    #direction-arrow {
+      width: 50px;
+      margin-top: 10px;
+    }
     /* Carrusel */
     .carousel {
       position: relative;
@@ -92,7 +106,9 @@
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
     /* Secciones Visuales y Quiz */
-    .visual-challenge, .quiz { margin: 20px 0; }
+    .visual-challenge, .quiz {
+      margin: 20px 0;
+    }
     /* Minijuego 1: Puzzle de Tuberías */
     #puzzle-tuberias {
       display: none;
@@ -102,12 +118,25 @@
       border-radius: 10px;
       background: #f9f1e6;
     }
-    #puzzle-tuberias h2 { text-align: center; }
+    #puzzle-tuberias h2 {
+      text-align: center;
+    }
     /* Pista para el puzzle */
-    #puzzle-tuberias p.hint { text-align: center; font-style: italic; color: #555; }
-    /* Container del puzzle: usamos 3 filas y 4 columnas (la última columna en filas 0 y 1 queda vacía) */
-    #puzzle-container { display: flex; flex-direction: column; align-items: center; margin: 10px; }
-    .puzzle-row { display: flex; }
+    #puzzle-tuberias p.hint {
+      text-align: center;
+      font-style: italic;
+      color: #555;
+    }
+    /* Container del puzzle: 3 filas x 4 columnas; en filas 0 y 1 la celda col 3 se deja vacía */
+    #puzzle-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px;
+    }
+    .puzzle-row {
+      display: flex;
+    }
     .pipe-piece {
       width: 80px;
       height: 80px;
@@ -119,7 +148,7 @@
       border: 2px solid #5e3b1b;
       border-radius: 5px;
     }
-    /* Minijuego 2: Puzzle de Cántaros */
+    /* Minijuego 2: Puzzle de Cántaros (Visual y Medieval) */
     #puzzle-cantaros {
       display: none;
       margin: 20px auto;
@@ -128,9 +157,40 @@
       border-radius: 10px;
       background: #f9f1e6;
     }
-    #puzzle-cantaros h2 { text-align: center; }
-    #cantaros-container { text-align: center; margin: 10px; }
-    .jug-status { margin: 5px 0; }
+    #puzzle-cantaros h2 {
+      text-align: center;
+    }
+    /* Contenedor de jarras visual */
+    #cantaros-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+    }
+    .jug {
+      text-align: center;
+    }
+    .jug-label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .jug-container {
+      width: 100px;
+      height: 150px;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      background-color: #faf0e6;
+      position: relative;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    .jug-water {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background-color: #4d90fe;
+      transition: height 0.5s ease;
+    }
     /* Fragmento Final */
     .fragmento-final {
       margin: 20px auto;
@@ -144,11 +204,20 @@
       font-weight: bold;
       border-radius: 10px;
     }
-    #continue-button { text-align: center; margin-top: 15px; display: none; }
-    footer p { text-align: center; font-size: 0.9em; margin-top: 20px; }
+    #continue-button {
+      text-align: center;
+      margin-top: 15px;
+      display: none;
+    }
+    footer p {
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: 20px;
+    }
     @media screen and (max-width: 768px) {
       .container { max-width: 90%; }
       .pipe-piece { width: 60px; height: 60px; }
+      .jug-container { width: 80px; height: 120px; }
     }
   </style>
 </head>
@@ -179,7 +248,7 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección"/>
       </div>
 
-      <!-- Contenido principal (desplegado tras verificación) -->
+      <!-- Contenido principal (tras ubicación validada) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -201,7 +270,7 @@
           <button class="carousel-btn next-slide">→</button>
         </div>
 
-        <!-- Reto Visual y Quiz (secciones existentes) -->
+        <!-- Retos Visuales y Quiz -->
         <div class="visual-challenge">
           <h2>Retos Visuales</h2>
           <p>1. ¿Cuántos caños tiene la fuente?</p>
@@ -248,8 +317,9 @@
         <!-- Minijuego 1: Puzzle de Tuberías -->
         <div id="puzzle-tuberias">
           <h2>Puzzle de Tuberías</h2>
-          <p>Haz clic en cada pieza para girarla y conecta el agua de la fila inferior.<br>
-             <span class="hint">Pista: El agua entra por el extremo izquierdo y sale por el extremo derecho de la fila inferior.</span>
+          <p>
+            Haz clic en cada pieza para girarla y conecta el agua de la fila inferior.<br>
+            <span class="hint">Pista: El agua entra por el extremo izquierdo y sale por el extremo derecho de la fila inferior.</span>
           </p>
           <div id="puzzle-container"></div>
           <div style="text-align:center;">
@@ -258,20 +328,32 @@
           <p id="puzzle-tuberias-resultado" style="text-align:center; color:green; font-weight:bold;"></p>
         </div>
 
-        <!-- Minijuego 2: Puzzle de Cántaros -->
+        <!-- Minijuego 2: Puzzle de Cántaros (Visual y Medieval) -->
         <div id="puzzle-cantaros">
           <h2>Puzzle de Cántaros</h2>
-          <p>Logra medir exactamente 4 litros de agua usando un cántaro de 5L y otro de 3L.</p>
+          <p>
+            Con la astucia de un alquimista medieval, logra medir exactamente 4 litros de agua. <br>
+            Usa los cántaros a continuación: uno de 5L y otro de 3L.
+          </p>
           <div id="cantaros-container">
-            <div class="jug-status">
-              Cántaro A (5L): <span id="a-actual">0</span> L
+            <div class="jug">
+              <div class="jug-label">Cántaro A (5L)</div>
+              <div class="jug-container" id="jug-a-container">
+                <div class="jug-water" id="jug-a-water" style="height: 0%;"></div>
+              </div>
+              <div>Cantidad: <span id="a-actual">0</span> L</div>
             </div>
-            <div class="jug-status">
-              Cántaro B (3L): <span id="b-actual">0</span> L
+            <div class="jug">
+              <div class="jug-label">Cántaro B (3L)</div>
+              <div class="jug-container" id="jug-b-container">
+                <div class="jug-water" id="jug-b-water" style="height: 0%;"></div>
+              </div>
+              <div>Cantidad: <span id="b-actual">0</span> L</div>
             </div>
-            <button class="action-btn" onclick="fillA()">Llenar A (5L)</button>
-            <button class="action-btn" onclick="fillB()">Llenar B (3L)</button>
-            <br>
+          </div>
+          <div style="text-align: center; margin-top: 10px;">
+            <button class="action-btn" onclick="fillA()">Llenar A</button>
+            <button class="action-btn" onclick="fillB()">Llenar B</button>
             <button class="action-btn" onclick="emptyA()">Vaciar A</button>
             <button class="action-btn" onclick="emptyB()">Vaciar B</button>
             <br>
@@ -343,7 +425,6 @@
       }
       function checkLocationManual() {
         const input = document.getElementById("location-input").value.trim().toLowerCase();
-        // Desbloquear escribiendo "fuente" o "fuente y portalón"
         if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") {
           unlockStop();
         } else {
@@ -405,14 +486,12 @@
       /*----------------------------------------*/
       /* 4. MINIJUEGO 1: PUZZLE DE TUBERÍAS     */
       /*----------------------------------------*/
-      // Usamos una cuadrícula de 3 filas x 4 columnas.
-      // En las filas 0 y 1, la celda de la última columna (col 3) se deja vacía.
-      // Se asume que el agua debe conectarse en la fila 2 (la inferior), desde el extremo izquierdo hasta el derecho.
+      // Cuadrícula de 3 filas x 4 columnas.
+      // En filas 0 y 1, la celda de la columna 3 se deja vacía.
       const puzzleRows = 3, puzzleCols = 4;
       const pipeTypes = ["pipe-straight", "pipe-curve", "pipe-t", "pipe-cross"];
       let puzzlePieces = [];
-
-      // Data URIs ya definidas:
+      // Data URIs definidas arriba en el objeto pipeImages (visto más arriba).
       const pipeImages = {
         "pipe-straight": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMTAiIHk9IjM1IiB3aWR0aD0iNjAiIGhlaWdodD0iMTAiIHJ4PSI1IiByeT0iNSIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+Cjwvc3ZnPg==",
         "pipe-curve": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTExMCw0MCBBMzAsMzAgMCAwLDAsNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVlM2IxYiIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+Cjwvc3ZnPg==",
@@ -420,18 +499,17 @@
         "pipe-cross": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMzUiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iNjAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+CiAgPHJlY3QgeD0iMTUiIHk9IjM1IiB3aWR0aD0iNTAiIGhlaWdodD0iMTAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+Cjwvc3ZnPg=="
       };
 
-      // Inicia el puzzle de tuberías:
       function initTuberiasPuzzle() {
         document.getElementById("puzzle-tuberias").style.display = "block";
         const puzzleCont = document.getElementById("puzzle-container");
         puzzleCont.innerHTML = "";
         puzzlePieces = [];
-
-        for (let r = 0; r < puzzleRows; r++) {
+        // Recorremos filas (0 a 2) y columnas (0 a 3)
+        for (let r = 0; r < puzzleRows; r++){
           const rowDiv = document.createElement("div");
           rowDiv.classList.add("puzzle-row");
-          for (let c = 0; c < puzzleCols; c++) {
-            // En las primeras 2 filas, si es la última columna, dejamos la celda vacía
+          for (let c = 0; c < puzzleCols; c++){
+            // En filas 0 y 1, dejamos vacía la columna 3
             if (r < 2 && c === puzzleCols - 1) {
               const emptyCell = document.createElement("div");
               emptyCell.style.width = "80px";
@@ -442,12 +520,11 @@
             }
             const piece = document.createElement("div");
             piece.classList.add("pipe-piece");
-            // Asigna un tipo aleatorio
+            // Asignar un tipo aleatorio
             const randomType = pipeTypes[Math.floor(Math.random() * pipeTypes.length)];
             piece.dataset.type = randomType;
-            // Asigna el background usando el data URI correspondiente
             piece.style.backgroundImage = `url('${pipeImages[randomType]}')`;
-            // Rotación inicial aleatoria (0, 90, 180, 270)
+            // Rotación inicial aleatoria entre 0, 90, 180, 270
             const possibleRotations = [0, 90, 180, 270];
             let randomRot = possibleRotations[Math.floor(Math.random() * possibleRotations.length)];
             piece.dataset.rotation = randomRot;
@@ -466,68 +543,52 @@
         }
       }
 
-      // Función para obtener las conexiones de una pieza según su tipo y rotación.
-      // Retorna un objeto con propiedades: {top, right, bottom, left} (booleanos).
+      // Función de verificación del puzzle: En la fila inferior (fila 2) se requiere conexión:
+      // - Celda (2,0): debe tener apertura a la derecha.
+      // - Celdas intermedias: ambas (izquierda y derecha).
+      // - Celda (2,3): debe tener apertura a la izquierda.
       function getConnections(piece) {
         const type = piece.dataset.type;
         const rot = parseInt(piece.dataset.rotation) % 360;
         let conns = { top: false, right: false, bottom: false, left: false };
         if (type === "pipe-straight") {
-          // En rotación 0 y 180: horizontal.
-          if (rot === 0 || rot === 180) {
+          if (rot === 0 || rot === 180) { // horizontal
             conns.left = true;
             conns.right = true;
-          } else {
+          } else { // vertical
             conns.top = true;
             conns.bottom = true;
           }
         } else if (type === "pipe-curve") {
-          // Definimos: 0°: abiertamente top y right; 90°: right y bottom; 180°: bottom y left; 270°: left y top.
           if (rot === 0) { conns.top = true; conns.right = true; }
           else if (rot === 90) { conns.right = true; conns.bottom = true; }
           else if (rot === 180) { conns.bottom = true; conns.left = true; }
           else if (rot === 270) { conns.left = true; conns.top = true; }
         } else if (type === "pipe-t") {
-          // Supongamos: 0°: abiertos top, left, right; 90°: top, right, bottom; 180°: right, bottom, left; 270°: bottom, left, top.
           if (rot === 0) { conns.top = true; conns.left = true; conns.right = true; }
           else if (rot === 90) { conns.top = true; conns.right = true; conns.bottom = true; }
           else if (rot === 180) { conns.right = true; conns.bottom = true; conns.left = true; }
           else if (rot === 270) { conns.bottom = true; conns.left = true; conns.top = true; }
         } else if (type === "pipe-cross") {
-          // Siempre abiertos en las 4 direcciones.
           conns.top = conns.right = conns.bottom = conns.left = true;
         }
         return conns;
       }
-
-      // Función que verifica la conectividad en la fila inferior (fila index 2) de la grilla.
       function checkTuberias() {
         const puzzleResult = document.getElementById("puzzle-tuberias-resultado");
-        // Se asume que la fila de interés es la fila 2.
-        // Debe haber conexión desde la celda (2,0) a (2,3):
-        // - La celda en (2,0) debe tener apertura a la izquierda (entrada) o se asume entrada externa.
-        // - Para c=0 a c=2: el lado derecho de la celda actual debe estar abierto y el lado izquierdo de la siguiente celda también.
-        // - La celda en (2,3) debe tener apertura a la derecha (salida) o se asume conexión externa.
-        // En este ejemplo, exigimos: en (2,0) que esté abierto a la derecha; en c intermedios, ambos lados; y en (2,3), abierto a la izquierda.
-        // Primero, filtramos las piezas que pertenecen a la fila 2:
+        // Filtramos las piezas de la fila 2
         const row2Pieces = puzzlePieces.filter(p => p.row === 2);
-        // Ordenar por columna:
-        row2Pieces.sort((a, b) => a.col - b.col);
-
+        row2Pieces.sort((a,b) => a.col - b.col);
         let valid = true;
         for (let i = 0; i < row2Pieces.length; i++) {
           let conns = getConnections(row2Pieces[i].element);
           if (i === 0) {
-            // Primera celda: debe tener conexión a la derecha.
             if (!conns.right) { valid = false; break; }
           } else if (i === row2Pieces.length - 1) {
-            // Última celda: debe tener conexión a la izquierda.
             if (!conns.left) { valid = false; break; }
           } else {
-            // Celdas intermedias: deben tener ambas conexiones.
             if (!conns.left || !conns.right) { valid = false; break; }
           }
-          // Además, si no es la última, la conexión entre celdas debe ser complementaria.
           if (i < row2Pieces.length - 1) {
             let current = getConnections(row2Pieces[i].element);
             let next = getConnections(row2Pieces[i+1].element);
@@ -537,11 +598,9 @@
             }
           }
         }
-
         if (valid) {
           puzzleResult.textContent = "¡Tuberías conectadas correctamente!";
           playSound("coins-sound");
-          // Desbloquear el Puzzle de Cántaros
           document.getElementById("puzzle-tuberias").style.display = "none";
           initCantarosPuzzle();
         } else {
@@ -553,6 +612,7 @@
       /*----------------------------------------*/
       /* 5. MINIJUEGO 2: PUZZLE DE CÁNTAROS     */
       /*----------------------------------------*/
+      // Usamos capacidades: A=5 L, B=3 L, objetivo: 4 L en alguno.
       let aCap = 5, bCap = 3;
       let aCur = 0, bCur = 0;
       let puzzleCantarosCompleted = false;
@@ -561,8 +621,12 @@
         updateJugsDisplay();
       }
       function updateJugsDisplay(){
+        // Actualiza los números
         document.getElementById("a-actual").textContent = aCur;
         document.getElementById("b-actual").textContent = bCur;
+        // Actualiza el nivel visual de agua en cada jug
+        document.getElementById("jug-a-water").style.height = (aCur / aCap * 100) + "%";
+        document.getElementById("jug-b-water").style.height = (bCur / bCap * 100) + "%";
       }
       function fillA(){ aCur = aCap; checkCantaros(); }
       function fillB(){ bCur = bCap; checkCantaros(); }
