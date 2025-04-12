@@ -6,7 +6,6 @@
   <title>⛲ Fuente y Portalón</title>
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
-
   <style>
     /* Estilos generales */
     body {
@@ -26,9 +25,7 @@
       padding: 20px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
     }
-    header h1 {
-      text-align: center;
-    }
+    header h1 { text-align: center; }
     .action-btn {
       display: inline-block;
       margin: 5px auto;
@@ -40,13 +37,8 @@
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    .music-control {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    #content {
-      margin-top: 10px;
-    }
+    .music-control { text-align: center; margin-bottom: 10px; }
+    #content { margin-top: 10px; }
     /* Ubicación */
     #location-check {
       text-align: center;
@@ -60,15 +52,8 @@
       border: 1px solid #5e3b1b;
       border-radius: 4px;
     }
-    #location-status {
-      margin-top: 10px;
-      font-size: 1.1em;
-      color: red;
-    }
-    #direction-arrow {
-      width: 50px;
-      margin-top: 10px;
-    }
+    #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
+    #direction-arrow { width: 50px; margin-top: 10px; }
     /* Carrusel */
     .carousel {
       position: relative;
@@ -106,10 +91,8 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
-    /* Secciones de retos visuales y quiz */
-    .visual-challenge, .quiz {
-      margin: 20px 0;
-    }
+    /* Secciones Visuales y Quiz */
+    .visual-challenge, .quiz { margin: 20px 0; }
     /* Minijuego 1: Puzzle de Tuberías */
     #puzzle-tuberias {
       display: none;
@@ -119,18 +102,12 @@
       border-radius: 10px;
       background: #f9f1e6;
     }
-    #puzzle-tuberias h2 {
-      text-align: center;
-    }
-    #puzzle-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 10px;
-    }
-    .puzzle-row {
-      display: flex;
-    }
+    #puzzle-tuberias h2 { text-align: center; }
+    /* Pista para el puzzle */
+    #puzzle-tuberias p.hint { text-align: center; font-style: italic; color: #555; }
+    /* Container del puzzle: usamos 3 filas y 4 columnas (la última columna en filas 0 y 1 queda vacía) */
+    #puzzle-container { display: flex; flex-direction: column; align-items: center; margin: 10px; }
+    .puzzle-row { display: flex; }
     .pipe-piece {
       width: 80px;
       height: 80px;
@@ -151,16 +128,9 @@
       border-radius: 10px;
       background: #f9f1e6;
     }
-    #puzzle-cantaros h2 {
-      text-align: center;
-    }
-    #cantaros-container {
-      text-align: center;
-      margin: 10px;
-    }
-    .jug-status {
-      margin: 5px 0;
-    }
+    #puzzle-cantaros h2 { text-align: center; }
+    #cantaros-container { text-align: center; margin: 10px; }
+    .jug-status { margin: 5px 0; }
     /* Fragmento Final */
     .fragmento-final {
       margin: 20px auto;
@@ -174,16 +144,8 @@
       font-weight: bold;
       border-radius: 10px;
     }
-    #continue-button {
-      text-align: center;
-      margin-top: 15px;
-      display: none;
-    }
-    footer p {
-      text-align: center;
-      font-size: 0.9em;
-      margin-top: 20px;
-    }
+    #continue-button { text-align: center; margin-top: 15px; display: none; }
+    footer p { text-align: center; font-size: 0.9em; margin-top: 20px; }
     @media screen and (max-width: 768px) {
       .container { max-width: 90%; }
       .pipe-piece { width: 60px; height: 60px; }
@@ -217,9 +179,8 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección"/>
       </div>
 
-      <!-- Contenido principal (oculto hasta ubicación validada) -->
+      <!-- Contenido principal (desplegado tras verificación) -->
       <div id="game-content" style="display:none;">
-        
         <!-- Carrusel -->
         <div class="carousel">
           <div class="carousel-slides">
@@ -240,7 +201,7 @@
           <button class="carousel-btn next-slide">→</button>
         </div>
 
-        <!-- Sección de Retos Visuales y Quiz (existente) -->
+        <!-- Reto Visual y Quiz (secciones existentes) -->
         <div class="visual-challenge">
           <h2>Retos Visuales</h2>
           <p>1. ¿Cuántos caños tiene la fuente?</p>
@@ -250,7 +211,6 @@
             <button class="action-btn" onclick="checkVisualAnswer('Tres caños','Dos caños',1)">Tres caños</button>
           </div>
           <p id="visual-resultado-1"></p>
-
           <p>2. ¿Qué decora los caños?</p>
           <div id="visual-opciones-2">
             <button class="action-btn" onclick="checkVisualAnswer('Flores','Geométricos',2)">Flores</button>
@@ -269,7 +229,6 @@
             <button class="action-btn" onclick="checkAnswer('XVII','XVI',1)">XVII</button>
           </div>
           <p id="quiz-resultado-1"></p>
-
           <p>2. ¿Qué estilo es la fuente?</p>
           <div id="quiz-opciones-2">
             <button class="action-btn" onclick="checkAnswer('Renacentista','Renacentista',2)">Renacentista</button>
@@ -277,7 +236,6 @@
             <button class="action-btn" onclick="checkAnswer('Barroco','Renacentista',2)">Barroco</button>
           </div>
           <p id="quiz-resultado-2"></p>
-
           <p>3. ¿Qué río pasa cerca?</p>
           <div id="quiz-opciones-3">
             <button class="action-btn" onclick="checkAnswer('Canderuelo','Canderuelo',3)">Canderuelo</button>
@@ -290,7 +248,9 @@
         <!-- Minijuego 1: Puzzle de Tuberías -->
         <div id="puzzle-tuberias">
           <h2>Puzzle de Tuberías</h2>
-          <p>Haz clic en cada pieza para girarla y conecta el agua de un lado al otro.</p>
+          <p>Haz clic en cada pieza para girarla y conecta el agua de la fila inferior.<br>
+             <span class="hint">Pista: El agua entra por el extremo izquierdo y sale por el extremo derecho de la fila inferior.</span>
+          </p>
           <div id="puzzle-container"></div>
           <div style="text-align:center;">
             <button class="action-btn" onclick="checkTuberias()">Comprobar Tuberías</button>
@@ -383,7 +343,8 @@
       }
       function checkLocationManual() {
         const input = document.getElementById("location-input").value.trim().toLowerCase();
-        if (input === "fuente y portalón" || input === "fuente y portalon") {
+        // Desbloquear escribiendo "fuente" o "fuente y portalón"
+        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") {
           unlockStop();
         } else {
           document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
@@ -421,8 +382,8 @@
       /* 3. RETOS VISUALES Y QUIZ              */
       /*----------------------------------------*/
       function checkVisualAnswer(selected, correct, n) {
-        const result = document.getElementById('visual-resultado-'+n);
-        if(selected === correct) {
+        const result = document.getElementById('visual-resultado-' + n);
+        if (selected === correct) {
           result.textContent = "¡Correcto!";
           playSound("success-sound");
         } else {
@@ -431,8 +392,8 @@
         }
       }
       function checkAnswer(selected, correct, n) {
-        const result = document.getElementById('quiz-resultado-'+n);
-        if(selected === correct) {
+        const result = document.getElementById('quiz-resultado-' + n);
+        if (selected === correct) {
           result.textContent = "¡Correcto!";
           playSound("success-sound");
         } else {
@@ -444,7 +405,14 @@
       /*----------------------------------------*/
       /* 4. MINIJUEGO 1: PUZZLE DE TUBERÍAS     */
       /*----------------------------------------*/
-      // Definimos los data URIs para las tuberías:
+      // Usamos una cuadrícula de 3 filas x 4 columnas.
+      // En las filas 0 y 1, la celda de la última columna (col 3) se deja vacía.
+      // Se asume que el agua debe conectarse en la fila 2 (la inferior), desde el extremo izquierdo hasta el derecho.
+      const puzzleRows = 3, puzzleCols = 4;
+      const pipeTypes = ["pipe-straight", "pipe-curve", "pipe-t", "pipe-cross"];
+      let puzzlePieces = [];
+
+      // Data URIs ya definidas:
       const pipeImages = {
         "pipe-straight": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMTAiIHk9IjM1IiB3aWR0aD0iNjAiIGhlaWdodD0iMTAiIHJ4PSI1IiByeT0iNSIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+Cjwvc3ZnPg==",
         "pipe-curve": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTExMCw0MCBBMzAsMzAgMCAwLDAsNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVlM2IxYiIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+Cjwvc3ZnPg==",
@@ -452,24 +420,32 @@
         "pipe-cross": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMzUiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iNjAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+CiAgPHJlY3QgeD0iMTUiIHk9IjM1IiB3aWR0aD0iNTAiIGhlaWdodD0iMTAiIHJ4PSIyIiByeT0iMiIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+Cjwvc3ZnPg=="
       };
 
-      const puzzleRows = 3, puzzleCols = 3;
-      const pipeTypes = ["pipe-straight","pipe-curve","pipe-t","pipe-cross"];
-      let puzzlePieces = [];
+      // Inicia el puzzle de tuberías:
       function initTuberiasPuzzle() {
         document.getElementById("puzzle-tuberias").style.display = "block";
         const puzzleCont = document.getElementById("puzzle-container");
         puzzleCont.innerHTML = "";
         puzzlePieces = [];
-        for(let r = 0; r < puzzleRows; r++){
+
+        for (let r = 0; r < puzzleRows; r++) {
           const rowDiv = document.createElement("div");
           rowDiv.classList.add("puzzle-row");
-          for(let c = 0; c < puzzleCols; c++){
+          for (let c = 0; c < puzzleCols; c++) {
+            // En las primeras 2 filas, si es la última columna, dejamos la celda vacía
+            if (r < 2 && c === puzzleCols - 1) {
+              const emptyCell = document.createElement("div");
+              emptyCell.style.width = "80px";
+              emptyCell.style.height = "80px";
+              emptyCell.style.margin = "3px";
+              rowDiv.appendChild(emptyCell);
+              continue;
+            }
             const piece = document.createElement("div");
             piece.classList.add("pipe-piece");
             // Asigna un tipo aleatorio
-            const randomType = pipeTypes[Math.floor(Math.random()*pipeTypes.length)];
+            const randomType = pipeTypes[Math.floor(Math.random() * pipeTypes.length)];
             piece.dataset.type = randomType;
-            // Usa el data URI correspondiente
+            // Asigna el background usando el data URI correspondiente
             piece.style.backgroundImage = `url('${pipeImages[randomType]}')`;
             // Rotación inicial aleatoria (0, 90, 180, 270)
             const possibleRotations = [0, 90, 180, 270];
@@ -484,22 +460,92 @@
               piece.style.transform = `rotate(${newRot}deg)`;
             });
             rowDiv.appendChild(piece);
-            puzzlePieces.push(piece);
+            puzzlePieces.push({ row: r, col: c, element: piece });
           }
           puzzleCont.appendChild(rowDiv);
         }
       }
-      function checkTuberias(){
+
+      // Función para obtener las conexiones de una pieza según su tipo y rotación.
+      // Retorna un objeto con propiedades: {top, right, bottom, left} (booleanos).
+      function getConnections(piece) {
+        const type = piece.dataset.type;
+        const rot = parseInt(piece.dataset.rotation) % 360;
+        let conns = { top: false, right: false, bottom: false, left: false };
+        if (type === "pipe-straight") {
+          // En rotación 0 y 180: horizontal.
+          if (rot === 0 || rot === 180) {
+            conns.left = true;
+            conns.right = true;
+          } else {
+            conns.top = true;
+            conns.bottom = true;
+          }
+        } else if (type === "pipe-curve") {
+          // Definimos: 0°: abiertamente top y right; 90°: right y bottom; 180°: bottom y left; 270°: left y top.
+          if (rot === 0) { conns.top = true; conns.right = true; }
+          else if (rot === 90) { conns.right = true; conns.bottom = true; }
+          else if (rot === 180) { conns.bottom = true; conns.left = true; }
+          else if (rot === 270) { conns.left = true; conns.top = true; }
+        } else if (type === "pipe-t") {
+          // Supongamos: 0°: abiertos top, left, right; 90°: top, right, bottom; 180°: right, bottom, left; 270°: bottom, left, top.
+          if (rot === 0) { conns.top = true; conns.left = true; conns.right = true; }
+          else if (rot === 90) { conns.top = true; conns.right = true; conns.bottom = true; }
+          else if (rot === 180) { conns.right = true; conns.bottom = true; conns.left = true; }
+          else if (rot === 270) { conns.bottom = true; conns.left = true; conns.top = true; }
+        } else if (type === "pipe-cross") {
+          // Siempre abiertos en las 4 direcciones.
+          conns.top = conns.right = conns.bottom = conns.left = true;
+        }
+        return conns;
+      }
+
+      // Función que verifica la conectividad en la fila inferior (fila index 2) de la grilla.
+      function checkTuberias() {
         const puzzleResult = document.getElementById("puzzle-tuberias-resultado");
-        const allCorrect = puzzlePieces.every(p => parseInt(p.dataset.rotation) === 0);
-        if(allCorrect){
+        // Se asume que la fila de interés es la fila 2.
+        // Debe haber conexión desde la celda (2,0) a (2,3):
+        // - La celda en (2,0) debe tener apertura a la izquierda (entrada) o se asume entrada externa.
+        // - Para c=0 a c=2: el lado derecho de la celda actual debe estar abierto y el lado izquierdo de la siguiente celda también.
+        // - La celda en (2,3) debe tener apertura a la derecha (salida) o se asume conexión externa.
+        // En este ejemplo, exigimos: en (2,0) que esté abierto a la derecha; en c intermedios, ambos lados; y en (2,3), abierto a la izquierda.
+        // Primero, filtramos las piezas que pertenecen a la fila 2:
+        const row2Pieces = puzzlePieces.filter(p => p.row === 2);
+        // Ordenar por columna:
+        row2Pieces.sort((a, b) => a.col - b.col);
+
+        let valid = true;
+        for (let i = 0; i < row2Pieces.length; i++) {
+          let conns = getConnections(row2Pieces[i].element);
+          if (i === 0) {
+            // Primera celda: debe tener conexión a la derecha.
+            if (!conns.right) { valid = false; break; }
+          } else if (i === row2Pieces.length - 1) {
+            // Última celda: debe tener conexión a la izquierda.
+            if (!conns.left) { valid = false; break; }
+          } else {
+            // Celdas intermedias: deben tener ambas conexiones.
+            if (!conns.left || !conns.right) { valid = false; break; }
+          }
+          // Además, si no es la última, la conexión entre celdas debe ser complementaria.
+          if (i < row2Pieces.length - 1) {
+            let current = getConnections(row2Pieces[i].element);
+            let next = getConnections(row2Pieces[i+1].element);
+            if (!current.right || !next.left) {
+              valid = false;
+              break;
+            }
+          }
+        }
+
+        if (valid) {
           puzzleResult.textContent = "¡Tuberías conectadas correctamente!";
           playSound("coins-sound");
-          // Desbloquear el Puzzle de Cántaros:
+          // Desbloquear el Puzzle de Cántaros
           document.getElementById("puzzle-tuberias").style.display = "none";
           initCantarosPuzzle();
         } else {
-          puzzleResult.textContent = "Aún hay tuberías mal orientadas. Sigue intentando.";
+          puzzleResult.textContent = "La conexión de la fila inferior no es correcta. Revisa las piezas.";
           playSound("error-sound");
         }
       }
@@ -518,41 +564,25 @@
         document.getElementById("a-actual").textContent = aCur;
         document.getElementById("b-actual").textContent = bCur;
       }
-      function fillA(){
-        aCur = aCap;
-        checkCantaros();
-      }
-      function fillB(){
-        bCur = bCap;
-        checkCantaros();
-      }
-      function emptyA(){
-        aCur = 0;
-        checkCantaros();
-      }
-      function emptyB(){
-        bCur = 0;
-        checkCantaros();
-      }
+      function fillA(){ aCur = aCap; checkCantaros(); }
+      function fillB(){ bCur = bCap; checkCantaros(); }
+      function emptyA(){ aCur = 0; checkCantaros(); }
+      function emptyB(){ bCur = 0; checkCantaros(); }
       function pourAtoB(){
         const spaceInB = bCap - bCur;
         if(aCur <= spaceInB){
-          bCur += aCur;
-          aCur = 0;
+          bCur += aCur; aCur = 0;
         } else {
-          aCur -= spaceInB;
-          bCur = bCap;
+          aCur -= spaceInB; bCur = bCap;
         }
         checkCantaros();
       }
       function pourBtoA(){
         const spaceInA = aCap - aCur;
         if(bCur <= spaceInA){
-          aCur += bCur;
-          bCur = 0;
+          aCur += bCur; bCur = 0;
         } else {
-          bCur -= spaceInA;
-          aCur = aCap;
+          bCur -= spaceInA; aCur = aCap;
         }
         checkCantaros();
       }
@@ -585,11 +615,12 @@
       /*----------------------------------------*/
       function playSound(id) {
         const sound = document.getElementById(id);
-        if (sound) sound.play();
+        if(sound) sound.play();
       }
 
       /*----------------------------------------*/
-      /* Marcamos parada completada en localStorage */
+      /* 8. LOCALSTORAGE                        */
+      /*----------------------------------------*/
       localStorage.setItem("fuente-completed", "true");
     </script>
   </div>
