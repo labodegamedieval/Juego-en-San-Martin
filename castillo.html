@@ -107,7 +107,7 @@
       background-size: cover;
       position: relative;
     }
-    /* Caja de contenido para texto con legibilidad */
+    /* Caja de contenido para textos con legibilidad */
     .content-box {
       background: rgba(0, 0, 0, 0.8);
       color: #fff;
@@ -176,7 +176,7 @@
     @media screen and (max-width: 768px) {
       .container { max-width: 90%; }
     }
-    /* Adornos medievales adicionales */
+    /* Adornos medievales */
     .container:before {
       content: "⚔️";
       position: absolute;
@@ -205,10 +205,9 @@
         </button>
       </div>
     </header>
-
+    <!-- Verificación de Ubicación -->
     <section id="content">
       <div class="stop-icon">🏰</div>
-      <!-- Verificación de Ubicación -->
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
         <p>Dirígete al castillo y acércate a la torre del homenaje para continuar.</p>
@@ -219,7 +218,6 @@
         <p id="location-status"></p>
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
-
       <!-- Contenido principal (se muestra tras verificación) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
@@ -227,7 +225,7 @@
           <div class="carousel-slides">
             <div class="slide active">
               <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
-              <p>
+              <p class="carousel-info">
                 <strong>Entrada:</strong> Puerta del castillo, convertida en palacio en el siglo XV, con orígenes en fortificación del siglo XIII.<br>
                 <em>En 1834 se instaló un cementerio dentro de sus muros.</em><br>
                 <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
@@ -235,28 +233,27 @@
             </div>
             <div class="slide">
               <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
-              <p>
+              <p class="carousel-info">
                 <strong>Torre del Homenaje:</strong> La torre, originalmente de dos, fue reducida tras un rayo a principios del siglo XX.<br>
                 <em>En 1949 se declaró Bien de Interés Cultural.</em><br>
-                <a href="https://sanmartindelcastañar.es/castillo-de-la-biosfera/" target="_blank">Más info</a>
+                <a href="https://sanmartindelcastanar.es/castillo-de-la-biosfera/" target="_blank">Más info</a>
               </p>
             </div>
             <div class="slide">
               <img src="images/castillo-vista.jpg" alt="Vista desde el Castillo" />
-              <p>
+              <p class="carousel-info">
                 <strong>Vista:</strong> Desde este mirador se domina todo el valle, y hoy acoge el cementerio municipal.<br>
                 <em>La renovación se realizó en 2010 para transformar el castillo en un Centro de Interpretación de la Biosfera.</em><br>
                 <a href="https://turismosierradefrancia.es/..." target="_blank">Más info</a>
               </p>
             </div>
           </div>
-          <button class="carousel-btn prev-slide">←</button>
-          <button class="carousel-btn next-slide">→</button>
+          <button class="carousel-btn prev-slide">&larr;</button>
+          <button class="carousel-btn next-slide">&rarr;</button>
         </div>
-
         <!-- Retos Visuales -->
         <div class="visual-challenge">
-          <h2>Retos Visuales</h2>
+          <h2>Reto Visual</h2>
           <p>1. ¿Qué marcó la torre del homenaje?</p>
           <div id="visual-opciones-1">
             <button class="action-btn" onclick="checkVisualAnswer('Incendio','Rayo',1)">Incendio</button>
@@ -272,7 +269,6 @@
           </div>
           <p id="visual-resultado-2"></p>
         </div>
-
         <!-- Quiz Histórico -->
         <div class="quiz">
           <h2>Quiz Histórico</h2>
@@ -283,14 +279,14 @@
             <button class="action-btn" onclick="checkAnswer('XIV','XIII',1)">XIV</button>
           </div>
           <p id="quiz-resultado-1"></p>
-          <p>2. ¿Qué función tiene el castillo desde 1834?</p>
+          <p>2. ¿Qué función tuvo el castillo desde el siglo XIX?</p>
           <div id="quiz-opciones-2">
             <button class="action-btn" onclick="checkAnswer('Discoteca','Cementerio',2)">Discoteca</button>
             <button class="action-btn" onclick="checkAnswer('Cementerio','Cementerio',2)">Cementerio</button>
             <button class="action-btn" onclick="checkAnswer('Museo','Cementerio',2)">Museo</button>
           </div>
           <p id="quiz-resultado-2"></p>
-          <p>3. ¿Qué alberga hoy el castillo?</p>
+          <p>3. ¿Qué se instaló en el castillo en el siglo XXI?</p>
           <div id="quiz-opciones-3">
             <button class="action-btn" onclick="checkAnswer('Museo','Centro de Interpretación',3)">Museo</button>
             <button class="action-btn" onclick="checkAnswer('Centro de Interpretación','Centro de Interpretación',3)">Centro de Interpretación</button>
@@ -298,8 +294,7 @@
           </div>
           <p id="quiz-resultado-3"></p>
         </div>
-
-        <!-- Reto del Castillo: Laberinto y Cofre -->
+        <!-- Reto del Castillo: Laberinto y Reto del Cofre -->
         <div id="castle-challenge" style="display: none;">
           <!-- Laberinto -->
           <div id="labyrinth-section">
@@ -328,7 +323,6 @@
             </div>
           </div>
         </div>
-
         <!-- Fragmento Final (oculto hasta superar el reto) -->
         <div class="fragmento-final" id="fragmento-final">
           <p>
@@ -340,7 +334,6 @@
             <strong>Dato Curioso:</strong> Aquí se han hallado monedas y cerámicas del siglo XIII.
           </p>
         </div>
-
         <div id="continue-button" style="display:none;">
           <button class="action-btn" onclick="location.href='felicitaciones.html?stop=castillo'">
             Continuar búsqueda
@@ -348,21 +341,18 @@
         </div>
       </div>
     </section>
-
     <!-- Audios -->
     <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
     <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-
     <footer>
       <p>
         © 2025 La Bodega Medieval | 
         <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
       </p>
     </footer>
-
     <script>
       /*----------------------------------------*/
       /* 1. VERIFICACIÓN DE UBICACIÓN           */
@@ -418,7 +408,6 @@
         // Se muestran el carrusel, retos visuales y el quiz.
         playSound("background-music");
       }
-
       /*----------------------------------------*/
       /* 2. CARRUSEL                            */
       /*----------------------------------------*/
@@ -438,7 +427,6 @@
         const carouselSlides = document.querySelector('.carousel-slides');
         carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
       }
-
       /*----------------------------------------*/
       /* 3. RETOS VISUALES Y QUIZ              */
       /*----------------------------------------*/
@@ -468,20 +456,16 @@
           if (n === 2) quiz2Correct = false;
           if (n === 3) quiz3Correct = false;
         }
-        // Si las 3 respuestas del quiz son correctas, mostramos el reto del castillo.
         if (quiz1Correct && quiz2Correct && quiz3Correct) {
           document.querySelector('.quiz').style.display = "none";
           document.getElementById("castle-challenge").style.display = "block";
-          // Generamos la clave para el cofre basada en una de las 3 fechas
           generateChestKey();
           enableLaberintoSwipe();
         }
       }
-
       /*----------------------------------------*/
       /* 4. RETO DEL CASTILLO: LABERINTO Y COFRE */
       /*----------------------------------------*/
-      // Secuencia correcta del laberinto
       const correctPath = ["E", "E", "S", "S", "O"];
       let userPath = [];
       function chooseDirection(dir) {
@@ -497,7 +481,6 @@
         if (userPath.length === correctPath.length) {
           document.getElementById("labyrinth-status").textContent = "¡Laberinto resuelto! Has encontrado la pista para abrir el cofre.";
           userPath = [];
-          // Ocultamos el laberinto y mostramos el reto del cofre.
           document.getElementById("labyrinth-section").style.display = "none";
           document.getElementById("chest-challenge").style.display = "block";
         }
@@ -531,20 +514,10 @@
       }
       let currentChestKey = "";
       function generateChestKey() {
-        // Definimos las 3 fechas y su información
         const keys = [
-          {
-            date: "1834",
-            clue: "la fecha en que se instaló un cementerio dentro de los muros del castillo."
-          },
-          {
-            date: "1949",
-            clue: "la fecha en que se declaró Bien de Interés Cultural."
-          },
-          {
-            date: "2010",
-            clue: "la fecha en que se realizó la renovación que transformó el castillo en un Centro de Interpretación de la Biosfera."
-          }
+          { date: "1834", clue: "la fecha en que se instaló un cementerio dentro de los muros del castillo." },
+          { date: "1949", clue: "la fecha en que se declaró Bien de Interés Cultural." },
+          { date: "2010", clue: "la fecha en que se realizó la renovación para transformar el castillo en un Centro de Interpretación de la Biosfera." }
         ];
         const randomIndex = Math.floor(Math.random() * keys.length);
         currentChestKey = keys[randomIndex].date;
@@ -563,7 +536,6 @@
         document.getElementById("castle-challenge").style.display = "none";
         unlockFinalFragment();
       }
-
       /*----------------------------------------*/
       /* 5. FRAGMENTO FINAL / CONTINUAR         */
       /*----------------------------------------*/
@@ -586,7 +558,6 @@
         ranking.push({ stop: "castillo", score: 100 });
         localStorage.setItem("ranking", JSON.stringify(ranking));
       }
-
       /*----------------------------------------*/
       /* 6. SONIDOS                             */
       /*----------------------------------------*/
@@ -594,12 +565,10 @@
         const sound = document.getElementById(id);
         if (sound) sound.play();
       }
-
       /*----------------------------------------*/
       /* 7. LOCALSTORAGE                        */
       /*----------------------------------------*/
       localStorage.setItem("castillo-completed", "true");
-
       /*----------------------------------------*/
       /* 8. BOTÓN DE MÚSICA                      */
       /*----------------------------------------*/
