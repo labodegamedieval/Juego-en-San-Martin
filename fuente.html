@@ -97,15 +97,18 @@
       background-size: cover;
       position: relative;
     }
-    /* Contenedor interno para garantizar legibilidad: fondo sólido en recuadro */
-    #puzzle-cantaros .content-box {
-      background: rgba(255,255,255,0.9);
+    /* Caja de contenido para la descripción (con fondo oscuro para legibilidad) */
+    .content-box {
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
       padding: 15px;
       border-radius: 8px;
+      text-align: center;
+      margin-bottom: 20px;
       position: relative;
       z-index: 1;
     }
-    #puzzle-cantaros h2 { text-align: center; }
+    .content-box strong { color: #fff; }
     /* Contenedor visual de los cántaros */
     #cantaros-container {
       display: flex;
@@ -116,13 +119,18 @@
       z-index: 1;
     }
     .jug { text-align: center; }
-    .jug-label { font-weight: bold; margin-bottom: 5px; }
+    .jug-label {
+      font-weight: bold;
+      /* Se muestra en color blanco */
+      color: #fff;
+      margin-bottom: 5px;
+    }
     .jug-container {
       width: 100px;
       height: 150px;
       border: 2px solid #5e3b1b;
       border-radius: 10px;
-      background-color: #faf0e6;
+      background-color: rgba(0, 0, 0, 0.5);
       position: relative;
       overflow: hidden;
       margin: 0 auto;
@@ -271,40 +279,38 @@
             <p>
               Con la astucia de un alquimista medieval, mide exactamente 4 litros usando un cántaro de 5L y otro de 3L.
             </p>
-            <div id="cantaros-container">
-              <div class="jug">
-                <div class="jug-label">Cántaro A (5L)</div>
-                <div class="jug-container" id="jug-a-container">
-                  <div class="jug-water" id="jug-a-water" style="height: 0%;"></div>
-                </div>
-                <div>Cantidad: <span id="a-actual">0</span> L</div>
-              </div>
-              <div class="jug">
-                <div class="jug-label">Cántaro B (3L)</div>
-                <div class="jug-container" id="jug-b-container">
-                  <div class="jug-water" id="jug-b-water" style="height: 0%;"></div>
-                </div>
-                <div>Cantidad: <span id="b-actual">0</span> L</div>
-              </div>
-            </div>
-            <div style="text-align: center; margin-top: 10px;">
-              <button class="action-btn" onclick="fillA()">Llenar A</button>
-              <button class="action-btn" onclick="fillB()">Llenar B</button>
-              <button class="action-btn" onclick="emptyA()">Vaciar A</button>
-              <button class="action-btn" onclick="emptyB()">Vaciar B</button>
-              <br>
-              <button class="action-btn" onclick="pourAtoB()">Verter A → B</button>
-              <button class="action-btn" onclick="pourBtoA()">Verter B → A</button>
-            </div>
-            <p id="puzzle-cantaros-resultado" style="text-align:center; color:green; font-weight:bold;"></p>
           </div>
+          <div id="cantaros-container">
+            <div class="jug">
+              <div class="jug-label">Cántaro A (5L)</div>
+              <div class="jug-container" id="jug-a-container">
+                <div class="jug-water" id="jug-a-water" style="height: 0%;"></div>
+              </div>
+              <div><strong>Cántaro A (5L)</strong><br> Cantidad: <strong id="a-actual">0</strong> L</div>
+            </div>
+            <div class="jug">
+              <div class="jug-label">Cántaro B (3L)</div>
+              <div class="jug-container" id="jug-b-container">
+                <div class="jug-water" id="jug-b-water" style="height: 0%;"></div>
+              </div>
+              <div><strong>Cántaro B (3L)</strong><br> Cantidad: <strong id="b-actual">0</strong> L</div>
+            </div>
+          </div>
+          <div style="text-align: center; margin-top: 10px; position: relative; z-index: 1;">
+            <button class="action-btn" onclick="fillA()">Llenar A</button>
+            <button class="action-btn" onclick="fillB()">Llenar B</button>
+            <button class="action-btn" onclick="emptyA()">Vaciar A</button>
+            <button class="action-btn" onclick="emptyB()">Vaciar B</button>
+            <br>
+            <button class="action-btn" onclick="pourAtoB()">Verter A → B</button>
+            <button class="action-btn" onclick="pourBtoA()">Verter B → A</button>
+          </div>
+          <p id="puzzle-cantaros-resultado" style="text-align:center; color:green; font-weight:bold; position: relative; z-index: 1;"></p>
         </div>
 
         <!-- Fragmento Final (oculto hasta superar el reto) -->
         <div class="fragmento-final" id="fragmento-final">
-          <p><strong>Fragmento del Mensaje:</strong> 
-            <span id="message-piece" style="font-size:1.4em">bodega</span>
-          </p>
+          <p><strong>Fragmento del Mensaje:</strong> <span id="message-piece" style="font-size:1.4em">bodega</span></p>
           <p><strong>QR en el pueblo:</strong> FUENTE-1600</p>
           <p><strong>Dato Curioso:</strong> Durante siglos, los vecinos se reunían aquí a debatir decisiones del consejo.</p>
         </div>
