@@ -383,7 +383,7 @@
       }
       function checkLocationManual() {
         const input = document.getElementById("location-input").value.trim().toLowerCase();
-        if (input === "fuente y portalón" || input === "fuente y portalon") {
+        if (input === "fuente" || input === "fuente") {
           unlockStop();
         } else {
           document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
