@@ -101,7 +101,7 @@
       font-style: italic;
       color: #555;
     }
-    /* Usamos una cuadrícula de 3 filas x 3 columnas con solución predefinida */
+    /* Cuadrícula de 3x3 */
     #puzzle-container {
       display: flex;
       flex-direction: column;
@@ -120,7 +120,6 @@
       border: 2px solid #5e3b1b;
       border-radius: 5px;
     }
-    /* Resalta la pieza correcta */
     .pipe-piece.correct {
       border-color: green;
       box-shadow: 0 0 8px green;
@@ -209,7 +208,7 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección"/>
       </div>
 
-      <!-- Contenido principal (tras verificación) -->
+      <!-- Contenido principal (tras ubicación validada) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -275,12 +274,12 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Minijuego 1: Puzzle de Tuberías (Rediseñado con solución predefinida) -->
+        <!-- Minijuego 1: Puzzle de Tuberías (rediseñado) -->
         <div id="puzzle-tuberias">
           <h2>Puzzle de Tuberías</h2>
           <p>
-            Gira cada pieza hasta que todas estén en la orientación correcta.<br>
-            <span class="hint">Pista: La tubería debe permitir que el agua fluya desde la entrada (izquierda de la fila intermedia) hasta la salida (derecha de la misma fila).</span>
+            Gira cada pieza hasta que quede en la posición correcta.<br>
+            <span class="hint">Pista: El agua debe fluir sin interrupción desde el inicio hasta el final del circuito.</span>
           </p>
           <div id="puzzle-container"></div>
           <div style="text-align:center;">
@@ -289,7 +288,7 @@
           <p id="puzzle-tuberias-resultado" style="text-align:center; color:green; font-weight:bold;"></p>
         </div>
 
-        <!-- Minijuego 2: Puzzle de Cántaros -->
+        <!-- Minijuego 2: Puzzle de Cántaros (visual y medieval) -->
         <div id="puzzle-cantaros">
           <h2>Puzzle de Cántaros</h2>
           <p>
@@ -446,15 +445,15 @@
       /*----------------------------------------*/
       /* 4. MINIJUEGO 1: PUZZLE DE TUBERÍAS     */
       /*----------------------------------------*/
-      // Usamos una cuadrícula de 3x3 con solución predefinida para cada celda.
+      // Usamos una cuadrícula de 3x3 con solución predefinida.
       const puzzleRows = 3, puzzleCols = 3;
-      // Definimos la solución preestablecida: cada celda tiene un tipo y un ángulo (en grados)
+      // Solución preestablecida para cada celda
       const solutionData = [
         [ { type: "pipe-curve", solution: 0 },     { type: "pipe-straight", solution: 0 }, { type: "pipe-curve", solution: 270 } ],
         [ { type: "pipe-straight", solution: 90 },   { type: "pipe-cross", solution: 0 },    { type: "pipe-straight", solution: 90 } ],
         [ { type: "pipe-curve", solution: 90 },      { type: "pipe-straight", solution: 0 }, { type: "pipe-curve", solution: 180 } ]
       ];
-      // Usamos los mismos tipos para determinar las imágenes (data URIs)
+      // Data URIs para las imágenes (ya definidas anteriormente)
       const pipeImages = {
         "pipe-straight": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMTAiIHk9IjM1IiB3aWR0aD0iNjAiIGhlaWdodD0iMTAiIHJ4PSI1IiByeT0iNSIgZmlsbD0iI2NjYyIgc3Ryb2tlPSIjNWUzYjFiIiBzdHJva2Utd2lkdGg9IjIiIC8+Cjwvc3ZnPg==",
         "pipe-curve": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTExMCw0MCBBMzAsMzAgMCAwLDAsNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVlM2IxYiIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+Cjwvc3ZnPg==",
@@ -467,18 +466,17 @@
         const puzzleCont = document.getElementById("puzzle-container");
         puzzleCont.innerHTML = "";
         puzzlePieces = [];
-        for (let r = 0; r < puzzleRows; r++) {
+        for (let r = 0; r < puzzleRows; r++){
           const rowDiv = document.createElement("div");
           rowDiv.classList.add("puzzle-row");
-          for (let c = 0; c < puzzleCols; c++) {
-            const cellData = solutionData[r][c]; // Obtenemos el tipo y solución para esta celda
+          for (let c = 0; c < puzzleCols; c++){
+            const cellData = solutionData[r][c]; // Tipo y solución para esta celda
             const piece = document.createElement("div");
             piece.classList.add("pipe-piece");
-            // Asignamos el tipo y solución
             piece.dataset.type = cellData.type;
             piece.dataset.solution = cellData.solution;
             piece.style.backgroundImage = `url('${pipeImages[cellData.type]}')`;
-            // Generamos una rotación inicial distinta a la solución
+            // Asignar una rotación inicial distinta a la solución
             const possibleRotations = [0, 90, 180, 270];
             let initialRot = cellData.solution;
             while(initialRot === cellData.solution) {
@@ -486,19 +484,16 @@
             }
             piece.dataset.rotation = initialRot;
             piece.style.transform = `rotate(${initialRot}deg)`;
-            // Al hacer clic, rota 90° y se comprueba visualmente:
             piece.addEventListener("click", () => {
               const currentRot = parseInt(piece.dataset.rotation);
               const newRot = (currentRot + 90) % 360;
               piece.dataset.rotation = newRot;
               piece.style.transform = `rotate(${newRot}deg)`;
-              // Si la rotación actual coincide con la solución, añade la clase "correct"
               if(newRot === parseInt(piece.dataset.solution)) {
                 piece.classList.add("correct");
               } else {
                 piece.classList.remove("correct");
               }
-              // Verifica si todas las piezas están correctas
               checkTuberias();
             });
             rowDiv.appendChild(piece);
@@ -507,14 +502,7 @@
           puzzleCont.appendChild(rowDiv);
         }
       }
-      // Arreglo que define la solución preestablecida para el puzzle de tuberías.
-      const solutionData = [
-        [ { type: "pipe-curve", solution: 0 },      { type: "pipe-straight", solution: 0 }, { type: "pipe-curve", solution: 270 } ],
-        [ { type: "pipe-straight", solution: 90 },    { type: "pipe-cross", solution: 0 },    { type: "pipe-straight", solution: 90 } ],
-        [ { type: "pipe-curve", solution: 90 },       { type: "pipe-straight", solution: 0 }, { type: "pipe-curve", solution: 180 } ]
-      ];
       function checkTuberias() {
-        // Si todas las piezas están en la rotación de solución, el puzzle se resuelve.
         let allCorrect = puzzlePieces.every(p => parseInt(p.element.dataset.rotation) === parseInt(p.element.dataset.solution));
         const puzzleResult = document.getElementById("puzzle-tuberias-resultado");
         if(allCorrect) {
