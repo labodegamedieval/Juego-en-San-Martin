@@ -87,7 +87,7 @@
     .next-slide { right: 10px; }
     /* Secciones Visuales y Quiz */
     .visual-challenge, .quiz { margin: 20px 0; }
-    /* Minijuego: Reto del Castillo (Placeholder) */
+    /* Minijuego: Reto del Castillo (Laberinto y Cofre) */
     #castle-challenge {
       display: none;
       margin: 20px auto;
@@ -98,8 +98,8 @@
       background-size: cover;
       position: relative;
     }
-    /* Caja de contenido para enmarcar el texto del reto */
-    #castle-challenge .content-box {
+    /* Caja de contenido para enmarcar la descripción y ayudar a la legibilidad */
+    .content-box {
       background: rgba(0, 0, 0, 0.8);
       color: #fff;
       padding: 15px;
@@ -109,8 +109,47 @@
       position: relative;
       z-index: 1;
     }
-    #castle-challenge .content-box strong { color: #fff; }
-    /* Fragmento Final (oculto hasta superar el reto) */
+    .content-box strong { color: #fff; }
+    /* Laberinto */
+    #labyrinth-section {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+    #labyrinth-status { color: #fff; margin-top: 10px; }
+    .direction-btn {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #dec79b;
+      border: 2px solid #5e3b1b;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    /* Cofre (Reto del Cofre) */
+    #chest-challenge {
+      display: none;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+    #chest-key {
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    /* Fragmento Final (el pergamino) */
     .fragmento-final {
       margin: 20px auto;
       display: none;
@@ -180,8 +219,8 @@
             <div class="slide active">
               <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
               <p>
-                <strong>Entrada:</strong> Puerta del castillo, convertida en palacio en el siglo XV, 
-                con orígenes en fortificación del siglo XIII. Defensa de la Sierra de Francia.
+                <strong>Entrada:</strong> Puerta del castillo, convertida en palacio en el siglo XV, con orígenes en fortificación del siglo XIII.
+                Defensa de la Sierra de Francia.
                 <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
               </p>
             </div>
@@ -193,9 +232,9 @@
               </p>
             </div>
             <div class="slide">
-              <img src="images/castillo-vista.jpg" alt="Vista desde el castillo" />
+              <img src="images/castillo-vista.jpg" alt="Vista desde el Castillo" />
               <p>
-                <strong>Vista:</strong> Mirador natural desde donde se domina el valle, actualmente acoge el cementerio municipal.
+                <strong>Vista:</strong> Desde este mirador se domina todo el valle, y hoy acoge el cementerio municipal.
                 <a href="https://turismosierradefrancia.es/..." target="_blank">Más info</a>
               </p>
             </div>
@@ -249,15 +288,33 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Reto del Castillo (Minijuego placeholder) -->
+        <!-- Minijuego Combinado: Laberinto y Reto del Cofre -->
         <div id="castle-challenge" style="display: none;">
-          <div class="content-box">
-            <h2>Reto del Castillo</h2>
-            <p>
-              Demuestra tu destreza defendiendo la fortaleza.<br>
-              Cuando estés listo, haz clic en el botón para completar el reto.
-            </p>
-            <button class="action-btn" onclick="completeCastleChallenge()">Completar Reto</button>
+          <!-- Sección del Laberinto -->
+          <div id="labyrinth-section">
+            <div class="content-box">
+              <h2>Laberinto del Castillo</h2>
+              <p>Usa las siguientes flechas para seguir el camino correcto hacia la sala secreta.</p>
+            </div>
+            <!-- Botones de dirección -->
+            <div id="direction-buttons">
+              <button class="direction-btn" onclick="chooseDirection('N')">Norte</button>
+              <button class="direction-btn" onclick="chooseDirection('S')">Sur</button>
+              <button class="direction-btn" onclick="chooseDirection('E')">Este</button>
+              <button class="direction-btn" onclick="chooseDirection('O')">Oeste</button>
+            </div>
+            <p id="labyrinth-status" class="labyrinth-status"></p>
+          </div>
+          <!-- Sección del Reto del Cofre -->
+          <div id="chest-challenge" style="display:none;">
+            <div class="content-box">
+              <h2>Reto del Cofre</h2>
+              <p>Has encontrado la sala secreta. Ingresa la clave para abrir el cofre antiguo.</p>
+              <input type="text" id="chest-key" placeholder="Ingrese la clave" />
+              <br>
+              <button class="action-btn" onclick="checkChestKey()">Abrir Cofre</button>
+              <p id="chest-status" style="color:#fff;"></p>
+            </div>
           </div>
         </div>
 
@@ -347,8 +404,7 @@
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
         initCarousel();
-        // Mostramos el carrusel, retos visuales y quiz; el reto del castillo se desplegará
-        // solo después de responder correctamente el quiz.
+        // Se muestran el carrusel, retos visuales y quiz.
         playSound("background-music");
       }
 
@@ -402,7 +458,7 @@
           if (n === 2) quiz2Correct = false;
           if (n === 3) quiz3Correct = false;
         }
-        // Si las tres preguntas se contestan correctamente, mostramos el reto del castillo.
+        // Si se contestan correctamente las tres preguntas, se muestra el reto del castillo.
         if (quiz1Correct && quiz2Correct && quiz3Correct) {
           document.querySelector('.quiz').style.display = "none";
           document.getElementById("castle-challenge").style.display = "block";
@@ -410,11 +466,46 @@
       }
 
       /*----------------------------------------*/
-      /* 4. RETO DEL CASTILLO (Minijuego Placeholder) */
+      /* 4. RETO DEL CASTILLO: LABERINTO Y COFRE */
       /*----------------------------------------*/
+      // Laberinto: Secuencia correcta (por ejemplo: ["E", "E", "S", "S", "O"])
+      const correctPath = ["E", "E", "S", "S", "O"];
+      let userPath = [];
+      function chooseDirection(dir) {
+        userPath.push(dir);
+        // Actualizamos el estado
+        document.getElementById("labyrinth-status").textContent = "Camino: " + userPath.join(" - ");
+        // Comparamos la secuencia ingresada con la correcta.
+        for (let i = 0; i < userPath.length; i++) {
+          if (userPath[i] !== correctPath[i]) {
+            // Si hay error, reiniciamos
+            document.getElementById("labyrinth-status").textContent = "Camino incorrecto. Inténtalo de nuevo.";
+            userPath = [];
+            return;
+          }
+        }
+        // Si se completó correctamente la secuencia
+        if (userPath.length === correctPath.length) {
+          document.getElementById("labyrinth-status").textContent = "¡Laberinto resuelto! Has encontrado la pista para abrir el cofre.";
+          // Reiniciamos la secuencia para no permitir más cambios
+          userPath = [];
+          // Ocultamos el laberinto y mostramos el reto del cofre
+          document.getElementById("labyrinth-section").style.display = "none";
+          document.getElementById("chest-challenge").style.display = "block";
+        }
+      }
+      function checkChestKey() {
+        const key = document.getElementById("chest-key").value.trim().toLowerCase();
+        // La clave predefinida para abrir el cofre (puedes cambiarla)
+        if (key === "fortaleza") {
+          document.getElementById("chest-status").textContent = "¡Cofre abierto! Has descifrado el enigma.";
+          completeCastleChallenge();
+        } else {
+          document.getElementById("chest-status").textContent = "Clave incorrecta. Vuelve a intentarlo.";
+        }
+      }
       function completeCastleChallenge() {
-        // Simulamos que se ha completado el reto correctamente.
-        // Aquí podrías integrar el minijuego definitivo relacionado con la temática de castillo.
+        // Ocultamos el reto del castillo y desbloqueamos el fragmento final
         document.getElementById("castle-challenge").style.display = "none";
         unlockFinalFragment();
       }
@@ -422,10 +513,10 @@
       /*----------------------------------------*/
       /* 5. FRAGMENTO FINAL / CONTINUAR         */
       /*----------------------------------------*/
-      let puzzleCantarosCompleted = false; // en esta parada solo usamos el reto del castillo
+      let challengeCompleted = false;
       function unlockFinalFragment() {
-        if (!puzzleCantarosCompleted) {
-          puzzleCantarosCompleted = true;
+        if (!challengeCompleted) {
+          challengeCompleted = true;
           document.getElementById("fragmento-final").style.display = "block";
           document.getElementById("continue-button").style.display = "block";
           updateChronicle();
