@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpg" href="images/escudo-borrado.jpg"/>
   <style>
-    /* Estilos generales */
+    /* Estilos Globales */
     body {
       font-family: Arial, sans-serif;
       background: url('images/fondo-castillo.jpg') no-repeat center center fixed;
@@ -26,9 +26,7 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
       position: relative;
     }
-    header h1 {
-      text-align: center;
-    }
+    header h1 { text-align: center; }
     .action-btn {
       display: inline-block;
       margin: 5px;
@@ -40,14 +38,10 @@
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    .music-control {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    #content {
-      margin-top: 10px;
-    }
-    /* Ubicación */
+    .music-control { text-align: center; margin-bottom: 10px; }
+    #content { margin-top: 10px; }
+    
+    /* Sección de Verificación de Ubicación */
     #location-check {
       text-align: center;
       margin-bottom: 30px;
@@ -60,16 +54,10 @@
       border: 1px solid #5e3b1b;
       border-radius: 4px;
     }
-    #location-status {
-      margin-top: 10px;
-      font-size: 1.1em;
-      color: red;
-    }
-    #direction-arrow {
-      width: 50px;
-      margin-top: 10px;
-    }
-    /* Carrusel (de la primera parte) */
+    #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
+    #direction-arrow { width: 50px; margin-top: 10px; }
+    
+    /* Carrusel Principal */
     .carousel {
       position: relative;
       overflow: hidden;
@@ -80,7 +68,6 @@
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease;
-      width: 300%;
     }
     .slide {
       flex: 0 0 100%;
@@ -112,60 +99,20 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
-    /* Resto de secciones (retos visuales, quiz) se mantienen */
-    .visual-challenge, .quiz {
-      margin: 20px 0;
-    }
-    /* --- Reto del Castillo --- */
-    #castle-challenge {
-      display: none;
-      margin: 20px auto;
-      padding: 15px;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
-      background: url('images/fondo.jpg') no-repeat center center;
-      background-size: cover;
-      position: relative;
-    }
-    /* Estilo para el laberinto (grid 5x5) */
-    #labyrinth-container {
-      display: grid;
-      grid-template-columns: repeat(5, 60px);
-      grid-template-rows: repeat(5, 60px);
-      gap: 4px;
-      justify-content: center;
-      margin-bottom: 15px;
-    }
-    .lab-cell {
-      width: 60px;
-      height: 60px;
-      border: 1px solid #999;
-      position: relative;
-      text-align: center;
-      line-height: 60px;
-      font-size: 24px;
-      background: #fff;
-    }
-    .lab-wall {
-      background: #666;
-    }
-    .lab-exit {
-      background: #ffd;
-    }
-    /* La “pieza” del caballo se representará como un elemento */
-    .horse {
-      position: absolute;
-      z-index: 2;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      line-height: 60px;
-    }
-    /* --- CombLock (candado) --- */
+    
+    /* Quiz Histórico */
+    .quiz { margin: 20px 0; }
+    .quiz h2 { text-align: center; }
+    .quiz p { text-align: center; }
+    /* Minijuego: Combination Lock (Candado) */
     #combination-lock {
       display: none;
       text-align: center;
       margin-top: 20px;
+    }
+    #combination-lock h2 { margin-bottom: 10px; }
+    #dials {
+      margin-bottom: 10px;
     }
     .dial {
       display: inline-block;
@@ -183,6 +130,7 @@
     #check-combination {
       margin-top: 10px;
     }
+    
     /* Fragmento Final */
     .fragmento-final {
       margin: 20px auto;
@@ -196,22 +144,15 @@
       font-weight: bold;
       border-radius: 10px;
     }
-    #continue-button {
-      text-align: center;
-      margin-top: 15px;
-      display: none;
-    }
-    footer p {
-      text-align: center;
-      font-size: 0.9em;
-      margin-top: 20px;
-    }
+    #continue-button { text-align: center; margin-top: 15px; display: none; }
+    
+    footer p { text-align: center; font-size: 0.9em; margin-top: 20px; }
+    
     @media screen and (max-width: 768px) {
       .container { max-width: 90%; }
-      #labyrinth-container { grid-template-columns: repeat(5, 50px); grid-template-rows: repeat(5, 50px); }
-      .lab-cell { width: 50px; height: 50px; line-height: 50px; font-size: 20px; }
       .dial { width: 50px; height: 50px; line-height: 50px; font-size: 20px; }
     }
+    
     /* Adornos medievales */
     .container:before {
       content: "⚔️";
@@ -242,7 +183,7 @@
       </div>
     </header>
     
-    <!-- Verificación de Ubicación -->
+    <!-- Sección de Verificación de Ubicación -->
     <section id="content">
       <div class="stop-icon">🏰</div>
       <div id="location-check">
@@ -256,9 +197,9 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
       
-      <!-- Contenido principal (tras verificación) -->
+      <!-- Contenido principal se muestra tras la verificación -->
       <div id="game-content" style="display:none;">
-        <!-- Carrusel principal -->
+        <!-- Carrusel Principal -->
         <div class="carousel">
           <div class="carousel-slides" id="main-carousel">
             <div class="slide active">
@@ -290,25 +231,6 @@
           <button class="carousel-btn next-slide">&rarr;</button>
         </div>
         
-        <!-- Retos Visuales -->
-        <div class="visual-challenge">
-          <h2>Reto Visual</h2>
-          <p>1. ¿Qué marcó la torre del homenaje?</p>
-          <div id="visual-opciones-1">
-            <button class="action-btn" onclick="checkVisualAnswer('Incendio','Rayo',1)">Incendio</button>
-            <button class="action-btn" onclick="checkVisualAnswer('Rayo','Rayo',1)">Rayo</button>
-            <button class="action-btn" onclick="checkVisualAnswer('Terremoto','Rayo',1)">Terremoto</button>
-          </div>
-          <p id="visual-resultado-1"></p>
-          <p>2. ¿Qué destaca en la entrada fortificada?</p>
-          <div id="visual-opciones-2">
-            <button class="action-btn" onclick="checkVisualAnswer('Arcos','Muralla',2)">Arcos</button>
-            <button class="action-btn" onclick="checkVisualAnswer('Muralla','Muralla',2)">Muralla</button>
-            <button class="action-btn" onclick="checkVisualAnswer('Torreones','Muralla',2)">Torreones</button>
-          </div>
-          <p id="visual-resultado-2"></p>
-        </div>
-        
         <!-- Quiz Histórico -->
         <div class="quiz">
           <h2>Quiz Histórico</h2>
@@ -335,61 +257,32 @@
           <p id="quiz-resultado-3"></p>
         </div>
         
-        <!-- Reto del Castillo: Laberinto, luego Carrusel y, por último, Reto del Cofre -->
-        <div id="castle-challenge" style="display: none;">
-          <!-- Laberinto -->
-          <div id="labyrinth-section">
-            <!-- Contenedor de laberinto (grid 5x5) -->
-            <div id="labyrinth-container"></div>
-            <p id="labyrinth-status"></p>
-            <div id="direction-buttons">
-              <button class="direction-btn" onclick="chooseDirection('N')">Norte</button>
-              <button class="direction-btn" onclick="chooseDirection('S')">Sur</button>
-              <button class="direction-btn" onclick="chooseDirection('E')">Este</button>
-              <button class="direction-btn" onclick="chooseDirection('O')">Oeste</button>
-            </div>
+        <!-- Minijuego: Combination Lock (Candado para el Cofre) -->
+        <div id="combination-lock">
+          <h2>Candado del Cofre</h2>
+          <p>Gira los diales para formar la combinación correcta.</p>
+          <div id="dials">
+            <div class="dial" data-digit="0">0</div>
+            <div class="dial" data-digit="0">0</div>
+            <div class="dial" data-digit="0">0</div>
+            <div class="dial" data-digit="0">0</div>
           </div>
-          <!-- Una vez resuelto el laberinto, se muestra el candado (combination lock) -->
-          <div id="combination-lock" style="display:none;">
-            <h2>Candado</h2>
-            <p>Gira los diales para formar la combinación correcta.</p>
-            <div id="dials">
-              <div class="dial" data-digit="0">0</div>
-              <div class="dial" data-digit="0">0</div>
-              <div class="dial" data-digit="0">0</div>
-              <div class="dial" data-digit="0">0</div>
-            </div>
-            <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
-            <p id="combination-status"></p>
-          </div>
-          <!-- Reto del Cofre tradicional (alternativa o complemento) -->
-          <div id="chest-challenge" style="display:none;">
-            <div class="content-box">
-              <h2>Reto del Cofre</h2>
-              <p>Ingresa la clave numérica para abrir el cofre antiguo.</p>
-              <p id="chest-hint" style="font-weight:bold; color:#fff;"></p>
-              <input type="text" id="chest-key" placeholder="Ingrese la clave" />
-              <br>
-              <button class="action-btn" onclick="checkChestKey()">Abrir Cofre</button>
-              <p id="chest-status" style="color:#fff;"></p>
-            </div>
-          </div>
+          <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
+          <p id="combination-status"></p>
         </div>
         
         <!-- Fragmento Final -->
         <div class="fragmento-final" id="fragmento-final">
           <p>
             <strong>Fragmento del Mensaje:</strong>
-            <span id="message-piece" style="font-size:1.4em; display:none;">Oculto</span>
+            <span id="message-piece" style="display:none;">Oculto</span>
           </p>
           <p><strong>QR en el pueblo:</strong> CASTILLO-1834</p>
           <p><strong>Dato Curioso:</strong> Aquí se han hallado monedas y cerámicas del siglo XIII.</p>
         </div>
         
         <div id="continue-button" style="text-align:center; margin-top:15px; display:none;">
-          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=castillo'">
-            Continuar búsqueda
-          </button>
+          <button class="action-btn" onclick="location.href='felicitaciones.html?stop=castillo'">Continuar búsqueda</button>
         </div>
       </div>
     </section>
@@ -460,7 +353,6 @@
       function unlockStop() {
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
-        // Inicia el carrusel principal
         initMainCarousel();
         playSound("background-music");
       }
@@ -475,7 +367,7 @@
         const prevButton = document.querySelector('.prev-slide');
         const nextButton = document.querySelector('.next-slide');
         const carouselContainer = document.querySelector('#main-carousel');
-        // Ajusta el ancho total
+        // Ajuste dinámico del ancho del contenedor de diapositivas
         carouselContainer.style.width = (totalSlides * 100) + '%';
         
         function updateCarousel() {
@@ -525,204 +417,55 @@
           if (n === 3) quiz3Correct = false;
         }
         if (quiz1Correct && quiz2Correct && quiz3Correct) {
+          // Ocultar el quiz y desplegar el minijuego del candado
           document.querySelector('.quiz').style.display = "none";
-          document.getElementById("castle-challenge").style.display = "block";
-          // Inicia el minijuego del Castillo (laberinto, candado)
-          generateChestKey(); // se genera la clave para el candado (por si se usa el reto del cofre alternativo)
-          enableLaberintoSwipe();
-          // Generamos el laberinto visual
-          generateLabyrinth();
+          initCombinationLock();
+          enableLaberintoSwipe(); // Si se desea habilitar movimientos en el laberinto (opcional)
         }
       }
       
       /*----------------------------------------*/
-      /* 4. MINIJUEGO DEL CASTILLO: LABERINTO y CANDADO */
+      /* 4. MINIJUEGO: COMBINATION LOCK         */
       /*----------------------------------------*/
-      // --- Laberinto visual ---
-      // Definimos una matriz de 5x5 (0 = camino, 1 = pared)
-      const labyrinthMatrix = [
-        [0,0,1,0,0],
-        [1,0,1,0,1],
-        [1,0,0,0,1],
-        [1,1,1,0,0],
-        [0,0,0,0,0]
-      ];
-      const LAB_ROWS = 5, LAB_COLS = 5;
-      let horsePosition = { row: 0, col: 0 };
-      let horseEl;
-      
-      function generateLabyrinth() {
-        const container = document.getElementById("labyrinth-container");
-        container.innerHTML = "";
-        for (let r = 0; r < LAB_ROWS; r++) {
-          for (let c = 0; c < LAB_COLS; c++) {
-            const cell = document.createElement("div");
-            cell.classList.add("lab-cell");
-            // Si la matriz marca pared, agregamos clase
-            if (labyrinthMatrix[r][c] === 1) cell.classList.add("lab-wall");
-            // Si es la celda de salida (por ejemplo, abajo a la derecha), se marca como exit
-            if (r === LAB_ROWS - 1 && c === LAB_COLS - 1) cell.classList.add("lab-exit");
-            cell.dataset.row = r;
-            cell.dataset.col = c;
-            container.appendChild(cell);
-          }
-        }
-        // Colocamos el caballo en la celda de entrada (0,0)
-        horsePosition = { row: 0, col: 0 };
-        horseEl = document.createElement("div");
-        horseEl.classList.add("horse");
-        // Seleccionamos aleatoriamente un emoji de caballo
-        const horseEmojis = ["🐎", "🏇", "🐴"];
-        horseEl.textContent = horseEmojis[Math.floor(Math.random() * horseEmojis.length)];
-        // Insertamos el caballo en la celda correspondiente
-        updateHorsePosition();
-      }
-      
-      function updateHorsePosition() {
-        // Buscar la celda que corresponde a horsePosition
-        const cells = document.querySelectorAll("#labyrinth-container .lab-cell");
-        cells.forEach(cell => {
-          if (parseInt(cell.dataset.row) === horsePosition.row && parseInt(cell.dataset.col) === horsePosition.col) {
-            cell.appendChild(horseEl);
-          }
-        });
-        // Si el caballo ha llegado a la salida, resolvemos el laberinto
-        if (horsePosition.row === LAB_ROWS - 1 && horsePosition.col === LAB_COLS - 1) {
-          // Laberinto resuelto: ocultamos la sección y mostramos el candado
-          document.getElementById("labyrinth-status").textContent = "¡Has llegado al cofre!";
-          setTimeout(() => {
-            document.getElementById("labyrinth-section").style.display = "none";
-            document.getElementById("combination-lock").style.display = "block";
-          }, 1000);
-        }
-      }
-      
-      function moveHorse(direction) {
-        const newPos = { row: horsePosition.row, col: horsePosition.col };
-        if (direction === "N") newPos.row--;
-        if (direction === "S") newPos.row++;
-        if (direction === "E") newPos.col++;
-        if (direction === "O") newPos.col--;
-        // Verificamos que esté dentro de la matriz y que la celda sea camino (0)
-        if (newPos.row >= 0 && newPos.row < LAB_ROWS && newPos.col >= 0 && newPos.col < LAB_COLS) {
-          if (labyrinthMatrix[newPos.row][newPos.col] === 0) {
-            horsePosition = newPos;
-            updateHorsePosition();
-            document.getElementById("labyrinth-status").textContent = "Camino: (" + horsePosition.row + "," + horsePosition.col + ")";
-          } else {
-            document.getElementById("labyrinth-status").textContent = "¡No puedes ir por esa ruta!";
-          }
-        }
-      }
-      
-      // Función para manejar botones y gestos del laberinto
-      function chooseDirection(dir) {
-        moveHorse(dir);
-      }
-      
-      function enableLaberintoSwipe() {
-        const labyrinth = document.getElementById("labyrinth-section");
-        let touchstartX = 0, touchstartY = 0, touchendX = 0, touchendY = 0;
-        const minSwipeDistance = 30;
-        labyrinth.addEventListener('touchstart', (e) => {
-          touchstartX = e.changedTouches[0].screenX;
-          touchstartY = e.changedTouches[0].screenY;
-        }, false);
-        labyrinth.addEventListener('touchend', (e) => {
-          touchendX = e.changedTouches[0].screenX;
-          touchendY = e.changedTouches[0].screenY;
-          const diffX = touchendX - touchstartX;
-          const diffY = touchendY - touchstartY;
-          if (Math.abs(diffX) > Math.abs(diffY)) {
-            if (Math.abs(diffX) > minSwipeDistance) {
-              diffX > 0 ? chooseDirection("E") : chooseDirection("O");
-            }
-          } else {
-            if (Math.abs(diffY) > minSwipeDistance) {
-              diffY > 0 ? chooseDirection("S") : chooseDirection("N");
-            }
-          }
-        }, false);
-      }
-      
-      // --- Candado (Combination Lock) ---
-      let secretCombination = "";
-      function generateCombinationLock() {
-        // Generamos una combinación de 4 dígitos aleatorios
-        secretCombination = "";
-        for (let i = 0; i < 4; i++) {
-          secretCombination += Math.floor(Math.random() * 10);
-        }
-        // (La pista puede ser mostrada aquí si se desea, pero en este ejemplo se deja en blanco)
-        console.log("Combinación secreta:", secretCombination);
-      }
-      
       function initCombinationLock() {
-        // Se muestra el panel de candado y se genera la combinación secreta.
-        generateCombinationLock();
-        // Para cada dial, se asigna el valor inicial 0 (ya lo tiene en el HTML)
+        document.getElementById("combination-lock").style.display = "block";
         const dials = document.querySelectorAll(".dial");
-        dials.forEach(d => {
-          d.setAttribute("data-digit", "0");
-          d.textContent = "0";
-          d.addEventListener("click", () => {
-            // Al hacer click, incrementa el dígito (mod 10)
-            let current = parseInt(d.getAttribute("data-digit"));
-            current = (current + 1) % 10;
-            d.setAttribute("data-digit", current);
-            d.textContent = current;
+        dials.forEach(dial => {
+          dial.setAttribute("data-digit", "0");
+          dial.textContent = "0";
+          dial.addEventListener("click", () => {
+            let digit = parseInt(dial.getAttribute("data-digit"));
+            digit = (digit + 1) % 10;
+            dial.setAttribute("data-digit", digit);
+            dial.textContent = digit;
           });
         });
+        generateSecretCombination();
+      }
+      
+      let secretCombination = "";
+      function generateSecretCombination() {
+        const keys = ["1834", "1949", "2010"];
+        secretCombination = keys[Math.floor(Math.random() * keys.length)];
+        console.log("Secret Combination:", secretCombination);
       }
       
       function checkCombination() {
-        // Se recogen los dígitos de los 4 diales
         const dials = document.querySelectorAll(".dial");
         let userCombination = "";
-        dials.forEach(d => {
-          userCombination += d.getAttribute("data-digit");
+        dials.forEach(dial => {
+          userCombination += dial.getAttribute("data-digit");
         });
         if (userCombination === secretCombination) {
           document.getElementById("combination-status").textContent = "¡Candado desbloqueado!";
-          completeCastleChallenge();
+          unlockFinalFragment();
         } else {
           document.getElementById("combination-status").textContent = "Combinación incorrecta. Inténtalo de nuevo.";
         }
       }
       
       /*----------------------------------------*/
-      /* 5. Reto del Cofre (alternativo)         */
-      /*----------------------------------------*/
-      // Se mantiene la función para el reto del cofre tradicional (opcional)
-      let currentChestKey = "";
-      function generateChestKey() {
-        const keys = [
-          { date: "1834", clue: "la fecha en que se instaló un cementerio dentro de los muros del castillo." },
-          { date: "1949", clue: "la fecha en que se declaró Bien de Interés Cultural." },
-          { date: "2010", clue: "la fecha en que se realizó la renovación para transformar el castillo en un Centro de Interpretación de la Biosfera." }
-        ];
-        const randomIndex = Math.floor(Math.random() * keys.length);
-        currentChestKey = keys[randomIndex].date;
-        document.getElementById("chest-hint").textContent = "Pista: La clave corresponde a " + keys[randomIndex].clue;
-      }
-      
-      function checkChestKey() {
-        const key = document.getElementById("chest-key").value.trim();
-        if (key === currentChestKey) {
-          document.getElementById("chest-status").textContent = "¡Cofre abierto! Has descifrado el enigma.";
-          completeCastleChallenge();
-        } else {
-          document.getElementById("chest-status").textContent = "Clave incorrecta. Vuelve a intentarlo.";
-        }
-      }
-      
-      function completeCastleChallenge() {
-        document.getElementById("castle-challenge").style.display = "none";
-        unlockFinalFragment();
-      }
-      
-      /*----------------------------------------*/
-      /* 6. Fragmento Final / Continuar         */
+      /* 5. FRAGMENTO FINAL / CONTINUAR         */
       /*----------------------------------------*/
       let challengeCompleted = false;
       function unlockFinalFragment() {
@@ -737,7 +480,7 @@
       }
       
       function updateChronicle() {
-        localStorage.setItem("cronica_castillo", document.getElementById("message-piece").textContent);
+        localStorage.setItem("cronica_castillo", "Fragmento oculto");
       }
       
       function updateRanking() {
@@ -747,7 +490,7 @@
       }
       
       /*----------------------------------------*/
-      /* 7. SONIDOS                             */
+      /* 6. SONIDOS                             */
       /*----------------------------------------*/
       function playSound(id) {
         const sound = document.getElementById(id);
@@ -755,7 +498,7 @@
       }
       
       /*----------------------------------------*/
-      /* 8. BOTÓN DE MÚSICA                      */
+      /* 7. BOTÓN DE MÚSICA                      */
       /*----------------------------------------*/
       document.addEventListener('DOMContentLoaded', () => {
         const musicBtn = document.querySelector('.music-btn');
@@ -772,12 +515,25 @@
       });
       
       /*----------------------------------------*/
-      /* 9. LOCALSTORAGE                        */
+      /* 8. LOCALSTORAGE                        */
       /*----------------------------------------*/
       localStorage.setItem("castillo-completed", "true");
-      
-      // Para iniciar el juego, el desbloqueo de la ubicación mostrará el contenido.
     </script>
+    
+    <!-- Panel del Candado -->
+    <div id="combination-lock" style="display:none;">
+      <h2>Candado del Cofre</h2>
+      <p>Gira los diales para formar la combinación correcta.</p>
+      <div id="dials">
+        <div class="dial" data-digit="0">0</div>
+        <div class="dial" data-digit="0">0</div>
+        <div class="dial" data-digit="0">0</div>
+        <div class="dial" data-digit="0">0</div>
+      </div>
+      <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
+      <p id="combination-status"></p>
+    </div>
+    
   </div>
 </body>
 </html>
