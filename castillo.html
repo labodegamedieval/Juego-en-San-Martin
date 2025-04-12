@@ -66,7 +66,7 @@
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease;
-      width: 300%; /* Para 3 slides */
+      width: 300%; /* 3 slides */
     }
     .slide {
       flex: 0 0 100%;
@@ -107,7 +107,6 @@
       background-size: cover;
       position: relative;
     }
-    /* Caja para mejorar la legibilidad en los retos */
     .content-box {
       background: rgba(0, 0, 0, 0.8);
       color: #fff;
@@ -158,7 +157,7 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-    /* Fragmento Final (el pergamino) */
+    /* Fragmento Final */
     .fragmento-final {
       margin: 20px auto;
       display: none;
@@ -205,8 +204,7 @@
         </button>
       </div>
     </header>
-    
-    <!-- Sección de Verificación de Ubicación -->
+    <!-- Sección de Verificación -->
     <section id="content">
       <div class="stop-icon">🏰</div>
       <div id="location-check">
@@ -219,8 +217,7 @@
         <p id="location-status"></p>
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
-      
-      <!-- Contenido principal (se muestra tras verificación) -->
+      <!-- Contenido principal, que se mostrará tras la verificación -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -254,7 +251,7 @@
           <button class="carousel-btn next-slide">&rarr;</button>
         </div>
         
-        <!-- Resto de secciones: retos visuales, quiz, y luego el reto del castillo -->
+        <!-- Retos Visuales -->
         <div class="visual-challenge">
           <h2>Reto Visual</h2>
           <p>1. ¿Qué marcó la torre del homenaje?</p>
@@ -273,6 +270,7 @@
           <p id="visual-resultado-2"></p>
         </div>
         
+        <!-- Quiz Histórico -->
         <div class="quiz">
           <h2>Quiz Histórico</h2>
           <p>1. ¿En qué siglo nació este castillo?</p>
@@ -298,7 +296,7 @@
           <p id="quiz-resultado-3"></p>
         </div>
         
-        <!-- Reto del Castillo: Laberinto y Cofre -->
+        <!-- Reto del Castillo: Laberinto y Reto del Cofre -->
         <div id="castle-challenge" style="display: none;">
           <!-- Laberinto -->
           <div id="labyrinth-section">
@@ -394,7 +392,7 @@
         const toRad = (x) => x * Math.PI / 180;
         const φ1 = toRad(lat1), φ2 = toRad(lat2);
         const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
-        const a = Math.sin(Δφ/2)**2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2)**2;
+        const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return R * c;
       }
@@ -409,9 +407,10 @@
       function unlockStop() {
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
-        initCarousel();
+        initCarousel(); // Inicializa el carrusel al desbloquear el contenido.
         playSound("background-music");
       }
+      
       /*----------------------------------------*/
       /* 2. CARRUSEL                            */
       /*----------------------------------------*/
@@ -431,6 +430,7 @@
         const carouselSlides = document.querySelector('.carousel-slides');
         carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
       }
+      
       /*----------------------------------------*/
       /* 3. RETOS VISUALES Y QUIZ              */
       /*----------------------------------------*/
@@ -467,6 +467,7 @@
           enableLaberintoSwipe();
         }
       }
+      
       /*----------------------------------------*/
       /* 4. RETO DEL CASTILLO: LABERINTO Y COFRE */
       /*----------------------------------------*/
