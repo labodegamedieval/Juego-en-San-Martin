@@ -87,7 +87,7 @@
     .next-slide { right: 10px; }
     /* Secciones Visuales y Quiz */
     .visual-challenge, .quiz { margin: 20px 0; }
-    /* Minijuego: Reto del Castillo (Laberinto y Cofre) */
+    /* Minijuego: Reto del Castillo (Laberinto y Reto del Cofre) */
     #castle-challenge {
       display: none;
       margin: 20px auto;
@@ -110,7 +110,7 @@
       z-index: 1;
     }
     .content-box strong { color: #fff; }
-    /* Laberinto */
+    /* Laberinto del Castillo */
     #labyrinth-section {
       background: rgba(0, 0, 0, 0.7);
       padding: 10px;
@@ -211,7 +211,7 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección" />
       </div>
 
-      <!-- Contenido principal (tras verificación) -->
+      <!-- Contenido principal (se muestra tras verificación) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -219,22 +219,24 @@
             <div class="slide active">
               <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
               <p>
-                <strong>Entrada:</strong> Puerta del castillo, convertida en palacio en el siglo XV, con orígenes en fortificación del siglo XIII.
-                Defensa de la Sierra de Francia.
+                <strong>Entrada:</strong> Puerta del castillo, convertida en palacio en el siglo XV, con orígenes en fortificación del siglo XIII. <br>
+                <em>En 1834 se instaló un cementerio dentro de sus muros.</em>
                 <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
               </p>
             </div>
             <div class="slide">
               <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
               <p>
-                <strong>Torre del Homenaje:</strong> La torre, original de dos, fue reducida tras un rayo a principios del siglo XX.
+                <strong>Torre del Homenaje:</strong> La torre, original de dos, fue reducida tras un rayo a principios del siglo XX. <br>
+                <em>En 1949 se declaró Bien de Interés Cultural.</em>
                 <a href="https://sanmartindelcastañar.es/castillo-de-la-biosfera/" target="_blank">Más info</a>
               </p>
             </div>
             <div class="slide">
               <img src="images/castillo-vista.jpg" alt="Vista desde el Castillo" />
               <p>
-                <strong>Vista:</strong> Desde este mirador se domina todo el valle, y hoy acoge el cementerio municipal.
+                <strong>Vista:</strong> Desde este mirador se domina todo el valle, y hoy acoge el cementerio municipal. <br>
+                <em>La renovación que transformó el castillo en un Centro de Interpretación de la Biosfera se llevó a cabo en 2010.</em>
                 <a href="https://turismosierradefrancia.es/..." target="_blank">Más info</a>
               </p>
             </div>
@@ -288,15 +290,14 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Reto del Castillo (Laberinto y Reto del Cofre) -->
+        <!-- Reto del Castillo: Laberinto y Reto del Cofre -->
         <div id="castle-challenge" style="display: none;">
-          <!-- Laberinto del Castillo -->
+          <!-- Laberinto -->
           <div id="labyrinth-section">
             <div class="content-box">
               <h2>Laberinto del Castillo</h2>
               <p>Desliza el dedo (o usa los botones) para seguir el camino correcto hacia la sala secreta.</p>
             </div>
-            <!-- Botones (opcionales, además de los gestos) -->
             <div id="direction-buttons">
               <button class="direction-btn" onclick="chooseDirection('N')">Norte</button>
               <button class="direction-btn" onclick="chooseDirection('S')">Sur</button>
@@ -305,7 +306,6 @@
             </div>
             <p id="labyrinth-status"></p>
           </div>
-
           <!-- Reto del Cofre -->
           <div id="chest-challenge" style="display:none;">
             <div class="content-box">
@@ -406,7 +406,7 @@
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
         initCarousel();
-        // El resto (retos visuales y quiz) se muestran hasta que se contesten correctamente.
+        // Se muestran el carrusel, retos visuales y el quiz.
         playSound("background-music");
       }
 
@@ -459,13 +459,13 @@
           if (n === 2) quiz2Correct = false;
           if (n === 3) quiz3Correct = false;
         }
-        // Si todas las preguntas del quiz son correctas, se muestra el minijuego del castillo.
+        // Si se contestan correctamente las 3 preguntas, se muestra el reto del castillo.
         if (quiz1Correct && quiz2Correct && quiz3Correct) {
           document.querySelector('.quiz').style.display = "none";
           document.getElementById("castle-challenge").style.display = "block";
-          // Generamos la clave numérica aleatoria para el reto del cofre.
+          // Generamos la clave numérica aleatoria (entre los 3 posibles) para el reto del cofre.
           generateChestKey();
-          // Agregamos event listeners para swipe en el laberinto.
+          // Habilitamos gestos swipe en el laberinto
           enableLaberintoSwipe();
         }
       }
@@ -473,13 +473,12 @@
       /*----------------------------------------*/
       /* 4. RETO DEL CASTILLO: LABERINTO Y COFRE */
       /*----------------------------------------*/
-      // Laberinto: Secuencia correcta (por ejemplo, ["E", "E", "S", "S", "O"]).
+      // Laberinto: secuencia correcta (por ejemplo: ["E", "E", "S", "S", "O"])
       const correctPath = ["E", "E", "S", "S", "O"];
       let userPath = [];
       function chooseDirection(dir) {
         userPath.push(dir);
         document.getElementById("labyrinth-status").textContent = "Camino: " + userPath.join(" - ");
-        // Comprobamos paso a paso.
         for (let i = 0; i < userPath.length; i++) {
           if (userPath[i] !== correctPath[i]) {
             document.getElementById("labyrinth-status").textContent = "Camino incorrecto. Inténtalo de nuevo.";
@@ -488,18 +487,18 @@
           }
         }
         if (userPath.length === correctPath.length) {
-          document.getElementById("labyrinth-status").textContent = "¡Laberinto resuelto! Has encontrado la pista para el cofre.";
-          userPath = []; // Reiniciamos para evitar más cambios.
+          document.getElementById("labyrinth-status").textContent = "¡Laberinto resuelto! Has encontrado la pista para abrir el cofre.";
+          userPath = [];
           // Ocultamos el laberinto y mostramos el reto del cofre.
           document.getElementById("labyrinth-section").style.display = "none";
           document.getElementById("chest-challenge").style.display = "block";
         }
       }
-      // Habilitar swipe en dispositivos móviles para el laberinto.
+      // Habilitar gestos swipe para el laberinto en móviles.
       function enableLaberintoSwipe() {
         const labyrinth = document.getElementById("labyrinth-section");
         let touchstartX = 0, touchstartY = 0, touchendX = 0, touchendY = 0;
-        const minSwipeDistance = 30; // píxeles mínimos
+        const minSwipeDistance = 30;
         labyrinth.addEventListener('touchstart', (e) => {
           touchstartX = e.changedTouches[0].screenX;
           touchstartY = e.changedTouches[0].screenY;
@@ -525,15 +524,32 @@
           }
         }
       }
-      // Genera una clave numérica aleatoria (por ejemplo, entre 1300 y 1400)
-      let currentChestKey = 0;
+      // Genera una clave numérica aleatoria usando 3 fechas y sus pistas (sin dar la fecha)
+      let currentChestKey = "";
       function generateChestKey() {
-        currentChestKey = Math.floor(Math.random() * 101) + 1300;
-        document.getElementById("chest-hint").textContent = "Pista: La clave es el año " + currentChestKey;
+        // Claves disponibles
+        const keys = [
+          {
+            date: "1834",
+            clue: "la fecha en que se instaló el cementerio dentro de los muros del castillo."
+          },
+          {
+            date: "1949",
+            clue: "la fecha en que se declaró Bien de Interés Cultural."
+          },
+          {
+            date: "2010",
+            clue: "la fecha en que se realizó la renovación para transformar el castillo en un centro de interpretación de la biosfera."
+          }
+        ];
+        // Seleccionamos al azar una de las claves
+        const randomIndex = Math.floor(Math.random() * keys.length);
+        currentChestKey = keys[randomIndex].date;
+        document.getElementById("chest-hint").textContent = "Pista: La clave corresponde a " + keys[randomIndex].clue;
       }
       function checkChestKey() {
         const key = document.getElementById("chest-key").value.trim();
-        if (key === currentChestKey.toString()) {
+        if (key === currentChestKey) {
           document.getElementById("chest-status").textContent = "¡Cofre abierto! Has descifrado el enigma.";
           completeCastleChallenge();
         } else {
