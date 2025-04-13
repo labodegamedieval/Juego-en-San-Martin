@@ -6,14 +6,15 @@
   <title>⛲ Fuente y Portalón</title>
   <!-- Fuente medieval para mantener el toque -->
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/style.css">
+  <!-- He comentado la hoja de estilos externa para evitar posibles conflictos -->
+  <!-- <link rel="stylesheet" href="styles/style.css"> -->
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
   <style>
     /* ============================
          ESTILOS GENERALES
        ============================ */
     body {
-      font-family: "Georgia", serif;
+      font-family: Georgia, serif;
       background: #f8f0e3;
       color: #3b2f2f;
       margin: 0;
@@ -24,7 +25,7 @@
       max-width: 900px;
       margin: auto;
       padding: 20px;
-      position: relative;  /* Agregado para el posicionamiento de pseudo-elementos */
+      position: relative;  /* Para los pseudo-elementos */
     }
     header h1 {
       font-size: 32px;
@@ -45,6 +46,16 @@
     }
     .music-btn:hover {
       background: #a0522d;
+    }
+    /* Estilo básico para los botones de acción */
+    .action-btn {
+      padding: 10px 20px;
+      background: #8b4513;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+      margin: 5px;
     }
     
     /* ============================
@@ -91,18 +102,15 @@
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease-in-out;
-      /* Ancho dinámico según la cantidad de slides */
-      width: 300%;
+      width: 300%; /* Se asume 3 slides */
     }
     .slide {
       flex: 0 0 100%;
       box-sizing: border-box;
       padding: 10px;
       text-align: center;
-      /* Se elimina el display none y la opacidad para que el deslizado funcione */
       display: block;
     }
-    /* Si prefieres, puedes eliminar la clase .active, ya que se gestiona con el transform del contenedor */
     .slide img {
       width: 100% !important;
       height: 300px !important;
@@ -310,7 +318,7 @@
       <img id="direction-arrow" src="images/flecha.png" alt="Flecha de dirección">
     </section>
     
-    <!-- Contenido del Juego -->
+    <!-- Contenido del Juego (se mostrará al verificar la ubicación) -->
     <section id="game-content" style="display: none;">
       <!-- Carrusel -->
       <div class="carousel-container">
@@ -337,7 +345,6 @@
             </div>
           </div>
         </div>
-        <!-- Se mantienen los atributos onclick en estos botones -->
         <button class="carousel-btn prev-slide" onclick="prevSlide()">&#10094;</button>
         <button class="carousel-btn next-slide" onclick="nextSlide()">&#10095;</button>
       </div>
@@ -439,9 +446,7 @@
       </div>
     </section>
     
-    <!-- ============================
-         AUDIOS
-       ============================ -->
+    <!-- AUDIOS -->
     <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
@@ -511,9 +516,6 @@
         slides = document.querySelectorAll('.slide');
         document.querySelector('.carousel-slides').style.width = (slides.length * 100) + "%";
         updateCarousel();
-        // Se omiten los addEventListener ya que los botones usan onclick en el HTML
-        // document.querySelector('.prev-slide').addEventListener('click', prevSlide);
-        // document.querySelector('.next-slide').addEventListener('click', nextSlide);
       }
       function updateCarousel() {
         const carouselSlides = document.querySelector('.carousel-slides');
