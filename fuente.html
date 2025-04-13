@@ -80,11 +80,19 @@
     }
     .carousel-slide img {
       width: 100%;
-      height: 300px; /* Fijamos la altura */
-      object-fit: contain; /* Para mostrar la imagen entera sin recorte */
-      background-color: #fff; /* Fondo blanco para evitar zonas vacías */
+      height: auto;
+      max-height: 300px;
+      /* Por defecto usaremos object-fit: cover; */
+      object-fit: cover;
       border-radius: 10px;
       border: 2px solid #6e3b1b;
+    }
+    /* La segunda imagen se corrige para mostrarse completa */
+    .carousel-slide:nth-child(2) img {
+      object-fit: contain;
+      height: auto;
+      max-height: 300px;
+      background-color: #fff;
     }
     /* Bloque para el pie de foto */
     .carousel-info {
@@ -113,10 +121,8 @@
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
     
-    /* Secciones Visuales y Quiz */
+    /* Resto de estilos se mantienen (visuales, puzzle, footer, etc.) */
     .visual-challenge, .quiz { margin: 20px 0; }
-    
-    /* (Se mantienen el resto de estilos sin cambios) */
     #puzzle-cantaros {
       margin: 20px auto;
       padding: 15px;
@@ -231,6 +237,7 @@
         <!-- Carrusel Actualizado -->
         <div class="carousel-container">
           <div class="carousel-slides">
+            <!-- Primera diapositiva -->
             <div class="carousel-slide active">
               <img src="images/portalon.jpg" alt="Portalón" />
               <div class="carousel-info">
@@ -238,14 +245,15 @@
                 <a href="https://sanmartindelcastañar.es/plaza-mayor-y-portalon/" target="_blank">Más info</a>
               </div>
             </div>
+            <!-- Segunda diapositiva: se muestra la imagen completa -->
             <div class="carousel-slide">
-              <!-- En caso de necesitar mostrar la imagen sin recorte, se usa object-fit: contain -->
-              <img src="images/fuente-detalle.jpg" alt="Fuente" style="object-fit: contain;"/>
+              <img src="images/fuente-detalle.jpg" alt="Fuente" style="object-fit: contain; height: auto; max-height:300px; background-color:#fff;"/>
               <div class="carousel-info">
                 <strong>Fuente:</strong> De dos caños con decoración geométrica, construida en el siglo XVI.
                 <a href="https://turismosierradefrancia.es/nuestros-pueblos/san-martin-del-castanar/" target="_blank">Más info</a>
               </div>
             </div>
+            <!-- Tercera diapositiva -->
             <div class="carousel-slide">
               <img src="images/portalon-interior.jpg" alt="Portalón interior" />
               <div class="carousel-info">
@@ -302,7 +310,7 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Se mantiene el minijuego de Puzzle de Cántaros y el Fragmento Final -->
+        <!-- Se mantiene el minijuego de Puzzle de Cántaros y Fragmento Final -->
         <div id="puzzle-cantaros" style="display:none;">
           <div class="content-box">
             <h2>Puzzle de Cántaros</h2>
