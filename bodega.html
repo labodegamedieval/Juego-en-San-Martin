@@ -43,7 +43,7 @@
     .music-control { text-align: center; margin-bottom: 10px; }
 
     /* ============================
-           Verificación de Ubicación 
+         Verificación de Ubicación 
        ============================ */
     #location-check {
       text-align: center;
@@ -151,7 +151,7 @@
       width: 400px;
       height: 400px;
       z-index: 2;
-      /* Evitamos que el contenedor intercepte eventos de drop */
+      /* Evitamos que este contenedor intercepte eventos drop */
       pointer-events: none;
     }
     .puzzle-piece {
@@ -162,7 +162,7 @@
       background-size: 400px 400px;
       cursor: grab;
       transition: left 0.3s ease, top 0.3s ease;
-      /* Forzamos que las piezas puedan recibir eventos */
+      /* Fuerza que cada pieza reciba eventos */
       pointer-events: auto;
     }
     .puzzle-piece.placed {
@@ -446,7 +446,6 @@
       piecesZone.style.width = puzzleDimension + "px";
       piecesZone.style.height = puzzleDimension + "px";
       piecesZone.style.zIndex = "2";
-      // Importante: evitar que este contenedor intercepte eventos drop
       piecesZone.style.pointerEvents = "none";
       puzzleGame.appendChild(piecesZone);
       
@@ -467,10 +466,14 @@
          piece.style.left = randomX + "px";
          piece.style.top = randomY + "px";
          piece.draggable = true;
-         // Aseguramos que la pieza reciba eventos pese a estar en un contenedor sin pointer events
-         piece.style.pointerEvents = "auto";
+         // Asignamos z-index alto al inicio del arrastre
          piece.addEventListener("dragstart", function(e) {
              e.dataTransfer.setData("text/plain", this.dataset.id);
+             this.style.zIndex = 1000;
+         });
+         // Cuando comienza a arrastrar, se remueve la clase placed (por si se estaba en la posición correcta pero luego se re-mueve)
+         piece.addEventListener("dragstart", function(e) {
+             piece.classList.remove("placed");
          });
          piecesZone.appendChild(piece);
       }
@@ -484,6 +487,8 @@
          const pieceId = e.dataTransfer.getData("text/plain");
          const piece = document.querySelector(`.puzzle-piece[data-id='${pieceId}']`);
          if (!piece) return;
+         // Restablece z-index
+         piece.style.zIndex = "";
          const puzzleRect = puzzleGame.getBoundingClientRect();
          // Coordenadas de drop relativas al contenedor
          const dropX = e.clientX - puzzleRect.left;
@@ -492,27 +497,32 @@
          const col = Math.floor(dropX / pieceSize);
          const row = Math.floor(dropY / pieceSize);
          const targetIndex = row * gridSize + col;
-         console.log("Pieza:", piece.dataset.id, "cae en celda:", targetIndex);
-         // Si el índice de la pieza coincide con el índice correcto de la celda
-         if (piece.dataset.id === String(targetIndex)) {
-             // Posicionar la pieza en la celda exacta
-             piece.style.left = (col * pieceSize) + "px";
-             piece.style.top = (row * pieceSize) + "px";
+         // Colocar la pieza en la celda (sin importar si es correcta o no)
+         piece.style.left = (col * pieceSize) + "px";
+         piece.style.top = (row * pieceSize) + "px";
+         // Guardamos en el atributo 'data-current' la celda actual
+         piece.dataset.current = targetIndex;
+         // Si la pieza se coloca en su celda correcta, se marca y se desactiva el arrastre;
+         // de lo contrario, se deja como "no fijada" para permitir reubicarla
+         if(piece.dataset.id === String(targetIndex)) {
              piece.classList.add("placed");
              piece.draggable = false;
-             checkPuzzleSolved();
+         } else {
+             piece.classList.remove("placed");
+             piece.draggable = true;
          }
+         checkPuzzleSolved();
       });
     }
     function checkPuzzleSolved() {
       const pieces = document.querySelectorAll(".puzzle-piece");
-      let placedCount = 0;
+      let solved = true;
       pieces.forEach(piece => {
-         if(piece.classList.contains("placed")) {
-            placedCount++;
+         if(piece.dataset.current !== piece.dataset.id) {
+            solved = false;
          }
       });
-      if (placedCount === pieces.length) {
+      if (solved) {
          document.getElementById("puzzle-status").textContent = "¡Puzzle resuelto!";
          setTimeout(() => {
            document.getElementById("puzzle-game").style.display = "none";
