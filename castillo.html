@@ -125,16 +125,16 @@
       text-align: center;
       margin-top: 20px;
       padding: 15px;
-      /* Se quita color y borde para que se vea solo el cofre */
+      /* Se quita fondo y borde para que se vea solo el cofre */
       border: none;
       border-radius: 10px;
       background: none;
-      position: relative; /* para ubicar elementos dentro */
+      position: relative;
     }
     #combination-lock h2 {
       margin-bottom: 10px;
     }
-    /* Contenedor del cofre con la imagen de fondo y posición relativa */
+    /* Contenedor del cofre con la imagen y posición relativa */
     .cofre-container {
       position: relative;
       display: inline-block;
@@ -289,7 +289,7 @@
       <!-- Contenido del Juego (tras verificación) -->
       <div id="game-content" style="display: none;">
         <div class="content-wrapper">
-          <!-- Carrusel con tres imágenes -->
+          <!-- Carrusel con tres imágenes, texto descriptivo y contexto histórico -->
           <div class="carousel-container">
             <div class="carousel-slides">
               <div class="carousel-slide">
@@ -372,7 +372,7 @@
           <h2>Candado del Cofre</h2>
           <div class="cofre-container">
             <!-- Imagen del cofre sin fondo -->
-            <img src="images/baul.png" alt="Cofre Antiguo" class="cofre-img" />
+            <img src="images/cofre.png" alt="Cofre Antiguo" class="cofre-img" />
             <!-- Diales superpuestos -->
             <div id="dials">
               <div class="dial" data-digit="0">0</div>
@@ -383,13 +383,11 @@
           </div>
           <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
           <p id="combination-status"></p>
-          <button class="hint-btn" onclick="showPistaLock()">Pista para el Candado</button>
+          <button class="hint-btn" onclick="togglePistaLock()">Pista para el Candado</button>
           <!-- La pista se muestra debajo del botón y se podrá cerrar -->
           <div id="pista-lock">
-            <p>
-              La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!
-            </p>
-            <button class="action-btn" onclick="closePistaLock()">Cerrar Pista</button>
+            <p></p>
+            <button class="action-btn" onclick="togglePistaLock()">Cerrar Pista</button>
           </div>
         </div>
 
@@ -550,15 +548,18 @@
       const keys = ["1834", "1949", "2010"];
       secretCombination = keys[Math.floor(Math.random() * keys.length)];
       console.log("Combinación secreta:", secretCombination);
-      showPistaLock("La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!");
-    }
-    function showPistaLock(text) {
+      // Al generar la combinación se actualiza la pista por defecto
       const pistaDiv = document.getElementById("pista-lock");
-      pistaDiv.querySelector("p").textContent = text;
-      pistaDiv.style.display = "block";
+      pistaDiv.querySelector("p").textContent = "La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!";
     }
-    function closePistaLock() {
-      document.getElementById("pista-lock").style.display = "none";
+    // Función de toggle para la pista del candado
+    function togglePistaLock() {
+      const pistaDiv = document.getElementById("pista-lock");
+      if (pistaDiv.style.display === "block") {
+        pistaDiv.style.display = "none";
+      } else {
+        pistaDiv.style.display = "block";
+      }
     }
     function checkCombination() {
       const dials = document.querySelectorAll(".dial");
