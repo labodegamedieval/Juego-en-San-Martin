@@ -55,23 +55,50 @@
     }
     #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
     #direction-arrow { width: 50px; margin-top: 10px; }
-    /* Carrusel */
-    .carousel {
+
+    /* ===============================
+         Carrusel Actualizado
+       =============================== */
+    .carousel-container {
       position: relative;
       overflow: hidden;
-      margin-bottom: 20px;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
-    }
-    .carousel-slides { display: flex; transition: transform 0.5s ease; }
-    .slide { min-width: 100%; box-sizing: border-box; text-align: center; }
-    .slide img {
       width: 100%;
-      height: 300px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 2px solid #5e3b1b;
+    }
+    .carousel-slides {
+      display: flex;
+      transition: transform 0.5s ease;
+      width: 300%; /* Asumiendo 3 diapositivas */
+    }
+    .carousel-slide {
+      flex: 0 0 100%;
+      box-sizing: border-box;
+      text-align: center;
+      padding: 10px;
+    }
+    .carousel-slide img {
+      width: 100%;
+      height: auto;
+      max-height: 300px;
       object-fit: cover;
       border-radius: 10px;
       border: 2px solid #6e3b1b;
     }
+    /* Si se desea ajustar alguna diapositiva para mostrar la imagen entera, se puede personalizar con estilos inline */
+    .carousel-info {
+      margin-top: 10px;
+      line-height: 1.4;
+      background: rgba(255,255,255,0.8);
+      padding: 8px;
+      border-radius: 8px;
+    }
+    .carousel-info a {
+      color: #5e3b1b;
+      text-decoration: underline;
+    }
+    .carousel-info a:hover { color: #a65c3a; }
     .carousel-btn {
       position: absolute;
       top: 50%;
@@ -85,9 +112,10 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
+
     /* Secciones Visuales y Quiz */
     .visual-challenge, .quiz { margin: 20px 0; }
-    /* Minijuego: Puzzle de Cántaros */
+    /* Minijuego: Puzzle de Cántaros, etc. (se mantienen estilos originales) */
     #puzzle-cantaros {
       margin: 20px auto;
       padding: 15px;
@@ -97,7 +125,6 @@
       background-size: cover;
       position: relative;
     }
-    /* Caja de contenido para asegurar la legibilidad */
     .content-box {
       background: rgba(0, 0, 0, 0.8);
       color: #fff;
@@ -109,7 +136,6 @@
       z-index: 1;
     }
     .content-box strong { color: #fff; }
-    /* Contenedor visual de los cántaros */
     #cantaros-container {
       display: flex;
       justify-content: center;
@@ -119,11 +145,7 @@
       z-index: 1;
     }
     .jug { text-align: center; }
-    .jug-label {
-      font-weight: bold;
-      color: #fff; /* Textos en blanco */
-      margin-bottom: 5px;
-    }
+    .jug-label { font-weight: bold; color: #fff; margin-bottom: 5px; }
     .jug-container {
       width: 100px;
       height: 150px;
@@ -141,9 +163,7 @@
       background-color: #4d90fe;
       transition: height 0.5s ease;
     }
-    /* Los textos de cantidad (junto a las jarras) en blanco y strong */
     .jug-container + div { color: #fff; font-weight: bold; }
-    /* Fragmento Final (el pergamino) */
     .fragmento-final {
       margin: 20px auto;
       display: none;
@@ -162,7 +182,6 @@
       .container { max-width: 90%; }
       .jug-container { width: 80px; height: 120px; }
     }
-    /* Adornos medievales adicionales */
     .container:before {
       content: "⚔️";
       position: absolute;
@@ -209,31 +228,36 @@
 
       <!-- Contenido principal (tras verificación) -->
       <div id="game-content" style="display:none;">
-        <!-- Carrusel -->
-        <div class="carousel">
+        <!-- Carrusel actualizado -->
+        <div class="carousel-container">
           <div class="carousel-slides">
-            <div class="slide active">
+            <div class="carousel-slide active">
               <img src="images/portalon.jpg" alt="Portalón" />
-              <p>
-                <strong>Portalón:</strong> Lugar renacentista de reunión y comercio. 
-                Aún conserva inscripciones originales.
+              <div class="carousel-info">
+                <strong>Portalón:</strong> Lugar renacentista de reunión y comercio. Aún conserva inscripciones originales.
                 <a href="https://sanmartindelcastañar.es/plaza-mayor-y-portalon/" target="_blank">Más info</a>
-              </p>
+              </div>
             </div>
-            <div class="slide">
+            <div class="carousel-slide">
               <img src="images/fuente-detalle.jpg" alt="Fuente" />
-              <p><strong>Fuente:</strong> De dos caños con decoración geométrica, construida en el siglo XVI.</p>
+              <div class="carousel-info">
+                <strong>Fuente:</strong> De dos caños con decoración geométrica, construida en el siglo XVI.
+                <a href="https://turismosierradefrancia.es/nuestros-pueblos/san-martin-del-castanar/" target="_blank">Más info</a>
+              </div>
             </div>
-            <div class="slide">
-              <img src="images/portalon-interior.jpg" alt="Fuente" />
-              <p><strong>Fuente:</strong> De dos caños con decoración geométrica, construida en el siglo XVI.</p>
+            <div class="carousel-slide">
+              <img src="images/portalon-interior.jpg" alt="Portalón interior" />
+              <div class="carousel-info">
+                <strong>Interior:</strong> Perspectiva del portalón y sus detalles, evocando tiempos pasados.
+                <a href="https://es.wikipedia.org/wiki/San_Mart%C3%ADn_del_Casta%C3%B1ar" target="_blank">Más info</a>
+              </div>
             </div>
           </div>
-          <button class="carousel-btn prev-slide">←</button>
-          <button class="carousel-btn next-slide">→</button>
+          <button class="carousel-btn prev-slide" onclick="prevSlide()">←</button>
+          <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
         </div>
 
-        <!-- Retos Visuales y Quiz -->
+        <!-- Retos Visuales y Quiz se mantienen igual -->
         <div class="visual-challenge">
           <h2>Retos Visuales</h2>
           <p>1. ¿Cuántos caños tiene la fuente?</p>
@@ -263,15 +287,9 @@
           <p id="quiz-resultado-1"></p>
           <p>2. ¿Qué estilo es la fuente?</p>
           <div id="quiz-opciones-2">
-            <button class="action-btn" onclick="checkAnswer('Renacentista','Renacentista',2)">
-              Renacentista
-            </button>
-            <button class="action-btn" onclick="checkAnswer('Gótico','Renacentista',2)">
-              Gótico
-            </button>
-            <button class="action-btn" onclick="checkAnswer('Barroco','Renacentista',2)">
-              Barroco
-            </button>
+            <button class="action-btn" onclick="checkAnswer('Renacentista','Renacentista',2)">Renacentista</button>
+            <button class="action-btn" onclick="checkAnswer('Gótico','Renacentista',2)">Gótico</button>
+            <button class="action-btn" onclick="checkAnswer('Barroco','Renacentista',2)">Barroco</button>
           </div>
           <p id="quiz-resultado-2"></p>
           <p>3. ¿Qué río pasa cerca?</p>
@@ -283,13 +301,11 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- El minijuego de cántaros se muestra sólo una vez que se han contestado correctamente el quiz -->
+        <!-- (Se mantiene el minijuego de Puzzle de Cántaros y fragmento final según este HTML base) -->
         <div id="puzzle-cantaros" style="display:none;">
           <div class="content-box">
             <h2>Puzzle de Cántaros</h2>
-            <p>
-              Con la astucia de un alquimista medieval, mide exactamente 4 litros usando un cántaro de 5L y otro de 3L.
-            </p>
+            <p>Con la astucia de un alquimista medieval, mide exactamente 4 litros usando un cántaro de 5L y otro de 3L.</p>
           </div>
           <div id="cantaros-container">
             <div class="jug">
@@ -319,16 +335,14 @@
           <p id="puzzle-cantaros-resultado" style="text-align:center; color:green; font-weight:bold; position: relative; z-index: 1;"></p>
         </div>
 
-        <!-- Fragmento Final (oculto hasta superar el reto) -->
+        <!-- Fragmento Final -->
         <div class="fragmento-final" id="fragmento-final">
           <p>
             <strong>Fragmento del Mensaje:</strong> 
             <span id="message-piece" style="font-size:1.4em">bodega</span>
           </p>
           <p><strong>QR en el pueblo:</strong> FUENTE-1600</p>
-          <p>
-            <strong>Dato Curioso:</strong> Durante siglos, los vecinos se reunían aquí a debatir decisiones del consejo.
-          </p>
+          <p><strong>Dato Curioso:</strong> Durante siglos, los vecinos se reunían aquí a debatir decisiones del consejo.</p>
         </div>
 
         <div id="continue-button">
@@ -356,9 +370,7 @@
     </footer>
 
     <script>
-      /*----------------------------------------*/
-      /* 1. VERIFICACIÓN DE UBICACIÓN           */
-      /*----------------------------------------*/
+      /* 1. VERIFICACIÓN DE UBICACIÓN */
       const targetLat = 40.123456;
       const targetLon = -3.123456;
       const thresholdDistance = 50;
@@ -374,9 +386,8 @@
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         const distance = calculateDistance(lat, lon, targetLat, targetLon);
-        if (distance <= thresholdDistance) {
-          unlockStop();
-        } else {
+        if (distance <= thresholdDistance) { unlockStop(); }
+        else {
           document.getElementById("location-status").textContent =
             "No estás lo suficientemente cerca de la Fuente y Portalón.";
         }
@@ -387,7 +398,7 @@
       }
       function calculateDistance(lat1, lon1, lat2, lon2) {
         const R = 6371e3;
-        const toRad = (x) => x * Math.PI / 180;
+        const toRad = x => x * Math.PI / 180;
         const φ1 = toRad(lat1), φ2 = toRad(lat2);
         const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
         const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
@@ -396,9 +407,8 @@
       }
       function checkLocationManual() {
         const input = document.getElementById("location-input").value.trim().toLowerCase();
-        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") {
-          unlockStop();
-        } else {
+        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") { unlockStop(); }
+        else {
           document.getElementById("location-status").textContent =
             "Nombre incorrecto. Inténtalo nuevamente.";
         }
@@ -407,17 +417,13 @@
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
         initCarousel();
-        // Mostramos el quiz y retos visuales; el puzzle de cántaros se mostrará
-        // solo cuando se contesten correctamente las preguntas del quiz.
         playSound("background-music");
       }
 
-      /*----------------------------------------*/
-      /* 2. CARRUSEL                            */
-      /*----------------------------------------*/
+      /* 2. CARRUSEL */
       let currentSlide = 0, slides;
       function initCarousel() {
-        slides = document.querySelectorAll('.slide');
+        slides = document.querySelectorAll('.carousel-slide');
         document.querySelector('.prev-slide').addEventListener('click', () => {
           currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
           updateCarousel();
@@ -432,10 +438,7 @@
         carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
       }
 
-      /*----------------------------------------*/
-      /* 3. RETOS VISUALES Y QUIZ              */
-      /*----------------------------------------*/
-      // Variables para almacenar el estado de cada pregunta del quiz
+      /* 3. RETOS VISUALES Y QUIZ */
       let quiz1Correct = false, quiz2Correct = false, quiz3Correct = false;
       function checkVisualAnswer(selected, correct, n) {
         const result = document.getElementById('visual-resultado-' + n);
@@ -458,23 +461,17 @@
         } else {
           result.textContent = "Incorrecto. Vuelve a intentarlo.";
           playSound("error-sound");
-          // Opcional: reiniciar el estado de la pregunta si se contesta mal
           if(n === 1) quiz1Correct = false;
           if(n === 2) quiz2Correct = false;
           if(n === 3) quiz3Correct = false;
         }
-        // Si las tres preguntas se han contestado correctamente, desbloqueamos el puzzle de cántaros.
         if (quiz1Correct && quiz2Correct && quiz3Correct) {
-          // Ocultamos la sección del quiz.
           document.querySelector('.quiz').style.display = "none";
-          // Mostramos el minijuego de cántaros.
           initCantarosPuzzle();
         }
       }
 
-      /*----------------------------------------*/
-      /* 4. MINIJUEGO: PUZZLE DE CÁNTAROS        */
-      /*----------------------------------------*/
+      /* 4. MINIJUEGO: PUZZLE DE CÁNTAROS */
       let aCap = 5, bCap = 3;
       let aCur = 0, bCur = 0;
       let puzzleCantarosCompleted = false;
@@ -516,9 +513,7 @@
         }
       }
 
-      /*----------------------------------------*/
-      /* 5. FRAGMENTO FINAL / CONTINUAR         */
-      /*----------------------------------------*/
+      /* 5. FRAGMENTO FINAL / CONTINUAR */
       function unlockFinalFragment() {
         if (!puzzleCantarosCompleted) {
           puzzleCantarosCompleted = true;
@@ -538,22 +533,16 @@
         localStorage.setItem("ranking", JSON.stringify(ranking));
       }
 
-      /*----------------------------------------*/
-      /* 6. SONIDOS                             */
-      /*----------------------------------------*/
+      /* 6. SONIDOS */
       function playSound(id) {
         const sound = document.getElementById(id);
         if (sound) sound.play();
       }
 
-      /*----------------------------------------*/
-      /* 7. LOCALSTORAGE                        */
-      /*----------------------------------------*/
+      /* 7. LOCALSTORAGE */
       localStorage.setItem("fuente-completed", "true");
 
-      /*----------------------------------------*/
-      /* 8. BOTÓN DE MÚSICA                      */
-      /*----------------------------------------*/
+      /* 8. BOTÓN DE MÚSICA */
       document.addEventListener('DOMContentLoaded', () => {
         const musicBtn = document.querySelector('.music-btn');
         const backgroundMusic = document.getElementById('background-music');
