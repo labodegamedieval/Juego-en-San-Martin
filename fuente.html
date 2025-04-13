@@ -24,6 +24,7 @@
       max-width: 900px;
       margin: auto;
       padding: 20px;
+      position: relative;  /* Agregado para el posicionamiento de pseudo-elementos */
     }
     header h1 {
       font-size: 32px;
@@ -90,21 +91,18 @@
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease-in-out;
-      width: 300%; /* 3 diapositivas */
+      /* Ancho dinámico según la cantidad de slides */
+      width: 300%;
     }
     .slide {
       flex: 0 0 100%;
       box-sizing: border-box;
       padding: 10px;
       text-align: center;
-      display: none;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-    }
-    .slide.active {
+      /* Se elimina el display none y la opacidad para que el deslizado funcione */
       display: block;
-      opacity: 1;
     }
+    /* Si prefieres, puedes eliminar la clase .active, ya que se gestiona con el transform del contenedor */
     .slide img {
       width: 100% !important;
       height: 300px !important;
@@ -317,7 +315,7 @@
       <!-- Carrusel -->
       <div class="carousel-container">
         <div class="carousel-slides">
-          <div class="slide active">
+          <div class="slide">
             <img src="images/portalon.jpg" alt="Portalón">
             <div class="carousel-info">
               <strong>Portalón:</strong> Lugar renacentista de reunión y comercio. Aún conserva inscripciones originales.
@@ -339,6 +337,7 @@
             </div>
           </div>
         </div>
+        <!-- Se mantienen los atributos onclick en estos botones -->
         <button class="carousel-btn prev-slide" onclick="prevSlide()">&#10094;</button>
         <button class="carousel-btn next-slide" onclick="nextSlide()">&#10095;</button>
       </div>
@@ -510,15 +509,15 @@
       let currentSlide = 0, slides;
       function initCarousel() {
         slides = document.querySelectorAll('.slide');
-        // Agregamos width al contenedor de slides para 3 elementos
         document.querySelector('.carousel-slides').style.width = (slides.length * 100) + "%";
         updateCarousel();
-        document.querySelector('.prev-slide').addEventListener('click', prevSlide);
-        document.querySelector('.next-slide').addEventListener('click', nextSlide);
+        // Se omiten los addEventListener ya que los botones usan onclick en el HTML
+        // document.querySelector('.prev-slide').addEventListener('click', prevSlide);
+        // document.querySelector('.next-slide').addEventListener('click', nextSlide);
       }
       function updateCarousel() {
         const carouselSlides = document.querySelector('.carousel-slides');
-        carouselSlides.style.transform = 'translateX(' + (-currentSlide * (100 / slides.length)) + '%)';
+        carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
       }
       function nextSlide() {
         currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
