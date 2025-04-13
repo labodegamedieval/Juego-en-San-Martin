@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>⛲ Fuente y Portalón</title>
-  <!-- Fuente medieval de Google para un toque especial -->
+  <!-- Fuente medieval para mantener el toque -->
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/style.css">
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
   <style>
     /* ============================
-         ESTILOS GENERALES (copiados de ermita.css)
+         ESTILOS GENERALES
        ============================ */
     body {
       font-family: "Georgia", serif;
@@ -20,23 +20,19 @@
       padding: 0;
       text-align: center;
     }
-    
     .container {
       max-width: 900px;
       margin: auto;
       padding: 20px;
     }
-    
     header h1 {
       font-size: 32px;
       margin-bottom: 10px;
       color: #4a2c2a;
     }
-    
     .music-control {
       margin: 10px 0;
     }
-    
     .music-btn {
       font-size: 16px;
       padding: 8px 16px;
@@ -46,7 +42,6 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    
     .music-btn:hover {
       background: #a0522d;
     }
@@ -58,15 +53,8 @@
       text-align: center;
       margin-bottom: 30px;
     }
-    
-    #location-check h2 {
-      margin-bottom: 10px;
-    }
-    
-    #location-check p {
-      margin: 10px 0;
-    }
-    
+    #location-check h2 { margin-bottom: 10px; }
+    #location-check p { margin: 10px 0; }
     #location-input {
       padding: 8px;
       font-size: 16px;
@@ -75,13 +63,11 @@
       border: 1px solid #5e3b1b;
       border-radius: 4px;
     }
-    
     #location-status {
       margin-top: 10px;
       font-size: 1.1em;
       color: red;
     }
-    
     #direction-arrow {
       width: 60px;
       height: 60px;
@@ -95,35 +81,30 @@
        ============================ */
     .carousel-container {
       position: relative;
-      max-width: 100%;
-      margin: 20px auto;
       overflow: hidden;
+      width: 100%;
+      margin: 20px auto;
       border: 2px solid #5e3b1b;
       border-radius: 10px;
     }
-    
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease-in-out;
+      width: 300%; /* 3 diapositivas */
     }
-    
     .slide {
-      display: none;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
       flex: 0 0 100%;
       box-sizing: border-box;
       padding: 10px;
       text-align: center;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
     }
-    
     .slide.active {
       display: block;
       opacity: 1;
     }
-    
-    /* Importante: forzamos que todas las imágenes se muestren completas,
-       igual que en la parada del Castillo */
     .slide img {
       width: 100% !important;
       height: 300px !important;
@@ -133,31 +114,26 @@
       border: 2px solid #6b3e2e !important;
       display: block;
     }
-    
-    /* Bloque de Caption */
     .carousel-info {
       margin-top: 10px;
       line-height: 1.4;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255,255,255,0.8);
       padding: 8px;
       border-radius: 8px;
       text-align: left;
     }
-    
     .carousel-info a {
       color: #5e3b1b;
       text-decoration: underline;
     }
-    
     .carousel-info a:hover {
       color: #a65c3a;
     }
-    
     .carousel-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0,0,0,0.5);
       color: white;
       border: none;
       font-size: 28px;
@@ -165,113 +141,12 @@
       padding: 10px;
       z-index: 2;
     }
-    
-    .prev-slide {
-      left: 10px;
-    }
-    
-    .next-slide {
-      right: 10px;
-    }
+    .prev-slide { left: 10px; }
+    .next-slide { right: 10px; }
     
     /* ============================
-         OTROS ESTILOS (RESTANTE)
+         RETOS VISUALES Y QUIZ
        ============================ */
-    ol {
-      text-align: left;
-      margin: 0 auto;
-      max-width: 700px;
-      padding-left: 20px;
-    }
-    
-    .button-group {
-      margin-top: 30px;
-    }
-    
-    .action-btn {
-      background: #6b3e2e;
-      color: #fff;
-      padding: 14px 24px;
-      margin: 10px;
-      border: none;
-      border-radius: 6px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    
-    .action-btn:hover {
-      background: #8b4513;
-    }
-    
-    .map-container img {
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 10px;
-    }
-    
-    .buttons-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-    
-    .map-btn {
-      font-size: 16px;
-      padding: 12px 18px;
-      background: #4a2c2a;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    
-    .map-btn:hover {
-      background: #7b4b39;
-    }
-    
-    .progress-container {
-      margin: 20px auto;
-      max-width: 600px;
-      text-align: center;
-    }
-    
-    .progress-bar {
-      width: 100%;
-      background: #ddd;
-      height: 20px;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: #6b3e2e;
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-    
-    .qr-section input {
-      padding: 10px;
-      font-size: 16px;
-      width: 60%;
-      max-width: 300px;
-      margin-bottom: 10px;
-    }
-    
-    .qr-section button {
-      margin-top: 5px;
-    }
-    
-    #direction-arrow {
-      width: 60px;
-      height: 60px;
-      margin: 15px auto;
-      display: none;
-      transition: transform 0.3s ease;
-    }
-    
     .visual-challenge,
     .quiz,
     .fragmento-final {
@@ -280,6 +155,97 @@
       max-width: 700px;
       margin-left: auto;
       margin-right: auto;
+    }
+    .visual-challenge p,
+    .quiz p {
+      margin: 10px 0;
+      font-size: 1.1em;
+    }
+    
+    /* ============================
+         PUZZLE DE CÁNTAROS
+       ============================ */
+    #puzzle-cantaros {
+      margin: 20px auto;
+      padding: 15px;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      background: url('images/fondo-fuente.jpg') no-repeat center center;
+      background-size: cover;
+      position: relative;
+    }
+    .content-box {
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .content-box strong {
+      color: #fff;
+    }
+    #cantaros-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+      position: relative;
+      z-index: 1;
+    }
+    .jug {
+      text-align: center;
+    }
+    .jug-label {
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+    .jug-container {
+      width: 100px;
+      height: 150px;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    .jug-water {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background-color: #4d90fe;
+      transition: height 0.5s ease;
+    }
+    .jug-container + div {
+      color: #fff;
+      font-weight: bold;
+    }
+    
+    /* ============================
+         FRAGMENTO FINAL (PERGAMINO)
+       ============================ */
+    .fragmento-final {
+      margin: 20px auto;
+      display: none;
+      max-width: 600px;
+      text-align: center;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: cover;
+      padding: 40px 20px;
+      font-style: italic;
+      font-size: 1.2em;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+    
+    #continue-button {
+      text-align: center;
+      margin-top: 15px;
+      display: none;
     }
     
     footer {
@@ -298,9 +264,27 @@
     }
     
     @media screen and (max-width: 768px) {
-      ol {
+      .container {
         max-width: 90%;
       }
+    }
+    
+    .container:before {
+      content: "⚔️";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
+    }
+    
+    .container:after {
+      content: "🛡️";
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
     }
   </style>
 </head>
@@ -316,7 +300,7 @@
       </div>
     </header>
     
-    <!-- Verificación de Ubicación -->
+    <!-- Sección de Verificación de Ubicación -->
     <section id="location-check">
       <h2>Verifica tu ubicación</h2>
       <p>Acércate a la fuente y al portalón para continuar.</p>
@@ -359,7 +343,7 @@
         <button class="carousel-btn next-slide" onclick="nextSlide()">&#10095;</button>
       </div>
       
-      <!-- Resto de contenido (Retos Visuales, Quiz, etc.) -->
+      <!-- Retos Visuales -->
       <div class="visual-challenge">
         <h2>Retos Visuales</h2>
         <p>1. ¿Cuántos caños tiene la fuente?</p>
@@ -378,6 +362,7 @@
         <p id="visual-resultado-2"></p>
       </div>
       
+      <!-- Quiz Histórico -->
       <div class="quiz">
         <h2>Quiz Histórico</h2>
         <p>1. ¿En qué siglo se construyó esta fuente?</p>
@@ -404,7 +389,7 @@
       </div>
       
       <!-- Puzzle de Cántaros -->
-      <div id="puzzle-cantaros" style="display:none;">
+      <div id="puzzle-cantaros" style="display: none;">
         <div class="content-box">
           <h2>Puzzle de Cántaros</h2>
           <p>Con la astucia de un alquimista medieval, mide exactamente 4 litros usando un cántaro de 5L y otro de 3L.</p>
@@ -437,16 +422,17 @@
         <p id="puzzle-cantaros-resultado" style="text-align: center; color: green; font-weight: bold; position: relative; z-index: 1;"></p>
       </div>
       
-      <!-- Fragmento Final -->
+      <!-- Fragmento Final (Pergamino) -->
       <div class="fragmento-final" id="fragmento-final">
         <p>
           <strong>Fragmento del Mensaje:</strong>
-          <span id="message-piece" style="font-size:1.4em">bodega</span>
+          <span id="message-piece" style="font-size: 1.4em">¡El secreto de la Fuente revelado!</span>
         </p>
         <p><strong>QR en el pueblo:</strong> FUENTE-1600</p>
         <p><strong>Dato Curioso:</strong> Durante siglos, los vecinos se reunían aquí a debatir decisiones del consejo.</p>
       </div>
       
+      <!-- Botón Final -->
       <div id="continue-button">
         <button class="action-btn" onclick="location.href='felicitaciones.html?stop=fuente'">
           Continuar búsqueda
@@ -454,18 +440,21 @@
       </div>
     </section>
     
+    <!-- ============================
+         AUDIOS
+       ============================ -->
+    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
+    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
+    <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
+    <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+    
     <footer>
       <p>
         © 2025 La Bodega Medieval | 
         <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
       </p>
     </footer>
-    
-    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
-    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
-    <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
-    <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
-    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
     
     <script>
       /* ============================
@@ -482,8 +471,11 @@
       function geoSuccess(position) {
         const lat = position.coords.latitude, lon = position.coords.longitude;
         const distance = calculateDistance(lat, lon, targetLat, targetLon);
-        if (distance <= thresholdDistance) { unlockStop(); }
-        else { document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Fuente y Portalón."; }
+        if (distance <= thresholdDistance) {
+          unlockStop();
+        } else {
+          document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Fuente y Portalón.";
+        }
       }
       function locationError(err) {
         document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
@@ -499,8 +491,11 @@
       }
       function checkLocationManual() {
         const input = document.getElementById("location-input").value.trim().toLowerCase();
-        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") { unlockStop(); }
-        else { document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente."; }
+        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") {
+          unlockStop();
+        } else {
+          document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
+        }
       }
       function unlockStop() {
         document.getElementById("location-check").style.display = "none";
@@ -515,12 +510,15 @@
       let currentSlide = 0, slides;
       function initCarousel() {
         slides = document.querySelectorAll('.slide');
+        // Agregamos width al contenedor de slides para 3 elementos
+        document.querySelector('.carousel-slides').style.width = (slides.length * 100) + "%";
+        updateCarousel();
         document.querySelector('.prev-slide').addEventListener('click', prevSlide);
         document.querySelector('.next-slide').addEventListener('click', nextSlide);
       }
       function updateCarousel() {
         const carouselSlides = document.querySelector('.carousel-slides');
-        carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
+        carouselSlides.style.transform = 'translateX(' + (-currentSlide * (100 / slides.length)) + '%)';
       }
       function nextSlide() {
         currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
