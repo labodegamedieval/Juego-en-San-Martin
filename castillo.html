@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🏰 Castillo de Gonzalo</title>
+  <!-- Asegúrate de que la ruta al CSS sea correcta -->
   <link rel="stylesheet" href="styles/style.css">
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
   <style>
@@ -40,8 +41,14 @@
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    .music-control { text-align: center; margin-bottom: 10px; }
-    /* --- Ubicación --- */
+    .music-control {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    /* --- Eliminamos los botones de otras paradas --- */
+    /* (No se incluye el panel .stop-selector) */
+
+    /* --- Verificación de Ubicación --- */
     #location-check {
       text-align: center;
       margin-bottom: 30px;
@@ -85,7 +92,8 @@
     .slide img {
       width: 100%;
       height: 300px;
-      object-fit: contain;
+      object-fit: cover;
+      /* Con cover las imágenes se ajustan al contenedor */
       border-radius: 10px;
       border: 2px solid #6e3b1b;
     }
@@ -106,7 +114,7 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
-    /* --- Secciones de Retos Visuales y Quiz --- */
+    /* --- Retos Visuales y Quiz --- */
     .visual-challenge, .quiz {
       margin: 20px 0;
       text-align: center;
@@ -130,8 +138,12 @@
       border-radius: 10px;
       background: #fff;
     }
-    #combination-lock h2 { margin-bottom: 10px; }
-    #dials { margin-bottom: 10px; }
+    #combination-lock h2 {
+      margin-bottom: 10px;
+    }
+    #dials {
+      margin-bottom: 10px;
+    }
     .dial {
       display: inline-block;
       width: 60px;
@@ -148,23 +160,21 @@
     #check-combination {
       margin-top: 10px;
     }
-    /* --- Pista para el Candado en Pergamino --- */
+    /* --- Pista para el Candado (en pergamino) --- */
     #pista-lock {
       display: none;
-      position: fixed;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: url('images/pergamino.png') no-repeat center center;
-      background-size: cover;
-      padding: 20px;
+      margin-top: 10px;
+      padding: 15px;
+      border: 2px solid #5e3b1b;
       border-radius: 10px;
-      z-index: 1000;
-      width: 80%;
-      max-width: 400px;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: cover;
       text-align: center;
     }
-    #pista-lock p { font-size: 16px; color: #000; }
+    #pista-lock p {
+      font-size: 16px;
+      color: #000;
+    }
     #pista-lock button {
       margin-top: 10px;
       padding: 5px 10px;
@@ -229,12 +239,7 @@
           <span class="music-icon">🎵</span> Pausar Música
         </button>
       </div>
-      <div class="stop-selector">
-        <button class="action-btn" onclick="window.location.href='castillo.html'">Castillo</button>
-        <button class="action-btn" onclick="window.location.href='plaza.html'">Plaza</button>
-        <button class="action-btn" onclick="window.location.href='iglesia.html'">Iglesia</button>
-        <button class="action-btn" onclick="window.location.href='fuente.html'">Fuente y Portalón</button>
-      </div>
+      <!-- Se han eliminado los botones de otras paradas -->
     </header>
 
     <section id="content">
@@ -344,21 +349,20 @@
           <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
           <p id="combination-status"></p>
           <button class="hint-btn" onclick="showPistaLock()">Pista para el Candado</button>
-        </div>
-
-        <!-- Pista para el Candado en un pergamino -->
-        <div id="pista-lock">
-          <p>
-            La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!
-          </p>
-          <button class="action-btn" onclick="closePistaLock()">Cerrar Pista</button>
+          <!-- El pergamino de la pista se mostrará debajo del botón de pista -->
+          <div id="pista-lock">
+            <p>
+              La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!
+            </p>
+            <button class="action-btn" onclick="closePistaLock()">Cerrar Pista</button>
+          </div>
         </div>
 
         <!-- Fragmento Final -->
         <div class="fragmento-final" id="fragmento-final">
           <p>
             <strong>Fragmento del Mensaje:</strong>
-            <span id="message-piece" style="display: none;">Oculto</span>
+            <span id="message-piece" style="display: none;">"El secreto del castillo"</span>
           </p>
           <p><strong>QR en el pueblo:</strong> CASTILLO-1523 (cerca de la entrada).</p>
           <p><strong>Dato Curioso:</strong> Cerámicas y monedas del siglo XIII halladas aquí inspiraron a Gonzalo.</p>
@@ -381,9 +385,7 @@
   </div>
 
   <footer>
-    <p>© 2025 La Bodega Medieval | 
-      <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
-    </p>
+    <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
   </footer>
 
   <script>
@@ -443,6 +445,7 @@
       const prevButton = document.querySelector('.prev-slide');
       const nextButton = document.querySelector('.next-slide');
       const carouselContainer = document.querySelector('.carousel-slides');
+      // Forzamos el ancho total según el número de slides
       carouselContainer.style.width = (totalSlides * 100) + '%';
       function updateCarousel() {
         carouselContainer.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
@@ -485,6 +488,7 @@
         if(n === 3) quiz3Correct = false;
       }
       if (quiz1Correct && quiz2Correct && quiz3Correct) {
+        // Ocultar el quiz y mostrar el minijuego del candado
         document.querySelector('.quiz').style.display = "none";
         initCombinationLock();
       }
@@ -511,13 +515,12 @@
       const keys = ["1834", "1949", "2010"];
       secretCombination = keys[Math.floor(Math.random() * keys.length)];
       console.log("Combinación secreta:", secretCombination);
-      // En vez de alert, mostramos la pista en un pergamino
       showPistaLock("La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!");
     }
     function showPistaLock(text) {
       const pistaDiv = document.getElementById("pista-lock");
+      pistaDiv.querySelector("p").textContent = text;
       pistaDiv.style.display = "block";
-      // Opcionalmente puedes actualizar el contenido si fuera necesario
     }
     function closePistaLock() {
       document.getElementById("pista-lock").style.display = "none";
