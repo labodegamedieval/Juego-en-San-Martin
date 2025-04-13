@@ -7,27 +7,193 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    .lock-combo {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 20px 0;
-    }
-    .lock-select {
-      font-size: 18px;
-      padding: 8px;
-    }
-    .final-reveal {
-      background: url('images/pergamino.jpg');
+    /* ============================
+         Estilos Globales y Layout
+       ============================ */
+    body {
+      font-family: Arial, sans-serif;
+      background: url('images/fondo-bodega.jpg') no-repeat center center fixed;
       background-size: cover;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 960px;
+      margin: auto;
+      background: rgba(255,248,228,0.95);
+      border: 3px double #5e3b1b;
+      border-radius: 12px;
       padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    header h1 { text-align: center; }
+    .action-btn {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #dec79b;
+      border: 2px solid #5e3b1b;
       border-radius: 10px;
-      margin: 20px auto;
+      cursor: pointer;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .music-control { text-align: center; margin-bottom: 10px; }
+
+    /* ============================
+           Verificación de Ubicación 
+       ============================ */
+    #location-check {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    #location-check input {
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      margin: 10px;
+      border: 1px solid #5e3b1b;
+      border-radius: 4px;
+    }
+    #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
+    #direction-arrow { width: 50px; margin-top: 10px; }
+
+    /* ============================
+                 Carrusel
+       ============================ */
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 2px solid #5e3b1b;
+    }
+    .carousel .slide {
+      display: none;
       text-align: center;
     }
-    .final-reveal h2 {
-      margin-bottom: 10px;
-      color: #4a2c2a;
+    .carousel .slide.active { display: block; }
+    .carousel img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #6b3e2e;
+    }
+    /* Para la segunda imagen se muestra entera */
+    .carousel .slide:nth-child(2) img {
+      object-fit: contain;
+      height: auto;
+      max-height: 300px;
+    }
+    .carousel .slide p {
+      font-family: Georgia, serif;
+      font-size: 16px;
+      color: #2e2e2e;
+      line-height: 1.5;
+      margin: 10px auto;
+      max-width: 800px;
+    }
+    .carousel .slide a {
+      color: #5e3b1b;
+      text-decoration: underline;
+    }
+    .carousel .slide a:hover { color: #a65c3a; }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.7);
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+    }
+    .prev-slide { left: 10px; }
+    .next-slide { right: 10px; }
+
+    /* ============================
+         Minijuego 1: Puzzle Deslizante 
+       ============================ */
+    #puzzle-game {
+      display: none;
+      margin: 20px auto;
+      width: 400px;
+      height: 400px;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 2px;
+      background: #fff;
+    }
+    #puzzle-game .tile {
+      background-image: url('images/bodega-barriles.jpeg');
+      background-size: 400px 400px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: #fff;
+    }
+    /* La pieza en blanco */
+    #puzzle-game .blank {
+      background: #ccc;
+      cursor: default;
+    }
+
+    /* ============================
+         Minijuegos: Quiz y Cata
+       ============================ */
+    #bodega-quiz, #final-game, #final-button {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+    /* Preguntas y botones internos */
+    #bodega-quiz p, #final-game p {
+      font-family: Georgia, serif;
+      font-size: 18px;
+      margin: 15px 0 8px;
+    }
+    #cata-options { margin: 20px 0; }
+    
+    /* ============================
+         Footer y Adornos
+       ============================ */
+    footer p {
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: 20px;
+    }
+    .container:before {
+      content: "🍇";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
+    }
+    .container:after {
+      content: "🍷";
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
+    }
+    @media screen and (max-width: 768px) {
+      .container { max-width: 90%; }
+      .carousel img { height: 200px; }
+      .carousel-btn { font-size: 20px; padding: 6px; }
+      #puzzle-game { width: 300px; height: 300px; background-size: 300px 300px; }
     }
   </style>
 </head>
@@ -36,13 +202,15 @@
     <header>
       <h1>🍷 La Bodega Medieval</h1>
       <div class="music-control">
-        <button class="music-btn"><span class="music-icon">🎵</span> Música</button>
+        <button class="action-btn music-btn" onclick="toggleMusic()">
+          <span class="music-icon">🎵</span> Música
+        </button>
       </div>
     </header>
 
     <section id="content">
       <div class="stop-icon">🍷</div>
-
+      <!-- Verificación de Ubicación -->
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
         <p>Acércate al escudo tallado sobre la puerta de la bodega para continuar.</p>
@@ -54,94 +222,270 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
       </div>
 
+      <!-- Contenido del Juego: Se muestra tras verificación -->
       <div id="game-content" style="display: none;">
+        <!-- Carrusel con tres imágenes -->
         <div class="carousel">
           <div class="slide active">
             <img src="images/bodega-barriles.jpeg" alt="Interior bodega" />
-            <p><strong>Interior:</strong> Conserva barricas, utensilios antiguos y el olor a bodega tradicional.</p>
+            <p>
+              <strong>Interior:</strong> Conserva barricas antiguas y utensilios tradicionales. 
+              <a href="https://es.wikipedia.org/wiki/Barrica" target="_blank">Más información</a>
+            </p>
           </div>
           <div class="slide">
             <img src="images/bodega-cueva.jpeg" alt="Entrada bodega" />
-            <p><strong>Entrada:</strong> Sus muros guardan un misterio oculto tras cinco siglos . <a href="https://www.labodegamedieval.es" target="_blank">Más info</a></p>
+            <p>
+              <strong>Entrada:</strong> Sus muros ocultan secretos y leyendas de hace siglos. 
+              <a href="https://www.labodegamedieval.es" target="_blank">Más información</a>
+            </p>
           </div>
           <div class="slide">
             <img src="images/bodega-escudo.jpeg" alt="Escudo Borrado" />
-            <p><strong>Entrada:</strong> El escudo borrado a cincel guarda el secreto de la familia de Gonzalo de la Sierra. <a href="https://www.labodegamedieval.es" target="_blank">Más info</a></p>
+            <p>
+              <strong>Escudo:</strong> El escudo tallado guarda el legado de la familia de Gonzalo de la Sierra. 
+              <a href="https://es.wikipedia.org/wiki/Escudo_de_armas" target="_blank">Más información</a>
+            </p>
           </div>
-          
-          <button class="carousel-btn prev-slide">←</button>
-          <button class="carousel-btn next-slide">→</button>
+          <button class="carousel-btn prev-slide" onclick="prevSlide()">←</button>
+          <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
         </div>
 
-        <div class="quiz">
-          <h2>🗝️ Abre el Candado</h2>
-          <p>Introduce la combinación correcta para desvelar el mensaje oculto.</p>
-          <div class="lock-combo">
-            <select id="slot1" class="lock-select">
-              <option>Oculto</option><option>El</option><option>escudo</option>
-            </select>
-            <select id="slot2" class="lock-select">
-              <option>desarmado</option><option>se</option><option>esconde</option>
-            </select>
-            <select id="slot3" class="lock-select">
-              <option>tras</option><option>se</option><option>esconde</option>
-            </select>
+        <!-- Minijuego 1: Puzzle Deslizante -->
+        <div style="text-align:center; margin-bottom:20px;">
+          <button class="action-btn" onclick="startPuzzleGame()">Iniciar Puzzle</button>
+        </div>
+        <div id="puzzle-game"></div>
+        <p id="puzzle-status" style="text-align:center; font-family:Georgia, serif; font-size:18px;"></p>
+
+        <!-- Minijuego 2: Quiz de la Bodega -->
+        <div id="bodega-quiz">
+          <h2>📝 Quiz de la Bodega</h2>
+          <p>1. ¿Cuántas barricas históricas se conservan en la bodega?</p>
+          <button class="action-btn" onclick="checkQuizAnswer(1, '15')">15</button>
+          <button class="action-btn" onclick="checkQuizAnswer(1, '10')">10</button>
+          <button class="action-btn" onclick="checkQuizAnswer(1, '20')">20</button>
+          <p id="quiz-result-1"></p>
+
+          <p>2. ¿Cuál es la uva emblemática utilizada en nuestros vinos?</p>
+          <button class="action-btn" onclick="checkQuizAnswer(2, 'Tempranillo')">Tempranillo</button>
+          <button class="action-btn" onclick="checkQuizAnswer(2, 'Cabernet Sauvignon')">Cabernet Sauvignon</button>
+          <button class="action-btn" onclick="checkQuizAnswer(2, 'Garnacha')">Garnacha</button>
+          <p id="quiz-result-2"></p>
+
+          <p>3. ¿En qué región se encuentra la bodega?</p>
+          <button class="action-btn" onclick="checkQuizAnswer(3, 'La Rioja')">La Rioja</button>
+          <button class="action-btn" onclick="checkQuizAnswer(3, 'Ribera del Duero')">Ribera del Duero</button>
+          <button class="action-btn" onclick="checkQuizAnswer(3, 'Priorat')">Priorat</button>
+          <p id="quiz-result-3"></p>
+        </div>
+
+        <!-- Minijuego Final: La Cata del Vino -->
+        <div id="final-game">
+          <h2>🍷 Desafío Final: La Cata del Vino</h2>
+          <p>Elige el maridaje perfecto que realza nuestro vino emblemático.</p>
+          <div id="cata-options">
+            <button class="action-btn" onclick="checkCata('queso')">Queso curado</button>
+            <button class="action-btn" onclick="checkCata('chorizo')">Chorizo ibérico</button>
+            <button class="action-btn" onclick="checkCata('aceitunas')">Aceitunas</button>
           </div>
-          <button class="action-btn" onclick="checkCombination()">Desbloquear</button>
-          <p id="combo-status" style="margin-top:10px;"></p>
+          <p id="cata-status"></p>
         </div>
 
-        <div class="final-reveal" id="final-reveal" style="display: none;">
-          <h2>🔓 El mensaje oculto completo:</h2>
-          <p style="font-size: 20px;"><em>"El secreto familiar se esconde tras el escudo desarmado."</em></p>
-          <button class="action-btn" onclick="window.location.href='final.html'" target="_blank">¡Terminar la búsqueda!</button>
-        </div>
-
-        <div class="fragmento-final">
-          <p><strong>QR en el pueblo:</strong> BODEGA-1600</p>
-          <p><strong>Dato Curioso:</strong> Algunos dicen que bajo esta bodega hay un túnel sellado desde hace más de 400 años…</p>
-        </div>
-        
-        <div id="continue-button" style="display:none;">
-          <button class="action-btn" onclick="location.href='final.html?stop=bodega'">Terminar búsqueda</button>
+        <!-- Botón Final -->
+        <div id="final-button" style="display: none; text-align: center;">
+          <button class="action-btn" onclick="finishGame()">¡Finalizar la búsqueda!</button>
         </div>
       </div>
     </section>
 
+    <footer>
+      <p>© 2025 La Bodega Medieval | 
+         <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
+      </p>
+    </footer>
+
+    <!-- Audios -->
     <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
     <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+  </div>
 
-    <footer>
-      <p>© 2025 La Bodega Medieval |
-        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
-      </p>
-    </footer>
-
-    <script src="scripts/script.js"></script>
-    <script>
-      function checkCombination() {
-        const s1 = document.getElementById("slot1").value;
-        const s2 = document.getElementById("slot2").value;
-        const s3 = document.getElementById("slot3").value;
-        const status = document.getElementById("combo-status");
-
-        if (s1 === "El" && s2 === "se" && s3 === "esconde") {
-          status.textContent = "✅ ¡Candado abierto! Has desvelado el mensaje.";
-          document.getElementById("final-reveal").style.display = "block";
-          playSound("coins-sound");
-          localStorage.setItem("bodega-completed", "true");
-        } else {
-          status.textContent = "❌ Combinación incorrecta. Intenta de nuevo.";
-          playSound("error-sound");
-        }
+  <script>
+    /* ============================
+         Funciones de Ubicación y Audio
+       ============================ */
+    function checkLocation() {
+      // Simulamos éxito inmediato
+      document.getElementById("location-check").style.display = "none";
+      document.getElementById("game-content").style.display = "block";
+      playSound("background-music");
+    }
+    function checkLocationManual() {
+      const input = document.getElementById("location-input").value.trim().toLowerCase();
+      if(input === "bodega") { checkLocation(); }
+      else {
+        document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo de nuevo.";
       }
-    </script>
+    }
+    function playSound(id) {
+      const s = document.getElementById(id);
+      if(s) s.play();
+    }
+    function toggleMusic() {
+      const bg = document.getElementById('background-music');
+      const btn = document.querySelector('.music-btn');
+      if(bg.paused) {
+        bg.play();
+        btn.innerHTML = '<span class="music-icon">🎵</span> Pausar Música';
+      } else {
+        bg.pause();
+        btn.innerHTML = '<span class="music-icon">🔇</span> Reproducir Música';
+      }
+    }
+    function finishGame() {
+      updateRanking();
+      window.location.href = "final.html?stop=bodega";
+    }
+    function updateRanking() {
+      let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+      ranking.push({ stop: "bodega", score: 100 });
+      localStorage.setItem("ranking", JSON.stringify(ranking));
+    }
 
-    <script>
-  localStorage.setItem("bodega-completed", "true");
-</script>
+    /* ============================
+         Carrusel Básico
+       ============================ */
+    let currentSlide = 0;
+    function showSlide(index) {
+      const slides = document.querySelectorAll(".carousel .slide");
+      if(index >= slides.length) { currentSlide = 0; }
+      if(index < 0) { currentSlide = slides.length - 1; }
+      slides.forEach((s, i) => { s.classList.toggle("active", i === currentSlide); });
+    }
+    function nextSlide() {
+      currentSlide++;
+      showSlide(currentSlide);
+    }
+    function prevSlide() {
+      currentSlide--;
+      showSlide(currentSlide);
+    }
 
+    /* ============================
+         Minijuego 1: Puzzle Deslizante
+       ============================ */
+    let puzzleTiles = []; // Array de 16 números (0 a 15) donde el 15 representará la pieza en blanco.
+    const PUZZLE_SIZE = 4;
+    function startPuzzleGame() {
+      document.getElementById("puzzle-game").style.display = "grid";
+      document.getElementById("puzzle-status").textContent = "";
+      initPuzzle();
+    }
+    function initPuzzle() {
+      // Inicializamos array con números 0..15
+      puzzleTiles = [...Array(PUZZLE_SIZE * PUZZLE_SIZE).keys()];
+      // Desordenamos (Fisher-Yates) – para simplicidad sin garantizar siempre solvencia.
+      for(let i = puzzleTiles.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i+1));
+        [puzzleTiles[i], puzzleTiles[j]] = [puzzleTiles[j], puzzleTiles[i]];
+      }
+      renderPuzzle();
+    }
+    function renderPuzzle() {
+      const container = document.getElementById("puzzle-game");
+      container.innerHTML = "";
+      for(let i = 0; i < puzzleTiles.length; i++){
+        const tile = document.createElement("div");
+        tile.classList.add("tile");
+        // Si el valor es 15 lo tratamos como casilla vacía
+        if(puzzleTiles[i] === 15) {
+          tile.classList.add("blank");
+          tile.textContent = "";
+        } else {
+          // Calculamos background-position según el número (posición correcta en el estado resuelto)
+          const col = puzzleTiles[i] % PUZZLE_SIZE;
+          const row = Math.floor(puzzleTiles[i] / PUZZLE_SIZE);
+          tile.style.backgroundPosition = `-${col*100}px -${row*100}px`;
+        }
+        // Asignamos data-index para identificar posición
+        tile.setAttribute("data-index", i);
+        tile.addEventListener("click", () => { tryMove(i); });
+        container.appendChild(tile);
+      }
+      if(checkPuzzleSolved()) {
+        document.getElementById("puzzle-status").textContent = "¡Puzzle resuelto!";
+        // Tras 1.5 segundos se oculta el puzzle y se muestra el Quiz
+        setTimeout(() => {
+          document.getElementById("puzzle-game").style.display = "none";
+          document.getElementById("bodega-quiz").style.display = "block";
+        }, 1500);
+      }
+    }
+    function tryMove(index) {
+      const blankIndex = puzzleTiles.indexOf(15);
+      // Calculamos fila y columna de ambos
+      const rowClicked = Math.floor(index / PUZZLE_SIZE);
+      const colClicked = index % PUZZLE_SIZE;
+      const rowBlank = Math.floor(blankIndex / PUZZLE_SIZE);
+      const colBlank = blankIndex % PUZZLE_SIZE;
+      // Comprueba si la casilla clickeada es adyacente (vertical u horizontal)
+      if((Math.abs(rowClicked - rowBlank) === 1 && colClicked === colBlank) ||
+         (Math.abs(colClicked - colBlank) === 1 && rowClicked === rowBlank)) {
+        // Intercambiamos
+        [puzzleTiles[index], puzzleTiles[blankIndex]] = [puzzleTiles[blankIndex], puzzleTiles[index]];
+        renderPuzzle();
+      }
+    }
+    function checkPuzzleSolved() {
+      // Estado resuelto: números en orden 0,1,2,...,15
+      for(let i = 0; i < puzzleTiles.length; i++){
+        if(puzzleTiles[i] !== i) return false;
+      }
+      return true;
+    }
+
+    /* ============================
+         Minijuego 2: Quiz de la Bodega
+       ============================ */
+    let quizAnswers = {1: "15", 2: "Tempranillo", 3: "La Rioja"};
+    let quizCorrect = {1: false, 2: false, 3: false};
+    function checkQuizAnswer(question, answer) {
+      const resultElem = document.getElementById("quiz-result-" + question);
+      if(quizAnswers[question] === answer) {
+        quizCorrect[question] = true;
+        resultElem.textContent = "¡Correcto!";
+        playSound("success-sound");
+      } else {
+        quizCorrect[question] = false;
+        resultElem.textContent = "Incorrecto, intenta nuevamente.";
+        playSound("error-sound");
+      }
+      if(quizCorrect[1] && quizCorrect[2] && quizCorrect[3]) {
+        document.getElementById("bodega-quiz").style.display = "none";
+        document.getElementById("final-game").style.display = "block";
+      }
+    }
+
+    /* ============================
+         Minijuego Final: La Cata del Vino
+       ============================ */
+    function checkCata(selection) {
+      // La opción correcta es "queso" (queso curado)
+      if(selection === "queso") {
+        document.getElementById("cata-status").textContent = "¡Excelente! El queso curado realza perfectamente nuestro vino.";
+        playSound("success-sound");
+        document.getElementById("final-game").style.display = "none";
+        document.getElementById("final-button").style.display = "block";
+      } else if(selection === "chorizo") {
+        document.getElementById("cata-status").textContent = "El chorizo ibérico es intenso, pero no acompaña idealmente el vino.";
+        playSound("error-sound");
+      } else {
+        document.getElementById("cata-status").textContent = "Esa opción no resalta el vino, intenta de nuevo.";
+        playSound("error-sound");
+      }
+    }
+  </script>
 </body>
 </html>
