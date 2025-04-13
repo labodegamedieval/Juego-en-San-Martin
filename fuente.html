@@ -55,7 +55,7 @@
     }
     #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
     #direction-arrow { width: 50px; margin-top: 10px; }
-
+    
     /* ===============================
          Carrusel Actualizado
        =============================== */
@@ -70,7 +70,7 @@
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease;
-      width: 300%; /* Asumiendo 3 diapositivas */
+      width: 300%; /* Para 3 diapositivas */
     }
     .carousel-slide {
       flex: 0 0 100%;
@@ -86,7 +86,7 @@
       border-radius: 10px;
       border: 2px solid #6e3b1b;
     }
-    /* Si se desea ajustar alguna diapositiva para mostrar la imagen entera, se puede personalizar con estilos inline */
+    /* Bloque para el pie de foto */
     .carousel-info {
       margin-top: 10px;
       line-height: 1.4;
@@ -113,9 +113,9 @@
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
 
-    /* Secciones Visuales y Quiz */
+    /* Secciones Visuales y Quiz (se mantienen iguales) */
     .visual-challenge, .quiz { margin: 20px 0; }
-    /* Minijuego: Puzzle de Cántaros, etc. (se mantienen estilos originales) */
+    /* Minijuego: Puzzle de Cántaros */
     #puzzle-cantaros {
       margin: 20px auto;
       padding: 15px;
@@ -228,7 +228,7 @@
 
       <!-- Contenido principal (tras verificación) -->
       <div id="game-content" style="display:none;">
-        <!-- Carrusel actualizado -->
+        <!-- Carrusel Actualizado -->
         <div class="carousel-container">
           <div class="carousel-slides">
             <div class="carousel-slide active">
@@ -257,7 +257,7 @@
           <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
         </div>
 
-        <!-- Retos Visuales y Quiz se mantienen igual -->
+        <!-- Resto del contenido (Retos Visuales, Quiz, etc.) se mantiene igual -->
         <div class="visual-challenge">
           <h2>Retos Visuales</h2>
           <p>1. ¿Cuántos caños tiene la fuente?</p>
@@ -301,7 +301,7 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- (Se mantiene el minijuego de Puzzle de Cántaros y fragmento final según este HTML base) -->
+        <!-- Se mantiene el minijuego de Puzzle de Cántaros y el Fragmento Final -->
         <div id="puzzle-cantaros" style="display:none;">
           <div class="content-box">
             <h2>Puzzle de Cántaros</h2>
