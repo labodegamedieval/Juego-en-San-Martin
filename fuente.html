@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    /* Estilos generales */
+    /* ============================
+         ESTILOS GENERALES
+       ============================ */
     body {
       font-family: Arial, sans-serif;
       background: url('images/fondo-fuente.jpg') no-repeat center center fixed;
@@ -26,7 +28,9 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
       position: relative;
     }
-    header h1 { text-align: center; }
+    header h1 {
+      text-align: center;
+    }
     .action-btn {
       display: inline-block;
       margin: 5px auto;
@@ -38,9 +42,16 @@
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    .music-control { text-align: center; margin-bottom: 10px; }
-    #content { margin-top: 10px; }
-    /* Ubicación */
+    .music-control {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #content {
+      margin-top: 10px;
+    }
+    /* ============================
+         UBICACIÓN
+       ============================ */
     #location-check {
       text-align: center;
       margin-bottom: 30px;
@@ -53,12 +64,18 @@
       border: 1px solid #5e3b1b;
       border-radius: 4px;
     }
-    #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
-    #direction-arrow { width: 50px; margin-top: 10px; }
-    
-    /* ===============================
-         Carrusel Actualizado
-       =============================== */
+    #location-status {
+      margin-top: 10px;
+      font-size: 1.1em;
+      color: red;
+    }
+    #direction-arrow {
+      width: 50px;
+      margin-top: 10px;
+    }
+    /* ============================
+         CARRUSEL - IGUAL AL CASTILLO
+       ============================ */
     .carousel-container {
       position: relative;
       overflow: hidden;
@@ -80,21 +97,13 @@
     }
     .carousel-slide img {
       width: 100%;
-      height: auto;
-      max-height: 300px;
-      /* Por defecto usaremos object-fit: cover; */
-      object-fit: cover;
+      height: 300px;             /* Altura fija */
+      object-fit: contain;       /* Muestra la imagen completa sin recorte */
+      background-color: #fff;    /* Fondo blanco para evitar zonas vacías */
       border-radius: 10px;
       border: 2px solid #6e3b1b;
     }
-    /* La segunda imagen se corrige para mostrarse completa */
-    .carousel-slide:nth-child(2) img {
-      object-fit: contain;
-      height: auto;
-      max-height: 300px;
-      background-color: #fff;
-    }
-    /* Bloque para el pie de foto */
+    /* Pie de foto (caption) */
     .carousel-info {
       margin-top: 10px;
       line-height: 1.4;
@@ -106,7 +115,9 @@
       color: #5e3b1b;
       text-decoration: underline;
     }
-    .carousel-info a:hover { color: #a65c3a; }
+    .carousel-info a:hover {
+      color: #a65c3a;
+    }
     .carousel-btn {
       position: absolute;
       top: 50%;
@@ -118,10 +129,15 @@
       padding: 8px;
       border-radius: 50%;
     }
-    .prev-slide { left: 10px; }
-    .next-slide { right: 10px; }
-    
-    /* Resto de estilos se mantienen (visuales, puzzle, footer, etc.) */
+    .prev-slide {
+      left: 10px;
+    }
+    .next-slide {
+      right: 10px;
+    }
+    /* ============================
+         Resto de Estilos (Visuales, Puzzle, Footer, etc.)
+       ============================ */
     .visual-challenge, .quiz { margin: 20px 0; }
     #puzzle-cantaros {
       margin: 20px auto;
@@ -133,7 +149,7 @@
       position: relative;
     }
     .content-box {
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0,0,0,0.8);
       color: #fff;
       padding: 15px;
       border-radius: 8px;
@@ -158,7 +174,7 @@
       height: 150px;
       border: 2px solid #5e3b1b;
       border-radius: 10px;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(0,0,0,0.5);
       position: relative;
       overflow: hidden;
       margin: 0 auto;
@@ -183,8 +199,16 @@
       font-weight: bold;
       border-radius: 10px;
     }
-    #continue-button { text-align: center; margin-top: 15px; display: none; }
-    footer p { text-align: center; font-size: 0.9em; margin-top: 20px; }
+    #continue-button {
+      text-align: center;
+      margin-top: 15px;
+      display: none;
+    }
+    footer p {
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: 20px;
+    }
     @media screen and (max-width: 768px) {
       .container { max-width: 90%; }
       .jug-container { width: 80px; height: 120px; }
@@ -234,10 +258,9 @@
 
       <!-- Contenido principal (tras verificación) -->
       <div id="game-content" style="display:none;">
-        <!-- Carrusel Actualizado -->
+        <!-- Carrusel Actualizado para todo el carrusel -->
         <div class="carousel-container">
           <div class="carousel-slides">
-            <!-- Primera diapositiva -->
             <div class="carousel-slide active">
               <img src="images/portalon.jpg" alt="Portalón" />
               <div class="carousel-info">
@@ -245,15 +268,13 @@
                 <a href="https://sanmartindelcastañar.es/plaza-mayor-y-portalon/" target="_blank">Más info</a>
               </div>
             </div>
-            <!-- Segunda diapositiva: se muestra la imagen completa -->
             <div class="carousel-slide">
-              <img src="images/fuente-detalle.jpg" alt="Fuente" style="object-fit: contain; height: auto; max-height:300px; background-color:#fff;"/>
+              <img src="images/fuente-detalle.jpg" alt="Fuente" />
               <div class="carousel-info">
                 <strong>Fuente:</strong> De dos caños con decoración geométrica, construida en el siglo XVI.
                 <a href="https://turismosierradefrancia.es/nuestros-pueblos/san-martin-del-castanar/" target="_blank">Más info</a>
               </div>
             </div>
-            <!-- Tercera diapositiva -->
             <div class="carousel-slide">
               <img src="images/portalon-interior.jpg" alt="Portalón interior" />
               <div class="carousel-info">
@@ -347,7 +368,7 @@
         <!-- Fragmento Final -->
         <div class="fragmento-final" id="fragmento-final">
           <p>
-            <strong>Fragmento del Mensaje:</strong> 
+            <strong>Fragmento del Mensaje:</strong>
             <span id="message-piece" style="font-size:1.4em">bodega</span>
           </p>
           <p><strong>QR en el pueblo:</strong> FUENTE-1600</p>
@@ -371,7 +392,7 @@
 
     <footer>
       <p>
-        © 2025 La Bodega Medieval | 
+        © 2025 La Bodega Medieval |
         <a href="https://www.labodegamedieval.es" target="_blank">
           Reserva tu visita
         </a>
@@ -395,8 +416,9 @@
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         const distance = calculateDistance(lat, lon, targetLat, targetLon);
-        if (distance <= thresholdDistance) { unlockStop(); }
-        else {
+        if (distance <= thresholdDistance) {
+          unlockStop();
+        } else {
           document.getElementById("location-status").textContent =
             "No estás lo suficientemente cerca de la Fuente y Portalón.";
         }
@@ -410,14 +432,15 @@
         const toRad = x => x * Math.PI / 180;
         const φ1 = toRad(lat1), φ2 = toRad(lat2);
         const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
-        const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+        const a = Math.sin(Δφ/2)**2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2)**2;
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return R * c;
       }
       function checkLocationManual() {
         const input = document.getElementById("location-input").value.trim().toLowerCase();
-        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") { unlockStop(); }
-        else {
+        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") {
+          unlockStop();
+        } else {
           document.getElementById("location-status").textContent =
             "Nombre incorrecto. Inténtalo nuevamente.";
         }
