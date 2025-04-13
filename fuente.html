@@ -1,50 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>⛲ Fuente y Portalón</title>
-  <!-- Fuente medieval de Google, por si deseas mantener el toque -->
+  <!-- Fuente medieval de Google para un toque especial -->
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/style.css"/>
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
   <style>
     /* ============================
-         ESTILOS GENERALES
+         ESTILOS GENERALES (copiados de ermita.css)
        ============================ */
     body {
-      font-family: 'MedievalSharp', Georgia, serif;
-      background: url('images/fondo-fuente.jpg') no-repeat center center fixed;
-      background-size: cover;
+      font-family: "Georgia", serif;
+      background: #f8f0e3;
+      color: #3b2f2f;
       margin: 0;
       padding: 0;
-      color: #3c2a1e;
-      text-shadow: 1px 1px 2px #fff;
+      text-align: center;
     }
+    
     .container {
-      max-width: 960px;
+      max-width: 900px;
       margin: auto;
-      background: rgba(255,248,228,0.95);
-      border: 3px double #5e3b1b;
-      border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      position: relative;
     }
-    header h1 { text-align: center; }
-    .action-btn {
-      display: block;
-      margin: 15px auto;
-      padding: 10px 20px;
+    
+    header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #4a2c2a;
+    }
+    
+    .music-control {
+      margin: 10px 0;
+    }
+    
+    .music-btn {
       font-size: 16px;
-      background: #dec79b;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
+      padding: 8px 16px;
+      border: none;
+      background: #8b4513;
+      color: white;
+      border-radius: 5px;
       cursor: pointer;
-      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    .music-control { text-align: center; margin-bottom: 10px; }
-    #content { margin-top: 10px; }
+    
+    .music-btn:hover {
+      background: #a0522d;
+    }
     
     /* ============================
          UBICACIÓN
@@ -53,188 +58,249 @@
       text-align: center;
       margin-bottom: 30px;
     }
-    #location-check input {
+    
+    #location-check h2 {
+      margin-bottom: 10px;
+    }
+    
+    #location-check p {
+      margin: 10px 0;
+    }
+    
+    #location-input {
       padding: 8px;
       font-size: 16px;
       width: 200px;
-      margin: 10px;
+      margin-bottom: 10px;
       border: 1px solid #5e3b1b;
       border-radius: 4px;
     }
+    
     #location-status {
       margin-top: 10px;
       font-size: 1.1em;
       color: red;
     }
-    #direction-arrow { width: 50px; margin-top: 10px; }
+    
+    #direction-arrow {
+      width: 60px;
+      height: 60px;
+      margin: 15px auto;
+      display: none;
+      transition: transform 0.3s ease;
+    }
     
     /* ============================
-         CARRUSEL (igual que en Castillo)
+         CARRUSEL
        ============================ */
     .carousel-container {
       position: relative;
+      max-width: 100%;
+      margin: 20px auto;
       overflow: hidden;
-      width: 100%;
-      margin-bottom: 20px;
-      border-radius: 10px;
       border: 2px solid #5e3b1b;
+      border-radius: 10px;
     }
+    
     .carousel-slides {
       display: flex;
-      transition: transform 0.5s ease;
-      width: 300%; /* 3 diapositivas */
+      transition: transform 0.5s ease-in-out;
     }
-    .carousel-slide {
+    
+    .slide {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
       flex: 0 0 100%;
       box-sizing: border-box;
-      text-align: center;
       padding: 10px;
+      text-align: center;
     }
-    .carousel-slide img {
-      width: 100%;
-      height: 300px;             /* Altura fija */
-      object-fit: contain;       /* Para mostrar la imagen completa sin recorte */
-      background-color: #fff;    /* Fondo blanco */
-      border-radius: 10px;
-      border: 2px solid #6e3b1b;
+    
+    .slide.active {
+      display: block;
+      opacity: 1;
+    }
+    
+    /* Importante: forzamos que todas las imágenes se muestren completas,
+       igual que en la parada del Castillo */
+    .slide img {
+      width: 100% !important;
+      height: 300px !important;
+      object-fit: contain !important;
+      background-color: #fff !important;
+      border-radius: 10px !important;
+      border: 2px solid #6b3e2e !important;
       display: block;
     }
-    /* Bloque para el pie de foto */
+    
+    /* Bloque de Caption */
     .carousel-info {
       margin-top: 10px;
       line-height: 1.4;
-      background: rgba(255,255,255,0.8);
+      background: rgba(255, 255, 255, 0.8);
       padding: 8px;
       border-radius: 8px;
+      text-align: left;
     }
+    
     .carousel-info a {
       color: #5e3b1b;
       text-decoration: underline;
     }
-    .carousel-info a:hover { color: #a65c3a; }
+    
+    .carousel-info a:hover {
+      color: #a65c3a;
+    }
+    
     .carousel-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255,255,255,0.7);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
       border: none;
-      font-size: 24px;
+      font-size: 28px;
       cursor: pointer;
-      padding: 8px;
-      border-radius: 50%;
+      padding: 10px;
+      z-index: 2;
     }
-    .prev-slide { left: 10px; }
-    .next-slide { right: 10px; }
     
-    /* ============================
-         SECCIONES DE RETOS Y QUIZ
-       ============================ */
-    .visual-challenge, .quiz {
-      margin: 20px 0;
-      text-align: center;
+    .prev-slide {
+      left: 10px;
     }
-    .visual-challenge p, .quiz p {
-      margin: 10px 0;
-      font-size: 1.1em;
+    
+    .next-slide {
+      right: 10px;
     }
     
     /* ============================
-         PUZZLE DE CÁNTAROS
+         OTROS ESTILOS (RESTANTE)
        ============================ */
-    #puzzle-cantaros {
-      margin: 20px auto;
-      padding: 15px;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
-      background: url('images/fondo-fuente.jpg') no-repeat center center;
-      background-size: cover;
-      position: relative;
-    }
-    .content-box {
-      background: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 1;
-    }
-    .content-box strong { color: #fff; }
-    #cantaros-container {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin: 20px 0;
-      position: relative;
-      z-index: 1;
-    }
-    .jug { text-align: center; }
-    .jug-label { font-weight: bold; color: #fff; margin-bottom: 5px; }
-    .jug-container {
-      width: 100px;
-      height: 150px;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
-      background-color: rgba(0, 0, 0, 0.5);
-      position: relative;
-      overflow: hidden;
+    ol {
+      text-align: left;
       margin: 0 auto;
+      max-width: 700px;
+      padding-left: 20px;
     }
-    .jug-water {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      background-color: #4d90fe;
-      transition: height 0.5s ease;
-    }
-    .jug-container + div { color: #fff; font-weight: bold; }
     
-    /* ============================
-         FRAGMENTO FINAL
-       ============================ */
-    .fragmento-final {
+    .button-group {
+      margin-top: 30px;
+    }
+    
+    .action-btn {
+      background: #6b3e2e;
+      color: #fff;
+      padding: 14px 24px;
+      margin: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    
+    .action-btn:hover {
+      background: #8b4513;
+    }
+    
+    .map-container img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+    
+    .buttons-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .map-btn {
+      font-size: 16px;
+      padding: 12px 18px;
+      background: #4a2c2a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    .map-btn:hover {
+      background: #7b4b39;
+    }
+    
+    .progress-container {
       margin: 20px auto;
-      display: none;
       max-width: 600px;
       text-align: center;
-      background: url('images/pergamino.png') center center no-repeat;
-      background-size: cover;
-      padding: 40px 20px;
-      font-style: italic;
-      font-size: 1.2em;
-      font-weight: bold;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      background: #ddd;
+      height: 20px;
       border-radius: 10px;
+      overflow: hidden;
     }
-    #continue-button {
-      text-align: center;
-      margin-top: 15px;
+    
+    .progress-fill {
+      height: 100%;
+      background: #6b3e2e;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+    
+    .qr-section input {
+      padding: 10px;
+      font-size: 16px;
+      width: 60%;
+      max-width: 300px;
+      margin-bottom: 10px;
+    }
+    
+    .qr-section button {
+      margin-top: 5px;
+    }
+    
+    #direction-arrow {
+      width: 60px;
+      height: 60px;
+      margin: 15px auto;
       display: none;
+      transition: transform 0.3s ease;
     }
-    footer p {
-      text-align: center;
-      font-size: 0.9em;
-      margin-top: 20px;
+    
+    .visual-challenge,
+    .quiz,
+    .fragmento-final {
+      margin-top: 30px;
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
+    
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #555;
+    }
+    
+    footer a {
+      color: #8b4513;
+      text-decoration: none;
+    }
+    
+    footer a:hover {
+      text-decoration: underline;
+    }
+    
     @media screen and (max-width: 768px) {
-      .container { max-width: 90%; }
-      .jug-container { width: 80px; height: 120px; }
-    }
-    .container:before {
-      content: "⚔️";
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 32px;
-      color: #5e3b1b;
-    }
-    .container:after {
-      content: "🛡️";
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      font-size: 32px;
-      color: #5e3b1b;
+      ol {
+        max-width: 90%;
+      }
     }
   </style>
 </head>
@@ -259,7 +325,7 @@
       <input type="text" id="location-input" placeholder="Ej: Fuente y Portalón">
       <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
       <p id="location-status"></p>
-      <img id="direction-arrow" src="images/flecha.png" alt="Flecha de dirección" style="display: none;">
+      <img id="direction-arrow" src="images/flecha.png" alt="Flecha de dirección">
     </section>
     
     <!-- Contenido del Juego -->
@@ -267,21 +333,21 @@
       <!-- Carrusel -->
       <div class="carousel-container">
         <div class="carousel-slides">
-          <div class="carousel-slide active">
+          <div class="slide active">
             <img src="images/portalon.jpg" alt="Portalón">
             <div class="carousel-info">
               <strong>Portalón:</strong> Lugar renacentista de reunión y comercio. Aún conserva inscripciones originales.
               <a href="https://sanmartindelcastañar.es/plaza-mayor-y-portalon/" target="_blank">Más info</a>
             </div>
           </div>
-          <div class="carousel-slide">
+          <div class="slide">
             <img src="images/fuente-detalle.jpg" alt="Fuente">
             <div class="carousel-info">
               <strong>Fuente:</strong> De dos caños con decoración geométrica, construida en el siglo XVI.
               <a href="https://turismosierradefrancia.es/nuestros-pueblos/san-martin-del-castanar/" target="_blank">Más info</a>
             </div>
           </div>
-          <div class="carousel-slide">
+          <div class="slide">
             <img src="images/portalon-interior.jpg" alt="Portalón interior">
             <div class="carousel-info">
               <strong>Interior:</strong> Perspectiva del portalón y sus detalles, evocando tiempos pasados.
@@ -293,7 +359,7 @@
         <button class="carousel-btn next-slide" onclick="nextSlide()">&#10095;</button>
       </div>
       
-      <!-- Retos Visuales -->
+      <!-- Resto de contenido (Retos Visuales, Quiz, etc.) -->
       <div class="visual-challenge">
         <h2>Retos Visuales</h2>
         <p>1. ¿Cuántos caños tiene la fuente?</p>
@@ -312,7 +378,6 @@
         <p id="visual-resultado-2"></p>
       </div>
       
-      <!-- Quiz Histórico -->
       <div class="quiz">
         <h2>Quiz Histórico</h2>
         <p>1. ¿En qué siglo se construyó esta fuente?</p>
@@ -375,8 +440,8 @@
       <!-- Fragmento Final -->
       <div class="fragmento-final" id="fragmento-final">
         <p>
-          <strong>Fragmento del Mensaje:</strong> 
-          <span id="message-piece" style="font-size: 1.4em">bodega</span>
+          <strong>Fragmento del Mensaje:</strong>
+          <span id="message-piece" style="font-size:1.4em">bodega</span>
         </p>
         <p><strong>QR en el pueblo:</strong> FUENTE-1600</p>
         <p><strong>Dato Curioso:</strong> Durante siglos, los vecinos se reunían aquí a debatir decisiones del consejo.</p>
@@ -389,21 +454,18 @@
       </div>
     </section>
     
-    <!-- ============================
-         AUDIOS
-       ============================ -->
-    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
-    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
-    <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
-    <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
-    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-    
     <footer>
       <p>
         © 2025 La Bodega Medieval | 
         <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
       </p>
     </footer>
+    
+    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
+    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
+    <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
+    <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
+    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
     
     <script>
       /* ============================
@@ -420,8 +482,8 @@
       function geoSuccess(position) {
         const lat = position.coords.latitude, lon = position.coords.longitude;
         const distance = calculateDistance(lat, lon, targetLat, targetLon);
-        if (distance <= thresholdDistance) unlockStop();
-        else document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Fuente y Portalón.";
+        if (distance <= thresholdDistance) { unlockStop(); }
+        else { document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Fuente y Portalón."; }
       }
       function locationError(err) {
         document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
@@ -437,8 +499,8 @@
       }
       function checkLocationManual() {
         const input = document.getElementById("location-input").value.trim().toLowerCase();
-        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") unlockStop();
-        else document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
+        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") { unlockStop(); }
+        else { document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente."; }
       }
       function unlockStop() {
         document.getElementById("location-check").style.display = "none";
@@ -452,7 +514,7 @@
        ============================ */
       let currentSlide = 0, slides;
       function initCarousel() {
-        slides = document.querySelectorAll('.carousel-slide');
+        slides = document.querySelectorAll('.slide');
         document.querySelector('.prev-slide').addEventListener('click', prevSlide);
         document.querySelector('.next-slide').addEventListener('click', nextSlide);
       }
