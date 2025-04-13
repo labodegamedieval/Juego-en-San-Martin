@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🏰 Castillo de Gonzalo</title>
-  <link rel="stylesheet" href="styles/style.css">
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
   <style>
     /* --- Estilos Globales --- */
     body {
@@ -105,7 +105,7 @@
     }
     .carousel-prev { left: 10px; }
     .carousel-next { right: 10px; }
-    /* --- Retos Visuales --- */
+    /* --- Retos Visuales y Quiz --- */
     .visual-challenge, .quiz {
       margin: 20px 0;
       text-align: center;
@@ -125,27 +125,53 @@
       text-align: center;
       margin-top: 20px;
       padding: 15px;
-      border: 2px solid #5e3b1b;
+      /* Se quita color y borde para que se vea solo el cofre */
+      border: none;
       border-radius: 10px;
-      background: #fff;
+      background: none;
+      position: relative; /* para ubicar elementos dentro */
     }
-    #combination-lock h2 { margin-bottom: 10px; }
-    #dials { margin-bottom: 10px; }
-    .dial {
+    #combination-lock h2 {
+      margin-bottom: 10px;
+    }
+    /* Contenedor del cofre con la imagen de fondo y posición relativa */
+    .cofre-container {
+      position: relative;
       display: inline-block;
-      width: 60px;
-      height: 60px;
-      margin: 5px;
+      margin: 0 auto;
+      max-width: 600px; /* Ajusta según tu diseño */
+      width: 100%;
+    }
+    .cofre-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    /* Dials superpuestos sobre el cofre */
+    #dials {
+      position: absolute;
+      top: 35%;       /* Ajusta para colocar los diales en la ubicación deseada */
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;      /* Espacio entre los diales */
+    }
+    .dial {
+      width: 45px;
+      height: 45px;
+      margin: 0;
       border: 2px solid #5e3b1b;
       border-radius: 50%;
       background: #dec79b;
       font-size: 24px;
-      line-height: 60px;
+      line-height: 45px;
       cursor: pointer;
       user-select: none;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      text-align: center;
     }
-    #check-combination {
-      margin-top: 10px;
+    #check-combination, #combination-status, .hint-btn {
+      margin-top: 20px;
     }
     /* --- Pista para el Candado (Pergamino) --- */
     #pista-lock {
@@ -158,7 +184,10 @@
       background-size: cover;
       text-align: center;
     }
-    #pista-lock p { font-size: 16px; color: #000; }
+    #pista-lock p {
+      font-size: 16px;
+      color: #000;
+    }
     #pista-lock button {
       margin-top: 10px;
       padding: 5px 10px;
@@ -192,14 +221,25 @@
       margin-top: 20px;
     }
     @media screen and (max-width: 768px) {
-      .container { max-width: 90%; }
-      .dial { width: 50px; height: 50px; line-height: 50px; font-size: 20px; }
+      .container {
+        max-width: 90%;
+      }
+      .dial {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 20px;
+      }
       .carousel-slide img {
         height: 200px;
       }
       .carousel-prev, .carousel-next {
         font-size: 20px;
         padding: 6px;
+      }
+      /* Ajusta posición de diales en móviles si lo deseas */
+      #dials {
+        top: 30%;
       }
     }
     /* --- Adornos Medievales --- */
@@ -230,7 +270,6 @@
           <span class="music-icon">🎵</span> Pausar Música
         </button>
       </div>
-      <!-- Se han eliminado los botones de navegación a otras paradas -->
     </header>
 
     <section id="content">
@@ -241,7 +280,7 @@
         <p>Acércate a la puerta principal del Castillo de San Martín para iniciar la búsqueda del mensaje.</p>
         <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
         <p>O ingresa el nombre:</p>
-        <input type="text" id="location-input" placeholder="Ej: Castillo">
+        <input type="text" id="location-input" placeholder="Ej: Castillo" />
         <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
         <p id="location-status"></p>
         <canvas id="sonar-radar" width="200" height="200"></canvas>
@@ -250,7 +289,7 @@
       <!-- Contenido del Juego (tras verificación) -->
       <div id="game-content" style="display: none;">
         <div class="content-wrapper">
-          <!-- Carrusel con tres imágenes, texto descriptivo y contexto histórico -->
+          <!-- Carrusel con tres imágenes -->
           <div class="carousel-container">
             <div class="carousel-slides">
               <div class="carousel-slide">
@@ -263,15 +302,15 @@
               <div class="carousel-slide">
                 <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
                 <p>
-                  <strong>Torre del Homenaje:</strong> Dañada por un rayo a principios del siglo XX, fue restaurada y ofrece vistas espectaculares. <br>
-                  <em>1949:</em> El castillo es declarado Bien de Interés Cultural.
+                  <strong>Torre del Homenaje:</strong> Dañada por un rayo en el siglo XX, fue restaurada y ofrece vistas espectaculares. <br>
+                  <em>1949:</em> Declarada Bien de Interés Cultural.
                 </p>
               </div>
               <div class="carousel-slide">
                 <img src="images/castillo-vista.jpg" alt="Vista Panorámica" />
                 <p>
                   <strong>Vista Panorámica:</strong> Desde aquí se observan las sierras de Béjar y Francia, impregnadas de historia. <br>
-                  <em>2010:</em> Reformado para albergar el Centro de Interpretación de la Biosfera de las Sierras de Francia y Béjar.
+                  <em>2010:</em> Reformada para albergar el Centro de Interpretación de la Biosfera de las Sierras de Francia y Béjar.
                 </p>
               </div>
             </div>
@@ -279,7 +318,7 @@
             <button class="carousel-next">&#10095;</button>
           </div>
 
-          <!-- Retos Visuales Actualizado -->
+          <!-- Retos Visuales -->
           <div class="visual-challenge">
             <h2>Retos Visuales: Afina tus sentidos</h2>
             <p>1. ¿Qué destaca en la fachada principal del castillo?</p>
@@ -300,7 +339,7 @@
           </div>
         </div>
 
-        <!-- Quiz Histórico Actualizado -->
+        <!-- Quiz Histórico -->
         <div class="quiz">
           <h2>Quiz: Descubre el mensaje</h2>
           <p>1. ¿En qué siglo se funda esta fortificación?</p>
@@ -331,12 +370,16 @@
         <!-- Minijuego: Candado del Cofre -->
         <div id="combination-lock">
           <h2>Candado del Cofre</h2>
-          <p>Gira los diales para formar la combinación correcta.</p>
-          <div id="dials">
-            <div class="dial" data-digit="0">0</div>
-            <div class="dial" data-digit="0">0</div>
-            <div class="dial" data-digit="0">0</div>
-            <div class="dial" data-digit="0">0</div>
+          <div class="cofre-container">
+            <!-- Imagen del cofre sin fondo -->
+            <img src="images/cofre.png" alt="Cofre Antiguo" class="cofre-img" />
+            <!-- Diales superpuestos -->
+            <div id="dials">
+              <div class="dial" data-digit="0">0</div>
+              <div class="dial" data-digit="0">0</div>
+              <div class="dial" data-digit="0">0</div>
+              <div class="dial" data-digit="0">0</div>
+            </div>
           </div>
           <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
           <p id="combination-status"></p>
