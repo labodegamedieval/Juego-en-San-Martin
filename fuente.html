@@ -10,7 +10,7 @@
     /* Estilos generales */
     body {
       font-family: Arial, sans-serif;
-      background: url('images/fondo.jpg') no-repeat center center fixed;
+      background: url('images/fondo-fuente.jpg') no-repeat center center fixed;
       background-size: cover;
       margin: 0;
       padding: 0;
@@ -93,14 +93,13 @@
       padding: 15px;
       border: 2px solid #5e3b1b;
       border-radius: 10px;
-      /* Se utiliza la imagen de fondo original, se ve completa */
       background: url('images/fondo.jpg') no-repeat center center;
       background-size: cover;
       position: relative;
     }
-    /* Caja de contenido enmarcada para la descripción */
+    /* Caja de contenido para asegurar la legibilidad */
     .content-box {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
       color: #fff;
       padding: 15px;
       border-radius: 8px;
@@ -122,7 +121,7 @@
     .jug { text-align: center; }
     .jug-label {
       font-weight: bold;
-      color: #fff;
+      color: #fff; /* Textos en blanco */
       margin-bottom: 5px;
     }
     .jug-container {
@@ -142,7 +141,7 @@
       background-color: #4d90fe;
       transition: height 0.5s ease;
     }
-    /* Texto de cantidad en blanco y strong */
+    /* Los textos de cantidad (junto a las jarras) en blanco y strong */
     .jug-container + div { color: #fff; font-weight: bold; }
     /* Fragmento Final (el pergamino) */
     .fragmento-final {
@@ -208,7 +207,7 @@
         <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display:none;" alt="Flecha de dirección"/>
       </div>
 
-      <!-- Contenido principal (tras validación) -->
+      <!-- Contenido principal (tras verificación) -->
       <div id="game-content" style="display:none;">
         <!-- Carrusel -->
         <div class="carousel">
@@ -280,8 +279,8 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Minijuego: Puzzle de Cántaros -->
-        <div id="puzzle-cantaros">
+        <!-- El minijuego de cántaros se muestra sólo una vez que se han contestado correctamente el quiz -->
+        <div id="puzzle-cantaros" style="display:none;">
           <div class="content-box">
             <h2>Puzzle de Cántaros</h2>
             <p>
@@ -404,7 +403,8 @@
         document.getElementById("location-check").style.display = "none";
         document.getElementById("game-content").style.display = "block";
         initCarousel();
-        initCantarosPuzzle();
+        // Mostramos el quiz y retos visuales; el puzzle de cántaros se mostrará
+        // solo cuando se contesten correctamente las preguntas del quiz.
         playSound("background-music");
       }
 
@@ -431,6 +431,8 @@
       /*----------------------------------------*/
       /* 3. RETOS VISUALES Y QUIZ              */
       /*----------------------------------------*/
+      // Variables para almacenar el estado de cada pregunta del quiz
+      let quiz1Correct = false, quiz2Correct = false, quiz3Correct = false;
       function checkVisualAnswer(selected, correct, n) {
         const result = document.getElementById('visual-resultado-' + n);
         if (selected === correct) {
@@ -446,9 +448,23 @@
         if (selected === correct) {
           result.textContent = "¡Correcto!";
           playSound("success-sound");
+          if(n === 1) quiz1Correct = true;
+          if(n === 2) quiz2Correct = true;
+          if(n === 3) quiz3Correct = true;
         } else {
           result.textContent = "Incorrecto. Vuelve a intentarlo.";
           playSound("error-sound");
+          // Opcional: reiniciar el estado de la pregunta si se contesta mal
+          if(n === 1) quiz1Correct = false;
+          if(n === 2) quiz2Correct = false;
+          if(n === 3) quiz3Correct = false;
+        }
+        // Si las tres preguntas se han contestado correctamente, desbloqueamos el puzzle de cántaros.
+        if (quiz1Correct && quiz2Correct && quiz3Correct) {
+          // Ocultamos la sección del quiz.
+          document.querySelector('.quiz').style.display = "none";
+          // Mostramos el minijuego de cántaros.
+          initCantarosPuzzle();
         }
       }
 
@@ -474,20 +490,20 @@
       function emptyB() { bCur = 0; checkCantaros(); }
       function pourAtoB() {
         const spaceInB = bCap - bCur;
-        if (aCur <= spaceInB) { bCur += aCur; aCur = 0; }
+        if(aCur <= spaceInB) { bCur += aCur; aCur = 0; }
         else { aCur -= spaceInB; bCur = bCap; }
         checkCantaros();
       }
       function pourBtoA() {
         const spaceInA = aCap - aCur;
-        if (bCur <= spaceInA) { aCur += bCur; bCur = 0; }
+        if(bCur <= spaceInA) { aCur += bCur; bCur = 0; }
         else { bCur -= spaceInA; aCur = aCap; }
         checkCantaros();
       }
       function checkCantaros() {
         updateJugsDisplay();
         const puzzleCantarosResultado = document.getElementById("puzzle-cantaros-resultado");
-        if (aCur === 4 || bCur === 4) {
+        if(aCur === 4 || bCur === 4) {
           puzzleCantarosResultado.textContent = "¡Has logrado los 4 litros, excelente!";
           playSound("coins-sound");
           unlockFinalFragment();
@@ -534,7 +550,6 @@
       /*----------------------------------------*/
       /* 8. BOTÓN DE MÚSICA                      */
       /*----------------------------------------*/
-      // Agregamos un event listener para el botón de pausar/reproducir música.
       document.addEventListener('DOMContentLoaded', () => {
         const musicBtn = document.querySelector('.music-btn');
         const backgroundMusic = document.getElementById('background-music');
