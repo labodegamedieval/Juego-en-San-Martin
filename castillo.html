@@ -105,11 +105,7 @@
     }
     .carousel-prev { left: 10px; }
     .carousel-next { right: 10px; }
-    /* --- Resto del contenido (Retos, Quiz, etc.) --- */
-    .carousel-info {
-      margin-top: 10px;
-      line-height: 1.4;
-    }
+    /* --- Retos Visuales --- */
     .visual-challenge, .quiz {
       margin: 20px 0;
       text-align: center;
@@ -254,25 +250,28 @@
       <!-- Contenido del Juego (tras verificación) -->
       <div id="game-content" style="display: none;">
         <div class="content-wrapper">
-          <!-- Carrusel (Nuevo, con tres imágenes y texto descriptivo) -->
+          <!-- Carrusel con tres imágenes, texto descriptivo y contexto histórico -->
           <div class="carousel-container">
             <div class="carousel-slides">
               <div class="carousel-slide">
                 <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
                 <p>
-                  <strong>Entrada Fortificada:</strong> Construida en el siglo XIII, sirvió de defensa en la Reconquista y fue remodelada en el siglo XV.
+                  <strong>Entrada Fortificada:</strong> Construida en el siglo XIII, sirvió de defensa en la Reconquista y fue remodelada en el siglo XV. <br>
+                  <em>1834:</em> Se trasladó el cementerio local dentro de los muros del castillo.
                 </p>
               </div>
               <div class="carousel-slide">
                 <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
                 <p>
-                  <strong>Torre del Homenaje:</strong> Dañada por un rayo en el siglo XX, fue restaurada y ofrece vistas espectaculares.
+                  <strong>Torre del Homenaje:</strong> Dañada por un rayo a principios del siglo XX, fue restaurada y ofrece vistas espectaculares. <br>
+                  <em>1949:</em> El castillo es declarado Bien de Interés Cultural.
                 </p>
               </div>
               <div class="carousel-slide">
                 <img src="images/castillo-vista.jpg" alt="Vista Panorámica" />
                 <p>
-                  <strong>Vista Panorámica:</strong> Desde aquí se observan las sierras de Béjar y Francia, impregnadas de historia.
+                  <strong>Vista Panorámica:</strong> Desde aquí se observan las sierras de Béjar y Francia, impregnadas de historia. <br>
+                  <em>2010:</em> Reformado para albergar el Centro de Interpretación de la Biosfera de las Sierras de Francia y Béjar.
                 </p>
               </div>
             </div>
@@ -280,31 +279,31 @@
             <button class="carousel-next">&#10095;</button>
           </div>
 
-          <!-- Retos Visuales -->
+          <!-- Retos Visuales Actualizado -->
           <div class="visual-challenge">
             <h2>Retos Visuales: Afina tus sentidos</h2>
-            <p>1. ¿Qué marcó la fachada principal del castillo?</p>
+            <p>1. ¿Qué destaca en la fachada principal del castillo?</p>
             <div id="visual-opciones-1">
-              <button class="action-btn" onclick="checkVisualAnswer('Escudos','Escudos',1)">Escudos</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Murallas','Escudos',1)">Murallas</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Columnas','Escudos',1)">Columnas</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Escudos','Muralla',1)">Escudos</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Muralla','Muralla',1)">Muralla</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Columnas','Muralla',1)">Columnas</button>
             </div>
             <p id="visual-resultado-1"></p>
 
-            <p>2. ¿Qué destaca en el interior del recinto?</p>
+            <p>2. ¿Cuántas torres tenía originalmente el castillo?</p>
             <div id="visual-opciones-2">
-              <button class="action-btn" onclick="checkVisualAnswer('Arcos','Arcos',2)">Arcos</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Ventanas','Arcos',2)">Ventanas</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Mosaicos','Arcos',2)">Mosaicos</button>
+              <button class="action-btn" onclick="checkVisualAnswer('1','2',2)">1</button>
+              <button class="action-btn" onclick="checkVisualAnswer('2','2',2)">2</button>
+              <button class="action-btn" onclick="checkVisualAnswer('3','2',2)">3</button>
             </div>
             <p id="visual-resultado-2"></p>
           </div>
         </div>
 
-        <!-- Quiz Histórico -->
+        <!-- Quiz Histórico Actualizado -->
         <div class="quiz">
           <h2>Quiz: Descubre el mensaje</h2>
-          <p>1. ¿En qué siglo nació este castillo?</p>
+          <p>1. ¿En qué siglo se funda esta fortificación?</p>
           <div id="quiz-opciones-1">
             <button class="action-btn" onclick="checkAnswer('XII','XIII',1)">XII</button>
             <button class="action-btn" onclick="checkAnswer('XIII','XIII',1)">XIII</button>
@@ -312,19 +311,19 @@
           </div>
           <p id="quiz-resultado-1"></p>
 
-          <p>2. ¿Qué función tuvo el castillo desde el siglo XIX?</p>
+          <p>2. ¿Qué función tiene el castillo desde el siglo XIX?</p>
           <div id="quiz-opciones-2">
-            <button class="action-btn" onclick="checkAnswer('Discoteca','Cementerio',2)">Discoteca</button>
-            <button class="action-btn" onclick="checkAnswer('Cementerio','Cementerio',2)">Cementerio</button>
-            <button class="action-btn" onclick="checkAnswer('Museo','Cementerio',2)">Museo</button>
+            <button class="action-btn" onclick="checkAnswer('Discoteca','Cementerio municipal',2)">Discoteca</button>
+            <button class="action-btn" onclick="checkAnswer('Cementerio municipal','Cementerio municipal',2)">Cementerio municipal</button>
+            <button class="action-btn" onclick="checkAnswer('Museo','Cementerio municipal',2)">Museo</button>
           </div>
           <p id="quiz-resultado-2"></p>
 
-          <p>3. ¿Qué ofrece hoy el castillo?</p>
+          <p>3. ¿Qué alberga hoy el castillo?</p>
           <div id="quiz-opciones-3">
-            <button class="action-btn" onclick="checkAnswer('Museo','Centro de Interpretación',3)">Museo</button>
-            <button class="action-btn" onclick="checkAnswer('Centro de Interpretación','Centro de Interpretación',3)">Centro de Interpretación</button>
-            <button class="action-btn" onclick="checkAnswer('Biblioteca','Centro de Interpretación',3)">Biblioteca</button>
+            <button class="action-btn" onclick="checkAnswer('Museo','Centro de Interpretacion de la Biosfera',3)">Museo</button>
+            <button class="action-btn" onclick="checkAnswer('Centro de Interpretacion de la Biosfera','Centro de Interpretacion de la Biosfera',3)">Centro de Interpretacion de la Biosfera</button>
+            <button class="action-btn" onclick="checkAnswer('Biblioteca','Centro de Interpretacion de la Biosfera',3)">Biblioteca</button>
           </div>
           <p id="quiz-resultado-3"></p>
         </div>
@@ -342,7 +341,7 @@
           <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
           <p id="combination-status"></p>
           <button class="hint-btn" onclick="showPistaLock()">Pista para el Candado</button>
-          <!-- La pista se mostrará debajo del botón, y se podrá cerrar -->
+          <!-- La pista se muestra debajo del botón y se podrá cerrar -->
           <div id="pista-lock">
             <p>
               La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!
