@@ -113,13 +113,13 @@
     /* ============================
          Minijuego 1: Puzzle Arrastrable (Drag & Drop)
        ============================ */
-    /* Contenedor para el puzzle (sección de puzzle) */
+    /* Separamos el área destino y el contenedor de piezas */
     #puzzle-section {
       display: none;
       width: 400px;
       margin: 20px auto;
     }
-    /* Área destino: cuadrícula de 4x4 */
+    /* Área destino: cuadrícula 4x4 */
     #puzzle-target {
       width: 400px;
       height: 400px;
@@ -136,7 +136,7 @@
       height: 100px;
       box-sizing: border-box;
     }
-    /* Contenedor de piezas: Se muestran las piezas esparcidas (fuera de la cuadrícula) */
+    /* Contenedor de piezas: se muestran las piezas esparcidas */
     #pieces-container {
       width: 400px;
       height: 200px;
@@ -152,12 +152,12 @@
       cursor: grab;
       position: absolute;
       transition: left 0.3s ease, top 0.3s ease;
-      /* Aseguramos que cada pieza reciba eventos */
       pointer-events: auto;
     }
     .puzzle-piece.placed {
       cursor: default;
     }
+
     /* ============================
          Minijuegos: Quiz y Cata
        ============================ */
@@ -268,7 +268,7 @@
         <div style="text-align:center; margin-bottom:20px;">
           <button class="action-btn" onclick="startPuzzleGame()">Iniciar Puzzle</button>
         </div>
-        <!-- Nuevo contenedor para el puzzle: se compone del área destino y de las piezas esparcidas -->
+        <!-- Sección del Puzzle: Contiene el área destino y el contenedor de piezas esparcidas -->
         <div id="puzzle-section">
           <div id="puzzle-target"></div>
           <div id="pieces-container"></div>
@@ -394,14 +394,14 @@
          Minijuego 1: Puzzle Arrastrable (Drag & Drop)
        ============================ */
     function startPuzzleGame() {
-      // Mostramos la sección de puzzle (que ahora tiene dos contenedores separados)
+      // Se muestra la sección de puzzle que incluye el área destino y el contenedor de piezas
       document.getElementById("puzzle-section").style.display = "block";
       document.getElementById("puzzle-status").textContent = "";
       initDragDropPuzzle();
     }
     function initDragDropPuzzle() {
       const gridSize = 4;
-      const puzzleDimension = 400; // ancho y alto del área destino
+      const puzzleDimension = 400; // Dimensiones del área destino (puzzle-target)
       const pieceSize = puzzleDimension / gridSize; // 100px por pieza
 
       // Limpiar el área destino y el contenedor de piezas
@@ -410,7 +410,7 @@
       const piecesContainer = document.getElementById("pieces-container");
       piecesContainer.innerHTML = "";
 
-      // Crear la cuadrícula en el área destino (target zone)
+      // Crear la cuadrícula destino (target zone)
       for (let i = 0; i < gridSize * gridSize; i++) {
          const cell = document.createElement("div");
          cell.classList.add("target-cell");
@@ -424,12 +424,16 @@
             const pieceId = e.dataTransfer.getData("text/plain");
             const piece = document.querySelector(`.puzzle-piece[data-id='${pieceId}']`);
             if (!piece) return;
-            // Posicionar la pieza en esta celda
-            piece.style.left = this.offsetLeft + "px";
-            piece.style.top = this.offsetTop + "px";
-            // Guardamos en 'data-current' la celda en la que se soltó la pieza
+            // Calcular la posición correcta de la celda relativa al contenedor principal ("puzzle-section")
+            const containerRect = document.getElementById("puzzle-section").getBoundingClientRect();
+            const cellRect = this.getBoundingClientRect();
+            const left = cellRect.left - containerRect.left;
+            const top = cellRect.top - containerRect.top;
+            piece.style.left = left + "px";
+            piece.style.top = top + "px";
+            // Guardar en 'data-current' el índice de la celda donde se soltó la pieza
             piece.dataset.current = this.dataset.index;
-            // Si la pieza se soltó en su posición correcta, se fija
+            // Si el índice es correcto, se fija; si no, la pieza queda en esa posición para reubicarla
             if(piece.dataset.id === this.dataset.index) {
                piece.classList.add("placed");
                piece.draggable = false;
@@ -442,21 +446,19 @@
          puzzleTarget.appendChild(cell);
       }
 
-      // Ahora, crear las piezas en el contenedor de piezas
-      // Asumiremos que el contenedor de piezas es de 400px de ancho por 200px de alto
+      // Crear las piezas en el contenedor de piezas (se muestran esparcidas)
       const containerWidth = piecesContainer.clientWidth;
       const containerHeight = piecesContainer.clientHeight;
       for(let i = 0; i < gridSize * gridSize; i++){
          const piece = document.createElement("div");
          piece.classList.add("puzzle-piece");
-         piece.dataset.id = i;
-         // Configurar el background para que muestre la porción correcta de la imagen
+         piece.dataset.id = i; // Índice correcto de la pieza
          const col = i % gridSize;
          const row = Math.floor(i / gridSize);
          piece.style.backgroundImage = "url('images/bodega-barriles.jpeg')";
          piece.style.backgroundSize = puzzleDimension + "px " + puzzleDimension + "px";
          piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
-         // Ubicar la pieza en posición aleatoria en el contenedor de piezas
+         // Ubicar la pieza en posición aleatoria dentro del contenedor de piezas
          const randomX = Math.floor(Math.random() * (containerWidth - pieceSize));
          const randomY = Math.floor(Math.random() * (containerHeight - pieceSize));
          piece.style.position = "absolute";
