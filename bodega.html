@@ -113,13 +113,12 @@
     /* ============================
          Minijuego 1: Puzzle Arrastrable (Drag & Drop)
        ============================ */
-    /* Sección del Puzzle: contiene el área destino y el contenedor de piezas */
     #puzzle-section {
       display: none;
       width: 400px;
       margin: 20px auto;
     }
-    /* Área destino: cuadrícula 4×4 */
+    /* Área destino: cuadrícula 4x4 */
     #puzzle-target {
       width: 400px;
       height: 400px;
@@ -136,7 +135,7 @@
       height: 100px;
       box-sizing: border-box;
     }
-    /* Contenedor de piezas: se muestran las piezas esparcidas */
+    /* Contenedor de piezas: se muestran esparcidas */
     #pieces-container {
       width: 400px;
       height: 200px;
@@ -191,7 +190,7 @@
     }
 
     /* ============================
-         Minijuego Final: La Cata del Vino
+         Minijuego Final: (Retos a definir)
        ============================ */
     #final-game, #final-button {
       display: none;
@@ -302,6 +301,7 @@
         <div style="text-align:center; margin-bottom:20px;">
           <button class="action-btn" onclick="startPuzzleGame()">Iniciar Puzzle</button>
         </div>
+        <!-- Sección del Puzzle: Área destino y contenedor de piezas -->
         <div id="puzzle-section">
           <div id="puzzle-target"></div>
           <div id="pieces-container"></div>
@@ -318,16 +318,10 @@
           </div>
         </div>
 
-        <!-- Minijuego Final: La Cata del Vino -->
+        <!-- Minijuego Final: Retos (a definir) -->
         <div id="final-game" style="display: none;">
-          <h2>🍷 Desafío Final: La Cata del Vino</h2>
-          <p>Elige el maridaje perfecto que realza nuestro vino emblemático.</p>
-          <div id="cata-options">
-            <button class="action-btn" onclick="checkCata('queso')">Queso curado</button>
-            <button class="action-btn" onclick="checkCata('chorizo')">Chorizo ibérico</button>
-            <button class="action-btn" onclick="checkCata('aceitunas')">Aceitunas</button>
-          </div>
-          <p id="cata-status"></p>
+          <h2>¡Felicidades!</h2>
+          <p>Has superado La Bodega Medieval.</p>
         </div>
 
         <!-- Botón Final -->
@@ -441,14 +435,13 @@
             const pieceId = e.dataTransfer.getData("text/plain");
             const piece = document.querySelector(`.puzzle-piece[data-id='${pieceId}']`);
             if (!piece) return;
-            const cellRect = this.getBoundingClientRect();
-            const targetRect = puzzleTarget.getBoundingClientRect();
-            const left = cellRect.left - targetRect.left;
-            const top = cellRect.top - targetRect.top;
+            // Calcular posición relativa de la celda usando offsetLeft/offsetTop
+            const left = this.offsetLeft;
+            const top = this.offsetTop;
             piece.style.left = left + "px";
             piece.style.top = top + "px";
             piece.dataset.current = this.dataset.index;
-            // Mover la pieza al contenedor destino para que queden fijas en la misma capa de la cuadrícula
+            // Mover la pieza al contenedor destino para que quede en la misma capa que la cuadrícula
             puzzleTarget.appendChild(piece);
             if(piece.dataset.id === this.dataset.index) {
                piece.classList.add("placed");
@@ -462,7 +455,7 @@
          puzzleTarget.appendChild(cell);
       }
 
-      // Crear las piezas en el contenedor de piezas (fuera de la cuadrícula)
+      // Crear las piezas en el contenedor de piezas (colocadas en posiciones aleatorias)
       const containerWidth = piecesContainer.clientWidth;
       const containerHeight = piecesContainer.clientHeight;
       for(let i = 0; i < gridSize * gridSize; i++){
@@ -495,7 +488,7 @@
       }
     }
     
-    // Variables para eventos táctiles
+    // Variables para manejo táctil
     let currentPiece = null;
     let touchOffsetX = 0;
     let touchOffsetY = 0;
@@ -522,22 +515,32 @@
       e.preventDefault();
       if (!currentPiece) return;
       currentPiece.style.zIndex = "";
-      // Determinar el centro de la pieza dentro del contenedor destino
-      const targetRect = document.getElementById("puzzle-target").getBoundingClientRect();
-      const rect = currentPiece.getBoundingClientRect();
-      const centerX = rect.left + rect.width/2;
-      const centerY = rect.top + rect.height/2;
-      const relX = centerX - targetRect.left;
-      const relY = centerY - targetRect.top;
+      // Usar el contenedor destino (puzzle-target) para el drop en móviles
+      const targetEl = document.getElementById("puzzle-target");
+      const targetRect = targetEl.getBoundingClientRect();
+      const pieceRect = currentPiece.getBoundingClientRect();
+      // Calcular el centro de la pieza y ajustar con pageXOffset/YOffset para compensar scroll
+      const centerX = pieceRect.left + pieceRect.width / 2 + window.pageXOffset;
+      const centerY = pieceRect.top + pieceRect.height / 2 + window.pageYOffset;
+      const containerX = targetRect.left + window.pageXOffset;
+      const containerY = targetRect.top + window.pageYOffset;
+      const relX = centerX - containerX;
+      const relY = centerY - containerY;
       const pieceSize = targetRect.width / 4;
       const col = Math.floor(relX / pieceSize);
       const row = Math.floor(relY / pieceSize);
       const targetIndex = row * 4 + col;
-      currentPiece.style.left = (col * pieceSize) + "px";
-      currentPiece.style.top = (row * pieceSize) + "px";
+      // Utilizar la celda destino para posicionar la pieza
+      const cell = targetEl.querySelector(`.target-cell[data-index='${targetIndex}']`);
+      if (cell) {
+         currentPiece.style.left = cell.offsetLeft + "px";
+         currentPiece.style.top = cell.offsetTop + "px";
+      } else {
+         currentPiece.style.left = (col * pieceSize) + "px";
+         currentPiece.style.top = (row * pieceSize) + "px";
+      }
       currentPiece.dataset.current = targetIndex;
-      const puzzleTarget = document.getElementById("puzzle-target");
-      puzzleTarget.appendChild(currentPiece);
+      targetEl.appendChild(currentPiece);
       if(currentPiece.dataset.id === String(targetIndex)) {
          currentPiece.classList.add("placed");
          currentPiece.draggable = false;
@@ -561,6 +564,7 @@
          document.getElementById("puzzle-status").textContent = "¡Puzzle resuelto!";
          setTimeout(() => {
            document.getElementById("puzzle-section").style.display = "none";
+           // Iniciar el Tetris solo si se ha alcanzado el puntaje mínimo (se controla en el Tetris)
            document.getElementById("tetris-game").style.display = "block";
          }, 1500);
       }
@@ -569,7 +573,6 @@
     /* ============================
          Minijuego 2: Tetris
        ============================ */
-    // Adaptamos el código base de Tetris para integrarlo como minijuego
     const tetrisCanvas = document.getElementById('tetris');
     const tetrisContext = tetrisCanvas.getContext('2d');
     tetrisContext.scale(30, 30);
@@ -703,12 +706,11 @@
     }
 
     function tetrisPlayerReset() {
-      const pieces = 'TJLOSZI';
-      tetrisPlayer.matrix = createPieceTetris(pieces[pieces.length * Math.random() | 0]);
+      const piecesStr = 'TJLOSZI';
+      tetrisPlayer.matrix = createPieceTetris(piecesStr[piecesStr.length * Math.random() | 0]);
       tetrisPlayer.pos.y = 0;
-      tetrisPlayer.pos.x = ((tetrisArena[0].length / 2) | 0) - ((tetrisPlayer.matrix[0].length / 2) | 0);
+      tetrisPlayer.pos.x = (tetrisArena[0].length / 2 | 0) - (tetrisPlayer.matrix[0].length / 2 | 0);
       if (tetrisCollide(tetrisArena, tetrisPlayer)) {
-        // Si pierde, reinicia arena y score
         tetrisArena.forEach(row => row.fill(0));
         tetrisPlayer.score = 0;
         tetrisUpdateScore();
@@ -758,11 +760,11 @@
         tetrisPlayerDrop();
       }
       tetrisDraw();
-      // Si el score es menor a 100, seguir actualizando; si llega a 100, pasar al siguiente minijuego
+      // Mientras el puntaje sea inferior a 100, continuar actualizando
       if (tetrisPlayer.score < 100) {
         requestAnimationFrame(tetrisUpdate);
       } else {
-        // Se cumple la condición mínima para aprobar el Tetris
+        // Se alcanza la meta mínima para aprobar
         document.getElementById("tetris-game").style.display = "none";
         document.getElementById("final-game").style.display = "block";
       }
