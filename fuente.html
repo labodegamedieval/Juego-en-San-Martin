@@ -82,6 +82,7 @@
       width: 100%;
       height: auto;
       max-height: 300px;
+      /* Si deseas que se muestre la imagen completa sin recorte, usa: object-fit: contain; */
       object-fit: cover;
       border-radius: 10px;
       border: 2px solid #6e3b1b;
@@ -112,10 +113,10 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
-
-    /* Secciones Visuales y Quiz (se mantienen iguales) */
+    
+    /* Secciones Visuales y Quiz */
     .visual-challenge, .quiz { margin: 20px 0; }
-    /* Minijuego: Puzzle de Cántaros */
+    /* Otros estilos se mantienen sin cambios */
     #puzzle-cantaros {
       margin: 20px auto;
       padding: 15px;
@@ -200,7 +201,6 @@
     }
   </style>
 </head>
-
 <body>
   <div class="container">
     <header>
@@ -257,7 +257,7 @@
           <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
         </div>
 
-        <!-- Resto del contenido (Retos Visuales, Quiz, etc.) se mantiene igual -->
+        <!-- Resto del contenido (Retos Visuales, Quiz, etc.) -->
         <div class="visual-challenge">
           <h2>Retos Visuales</h2>
           <p>1. ¿Cuántos caños tiene la fuente?</p>
@@ -301,7 +301,7 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Se mantiene el minijuego de Puzzle de Cántaros y el Fragmento Final -->
+        <!-- Se mantiene el minijuego de Puzzle de Cántaros y Fragmento Final -->
         <div id="puzzle-cantaros" style="display:none;">
           <div class="content-box">
             <h2>Puzzle de Cántaros</h2>
@@ -424,18 +424,22 @@
       let currentSlide = 0, slides;
       function initCarousel() {
         slides = document.querySelectorAll('.carousel-slide');
-        document.querySelector('.prev-slide').addEventListener('click', () => {
-          currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
-          updateCarousel();
-        });
-        document.querySelector('.next-slide').addEventListener('click', () => {
-          currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
-          updateCarousel();
-        });
+        // Agregamos event listeners en caso de que no se use el onclick
+        document.querySelector('.prev-slide').addEventListener('click', prevSlide);
+        document.querySelector('.next-slide').addEventListener('click', nextSlide);
       }
       function updateCarousel() {
         const carouselSlides = document.querySelector('.carousel-slides');
         carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
+      }
+      // Definición global de nextSlide y prevSlide
+      function nextSlide() {
+        currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
+        updateCarousel();
+      }
+      function prevSlide() {
+        currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+        updateCarousel();
       }
 
       /* 3. RETOS VISUALES Y QUIZ */
