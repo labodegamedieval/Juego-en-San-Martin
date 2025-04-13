@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🙏 Ermita del Socorro</title>
   <!-- Fuente medieval de Google -->
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/style.css"/>
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
   <style>
     /* Estilos generales con toque medieval */
     body {
@@ -240,7 +240,7 @@
 
       <!-- Sección de información adicional -->
       <div id="info-section">
-        <p>Descubre la riqueza histórica y natural de la parada. Observa la ermita, descansa a la sombra de los árboles del parque del chiringuito, mientras resuelves los retos propuestos.</p>
+        <p>Descubre la riqueza histórica y natural de la parada. Observa la ermita, descansa a la sombra de los árboles y resuelve los retos propuestos.</p>
       </div>
 
       <!-- Juego: Sopa de Letras Interactiva -->
@@ -268,9 +268,9 @@
       <div class="fragmento-final" id="fragmento-final">
         <p>
           <strong>Fragmento del Mensaje:</strong><br>
-          <span id="message-piece" style="font-size:1.4em"> sin</span>
+          <span id="message-piece" style="font-size:1.4em">¡El secreto de la Ermita revelado!</span>
         </p>
-        <p><strong>QR Extra:</strong> Busca en </p>
+        <p><strong>QR Extra:</strong> Busca en el pueblo</p>
         <p><strong>Dato Curioso:</strong> En tiempos antiguos, los vecinos subían con velas encendidas hasta la ermita del Humilladero al final de la calzada romana para pedir protección.</p>
       </div>
       <div id="continue-button" style="display: none; text-align: center;">
@@ -300,7 +300,6 @@
     function updateRanking() {
       let username = localStorage.getItem("username");
       if (!username) {
-        // Si no se encuentra, asigna un nombre predeterminado
         username = "Invitado";
         localStorage.setItem("username", username);
       }
@@ -353,7 +352,7 @@
       return R * c;
     }
     
-    // Se cambia la verificación exacta por una que use "includes", de modo que cualquier input con "ermita" sea aceptado.
+    // Verificación manual usando includes para aceptar cualquier entrada con "ermita"
     function checkLocationManual() {
       const input = document.getElementById("location-input").value.trim().toLowerCase();
       console.log("Input ingresado:", input);
@@ -409,7 +408,7 @@
       for (let i = 0; i < gridRows; i++) {
         letterGrid[i] = new Array(gridCols).fill('');
       }
-      // Posicionamiento actualizado de cada palabra:
+      // Posicionamiento de cada palabra en la cuadrícula:
       insertWord("calzada", 1, 1, 0, 1);     // horizontal en fila 1
       insertWord("estela", 3, 6, 0, 1);      // horizontal en fila 3, columnas 6 a 11
       insertWord("ermita", 4, 9, 1, 0);      // vertical en columna 9, de la fila 4 a 9
@@ -452,11 +451,10 @@
           td.textContent = letterGrid[i][j].toUpperCase();
           td.setAttribute("data-row", i);
           td.setAttribute("data-col", j);
-          // Eventos de ratón
+          // Eventos para ratón y táctiles
           td.addEventListener("mousedown", handleMouseDown);
           td.addEventListener("mouseover", handleMouseOver);
           td.addEventListener("mouseup", handleMouseUp);
-          // Eventos táctiles para móviles
           td.addEventListener("touchstart", function(e){
             e.preventDefault();
             handleMouseDown.call(this, e);
@@ -635,6 +633,9 @@
         playSound("cheers-sound");
         updateChronicle();
         updateRanking();
+        // Guardar el progreso de la Ermita
+        localStorage.setItem("ermita-completed", "true");
+        console.log("Ermita completada y guardada en localStorage");
       }
     }
   </script>
