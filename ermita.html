@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🙏 Ermita del Socorro</title>
-  <!-- Fuente medieval de Google -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⛲ Fuente y Portalón</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
+  <!-- Se puede incluir alguna fuente medieval si se desea, por ejemplo: -->
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/style.css"/>
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
-    /* Estilos generales con toque medieval */
+    /* ===============================
+         ESTILOS GENERALES
+       =============================== */
     body {
       font-family: 'MedievalSharp', Georgia, serif;
-      background: url('images/pergamino.jpg') no-repeat center center fixed;
+      background: url('images/fondo-fuente.jpg') no-repeat center center fixed;
       background-size: cover;
       margin: 0;
       padding: 0;
@@ -27,7 +29,9 @@
       border-radius: 12px;
       padding: 20px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      position: relative;
     }
+    header h1 { text-align: center; }
     .action-btn {
       display: block;
       margin: 15px auto;
@@ -39,14 +43,17 @@
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    /* Sección de verificación de ubicación */
+    .music-control { text-align: center; margin-bottom: 10px; }
+    #content { margin-top: 10px; }
+    
+    /* ===============================
+         UBICACIÓN
+       =============================== */
     #location-check {
       text-align: center;
       margin-bottom: 30px;
     }
-    #location-check h2 { margin-bottom: 10px; }
-    #location-check p { margin: 10px 0; }
-    #location-input {
+    #location-check input {
       padding: 8px;
       font-size: 16px;
       width: 200px;
@@ -54,42 +61,54 @@
       border: 1px solid #5e3b1b;
       border-radius: 4px;
     }
-    #location-status {
-      margin-top: 10px;
-      font-size: 1.1em;
-      color: red;
-    }
-    #direction-arrow {
-      width: 50px;
-      margin-top: 10px;
-    }
-    /* Carousel */
+    #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
+    #direction-arrow { width: 50px; margin-top: 10px; }
+    
+    /* ===============================
+         CARRUSEL (idéntico a Ermita)
+       =============================== */
     .carousel-container {
       position: relative;
       overflow: hidden;
       width: 100%;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       border-radius: 10px;
       border: 2px solid #5e3b1b;
     }
     .carousel-slides {
       display: flex;
       transition: transform 0.5s ease;
+      width: 300%; /* 3 diapositivas */
     }
     .carousel-slide {
-      min-width: 100%;
+      flex: 0 0 100%;
       box-sizing: border-box;
       text-align: center;
+      padding: 10px;
     }
     .carousel-slide img {
       width: 100%;
-      height: 300px;
-      object-fit: cover;
-      display: block;
+      height: 300px;             /* Altura fija */
+      object-fit: contain;       /* Muestra la imagen completa sin recorte */
+      background-color: #fff;    /* Fondo blanco para evitar zonas vacías */
       border-radius: 10px;
       border: 2px solid #6b3e2e;
+      display: block;
     }
-    .carousel-prev, .carousel-next {
+    /* Bloque para el pie de foto */
+    .carousel-info {
+      margin-top: 10px;
+      line-height: 1.4;
+      background: rgba(255,255,255,0.8);
+      padding: 8px;
+      border-radius: 8px;
+    }
+    .carousel-info a {
+      color: #5e3b1b;
+      text-decoration: underline;
+    }
+    .carousel-info a:hover { color: #a65c3a; }
+    .carousel-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -100,530 +119,178 @@
       padding: 8px;
       border-radius: 50%;
     }
-    .carousel-prev { left: 10px; }
-    .carousel-next { right: 10px; }
-    /* Sección de información adicional */
-    #info-section {
+    .prev-slide { left: 10px; }
+    .next-slide { right: 10px; }
+    
+    /* ===============================
+         FOOTER Y ADORNOS
+       =============================== */
+    footer p {
       text-align: center;
-      margin: 20px auto;
-      font-size: 1.1em;
+      font-size: 0.9em;
+      margin-top: 20px;
     }
-    /* Sopa de Letras */
-    #letter-soup-game {
-      margin: 20px auto;
-      text-align: center;
+    .container:before {
+      content: "⚔️";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
     }
-    #letter-soup-game h2 { margin-bottom: 10px; }
-    #letter-soup-game p { margin-bottom: 10px; }
-    /* Word Buttons: reemplaza la antigua lista y se centra en móvil */
-    #word-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-    .word-button {
-      background: #dec79b;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
-      font-size: 16px;
-      padding: 8px 12px;
-      cursor: default;
-    }
-    .word-button.word-found {
-      text-decoration: line-through;
-      color: green;
-    }
-    #letter-soup-container table {
-      border-collapse: collapse;
-      margin: auto;
-    }
-    #letter-soup-container td {
-      border: 1px solid #5e3b1b;
-      width: 30px;
-      height: 30px;
-      text-align: center;
-      vertical-align: middle;
-      font-size: 18px;
-      cursor: pointer;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-    .selected { background-color: yellow !important; }
-    .found { background-color: lightgreen !important; }
-    /* Juego de Memoria */
-    #memory-game {
-      display: none;
-      margin: 20px auto;
-      max-width: 600px;
-      text-align: center;
-    }
-    .memory-board {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-    }
-    .card {
-      background: #dec79b;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
-      padding: 10px;
-      font-size: 20px;
-      cursor: pointer;
-      user-select: none;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-    }
-    .card.flipped, .card.matched {
-      background: #fff;
-    }
-    /* Fragmento Final */
-    .fragmento-final {
-      margin: 20px auto;
-      display: none;
-      max-width: 600px;
-      text-align: center;
-      background: url('images/pergamino.png') center center no-repeat;
-      background-size: cover;
-      padding: 40px 20px;
-      font-style: italic;
-      font-size: 1.4em;
-      font-weight: bold;
-      border-radius: 10px;
+    .container:after {
+      content: "🛡️";
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
     }
     @media screen and (max-width: 768px) {
-      #letter-soup-game, .fragmento-final, #memory-game {
-        max-width: 90%;
-      }
+      .container { max-width: 90%; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Verificación de Ubicación -->
-    <div id="location-check">
+    <header>
+      <h1>⛲ Fuente y Portalón</h1>
+      <div class="music-control">
+        <button class="action-btn music-btn">
+          <span class="music-icon">🎵</span> Pausar Música
+        </button>
+      </div>
+    </header>
+    
+    <!-- Sección de Verificación de Ubicación -->
+    <section id="location-check">
       <h2>Verifica tu ubicación</h2>
-      <p>Acércate a la puerta de la ermita para continuar.</p>
+      <p>Acércate a la fuente y al portalón para continuar.</p>
       <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
       <p>O escribe el nombre:</p>
-      <input type="text" id="location-input" placeholder="Ej: Ermita" />
+      <input type="text" id="location-input" placeholder="Ej: Fuente y Portalón">
       <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
       <p id="location-status"></p>
-      <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" alt="Flecha de dirección" />
-    </div>
-
-    <!-- Contenido del Juego -->
-    <div id="game-content" style="display: none;">
-      <!-- Carrusel con tres imágenes y texto explicativo/artístico-histórico -->
+      <img id="direction-arrow" src="images/flecha.png" alt="Flecha de dirección" style="display:none;">
+    </section>
+    
+    <!-- Contenido principal -->
+    <section id="game-content" style="display:none;">
+      <!-- Carousel -->
       <div class="carousel-container">
         <div class="carousel-slides">
-          <div class="carousel-slide">
-            <img src="images/ermita-exterior.jpg" alt="Ermita Exterior" />
-            <p><strong>Exterior:</strong> Ermita del siglo XV junto al río Canderuelo.</p>
+          <div class="carousel-slide active">
+            <img src="images/portalon.jpg" alt="Portalón">
+            <div class="carousel-info">
+              <strong>Portalón:</strong> Lugar renacentista de reunión y comercio. Aún conserva inscripciones originales.
+              <a href="https://sanmartindelcastañar.es/plaza-mayor-y-portalon/" target="_blank">Más info</a>
+            </div>
           </div>
           <div class="carousel-slide">
-            <img src="images/ermita-puerta.jpg" alt="Puerta de la Ermita" />
-            <p><strong>Entrada:</strong> En honor a San Sebastián y la Virgen del Socorro.</p>
+            <img src="images/fuente-detalle.jpg" alt="Fuente">
+            <div class="carousel-info">
+              <strong>Fuente:</strong> De dos caños con decoración geométrica, construida en el siglo XVI.
+              <a href="https://turismosierradefrancia.es/nuestros-pueblos/san-martin-del-castanar/" target="_blank">Más info</a>
+            </div>
           </div>
           <div class="carousel-slide">
-            <img src="images/ermita-interior.jpg" alt="Interior de la Ermita" />
-            <p><strong>Interior:</strong> Detalles artísticos e históricos del templo.</p>
+            <img src="images/portalon-interior.jpg" alt="Portalón interior">
+            <div class="carousel-info">
+              <strong>Interior:</strong> Perspectiva del portalón y sus detalles, evocando tiempos pasados.
+              <a href="https://es.wikipedia.org/wiki/San_Mart%C3%ADn_del_Casta%C3%B1ar" target="_blank">Más info</a>
+            </div>
           </div>
         </div>
-        <button class="carousel-prev">&#10094;</button>
-        <button class="carousel-next">&#10095;</button>
+        <button class="carousel-btn prev-slide" onclick="prevSlide()">&#10094;</button>
+        <button class="carousel-btn next-slide" onclick="nextSlide()">&#10095;</button>
       </div>
-
-      <!-- Sección de información adicional -->
-      <div id="info-section">
-        <p>Descubre la riqueza histórica y natural de la parada. Observa la ermita, descansa a la sombra de los árboles del parque del chiringuito, mientras resuelves los retos propuestos.</p>
-      </div>
-
-      <!-- Juego: Sopa de Letras Interactiva -->
-      <div id="letter-soup-game">
-        <h2>Sopa de Letras</h2>
-        <p>Encuentra las siguientes 5 palabras relacionadas con la parada:</p>
-        <div id="word-buttons">
-          <button class="word-button" id="w-calzada">calzada</button>
-          <button class="word-button" id="w-estela">estela</button>
-          <button class="word-button" id="w-ermita">ermita</button>
-          <button class="word-button" id="w-romana">romana</button>
-          <button class="word-button" id="w-socorro">socorro</button>
-        </div>
-        <div id="letter-soup-container"></div>
-      </div>
-
-      <!-- Juego: Memoria con Cartas (se muestra al completar la sopa de letras) -->
-      <div id="memory-game">
-        <h2>Juego de Memoria</h2>
-        <p>Encuentra las parejas de símbolos:</p>
-        <div class="memory-board" id="memory-board"></div>
-      </div>
-
-      <!-- Fragmento Final -->
-      <div class="fragmento-final" id="fragmento-final">
-        <p><strong>Fragmento del Mensaje:</strong><br>
-          <span id="message-piece" style="font-size:1.4em"> sin</span>
-        </p>
-        <p><strong>QR Extra:</strong> Busca en </p>
-        <p><strong>Dato Curioso:</strong> En tiempos antiguos, los vecinos subían con velas encendidas hasta la ermita del Humilladero al final de la calzada romana para pedir protección.</p>
-      </div>
-      <div id="continue-button" style="display: none; text-align: center;">
-        <button class="action-btn" onclick="location.href='felicitaciones.html?stop=ermita'">Continuar búsqueda</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Audios -->
-  <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
-  <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
-  <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto"></audio>
-  <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-
-  <script>
-    /* --- Variables Globales --- */
-    let letterSoupCompleted = false;
-    let memoryGameCompleted = false;
+      
+      <!-- Aquí se pueden añadir otros contenidos específicos de la parada -->
+    </section>
     
-    /* --- Funciones de Ranking y Crónica --- */
-    function updateChronicle() {
-      localStorage.setItem("cronica_ermita", document.getElementById("message-piece").textContent);
-      console.log("Crónica actualizada con el fragmento:", document.getElementById("message-piece").textContent);
-    }
+    <footer>
+      <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
+    </footer>
     
-    function updateRanking() {
-      const username = localStorage.getItem("username");
-      if (!username) { console.error("No se encontró el nombre del usuario."); return; }
-      let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
-      ranking.push({ stop: "ermita", fragmento: document.getElementById("message-piece").textContent, name: username });
-      localStorage.setItem("ranking", JSON.stringify(ranking));
-      console.log("Ranking actualizado:", ranking);
-    }
-    
-    function playSound(id) {
-      const sound = document.getElementById(id);
-      if (sound) { sound.play(); }
-    }
-    
-    /* --- Funciones de Ubicación --- */
-    const targetLat = 40.123456;
-    const targetLon = -3.123456;
-    const thresholdDistance = 50;
-    
-    function checkLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
-      } else {
-        document.getElementById("location-status").textContent = "Tu navegador no soporta geolocalización.";
+    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+    <script>
+      // Funciones de verificación de ubicación
+      const targetLat = 40.123456, targetLon = -3.123456, thresholdDistance = 50;
+      function checkLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
+        } else {
+          document.getElementById("location-status").textContent = "Tu navegador no soporta geolocalización.";
+        }
       }
-    }
-    
-    function geoSuccess(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-      const distance = calculateDistance(lat, lon, targetLat, targetLon);
-      if (distance <= thresholdDistance) { unlockStop(); }
-      else { document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Ermita."; }
-    }
-    
-    function locationError(err) {
-      document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
-    }
-    
-    function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371e3;
-      const toRad = (x) => x * Math.PI / 180;
-      const φ1 = toRad(lat1), φ2 = toRad(lat2);
-      const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
-      const a = Math.sin(Δφ/2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) ** 2;
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c;
-    }
-    
-    function checkLocationManual() {
-      const input = document.getElementById("location-input").value.trim().toLowerCase();
-      if (input === "ermita" || input === "ermita del socorro") { unlockStop(); }
-      else { document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente."; }
-    }
-    
-    function unlockStop() {
-      document.getElementById("location-check").style.display = "none";
-      document.getElementById("game-content").style.display = "block";
-      initCarousel();
-      initLetterSoup();
-      playSound("background-music");
-    }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      if(urlParams.get("stop") === "ermita" || urlParams.has("unlock")) { unlockStop(); }
-    });
-    
-    /* --- Carousel --- */
-    let currentSlide = 0, slides;
-    
-    function initCarousel() {
-      slides = document.querySelectorAll('.carousel-slide');
-      document.querySelector('.carousel-prev').addEventListener('click', () => {
-        currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
-        updateCarousel();
-      });
-      document.querySelector('.carousel-next').addEventListener('click', () => {
+      function geoSuccess(position) {
+        const lat = position.coords.latitude, lon = position.coords.longitude;
+        const distance = calculateDistance(lat, lon, targetLat, targetLon);
+        if (distance <= thresholdDistance) unlockStop();
+        else document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Fuente y Portalón.";
+      }
+      function locationError(err) {
+        document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
+      }
+      function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371e3;
+        const toRad = x => x * Math.PI / 180;
+        const φ1 = toRad(lat1), φ2 = toRad(lat2);
+        const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
+        const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+      }
+      function checkLocationManual() {
+        const input = document.getElementById("location-input").value.trim().toLowerCase();
+        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") unlockStop();
+        else document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
+      }
+      function unlockStop() {
+        document.getElementById("location-check").style.display = "none";
+        document.getElementById("game-content").style.display = "block";
+        initCarousel();
+        playSound("background-music");
+      }
+      
+      // Carousel
+      let currentSlide = 0, slides;
+      function initCarousel() {
+        slides = document.querySelectorAll('.carousel-slide');
+      }
+      function updateCarousel() {
+        const carouselSlides = document.querySelector('.carousel-slides');
+        carouselSlides.style.transform = `translateX(${-currentSlide * 100}%)`;
+      }
+      function nextSlide() {
         currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
         updateCarousel();
-      });
-    }
-    
-    function updateCarousel() {
-      const carouselSlides = document.querySelector('.carousel-slides');
-      carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
-    }
-    
-    /* --- Sopa de Letras --- */
-    const gridRows = 12, gridCols = 12;
-    let letterGrid = [];
-    const targetWords = { calzada: false, estela: false, ermita: false, romana: false, socorro: false };
-    
-    function initLetterSoup() {
-      letterGrid = new Array(gridRows);
-      for (let i = 0; i < gridRows; i++) {
-        letterGrid[i] = new Array(gridCols).fill('');
       }
-      // Posicionamiento actualizado de cada palabra:
-      insertWord("calzada", 1, 1, 0, 1);     // horizontal en fila 1
-      insertWord("estela", 3, 6, 0, 1);      // horizontal en fila 3, columnas 6 a 11
-      insertWord("ermita", 4, 9, 1, 0);      // vertical en columna 9, de la fila 4 a 9
-      insertWord("romana", 7, 2, 0, 1);      // horizontal en fila 7
-      insertWord("socorro", 10, 2, 0, 1);    // horizontal en fila 10
-      fillRandomLetters();
-      drawLetterSoup();
-    }
-    
-    function insertWord(word, row, col, dr, dc) {
-      word = word.toLowerCase();
-      for (let i = 0; i < word.length; i++) {
-        if (row < gridRows && col < gridCols) {
-          letterGrid[row][col] = word[i];
-          row += dr;
-          col += dc;
-        }
+      function prevSlide() {
+        currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+        updateCarousel();
       }
-    }
-    
-    function fillRandomLetters() {
-      const letters = "abcdefghijklmnopqrstuvwxyz";
-      for (let i = 0; i < gridRows; i++) {
-        for (let j = 0; j < gridCols; j++) {
-          if (letterGrid[i][j] === "") {
-            letterGrid[i][j] = letters.charAt(Math.floor(Math.random() * letters.length));
+      
+      // Botón de música
+      document.addEventListener('DOMContentLoaded', () => {
+        const musicBtn = document.querySelector('.music-btn');
+        const backgroundMusic = document.getElementById('background-music');
+        musicBtn.addEventListener('click', () => {
+          if (backgroundMusic.paused) {
+            backgroundMusic.play();
+            musicBtn.innerHTML = '<span class="music-icon">🎵</span> Pausar Música';
+          } else {
+            backgroundMusic.pause();
+            musicBtn.innerHTML = '<span class="music-icon">🔇</span> Reproducir Música';
           }
-        }
-      }
-    }
-    
-    function drawLetterSoup() {
-      const container = document.getElementById("letter-soup-container");
-      container.innerHTML = "";
-      const table = document.createElement("table");
-      for (let i = 0; i < gridRows; i++) {
-        const tr = document.createElement("tr");
-        for (let j = 0; j < gridCols; j++) {
-          const td = document.createElement("td");
-          td.textContent = letterGrid[i][j].toUpperCase();
-          td.setAttribute("data-row", i);
-          td.setAttribute("data-col", j);
-          // Eventos de ratón
-          td.addEventListener("mousedown", handleMouseDown);
-          td.addEventListener("mouseover", handleMouseOver);
-          td.addEventListener("mouseup", handleMouseUp);
-          // Eventos táctiles para móviles: touchstart y touchend en cada celda
-          td.addEventListener("touchstart", function(e){
-            e.preventDefault();
-            handleMouseDown.call(this, e);
-          });
-          td.addEventListener("touchend", function(e){
-            e.preventDefault();
-            handleMouseUp.call(this, e);
-          });
-          tr.appendChild(td);
-        }
-        table.appendChild(tr);
-      }
-      container.innerHTML = "";
-      container.appendChild(table);
-      // Listener de touchmove en el contenedor para detectar el arrastre
-      container.addEventListener("touchmove", handleTouchMove, {passive: false});
-      document.addEventListener("mouseup", handleMouseUp);
-    }
-    
-    function handleTouchMove(e) {
-      e.preventDefault();
-      var touch = e.touches[0];
-      var elem = document.elementFromPoint(touch.clientX, touch.clientY);
-      if (elem) {
-        let td = elem.closest("td");
-        if (td && document.getElementById("letter-soup-container").contains(td)) {
-          handleMouseOver.call(td, e);
-        }
-      }
-    }
-    
-    let isMouseDown = false;
-    let selectedCells = [];
-    let currentDirection = null;
-    
-    function handleMouseDown(e) {
-      isMouseDown = true;
-      selectedCells = [];
-      document.querySelectorAll("#letter-soup-container td").forEach(td => td.classList.remove("selected"));
-      const startCell = { row: parseInt(this.getAttribute("data-row")), col: parseInt(this.getAttribute("data-col")) };
-      selectedCells.push(startCell);
-      this.classList.add("selected");
-    }
-    
-    function handleMouseOver(e) {
-      if (!isMouseDown) return;
-      const row = parseInt(this.getAttribute("data-row"));
-      const col = parseInt(this.getAttribute("data-col"));
-      const last = selectedCells[selectedCells.length - 1];
-      const dRow = row - last.row;
-      const dCol = col - last.col;
-      if (Math.abs(dRow) <= 1 && Math.abs(dCol) <= 1 && (Math.abs(dRow) + Math.abs(dCol) !== 0)) {
-        if (selectedCells.length === 1) { currentDirection = { dRow, dCol }; }
-        else if (dRow !== currentDirection.dRow || dCol !== currentDirection.dCol) { return; }
-        if (!selectedCells.some(cell => cell.row === row && cell.col === col)) {
-          selectedCells.push({ row, col });
-          this.classList.add("selected");
-        }
-      }
-    }
-    
-    function handleMouseUp(e) {
-      if (!isMouseDown) return;
-      isMouseDown = false;
-      let word = "";
-      selectedCells.forEach(cell => { word += letterGrid[cell.row][cell.col]; });
-      word = word.toLowerCase();
-      for (let target in targetWords) {
-        if (!targetWords[target] && (word === target || word.split("").reverse().join("") === target)) {
-          targetWords[target] = true;
-          markCellsAsFound(selectedCells);
-          playSound("success-sound");
-          break;
-        }
-      }
-      document.querySelectorAll("#letter-soup-container td").forEach(td => td.classList.remove("selected"));
-      selectedCells = [];
-      // Si se encontraron las 5 palabras, se desbloquea el juego de memoria
-      if (Object.values(targetWords).filter(v => v).length === 5) {
-        letterSoupCompleted = true;
-        document.getElementById("memory-game").style.display = "block";
-        if (!document.getElementById("memory-board").hasChildNodes()) {
-          initMemoryGame();
-        }
-      }
-      updateWordList();
-    }
-    
-    function markCellsAsFound(cells) {
-      cells.forEach(cell => {
-        const selector = `td[data-row="${cell.row}"][data-col="${cell.col}"]`;
-        const td = document.querySelector(selector);
-        if (td) td.classList.add("found");
+        });
       });
-      updateWordList();
-    }
-    
-    function updateWordList() {
-      for (let word in targetWords) {
-        const btn = document.getElementById("w-" + word);
-        if (btn) {
-          if (targetWords[word]) btn.classList.add("word-found");
-          else btn.classList.remove("word-found");
-        }
+      
+      function playSound(id) {
+        const sound = document.getElementById(id);
+        if (sound) sound.play();
       }
-    }
-    
-    /* --- Juego de Memoria --- */
-    const memorySymbols = ["⚔️", "🏛️", "🔱", "🛡️", "🏺", "🎭", "🎨", "⛪", "🌟", "🗿"];
-    let firstCard = null;
-    let lockBoard = false;
-    
-    function initMemoryGame() {
-      const board = document.getElementById("memory-board");
-      board.innerHTML = "";
-      // Duplicar y barajar símbolos para 10 parejas (20 cartas)
-      const symbols = [...memorySymbols, ...memorySymbols];
-      shuffle(symbols);
-      symbols.forEach(symbol => {
-        const card = document.createElement("div");
-        card.classList.add("card");
-        card.setAttribute("data-symbol", symbol);
-        card.addEventListener("click", flipCard);
-        board.appendChild(card);
-      });
-    }
-    
-    function flipCard() {
-      if (lockBoard) return;
-      if (this === firstCard) return;
-      this.classList.add("flipped");
-      this.textContent = this.getAttribute("data-symbol");
-      if (!firstCard) {
-        firstCard = this;
-        return;
-      }
-      if (this.getAttribute("data-symbol") === firstCard.getAttribute("data-symbol")) {
-        this.classList.add("matched");
-        firstCard.classList.add("matched");
-        resetMemorySelection();
-        checkMemoryGameComplete();
-      } else {
-        lockBoard = true;
-        setTimeout(() => {
-          this.classList.remove("flipped");
-          this.textContent = "";
-          firstCard.classList.remove("flipped");
-          firstCard.textContent = "";
-          resetMemorySelection();
-        }, 1000);
-      }
-    }
-    
-    function resetMemorySelection() {
-      firstCard = null;
-      lockBoard = false;
-    }
-    
-    function checkMemoryGameComplete() {
-      const matchedCards = document.querySelectorAll(".card.matched");
-      if (matchedCards.length === document.querySelectorAll(".card").length) {
-        memoryGameCompleted = true;
-        unlockFinalFragment();
-      }
-    }
-    
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-    
-    /* --- Fragmento Final --- */
-    function unlockFinalFragment() {
-      if (letterSoupCompleted && memoryGameCompleted) {
-        document.getElementById("fragmento-final").style.display = "block";
-        document.getElementById("continue-button").style.display = "block";
-        playSound("cheers-sound");
-        updateChronicle();
-        updateRanking();
-      }
-    }
-  </script>
+    </script>
+  </div>
 </body>
 </html>
