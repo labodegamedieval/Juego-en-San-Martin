@@ -136,7 +136,7 @@
       height: 100px;
       box-sizing: border-box;
     }
-    /* Contenedor de piezas: se muestran las piezas esparcidas */
+    /* Contenedor de piezas: se muestran esparcidas en un área independiente */
     #pieces-container {
       width: 400px;
       height: 200px;
@@ -268,7 +268,7 @@
         <div style="text-align:center; margin-bottom:20px;">
           <button class="action-btn" onclick="startPuzzleGame()">Iniciar Puzzle</button>
         </div>
-        <!-- Sección del Puzzle: Contiene el área destino y el contenedor de piezas esparcidas -->
+        <!-- Sección del Puzzle: Área destino y contenedor de piezas -->
         <div id="puzzle-section">
           <div id="puzzle-target"></div>
           <div id="pieces-container"></div>
@@ -394,17 +394,16 @@
          Minijuego 1: Puzzle Arrastrable (Drag & Drop)
        ============================ */
     function startPuzzleGame() {
-      // Se muestra la sección de puzzle que incluye el área destino y el contenedor de piezas
       document.getElementById("puzzle-section").style.display = "block";
       document.getElementById("puzzle-status").textContent = "";
       initDragDropPuzzle();
     }
     function initDragDropPuzzle() {
       const gridSize = 4;
-      const puzzleDimension = 400; // Dimensiones del área destino (puzzle-target)
+      const puzzleDimension = 400; // Dimensiones del área destino
       const pieceSize = puzzleDimension / gridSize; // 100px por pieza
 
-      // Limpiar el área destino y el contenedor de piezas
+      // Limpiar área destino y contenedor de piezas
       const puzzleTarget = document.getElementById("puzzle-target");
       puzzleTarget.innerHTML = "";
       const piecesContainer = document.getElementById("pieces-container");
@@ -415,7 +414,6 @@
          const cell = document.createElement("div");
          cell.classList.add("target-cell");
          cell.dataset.index = i;
-         // Agregar eventos para permitir drop en cada celda
          cell.addEventListener("dragover", function(e) {
             e.preventDefault();
          });
@@ -424,16 +422,14 @@
             const pieceId = e.dataTransfer.getData("text/plain");
             const piece = document.querySelector(`.puzzle-piece[data-id='${pieceId}']`);
             if (!piece) return;
-            // Calcular la posición correcta de la celda relativa al contenedor principal ("puzzle-section")
-            const containerRect = document.getElementById("puzzle-section").getBoundingClientRect();
+            // Calcular la posición de la celda relativa al contenedor destino
             const cellRect = this.getBoundingClientRect();
-            const left = cellRect.left - containerRect.left;
-            const top = cellRect.top - containerRect.top;
+            const targetRect = puzzleTarget.getBoundingClientRect();
+            const left = cellRect.left - targetRect.left;
+            const top = cellRect.top - targetRect.top;
             piece.style.left = left + "px";
             piece.style.top = top + "px";
-            // Guardar en 'data-current' el índice de la celda donde se soltó la pieza
             piece.dataset.current = this.dataset.index;
-            // Si el índice es correcto, se fija; si no, la pieza queda en esa posición para reubicarla
             if(piece.dataset.id === this.dataset.index) {
                piece.classList.add("placed");
                piece.draggable = false;
@@ -446,13 +442,13 @@
          puzzleTarget.appendChild(cell);
       }
 
-      // Crear las piezas en el contenedor de piezas (se muestran esparcidas)
+      // Crear las piezas en el contenedor de piezas (mostrar esparcidas)
       const containerWidth = piecesContainer.clientWidth;
       const containerHeight = piecesContainer.clientHeight;
       for(let i = 0; i < gridSize * gridSize; i++){
          const piece = document.createElement("div");
          piece.classList.add("puzzle-piece");
-         piece.dataset.id = i; // Índice correcto de la pieza
+         piece.dataset.id = i;
          const col = i % gridSize;
          const row = Math.floor(i / gridSize);
          piece.style.backgroundImage = "url('images/bodega-barriles.jpeg')";
@@ -472,9 +468,68 @@
          piece.addEventListener("dragend", function(e) {
              this.style.zIndex = "";
          });
+         // Agregar manejo de eventos táctiles para móviles
+         piece.addEventListener("touchstart", onTouchStart, false);
+         piece.addEventListener("touchmove", onTouchMove, false);
+         piece.addEventListener("touchend", onTouchEnd, false);
          piecesContainer.appendChild(piece);
       }
     }
+    
+    // Variables globales para el manejo táctil
+    let currentPiece = null;
+    let touchOffsetX = 0;
+    let touchOffsetY = 0;
+
+    function onTouchStart(e) {
+      e.preventDefault();
+      currentPiece = this;
+      const touch = e.touches[0];
+      const rect = currentPiece.getBoundingClientRect();
+      touchOffsetX = touch.clientX - rect.left;
+      touchOffsetY = touch.clientY - rect.top;
+      currentPiece.style.zIndex = 1000;
+    }
+    function onTouchMove(e) {
+      e.preventDefault();
+      if (!currentPiece) return;
+      const touch = e.touches[0];
+      // Obtener el rectángulo del contenedor puzzle-section para posición relativa
+      const containerRect = document.getElementById("puzzle-section").getBoundingClientRect();
+      let newLeft = touch.clientX - containerRect.left - touchOffsetX;
+      let newTop = touch.clientY - containerRect.top - touchOffsetY;
+      currentPiece.style.left = newLeft + "px";
+      currentPiece.style.top = newTop + "px";
+    }
+    function onTouchEnd(e) {
+      e.preventDefault();
+      if (!currentPiece) return;
+      currentPiece.style.zIndex = "";
+      // Al finalizar el toque, simular drop: determinar en qué celda se soltó la pieza
+      const containerRect = document.getElementById("puzzle-target").getBoundingClientRect();
+      // Usamos la posición final de la pieza
+      const pieceRect = currentPiece.getBoundingClientRect();
+      const dropX = pieceRect.left + pieceRect.width / 2 - containerRect.left;
+      const dropY = pieceRect.top + pieceRect.height / 2 - containerRect.top;
+      const pieceSize = containerRect.width / 4; // asumiendo cuadrícula 4x4
+      const col = Math.floor(dropX / pieceSize);
+      const row = Math.floor(dropY / pieceSize);
+      const targetIndex = row * 4 + col;
+      // Posicionar la pieza en la celda destino
+      currentPiece.style.left = (col * pieceSize) + "px";
+      currentPiece.style.top = (row * pieceSize) + "px";
+      currentPiece.dataset.current = targetIndex;
+      if(currentPiece.dataset.id === String(targetIndex)) {
+         currentPiece.classList.add("placed");
+         currentPiece.draggable = false;
+      } else {
+         currentPiece.classList.remove("placed");
+         currentPiece.draggable = true;
+      }
+      checkPuzzleSolved();
+      currentPiece = null;
+    }
+    
     function checkPuzzleSolved() {
       const pieces = document.querySelectorAll(".puzzle-piece");
       let solved = true;
@@ -518,7 +573,6 @@
          Minijuego Final: La Cata del Vino
        ============================ */
     function checkCata(selection) {
-      // La opción correcta es "queso" (queso curado)
       if(selection === "queso") {
         document.getElementById("cata-status").textContent = "¡Excelente! El queso curado realza perfectamente nuestro vino.";
         playSound("success-sound");
