@@ -115,7 +115,7 @@
     }
     #letter-soup-game h2 { margin-bottom: 10px; }
     #letter-soup-game p { margin-bottom: 10px; }
-    /* Word Buttons: reemplaza la antigua lista y se centra en móvil */
+    /* Word Buttons */
     #word-buttons {
       display: flex;
       flex-wrap: wrap;
@@ -266,7 +266,8 @@
 
       <!-- Fragmento Final -->
       <div class="fragmento-final" id="fragmento-final">
-        <p><strong>Fragmento del Mensaje:</strong><br>
+        <p>
+          <strong>Fragmento del Mensaje:</strong><br>
           <span id="message-piece" style="font-size:1.4em"> sin</span>
         </p>
         <p><strong>QR Extra:</strong> Busca en </p>
@@ -285,19 +286,24 @@
   <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
 
   <script>
-    /* --- Variables Globales --- */
+    /* --- Variables Globales para la Sopa de Letras y el Juego de Memoria --- */
     let letterSoupCompleted = false;
     let memoryGameCompleted = false;
     
     /* --- Funciones de Ranking y Crónica --- */
     function updateChronicle() {
-      localStorage.setItem("cronica_ermita", document.getElementById("message-piece").textContent);
-      console.log("Crónica actualizada con el fragmento:", document.getElementById("message-piece").textContent);
+      const fragment = document.getElementById("message-piece").textContent;
+      localStorage.setItem("cronica_ermita", fragment);
+      console.log("Crónica actualizada con el fragmento:", fragment);
     }
     
     function updateRanking() {
-      const username = localStorage.getItem("username");
-      if (!username) { console.error("No se encontró el nombre del usuario."); return; }
+      let username = localStorage.getItem("username");
+      if (!username) {
+        // Si no se encuentra, asigna un nombre predeterminado
+        username = "Invitado";
+        localStorage.setItem("username", username);
+      }
       let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
       ranking.push({ stop: "ermita", fragmento: document.getElementById("message-piece").textContent, name: username });
       localStorage.setItem("ranking", JSON.stringify(ranking));
@@ -326,8 +332,11 @@
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
       const distance = calculateDistance(lat, lon, targetLat, targetLon);
-      if (distance <= thresholdDistance) { unlockStop(); }
-      else { document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Ermita."; }
+      if (distance <= thresholdDistance) { 
+        unlockStop(); 
+      } else { 
+        document.getElementById("location-status").textContent = "No estás lo suficientemente cerca de la Ermita."; 
+      }
     }
     
     function locationError(err) {
@@ -344,10 +353,15 @@
       return R * c;
     }
     
+    // Se cambia la verificación exacta por una que use "includes", de modo que cualquier input con "ermita" sea aceptado.
     function checkLocationManual() {
       const input = document.getElementById("location-input").value.trim().toLowerCase();
-      if (input === "ermita" || input === "ermita del socorro") { unlockStop(); }
-      else { document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente."; }
+      console.log("Input ingresado:", input);
+      if (input.includes("ermita")) {
+        unlockStop();
+      } else {
+        document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo nuevamente.";
+      }
     }
     
     function unlockStop() {
@@ -360,7 +374,9 @@
     
     document.addEventListener('DOMContentLoaded', function() {
       const urlParams = new URLSearchParams(window.location.search);
-      if(urlParams.get("stop") === "ermita" || urlParams.has("unlock")) { unlockStop(); }
+      if(urlParams.get("stop") === "ermita" || urlParams.has("unlock")) { 
+        unlockStop(); 
+      }
     });
     
     /* --- Carousel --- */
@@ -440,7 +456,7 @@
           td.addEventListener("mousedown", handleMouseDown);
           td.addEventListener("mouseover", handleMouseOver);
           td.addEventListener("mouseup", handleMouseUp);
-          // Eventos táctiles para móviles: touchstart y touchend en cada celda
+          // Eventos táctiles para móviles
           td.addEventListener("touchstart", function(e){
             e.preventDefault();
             handleMouseDown.call(this, e);
@@ -455,7 +471,6 @@
       }
       container.innerHTML = "";
       container.appendChild(table);
-      // Listener de touchmove en el contenedor para detectar el arrastre
       container.addEventListener("touchmove", handleTouchMove, {passive: false});
       document.addEventListener("mouseup", handleMouseUp);
     }
@@ -518,7 +533,6 @@
       }
       document.querySelectorAll("#letter-soup-container td").forEach(td => td.classList.remove("selected"));
       selectedCells = [];
-      // Si se encontraron las 5 palabras, se desbloquea el juego de memoria
       if (Object.values(targetWords).filter(v => v).length === 5) {
         letterSoupCompleted = true;
         document.getElementById("memory-game").style.display = "block";
@@ -556,7 +570,6 @@
     function initMemoryGame() {
       const board = document.getElementById("memory-board");
       board.innerHTML = "";
-      // Duplicar y barajar símbolos para 10 parejas (20 cartas)
       const symbols = [...memorySymbols, ...memorySymbols];
       shuffle(symbols);
       symbols.forEach(symbol => {
