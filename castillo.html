@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🏰 Castillo de Gonzalo</title>
-  <!-- Asegúrate de que la ruta al CSS sea correcta -->
   <link rel="stylesheet" href="styles/style.css">
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
   <style>
@@ -45,9 +44,6 @@
       text-align: center;
       margin-bottom: 10px;
     }
-    /* --- Eliminamos los botones de otras paradas --- */
-    /* (No se incluye el panel .stop-selector) */
-
     /* --- Verificación de Ubicación --- */
     #location-check {
       text-align: center;
@@ -93,7 +89,6 @@
       width: 100%;
       height: 300px;
       object-fit: cover;
-      /* Con cover las imágenes se ajustan al contenedor */
       border-radius: 10px;
       border: 2px solid #6e3b1b;
     }
@@ -138,12 +133,8 @@
       border-radius: 10px;
       background: #fff;
     }
-    #combination-lock h2 {
-      margin-bottom: 10px;
-    }
-    #dials {
-      margin-bottom: 10px;
-    }
+    #combination-lock h2 { margin-bottom: 10px; }
+    #dials { margin-bottom: 10px; }
     .dial {
       display: inline-block;
       width: 60px;
@@ -160,7 +151,7 @@
     #check-combination {
       margin-top: 10px;
     }
-    /* --- Pista para el Candado (en pergamino) --- */
+    /* --- Pista para el Candado (pergamino) --- */
     #pista-lock {
       display: none;
       margin-top: 10px;
@@ -171,10 +162,7 @@
       background-size: cover;
       text-align: center;
     }
-    #pista-lock p {
-      font-size: 16px;
-      color: #000;
-    }
+    #pista-lock p { font-size: 16px; color: #000; }
     #pista-lock button {
       margin-top: 10px;
       padding: 5px 10px;
@@ -239,7 +227,7 @@
           <span class="music-icon">🎵</span> Pausar Música
         </button>
       </div>
-      <!-- Se han eliminado los botones de otras paradas -->
+      <!-- Se han eliminado los botones de navegación a otras paradas -->
     </header>
 
     <section id="content">
@@ -292,17 +280,17 @@
             <h2>Retos Visuales: Afina tus sentidos</h2>
             <p>1. ¿Qué marcó la fachada principal del castillo?</p>
             <div id="visual-opciones-1">
-              <button class="action-btn" onclick="checkVisualAnswer('Escudos', 'Escudos', 1)">Escudos</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Murallas', 'Escudos', 1)">Murallas</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Columnas', 'Escudos', 1)">Columnas</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Escudos','Escudos',1)">Escudos</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Murallas','Escudos',1)">Murallas</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Columnas','Escudos',1)">Columnas</button>
             </div>
             <p id="visual-resultado-1"></p>
 
             <p>2. ¿Qué destaca en el interior del recinto?</p>
             <div id="visual-opciones-2">
-              <button class="action-btn" onclick="checkVisualAnswer('Arcos', 'Arcos', 2)">Arcos</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Ventanas', 'Arcos', 2)">Ventanas</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Mosaicos', 'Arcos', 2)">Mosaicos</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Arcos','Arcos',2)">Arcos</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Ventanas','Arcos',2)">Ventanas</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Mosaicos','Arcos',2)">Mosaicos</button>
             </div>
             <p id="visual-resultado-2"></p>
           </div>
@@ -313,25 +301,25 @@
           <h2>Quiz: Descubre el mensaje</h2>
           <p>1. ¿En qué siglo nació este castillo?</p>
           <div id="quiz-opciones-1">
-            <button class="action-btn" onclick="checkAnswer('XII', 'XIII', 1)">XII</button>
-            <button class="action-btn" onclick="checkAnswer('XIII', 'XIII', 1)">XIII</button>
-            <button class="action-btn" onclick="checkAnswer('XIV', 'XIII', 1)">XIV</button>
+            <button class="action-btn" onclick="checkAnswer('XII','XIII',1)">XII</button>
+            <button class="action-btn" onclick="checkAnswer('XIII','XIII',1)">XIII</button>
+            <button class="action-btn" onclick="checkAnswer('XIV','XIII',1)">XIV</button>
           </div>
           <p id="quiz-resultado-1"></p>
 
           <p>2. ¿Qué función tuvo el castillo desde el siglo XIX?</p>
           <div id="quiz-opciones-2">
-            <button class="action-btn" onclick="checkAnswer('Discoteca', 'Cementerio', 2)">Discoteca</button>
-            <button class="action-btn" onclick="checkAnswer('Cementerio', 'Cementerio', 2)">Cementerio</button>
-            <button class="action-btn" onclick="checkAnswer('Museo', 'Cementerio', 2)">Museo</button>
+            <button class="action-btn" onclick="checkAnswer('Discoteca','Cementerio',2)">Discoteca</button>
+            <button class="action-btn" onclick="checkAnswer('Cementerio','Cementerio',2)">Cementerio</button>
+            <button class="action-btn" onclick="checkAnswer('Museo','Cementerio',2)">Museo</button>
           </div>
           <p id="quiz-resultado-2"></p>
 
           <p>3. ¿Qué ofrece hoy el castillo?</p>
           <div id="quiz-opciones-3">
-            <button class="action-btn" onclick="checkAnswer('Museo', 'Centro de Interpretación', 3)">Museo</button>
-            <button class="action-btn" onclick="checkAnswer('Centro de Interpretación', 'Centro de Interpretación', 3)">Centro de Interpretación</button>
-            <button class="action-btn" onclick="checkAnswer('Biblioteca', 'Centro de Interpretación', 3)">Biblioteca</button>
+            <button class="action-btn" onclick="checkAnswer('Museo','Centro de Interpretación',3)">Museo</button>
+            <button class="action-btn" onclick="checkAnswer('Centro de Interpretación','Centro de Interpretación',3)">Centro de Interpretación</button>
+            <button class="action-btn" onclick="checkAnswer('Biblioteca','Centro de Interpretación',3)">Biblioteca</button>
           </div>
           <p id="quiz-resultado-3"></p>
         </div>
@@ -349,7 +337,7 @@
           <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
           <p id="combination-status"></p>
           <button class="hint-btn" onclick="showPistaLock()">Pista para el Candado</button>
-          <!-- El pergamino de la pista se mostrará debajo del botón de pista -->
+          <!-- La pista se mostrará debajo del botón, y se podrá cerrar -->
           <div id="pista-lock">
             <p>
               La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!
@@ -445,7 +433,6 @@
       const prevButton = document.querySelector('.prev-slide');
       const nextButton = document.querySelector('.next-slide');
       const carouselContainer = document.querySelector('.carousel-slides');
-      // Forzamos el ancho total según el número de slides
       carouselContainer.style.width = (totalSlides * 100) + '%';
       function updateCarousel() {
         carouselContainer.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
@@ -477,18 +464,17 @@
       if (selected === correct) {
         result.textContent = "¡Correcto!";
         playSound("success-sound");
-        if(n === 1) quiz1Correct = true;
-        if(n === 2) quiz2Correct = true;
-        if(n === 3) quiz3Correct = true;
+        if (n === 1) quiz1Correct = true;
+        if (n === 2) quiz2Correct = true;
+        if (n === 3) quiz3Correct = true;
       } else {
         result.textContent = "Incorrecto. Vuelve a intentarlo.";
         playSound("error-sound");
-        if(n === 1) quiz1Correct = false;
-        if(n === 2) quiz2Correct = false;
-        if(n === 3) quiz3Correct = false;
+        if (n === 1) quiz1Correct = false;
+        if (n === 2) quiz2Correct = false;
+        if (n === 3) quiz3Correct = false;
       }
       if (quiz1Correct && quiz2Correct && quiz3Correct) {
-        // Ocultar el quiz y mostrar el minijuego del candado
         document.querySelector('.quiz').style.display = "none";
         initCombinationLock();
       }
