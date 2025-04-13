@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🏰 El Castillo de Gonzalo</title>
+  <title>🏰 Castillo de Gonzalo</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
   <style>
@@ -44,7 +44,7 @@
       text-align: center;
       margin-bottom: 10px;
     }
-    /* --- Verificación de Ubicación --- */
+    /* --- Sección de Verificación de Ubicación --- */
     #location-check {
       text-align: center;
       margin-bottom: 30px;
@@ -110,8 +110,7 @@
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
     /* --- Secciones de Retos y Quiz --- */
-    .visual-challenge,
-    .quiz {
+    .visual-challenge, .quiz {
       margin: 20px 0;
       text-align: center;
     }
@@ -124,7 +123,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    /* --- Minijuego del Candado (Combination Lock) --- */
+    /* --- Minijuego: Candado del Cofre --- */
     #combination-lock {
       display: none;
       text-align: center;
@@ -203,14 +202,14 @@
 <body>
   <div class="container">
     <header>
-      <h1>🏰 El Castillo de Gonzalo</h1>
+      <h1>🏰 Castillo de Gonzalo</h1>
       <div class="music-control">
         <button class="action-btn music-btn" onclick="toggleMusic()">
           <span class="music-icon">🎵</span> Pausar Música
         </button>
       </div>
       <div class="stop-selector">
-        <!-- Botones para navegar entre paradas, por ejemplo -->
+        <!-- Navegación a otras paradas -->
         <button class="action-btn" onclick="window.location.href='castillo.html'">Castillo</button>
         <button class="action-btn" onclick="window.location.href='plaza.html'">Plaza</button>
         <button class="action-btn" onclick="window.location.href='iglesia.html'">Iglesia</button>
@@ -233,28 +232,30 @@
         <canvas id="sonar-radar" width="200" height="200"></canvas>
       </div>
 
-      <!-- Contenido del Juego (se muestra tras la verificación) -->
+      <!-- Contenido del Juego (se muestra tras verificación) -->
       <div id="game-content" style="display: none;">
         <div class="content-wrapper">
-          <!-- Carrusel -->
+          <!-- Carrusel Principal -->
           <div class="carousel">
             <div class="carousel-slides" id="main-carousel">
               <div class="slide active" data-slide="0">
                 <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo">
                 <p class="carousel-info">
-                  <strong>Entrada Fortificada:</strong> Construida en el siglo XIII como defensa en la Reconquista. En el siglo XV el castillo fue remodelado en palacio por el Conde de Miranda. También sirvió como cárcel en el siglo XVIII. <span class="hidden-detail" onclick="revealHint('Explora el castillo a su alrededor y entra hasta la parte más alta, desde allí se ven algunos paredones.')">¡Busca aquí!</span>
+                  <strong>Entrada Fortificada:</strong> Construida en el siglo XIII como defensa en la Reconquista. En el siglo XV se remodeló en palacio por el Conde de Miranda. <br>
+                  <em>En 1834 se instaló un cementerio dentro de sus muros.</em><br>
+                  <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
                 </p>
               </div>
               <div class="slide" data-slide="1">
                 <img src="images/castillo-torre.jpg" alt="Torre del Homenaje">
                 <p class="carousel-info">
-                  <strong>Torre del Homenaje:</strong> Dañada por un rayo en el siglo XX y restaurada para contar su historia, ofrece una de las mejores vistas de toda la Sierra de Francia.
+                  <strong>Torre del Homenaje:</strong> Dañada por un rayo en el siglo XX y restaurada para contar su historia, ofrece una de las mejores vistas de la Sierra de Francia.
                 </p>
               </div>
               <div class="slide" data-slide="2">
                 <img src="images/castillo-vista.jpg" alt="Vista Panorámica">
                 <p class="carousel-info">
-                  <strong>Vista Panorámica:</strong> Hoy, el Centro de Interpretación ofrece vistas a las sierras de Béjar y Francia desde la torre. Desde 1834 alberga el cementerio municipal.
+                  <strong>Vista Panorámica:</strong> El Centro de Interpretación ofrece vistas a las sierras de Béjar y Francia; desde 1834 alberga el cementerio municipal.
                 </p>
               </div>
             </div>
@@ -265,23 +266,23 @@
           <!-- Retos Visuales -->
           <div class="visual-challenge">
             <h2>Retos Visuales: Afina tus sentidos</h2>
-            <p>1. ¿Qué marcó la torre del homenaje?</p>
+            <p>1. ¿Qué marcó la fachada principal del castillo?</p>
             <div id="visual-opciones-1">
-              <button class="action-btn" onclick="checkVisualAnswer('Incendio', 'Rayo', 1)">Incendio</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Rayo', 'Rayo', 1)">Rayo</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Terremoto', 'Rayo', 1)">Terremoto</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Escudos', 'Escudos', 1)">Escudos</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Murallas', 'Escudos', 1)">Murallas</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Columnas', 'Escudos', 1)">Columnas</button>
             </div>
             <p id="visual-resultado-1"></p>
-            <button class="hint-btn" onclick="showHint('Un relámpago del siglo XX dejó su huella.')">Pista</button>
+            <button class="hint-btn" onclick="showHint('Fíjate en el emblema que adorna la entrada principal.')">Pista</button>
 
-            <p>2. ¿Qué destaca en la entrada fortificada?</p>
+            <p>2. ¿Qué destaca en el interior del recinto?</p>
             <div id="visual-opciones-2">
-              <button class="action-btn" onclick="checkVisualAnswer('Arcos', 'Muralla', 2)">Arcos</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Muralla', 'Muralla', 2)">Muralla</button>
-              <button class="action-btn" onclick="checkVisualAnswer('Torreones', 'Muralla', 2)">Torreones</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Arcos', 'Arcos', 2)">Arcos</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Ventanas', 'Arcos', 2)">Ventanas</button>
+              <button class="action-btn" onclick="checkVisualAnswer('Mosaicos', 'Arcos', 2)">Mosaicos</button>
             </div>
             <p id="visual-resultado-2"></p>
-            <button class="hint-btn" onclick="showHint('Es lo que rodea la entrada.')">Pista</button>
+            <button class="hint-btn" onclick="showHint('Observa los detalles arquitectónicos que se repiten en el interior.')">Pista</button>
           </div>
         </div>
 
@@ -295,16 +296,16 @@
             <button class="action-btn" onclick="checkAnswer('XIV', 'XIII', 1)">XIV</button>
           </div>
           <p id="quiz-resultado-1"></p>
-          <button class="hint-btn" onclick="showHint('Fue durante la Reconquista.')">Pista</button>
+          <button class="hint-btn" onclick="showHint('Piensa en la época de la Reconquista.')">Pista</button>
 
-          <p>2. ¿Qué alberga el recinto desde 1834?</p>
+          <p>2. ¿Qué función tuvo el castillo desde el siglo XIX?</p>
           <div id="quiz-opciones-2">
             <button class="action-btn" onclick="checkAnswer('Discoteca', 'Cementerio', 2)">Discoteca</button>
             <button class="action-btn" onclick="checkAnswer('Cementerio', 'Cementerio', 2)">Cementerio</button>
-            <button class="action-btn" onclick="checkAnswer('Parque infantil', 'Cementerio', 2)">Parque infantil</button>
+            <button class="action-btn" onclick="checkAnswer('Museo', 'Cementerio', 2)">Museo</button>
           </div>
           <p id="quiz-resultado-2"></p>
-          <button class="hint-btn" onclick="showHint('Un descanso muy largo, se puede decir eterno.')">Pista</button>
+          <button class="hint-btn" onclick="showHint('Recuerda que se usó como lugar de descanso eterno.')">Pista</button>
 
           <p>3. ¿Qué ofrece hoy el castillo?</p>
           <div id="quiz-opciones-3">
@@ -313,10 +314,10 @@
             <button class="action-btn" onclick="checkAnswer('Biblioteca', 'Centro de Interpretación', 3)">Biblioteca</button>
           </div>
           <p id="quiz-resultado-3"></p>
-          <button class="hint-btn" onclick="showHint('¿De verdad necesitas una pista? Tiene que ver con la biosfera.')">Pista</button>
+          <button class="hint-btn" onclick="showHint('La respuesta guarda relación con la renovación moderna del castillo.')">Pista</button>
         </div>
 
-        <!-- Minijuego: Candado para el Cofre -->
+        <!-- Minijuego: Candado para el Cofre (sustituyendo el puzzle de cántaros) -->
         <div id="combination-lock">
           <h2>Candado del Cofre</h2>
           <p>Gira los diales para formar la combinación correcta.</p>
@@ -328,20 +329,23 @@
           </div>
           <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
           <p id="combination-status"></p>
+          <button class="hint-btn" onclick="showPistaLock()">Pista para el Candado</button>
         </div>
 
         <!-- Fragmento Final -->
         <div class="fragmento-final" id="fragmento-final">
           <p>
             <strong>Fragmento del Mensaje:</strong>
-            <span id="message-piece" style="display: none;">"El secreto"</span>
+            <span id="message-piece" style="display: none;">"El secreto del castillo"</span>
           </p>
           <p><strong>QR en el pueblo:</strong> CASTILLO-1523 (cerca de la entrada).</p>
           <p><strong>Dato Curioso:</strong> Cerámicas y monedas del siglo XIII halladas aquí inspiraron a Gonzalo.</p>
         </div>
 
         <div id="continue-button" style="display: none;">
-          <button class="action-btn" onclick="window.location.href='felicitaciones.html?stop=castillo'">Continuar búsqueda</button>
+          <button class="action-btn" onclick="window.location.href='felicitaciones.html?stop=castillo'">
+            Continuar búsqueda
+          </button>
         </div>
       </div>
     </section>
@@ -350,7 +354,7 @@
     <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
-    <audio id="ambient-sound" src="sounds/musica-medieval-2.mp3" preload="auto" loop></audio>
+    <audio id="ambient-sound" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
     <audio id="sonar-ping" src="sounds/sonar-ping.mp3" preload="auto"></audio>
   </div>
 
@@ -359,10 +363,12 @@
   </footer>
 
   <script>
-    /* --- Funciones de verificación de ubicación --- */
-    const targetLat = 40.123456,
-          targetLon = -3.123456,
-          thresholdDistance = 50;
+    /*----------------------------------------*/
+    /* 1. VERIFICACIÓN DE UBICACIÓN           */
+    /*----------------------------------------*/
+    const targetLat = 40.123456;
+    const targetLon = -3.123456;
+    const thresholdDistance = 50;
     function checkLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
@@ -371,9 +377,9 @@
       }
     }
     function geoSuccess(position) {
-      const lat = position.coords.latitude,
-            lon = position.coords.longitude,
-            distance = calculateDistance(lat, lon, targetLat, targetLon);
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const distance = calculateDistance(lat, lon, targetLat, targetLon);
       if (distance <= thresholdDistance) {
         unlockStop();
       } else {
@@ -384,14 +390,12 @@
       document.getElementById("location-status").textContent = "Error al obtener tu ubicación: " + err.message;
     }
     function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371e3,
-            toRad = x => x * Math.PI / 180,
-            φ1 = toRad(lat1),
-            φ2 = toRad(lat2),
-            Δφ = toRad(lat2 - lat1),
-            Δλ = toRad(lon2 - lon1),
-            a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2,
-            c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      const R = 6371e3;
+      const toRad = (x) => x * Math.PI / 180;
+      const φ1 = toRad(lat1), φ2 = toRad(lat2);
+      const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
+      const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
     function checkLocationManual() {
@@ -405,34 +409,41 @@
     function unlockStop() {
       document.getElementById("location-check").style.display = "none";
       document.getElementById("game-content").style.display = "block";
-      initMainCarousel();
+      initCarousel();
       playSound("ambient-sound");
     }
-    
-    /* --- Carrusel Principal --- */
-    function initMainCarousel() {
-      let currentSlide = 0;
-      const slides = document.querySelectorAll('#main-carousel .slide');
+
+    /*----------------------------------------*/
+    /* 2. CARRUSEL PRINCIPAL                  */
+    /*----------------------------------------*/
+    let currentSlide = 0, slides;
+    function initCarousel() {
+      slides = document.querySelectorAll('.slide');
       const totalSlides = slides.length;
       const prevButton = document.querySelector('.prev-slide');
       const nextButton = document.querySelector('.next-slide');
-      const carouselContainer = document.querySelector('#main-carousel');
-      // Ajusta el ancho total
+      const carouselContainer = document.querySelector('.carousel-slides');
+      // Forzamos el ancho total del contenedor según el número de slides
       carouselContainer.style.width = (totalSlides * 100) + '%';
+      
       function updateCarousel() {
         carouselContainer.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
       }
+      
       prevButton.addEventListener('click', function() {
         currentSlide = (currentSlide > 0) ? currentSlide - 1 : totalSlides - 1;
         updateCarousel();
       });
+      
       nextButton.addEventListener('click', function() {
         currentSlide = (currentSlide < totalSlides - 1) ? currentSlide + 1 : 0;
         updateCarousel();
       });
     }
-    
-    /* --- Retos Visuales y Quiz --- */
+
+    /*----------------------------------------*/
+    /* 3. RETOS VISUALES Y QUIZ              */
+    /*----------------------------------------*/
     let quiz1Correct = false, quiz2Correct = false, quiz3Correct = false;
     function checkVisualAnswer(selected, correct, n) {
       const result = document.getElementById('visual-resultado-' + n);
@@ -449,24 +460,25 @@
       if (selected === correct) {
         result.textContent = "¡Correcto!";
         playSound("success-sound");
-        if (n === 1) quiz1Correct = true;
-        if (n === 2) quiz2Correct = true;
-        if (n === 3) quiz3Correct = true;
+        if(n === 1) quiz1Correct = true;
+        if(n === 2) quiz2Correct = true;
+        if(n === 3) quiz3Correct = true;
       } else {
         result.textContent = "Incorrecto. Vuelve a intentarlo.";
         playSound("error-sound");
-        if (n === 1) quiz1Correct = false;
-        if (n === 2) quiz2Correct = false;
-        if (n === 3) quiz3Correct = false;
+        if(n === 1) quiz1Correct = false;
+        if(n === 2) quiz2Correct = false;
+        if(n === 3) quiz3Correct = false;
       }
       if (quiz1Correct && quiz2Correct && quiz3Correct) {
-        // Ocultar el quiz y mostrar el minijuego del candado (candado visible)
         document.querySelector('.quiz').style.display = "none";
         initCombinationLock();
       }
     }
-    
-    /* --- Minijuego: Candado (Combination Lock) --- */
+
+    /*----------------------------------------*/
+    /* 4. MINIJUEGO: CANDADO DEL COFRE         */
+    /*----------------------------------------*/
     function initCombinationLock() {
       document.getElementById("combination-lock").style.display = "block";
       const dials = document.querySelectorAll(".dial");
@@ -474,32 +486,24 @@
         dial.setAttribute("data-digit", "0");
         dial.textContent = "0";
         dial.addEventListener("click", () => {
-          let digit = parseInt(dial.getAttribute("data-digit"));
-          digit = (digit + 1) % 10;
-          dial.setAttribute("data-digit", digit);
-          dial.textContent = digit;
+          let current = parseInt(dial.getAttribute("data-digit"));
+          current = (current + 1) % 10;
+          dial.setAttribute("data-digit", current);
+          dial.textContent = current;
         });
       });
       generateSecretCombination();
     }
-    
     let secretCombination = "";
     function generateSecretCombination() {
       const keys = ["1834", "1949", "2010"];
       secretCombination = keys[Math.floor(Math.random() * keys.length)];
-      // Mostrar la pista en la consola (puedes opcionalmente revelar la pista en pantalla)
       console.log("Combinación secreta:", secretCombination);
-      // En este ejemplo, dejamos la pista en la sección de 'combination-lock'
-      // O puedes agregar algo como: document.getElementById("combination-hint").textContent = "Pista: Busca la fecha oculta en las imágenes del carrusel.";
-      // Aquí añadiremos la pista a través de una función a la que se puede llamar "showPista"
-      showPista("La clave es la fecha que marca un cambio importante en la historia del castillo. ¡Búscala en las imágenes!");
+      showPistaLock("La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!");
     }
-    
-    function showPista(text) {
-      // Puedes usar una alerta o agregar un elemento en pantalla para mostrar la pista
-      alert("Pista: " + text);
+    function showPistaLock(text) {
+      alert("Pista Candado: " + text);
     }
-    
     function checkCombination() {
       const dials = document.querySelectorAll(".dial");
       let userCombination = "";
@@ -513,32 +517,38 @@
         document.getElementById("combination-status").textContent = "Combinación incorrecta. Inténtalo de nuevo.";
       }
     }
-    
-    /* --- Fragmento Final / Continuar --- */
-    let challengeCompleted = false;
+
+    /*----------------------------------------*/
+    /* 5. FRAGMENTO FINAL / CONTINUAR         */
+    /*----------------------------------------*/
     function unlockFinalFragment() {
-      if (!challengeCompleted) {
-        challengeCompleted = true;
-        document.getElementById("combination-lock").style.display = "none";
-        document.getElementById("fragmento-final").style.display = "block";
-        document.getElementById("continue-button").style.display = "block";
-        updateChronicle();
-        updateRanking();
-        playSound("success-sound");
-      }
+      document.getElementById("combination-lock").style.display = "none";
+      document.getElementById("fragmento-final").style.display = "block";
+      document.getElementById("continue-button").style.display = "block";
+      updateChronicle();
+      updateRanking();
+      playSound("cheers-sound");
     }
-    
     function updateChronicle() {
-      localStorage.setItem("cronica_castillo", "Fragmento: El secreto");
+      localStorage.setItem("cronica_castillo", document.getElementById("message-piece").textContent);
     }
-    
     function updateRanking() {
       let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
       ranking.push({ stop: "castillo", score: 100 });
       localStorage.setItem("ranking", JSON.stringify(ranking));
     }
-    
-    /* --- Botón de Música --- */
+
+    /*----------------------------------------*/
+    /* 6. SONIDOS                             */
+    /*----------------------------------------*/
+    function playSound(id) {
+      const sound = document.getElementById(id);
+      if (sound) sound.play();
+    }
+
+    /*----------------------------------------*/
+    /* 7. BOTÓN DE MÚSICA                      */
+    /*----------------------------------------*/
     function toggleMusic() {
       const backgroundMusic = document.getElementById('ambient-sound');
       const musicBtn = document.querySelector('.music-btn');
@@ -550,21 +560,11 @@
         musicBtn.innerHTML = '<span class="music-icon">🔇</span> Reproducir Música';
       }
     }
-    
-    /* --- Función para reproducir sonidos --- */
-    function playSound(id) {
-      const sound = document.getElementById(id);
-      if (sound) sound.play();
-    }
-    
-    /* --- LOCALSTORAGE --- */
+
+    /*----------------------------------------*/
+    /* 8. LOCALSTORAGE                        */
+    /*----------------------------------------*/
     localStorage.setItem("castillo-completed", "true");
-  </script>
-  
-  <!-- Fin del minijuego: Panel del candado se coloca aquí (fuera de la estructura principal para mayor visibilidad) -->
-  
-  <script>
-    // Se carga el script principal (si tu proyecto lo requiere, en este ejemplo todo está en línea)
   </script>
 </body>
 </html>
