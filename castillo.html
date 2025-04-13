@@ -92,6 +92,22 @@
       border-radius: 10px;
       border: 2px solid #6b3e2e;
     }
+    /* Reglas especiales para el texto de las diapositivas */
+    .carousel-slide p {
+      font-family: "Georgia", serif;
+      font-size: 16px;
+      color: #2e2e2e;
+      line-height: 1.5;
+      margin: 10px auto;
+      max-width: 800px;
+    }
+    .carousel-slide a {
+      color: #5e3b1b;
+      text-decoration: underline;
+    }
+    .carousel-slide a:hover {
+      color: #a65c3a;
+    }
     .carousel-prev, .carousel-next {
       position: absolute;
       top: 50%;
@@ -125,7 +141,6 @@
       text-align: center;
       margin-top: 20px;
       padding: 15px;
-      /* Se quita fondo y borde para que se vea solo el cofre */
       border: none;
       border-radius: 10px;
       background: none;
@@ -139,7 +154,7 @@
       position: relative;
       display: inline-block;
       margin: 0 auto;
-      max-width: 600px; /* Ajusta según tu diseño */
+      max-width: 600px;
       width: 100%;
     }
     .cofre-img {
@@ -154,7 +169,7 @@
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      gap: 10px;      /* Espacio entre los diales */
+      gap: 10px;
     }
     .dial {
       width: 45px;
@@ -237,7 +252,6 @@
         font-size: 20px;
         padding: 6px;
       }
-      /* Ajusta posición de diales en móviles si lo deseas */
       #dials {
         top: 30%;
       }
@@ -292,25 +306,31 @@
           <!-- Carrusel con tres imágenes, texto descriptivo y contexto histórico -->
           <div class="carousel-container">
             <div class="carousel-slides">
+              <!-- Slide 1 -->
               <div class="carousel-slide">
                 <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
                 <p>
                   <strong>Entrada Fortificada:</strong> Construida en el siglo XIII, sirvió de defensa en la Reconquista y fue remodelada en el siglo XV. <br>
-                  <em>1834:</em> Se trasladó el cementerio local dentro de los muros del castillo.
+                  <em>1834:</em> Se trasladó el cementerio local dentro de los muros del castillo. <br>
+                  <a href="https://es.wikipedia.org/wiki/Castillo" target="_blank">Más información</a>
                 </p>
               </div>
+              <!-- Slide 2: Imagen mostrada entera -->
               <div class="carousel-slide">
-                <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" />
+                <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" style="object-fit: contain; height: auto; max-height:300px;" />
                 <p>
                   <strong>Torre del Homenaje:</strong> Dañada por un rayo en el siglo XX, fue restaurada y ofrece vistas espectaculares. <br>
-                  <em>1949:</em> Declarada Bien de Interés Cultural.
+                  <em>1949:</em> Declarada Bien de Interés Cultural. <br>
+                  <a href="https://es.wikipedia.org/wiki/Bien_de_Inter%C3%A9s_Cultural" target="_blank">Más información</a>
                 </p>
               </div>
+              <!-- Slide 3 -->
               <div class="carousel-slide">
                 <img src="images/castillo-vista.jpg" alt="Vista Panorámica" />
                 <p>
                   <strong>Vista Panorámica:</strong> Desde aquí se observan las sierras de Béjar y Francia, impregnadas de historia. <br>
-                  <em>2010:</em> Reformada para albergar el Centro de Interpretación de la Biosfera de las Sierras de Francia y Béjar.
+                  <em>2010:</em> Reformada para albergar el Centro de Interpretación de la Biosfera de las Sierras de Francia y Béjar. <br>
+                  <a href="https://www.miteco.gob.es/" target="_blank">Más información</a>
                 </p>
               </div>
             </div>
@@ -373,7 +393,7 @@
           <div class="cofre-container">
             <!-- Imagen del cofre sin fondo -->
             <img src="images/cofre.png" alt="Cofre Antiguo" class="cofre-img" />
-            <!-- Diales superpuestos -->
+            <!-- Dials superpuestos -->
             <div id="dials">
               <div class="dial" data-digit="0">0</div>
               <div class="dial" data-digit="0">0</div>
@@ -548,11 +568,10 @@
       const keys = ["1834", "1949", "2010"];
       secretCombination = keys[Math.floor(Math.random() * keys.length)];
       console.log("Combinación secreta:", secretCombination);
-      // Al generar la combinación se actualiza la pista por defecto
       const pistaDiv = document.getElementById("pista-lock");
       pistaDiv.querySelector("p").textContent = "La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!";
     }
-    // Función de toggle para la pista del candado
+    // Función toggle para la pista
     function togglePistaLock() {
       const pistaDiv = document.getElementById("pista-lock");
       if (pistaDiv.style.display === "block") {
