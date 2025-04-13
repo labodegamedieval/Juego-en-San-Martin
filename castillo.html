@@ -40,11 +40,8 @@
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    .music-control {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    /* --- Verificación de Ubicación --- */
+    .music-control { text-align: center; margin-bottom: 10px; }
+    /* --- Ubicación --- */
     #location-check {
       text-align: center;
       margin-bottom: 30px;
@@ -88,7 +85,7 @@
     .slide img {
       width: 100%;
       height: 300px;
-      object-fit: cover;
+      object-fit: contain;
       border-radius: 10px;
       border: 2px solid #6e3b1b;
     }
@@ -114,7 +111,15 @@
       margin: 20px 0;
       text-align: center;
     }
-    /* (Se han eliminado los botones de pista para estas secciones) */
+    .hint-btn {
+      margin: 5px;
+      padding: 5px 10px;
+      font-size: 14px;
+      background: #f0e68c;
+      border: 1px solid #5e3b1b;
+      border-radius: 5px;
+      cursor: pointer;
+    }
     /* --- Minijuego: Candado del Cofre --- */
     #combination-lock {
       display: none;
@@ -126,9 +131,7 @@
       background: #fff;
     }
     #combination-lock h2 { margin-bottom: 10px; }
-    #dials {
-      margin-bottom: 10px;
-    }
+    #dials { margin-bottom: 10px; }
     .dial {
       display: inline-block;
       width: 60px;
@@ -144,6 +147,32 @@
     }
     #check-combination {
       margin-top: 10px;
+    }
+    /* --- Pista para el Candado en Pergamino --- */
+    #pista-lock {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: url('images/pergamino.png') no-repeat center center;
+      background-size: cover;
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+    }
+    #pista-lock p { font-size: 16px; color: #000; }
+    #pista-lock button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-size: 14px;
+      background: #dec79b;
+      border: 1px solid #5e3b1b;
+      border-radius: 5px;
+      cursor: pointer;
     }
     /* --- Fragmento Final --- */
     .fragmento-final {
@@ -201,7 +230,6 @@
         </button>
       </div>
       <div class="stop-selector">
-        <!-- Navegación entre paradas -->
         <button class="action-btn" onclick="window.location.href='castillo.html'">Castillo</button>
         <button class="action-btn" onclick="window.location.href='plaza.html'">Plaza</button>
         <button class="action-btn" onclick="window.location.href='iglesia.html'">Iglesia</button>
@@ -318,18 +346,28 @@
           <button class="hint-btn" onclick="showPistaLock()">Pista para el Candado</button>
         </div>
 
+        <!-- Pista para el Candado en un pergamino -->
+        <div id="pista-lock">
+          <p>
+            La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!
+          </p>
+          <button class="action-btn" onclick="closePistaLock()">Cerrar Pista</button>
+        </div>
+
         <!-- Fragmento Final -->
         <div class="fragmento-final" id="fragmento-final">
           <p>
             <strong>Fragmento del Mensaje:</strong>
-            <span id="message-piece" style="display: none;">"El secreto del castillo"</span>
+            <span id="message-piece" style="display: none;">Oculto</span>
           </p>
           <p><strong>QR en el pueblo:</strong> CASTILLO-1523 (cerca de la entrada).</p>
           <p><strong>Dato Curioso:</strong> Cerámicas y monedas del siglo XIII halladas aquí inspiraron a Gonzalo.</p>
         </div>
 
         <div id="continue-button" style="display: none;">
-          <button class="action-btn" onclick="window.location.href='felicitaciones.html?stop=castillo'">Continuar búsqueda</button>
+          <button class="action-btn" onclick="window.location.href='felicitaciones.html?stop=castillo'">
+            Continuar búsqueda
+          </button>
         </div>
       </div>
     </section>
@@ -339,11 +377,13 @@
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
     <audio id="ambient-sound" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-
+    <audio id="sonar-ping" src="sounds/sonar-ping.mp3" preload="auto"></audio>
   </div>
 
   <footer>
-    <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
+    <p>© 2025 La Bodega Medieval | 
+      <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
+    </p>
   </footer>
 
   <script>
@@ -403,12 +443,10 @@
       const prevButton = document.querySelector('.prev-slide');
       const nextButton = document.querySelector('.next-slide');
       const carouselContainer = document.querySelector('.carousel-slides');
-      carouselContainer.style.width = (totalSlides * 100) + '%'; // Fuerza ancho total
-      
+      carouselContainer.style.width = (totalSlides * 100) + '%';
       function updateCarousel() {
         carouselContainer.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
       }
-      
       prevButton.addEventListener('click', function() {
         currentSlide = (currentSlide > 0) ? currentSlide - 1 : totalSlides - 1;
         updateCarousel();
@@ -473,10 +511,16 @@
       const keys = ["1834", "1949", "2010"];
       secretCombination = keys[Math.floor(Math.random() * keys.length)];
       console.log("Combinación secreta:", secretCombination);
+      // En vez de alert, mostramos la pista en un pergamino
       showPistaLock("La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!");
     }
     function showPistaLock(text) {
-      alert("Pista para el Candado: " + text);
+      const pistaDiv = document.getElementById("pista-lock");
+      pistaDiv.style.display = "block";
+      // Opcionalmente puedes actualizar el contenido si fuera necesario
+    }
+    function closePistaLock() {
+      document.getElementById("pista-lock").style.display = "none";
     }
     function checkCombination() {
       const dials = document.querySelectorAll(".dial");
