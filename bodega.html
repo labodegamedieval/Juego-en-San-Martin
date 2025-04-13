@@ -113,13 +113,13 @@
     /* ============================
          Minijuego 1: Puzzle Arrastrable (Drag & Drop)
        ============================ */
-    /* Separamos el área destino y el contenedor de piezas */
+    /* Área general del Puzzle: contiene el área destino y el contenedor de piezas */
     #puzzle-section {
       display: none;
       width: 400px;
       margin: 20px auto;
     }
-    /* Área destino: cuadrícula 4x4 */
+    /* Área destino: cuadrícula 4×4 */
     #puzzle-target {
       width: 400px;
       height: 400px;
@@ -136,7 +136,7 @@
       height: 100px;
       box-sizing: border-box;
     }
-    /* Contenedor de piezas: se muestran esparcidas en un área independiente */
+    /* Contenedor de piezas: se colocan aquí las piezas esparcidas */
     #pieces-container {
       width: 400px;
       height: 200px;
@@ -159,7 +159,7 @@
     }
 
     /* ============================
-         Minijuegos: Quiz y Cata
+         Minijuego 2: Quiz (Preguntas corregidas)
        ============================ */
     #bodega-quiz, #final-game, #final-button {
       display: none;
@@ -264,36 +264,36 @@
           <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
         </div>
 
-        <!-- Minijuego 1: Puzzle Arrastrable -->
+        <!-- Minijuego 1: Puzzle Arrastrable (Drag & Drop) -->
         <div style="text-align:center; margin-bottom:20px;">
           <button class="action-btn" onclick="startPuzzleGame()">Iniciar Puzzle</button>
         </div>
-        <!-- Sección del Puzzle: Área destino y contenedor de piezas -->
+        <!-- Sección del Puzzle: Área destino (cuadrícula) y contenedor de piezas esparcidas -->
         <div id="puzzle-section">
           <div id="puzzle-target"></div>
           <div id="pieces-container"></div>
           <p id="puzzle-status" style="text-align:center; font-family:Georgia, serif; font-size:18px;"></p>
         </div>
 
-        <!-- Minijuego 2: Quiz de la Bodega -->
+        <!-- Minijuego 2: Quiz de la Bodega (Preguntas corregidas) -->
         <div id="bodega-quiz">
           <h2>📝 Quiz de la Bodega</h2>
-          <p>1. ¿Cuántas barricas históricas se conservan en la bodega?</p>
-          <button class="action-btn" onclick="checkQuizAnswer(1, '15')">15</button>
-          <button class="action-btn" onclick="checkQuizAnswer(1, '10')">10</button>
-          <button class="action-btn" onclick="checkQuizAnswer(1, '20')">20</button>
+          <p>1. ¿En qué siglo se estableció La Bodega Medieval?</p>
+          <button class="action-btn" onclick="checkQuizAnswer(1, 'Siglo XVI')">Siglo XV</button>
+          <button class="action-btn" onclick="checkQuizAnswer(1, 'Siglo XVI')">Siglo XVI</button>
+          <button class="action-btn" onclick="checkQuizAnswer(1, 'Siglo XVII')">Siglo XVII</button>
           <p id="quiz-result-1"></p>
 
-          <p>2. ¿Cuál es la uva emblemática utilizada en nuestros vinos?</p>
-          <button class="action-btn" onclick="checkQuizAnswer(2, 'Tempranillo')">Tempranillo</button>
-          <button class="action-btn" onclick="checkQuizAnswer(2, 'Cabernet Sauvignon')">Cabernet Sauvignon</button>
-          <button class="action-btn" onclick="checkQuizAnswer(2, 'Garnacha')">Garnacha</button>
+          <p>2. ¿Qué tipo de vino representa tradicionalmente la bodega?</p>
+          <button class="action-btn" onclick="checkQuizAnswer(2, 'Vino Tinto')">Vino Tinto</button>
+          <button class="action-btn" onclick="checkQuizAnswer(2, 'Vino Blanco')">Vino Blanco</button>
+          <button class="action-btn" onclick="checkQuizAnswer(2, 'Vino Rosado')">Vino Rosado</button>
           <p id="quiz-result-2"></p>
 
-          <p>3. ¿En qué región se encuentra la bodega?</p>
-          <button class="action-btn" onclick="checkQuizAnswer(3, 'La Rioja')">La Rioja</button>
-          <button class="action-btn" onclick="checkQuizAnswer(3, 'Ribera del Duero')">Ribera del Duero</button>
-          <button class="action-btn" onclick="checkQuizAnswer(3, 'Priorat')">Priorat</button>
+          <p>3. ¿Cuál es el elemento arquitectónico distintivo de la bodega?</p>
+          <button class="action-btn" onclick="checkQuizAnswer(3, 'Arco de medio punto')">Arco de medio punto</button>
+          <button class="action-btn" onclick="checkQuizAnswer(3, 'Bóveda romana')">Bóveda romana</button>
+          <button class="action-btn" onclick="checkQuizAnswer(3, 'Fachada barroca')">Fachada barroca</button>
           <p id="quiz-result-3"></p>
         </div>
 
@@ -334,7 +334,7 @@
          Funciones de Ubicación y Audio
        ============================ */
     function checkLocation() {
-      // Simulamos éxito inmediato para la demostración
+      // Para demostración: simulamos éxito inmediato
       document.getElementById("location-check").style.display = "none";
       document.getElementById("game-content").style.display = "block";
       playSound("background-music");
@@ -403,13 +403,13 @@
       const puzzleDimension = 400; // Dimensiones del área destino
       const pieceSize = puzzleDimension / gridSize; // 100px por pieza
 
-      // Limpiar área destino y contenedor de piezas
+      // Limpiar el área destino y el contenedor de piezas
       const puzzleTarget = document.getElementById("puzzle-target");
       puzzleTarget.innerHTML = "";
       const piecesContainer = document.getElementById("pieces-container");
       piecesContainer.innerHTML = "";
 
-      // Crear la cuadrícula destino (target zone)
+      // Crear la cuadrícula destino
       for (let i = 0; i < gridSize * gridSize; i++) {
          const cell = document.createElement("div");
          cell.classList.add("target-cell");
@@ -422,14 +422,12 @@
             const pieceId = e.dataTransfer.getData("text/plain");
             const piece = document.querySelector(`.puzzle-piece[data-id='${pieceId}']`);
             if (!piece) return;
-            // Calcular la posición de la celda relativa al contenedor destino
-            const cellRect = this.getBoundingClientRect();
-            const targetRect = puzzleTarget.getBoundingClientRect();
-            const left = cellRect.left - targetRect.left;
-            const top = cellRect.top - targetRect.top;
-            piece.style.left = left + "px";
-            piece.style.top = top + "px";
+            // Usar los offsets de la celda (cell) que, al ser hija de puzzleTarget, están en coordenadas relativas
+            piece.style.left = this.offsetLeft + "px";
+            piece.style.top = this.offsetTop + "px";
             piece.dataset.current = this.dataset.index;
+            // Para que el elemento fijo se ubique en el contenedor destino (por capas)
+            puzzleTarget.appendChild(piece);
             if(piece.dataset.id === this.dataset.index) {
                piece.classList.add("placed");
                piece.draggable = false;
@@ -442,7 +440,7 @@
          puzzleTarget.appendChild(cell);
       }
 
-      // Crear las piezas en el contenedor de piezas (mostrar esparcidas)
+      // Crear las piezas en el contenedor de piezas esparcidas
       const containerWidth = piecesContainer.clientWidth;
       const containerHeight = piecesContainer.clientHeight;
       for(let i = 0; i < gridSize * gridSize; i++){
@@ -468,7 +466,7 @@
          piece.addEventListener("dragend", function(e) {
              this.style.zIndex = "";
          });
-         // Agregar manejo de eventos táctiles para móviles
+         // Agregar soporte para eventos táctiles en móviles
          piece.addEventListener("touchstart", onTouchStart, false);
          piece.addEventListener("touchmove", onTouchMove, false);
          piece.addEventListener("touchend", onTouchEnd, false);
@@ -476,11 +474,11 @@
       }
     }
     
-    // Variables globales para el manejo táctil
+    // Variables globales para eventos táctiles
     let currentPiece = null;
     let touchOffsetX = 0;
     let touchOffsetY = 0;
-
+    
     function onTouchStart(e) {
       e.preventDefault();
       currentPiece = this;
@@ -494,7 +492,7 @@
       e.preventDefault();
       if (!currentPiece) return;
       const touch = e.touches[0];
-      // Obtener el rectángulo del contenedor puzzle-section para posición relativa
+      // Determinar posición relativa en puzzle-section (para que el drop se realice sobre puzzle-target)
       const containerRect = document.getElementById("puzzle-section").getBoundingClientRect();
       let newLeft = touch.clientX - containerRect.left - touchOffsetX;
       let newTop = touch.clientY - containerRect.top - touchOffsetY;
@@ -505,20 +503,25 @@
       e.preventDefault();
       if (!currentPiece) return;
       currentPiece.style.zIndex = "";
-      // Al finalizar el toque, simular drop: determinar en qué celda se soltó la pieza
-      const containerRect = document.getElementById("puzzle-target").getBoundingClientRect();
-      // Usamos la posición final de la pieza
+      // Al finalizar el toque, determinar en qué celda del puzzle-target se soltó la pieza.
+      const targetRect = document.getElementById("puzzle-target").getBoundingClientRect();
       const pieceRect = currentPiece.getBoundingClientRect();
-      const dropX = pieceRect.left + pieceRect.width / 2 - containerRect.left;
-      const dropY = pieceRect.top + pieceRect.height / 2 - containerRect.top;
-      const pieceSize = containerRect.width / 4; // asumiendo cuadrícula 4x4
-      const col = Math.floor(dropX / pieceSize);
-      const row = Math.floor(dropY / pieceSize);
+      // Usamos el centro de la pieza
+      const centerX = pieceRect.left + pieceRect.width / 2;
+      const centerY = pieceRect.top + pieceRect.height / 2;
+      let relX = centerX - targetRect.left;
+      let relY = centerY - targetRect.top;
+      const pieceSize = targetRect.width / 4; // 400/4=100 (o ajustado en móvil)
+      const col = Math.floor(relX / pieceSize);
+      const row = Math.floor(relY / pieceSize);
       const targetIndex = row * 4 + col;
-      // Posicionar la pieza en la celda destino
+      // Posicionar la pieza en la celda correspondiente
       currentPiece.style.left = (col * pieceSize) + "px";
       currentPiece.style.top = (row * pieceSize) + "px";
       currentPiece.dataset.current = targetIndex;
+      // Mover la pieza al contenedor de destino para solaparla con la cuadrícula
+      const puzzleTarget = document.getElementById("puzzle-target");
+      puzzleTarget.appendChild(currentPiece);
       if(currentPiece.dataset.id === String(targetIndex)) {
          currentPiece.classList.add("placed");
          currentPiece.draggable = false;
@@ -548,13 +551,21 @@
     }
 
     /* ============================
-         Minijuego 2: Quiz de la Bodega
+         Minijuego 2: Quiz de la Bodega (Preguntas nuevas)
        ============================ */
-    let quizAnswers = {1: "15", 2: "Tempranillo", 3: "La Rioja"};
-    let quizCorrect = {1: false, 2: false, 3: false};
+    // Pregunta 1: ¿En qué siglo se estableció la bodega?
+    // Pregunta 2: ¿Qué tipo de vino es el más representativo?
+    // Pregunta 3: ¿Cuál es el elemento arquitectónico distintivo de la bodega?
+    const quizAnswers = {
+      1: "Siglo XVI",
+      2: "Vino Tinto",
+      3: "Arco de medio punto"
+    };
+    const quizCorrect = {1: false, 2: false, 3: false};
     function checkQuizAnswer(question, answer) {
       const resultElem = document.getElementById("quiz-result-" + question);
-      if(quizAnswers[question] === answer) {
+      // Comparamos ignorando mayúsculas
+      if(quizAnswers[question].toLowerCase() === answer.toLowerCase()) {
         quizCorrect[question] = true;
         resultElem.textContent = "¡Correcto!";
         playSound("success-sound");
@@ -573,6 +584,7 @@
          Minijuego Final: La Cata del Vino
        ============================ */
     function checkCata(selection) {
+      // La opción correcta: "queso" (queso curado)
       if(selection === "queso") {
         document.getElementById("cata-status").textContent = "¡Excelente! El queso curado realza perfectamente nuestro vino.";
         playSound("success-sound");
