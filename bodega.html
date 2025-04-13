@@ -43,7 +43,7 @@
     .music-control { text-align: center; margin-bottom: 10px; }
 
     /* ============================
-         Verificación de Ubicación 
+           Verificación de Ubicación 
        ============================ */
     #location-check {
       text-align: center;
@@ -143,7 +143,7 @@
       height: 100px;
       box-sizing: border-box;
     }
-    /* Zona de las piezas: se superpone sobre la cuadrícula */
+    /* Zona de piezas: se superpone sobre la cuadrícula */
     #pieces-zone {
       position: absolute;
       top: 0;
@@ -151,6 +151,8 @@
       width: 400px;
       height: 400px;
       z-index: 2;
+      /* Evitamos que el contenedor intercepte eventos de drop */
+      pointer-events: none;
     }
     .puzzle-piece {
       position: absolute;
@@ -160,6 +162,8 @@
       background-size: 400px 400px;
       cursor: grab;
       transition: left 0.3s ease, top 0.3s ease;
+      /* Forzamos que las piezas puedan recibir eventos */
+      pointer-events: auto;
     }
     .puzzle-piece.placed {
       cursor: default;
@@ -396,11 +400,6 @@
     /* ============================
          Minijuego 1: Puzzle Arrastrable (Drag & Drop)
        ============================ */
-    // Se crea un puzzle que tiene un contenedor de 400x400 px
-    // Se genera una zona destino (target-zone) que muestra una cuadrícula 4x4
-    // Se genera la zona de piezas (pieces-zone) donde se colocan 16 piezas con posición aleatoria.
-    // Se añade un listener "drop" al contenedor del puzzle para determinar, en función de las coordenadas de drop,
-    // la celda destino y, si coincide con el índice de la pieza, la pieza se "engancha".
     function startPuzzleGame() {
       document.getElementById("puzzle-game").style.display = "block";
       document.getElementById("puzzle-status").textContent = "";
@@ -430,7 +429,7 @@
       for (let i = 0; i < gridSize * gridSize; i++) {
          const cell = document.createElement("div");
          cell.classList.add("target-cell");
-         cell.dataset.index = i; // índice correcto
+         cell.dataset.index = i;
          cell.style.border = "1px dashed #ddd";
          cell.style.width = pieceSize + "px";
          cell.style.height = pieceSize + "px";
@@ -447,25 +446,29 @@
       piecesZone.style.width = puzzleDimension + "px";
       piecesZone.style.height = puzzleDimension + "px";
       piecesZone.style.zIndex = "2";
+      // Importante: evitar que este contenedor intercepte eventos drop
+      piecesZone.style.pointerEvents = "none";
       puzzleGame.appendChild(piecesZone);
       
       // Crear 16 piezas con posición aleatoria inicial
       for(let i = 0; i < gridSize * gridSize; i++){
          const piece = document.createElement("div");
          piece.classList.add("puzzle-piece");
-         piece.dataset.id = i; // cada pieza tiene índice
+         piece.dataset.id = i; // índice correcto de la pieza
          const col = i % gridSize;
          const row = Math.floor(i / gridSize);
          piece.style.backgroundImage = "url('images/bodega-barriles.jpeg')";
          piece.style.backgroundSize = puzzleDimension + "px " + puzzleDimension + "px";
          piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
-         // Ubicar la pieza en posición aleatoria en el área (dentro de 400 - 100)
+         // Ubicar la pieza en posición aleatoria dentro del área
          const randomX = Math.floor(Math.random() * (puzzleDimension - pieceSize));
          const randomY = Math.floor(Math.random() * (puzzleDimension - pieceSize));
          piece.style.position = "absolute";
          piece.style.left = randomX + "px";
          piece.style.top = randomY + "px";
          piece.draggable = true;
+         // Aseguramos que la pieza reciba eventos pese a estar en un contenedor sin pointer events
+         piece.style.pointerEvents = "auto";
          piece.addEventListener("dragstart", function(e) {
              e.dataTransfer.setData("text/plain", this.dataset.id);
          });
@@ -489,8 +492,10 @@
          const col = Math.floor(dropX / pieceSize);
          const row = Math.floor(dropY / pieceSize);
          const targetIndex = row * gridSize + col;
-         // Si la pieza corresponde al índice correcto, se fija
+         console.log("Pieza:", piece.dataset.id, "cae en celda:", targetIndex);
+         // Si el índice de la pieza coincide con el índice correcto de la celda
          if (piece.dataset.id === String(targetIndex)) {
+             // Posicionar la pieza en la celda exacta
              piece.style.left = (col * pieceSize) + "px";
              piece.style.top = (row * pieceSize) + "px";
              piece.classList.add("placed");
