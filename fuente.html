@@ -80,10 +80,9 @@
     }
     .carousel-slide img {
       width: 100%;
-      height: auto;
-      max-height: 300px;
-      /* Si deseas que se muestre la imagen completa sin recorte, usa: object-fit: contain; */
-      object-fit: cover;
+      height: 300px; /* Fijamos la altura */
+      object-fit: contain; /* Para mostrar la imagen entera sin recorte */
+      background-color: #fff; /* Fondo blanco para evitar zonas vacías */
       border-radius: 10px;
       border: 2px solid #6e3b1b;
     }
@@ -116,7 +115,8 @@
     
     /* Secciones Visuales y Quiz */
     .visual-challenge, .quiz { margin: 20px 0; }
-    /* Otros estilos se mantienen sin cambios */
+    
+    /* (Se mantienen el resto de estilos sin cambios) */
     #puzzle-cantaros {
       margin: 20px auto;
       padding: 15px;
@@ -239,7 +239,8 @@
               </div>
             </div>
             <div class="carousel-slide">
-              <img src="images/fuente-detalle.jpg" alt="Fuente" />
+              <!-- En caso de necesitar mostrar la imagen sin recorte, se usa object-fit: contain -->
+              <img src="images/fuente-detalle.jpg" alt="Fuente" style="object-fit: contain;"/>
               <div class="carousel-info">
                 <strong>Fuente:</strong> De dos caños con decoración geométrica, construida en el siglo XVI.
                 <a href="https://turismosierradefrancia.es/nuestros-pueblos/san-martin-del-castanar/" target="_blank">Más info</a>
@@ -257,7 +258,7 @@
           <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
         </div>
 
-        <!-- Resto del contenido (Retos Visuales, Quiz, etc.) -->
+        <!-- Resto del contenido (Retos Visuales, Quiz, etc.) se mantiene igual -->
         <div class="visual-challenge">
           <h2>Retos Visuales</h2>
           <p>1. ¿Cuántos caños tiene la fuente?</p>
@@ -301,7 +302,7 @@
           <p id="quiz-resultado-3"></p>
         </div>
 
-        <!-- Se mantiene el minijuego de Puzzle de Cántaros y Fragmento Final -->
+        <!-- Se mantiene el minijuego de Puzzle de Cántaros y el Fragmento Final -->
         <div id="puzzle-cantaros" style="display:none;">
           <div class="content-box">
             <h2>Puzzle de Cántaros</h2>
@@ -424,7 +425,6 @@
       let currentSlide = 0, slides;
       function initCarousel() {
         slides = document.querySelectorAll('.carousel-slide');
-        // Agregamos event listeners en caso de que no se use el onclick
         document.querySelector('.prev-slide').addEventListener('click', prevSlide);
         document.querySelector('.next-slide').addEventListener('click', nextSlide);
       }
@@ -432,7 +432,6 @@
         const carouselSlides = document.querySelector('.carousel-slides');
         carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
       }
-      // Definición global de nextSlide y prevSlide
       function nextSlide() {
         currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
         updateCarousel();
