@@ -531,7 +531,7 @@
     
     function markCellsAsFound(cells) {
       cells.forEach(cell => {
-        const selector = td[data-row="${cell.row}"][data-col="${cell.col}"];
+        const selector = `td[data-row="${cell.row}"][data-col="${cell.col}"]`;
         const td = document.querySelector(selector);
         if (td) td.classList.add("found");
       });
