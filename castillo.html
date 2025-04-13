@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🏰 Castillo de Gonzalo</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles/style.css">
   <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg">
   <style>
     /* --- Estilos Globales --- */
@@ -44,7 +44,7 @@
       text-align: center;
       margin-bottom: 10px;
     }
-    /* --- Sección de Verificación de Ubicación --- */
+    /* --- Verificación de Ubicación --- */
     #location-check {
       text-align: center;
       margin-bottom: 30px;
@@ -109,20 +109,12 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
-    /* --- Secciones de Retos y Quiz --- */
+    /* --- Secciones de Retos Visuales y Quiz --- */
     .visual-challenge, .quiz {
       margin: 20px 0;
       text-align: center;
     }
-    .hint-btn {
-      margin: 5px;
-      padding: 5px 10px;
-      font-size: 14px;
-      background: #f0e68c;
-      border: 1px solid #5e3b1b;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+    /* (Se han eliminado los botones de pista para estas secciones) */
     /* --- Minijuego: Candado del Cofre --- */
     #combination-lock {
       display: none;
@@ -209,12 +201,11 @@
         </button>
       </div>
       <div class="stop-selector">
-        <!-- Navegación a otras paradas -->
+        <!-- Navegación entre paradas -->
         <button class="action-btn" onclick="window.location.href='castillo.html'">Castillo</button>
         <button class="action-btn" onclick="window.location.href='plaza.html'">Plaza</button>
         <button class="action-btn" onclick="window.location.href='iglesia.html'">Iglesia</button>
         <button class="action-btn" onclick="window.location.href='fuente.html'">Fuente y Portalón</button>
-        <!-- etc. -->
       </div>
     </header>
 
@@ -232,7 +223,7 @@
         <canvas id="sonar-radar" width="200" height="200"></canvas>
       </div>
 
-      <!-- Contenido del Juego (se muestra tras verificación) -->
+      <!-- Contenido del Juego (tras verificación) -->
       <div id="game-content" style="display: none;">
         <div class="content-wrapper">
           <!-- Carrusel Principal -->
@@ -241,7 +232,7 @@
               <div class="slide active" data-slide="0">
                 <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo">
                 <p class="carousel-info">
-                  <strong>Entrada Fortificada:</strong> Construida en el siglo XIII como defensa en la Reconquista. En el siglo XV se remodeló en palacio por el Conde de Miranda. <br>
+                  <strong>Entrada Fortificada:</strong> Construida en el siglo XIII como defensa en la Reconquista. En el siglo XV se remodeló en palacio por el Conde de Miranda.<br>
                   <em>En 1834 se instaló un cementerio dentro de sus muros.</em><br>
                   <a href="https://www.miteco.gob.es/..." target="_blank">Más info</a>
                 </p>
@@ -273,7 +264,6 @@
               <button class="action-btn" onclick="checkVisualAnswer('Columnas', 'Escudos', 1)">Columnas</button>
             </div>
             <p id="visual-resultado-1"></p>
-            <button class="hint-btn" onclick="showHint('Fíjate en el emblema que adorna la entrada principal.')">Pista</button>
 
             <p>2. ¿Qué destaca en el interior del recinto?</p>
             <div id="visual-opciones-2">
@@ -282,7 +272,6 @@
               <button class="action-btn" onclick="checkVisualAnswer('Mosaicos', 'Arcos', 2)">Mosaicos</button>
             </div>
             <p id="visual-resultado-2"></p>
-            <button class="hint-btn" onclick="showHint('Observa los detalles arquitectónicos que se repiten en el interior.')">Pista</button>
           </div>
         </div>
 
@@ -296,7 +285,6 @@
             <button class="action-btn" onclick="checkAnswer('XIV', 'XIII', 1)">XIV</button>
           </div>
           <p id="quiz-resultado-1"></p>
-          <button class="hint-btn" onclick="showHint('Piensa en la época de la Reconquista.')">Pista</button>
 
           <p>2. ¿Qué función tuvo el castillo desde el siglo XIX?</p>
           <div id="quiz-opciones-2">
@@ -305,7 +293,6 @@
             <button class="action-btn" onclick="checkAnswer('Museo', 'Cementerio', 2)">Museo</button>
           </div>
           <p id="quiz-resultado-2"></p>
-          <button class="hint-btn" onclick="showHint('Recuerda que se usó como lugar de descanso eterno.')">Pista</button>
 
           <p>3. ¿Qué ofrece hoy el castillo?</p>
           <div id="quiz-opciones-3">
@@ -314,10 +301,9 @@
             <button class="action-btn" onclick="checkAnswer('Biblioteca', 'Centro de Interpretación', 3)">Biblioteca</button>
           </div>
           <p id="quiz-resultado-3"></p>
-          <button class="hint-btn" onclick="showHint('La respuesta guarda relación con la renovación moderna del castillo.')">Pista</button>
         </div>
 
-        <!-- Minijuego: Candado para el Cofre (sustituyendo el puzzle de cántaros) -->
+        <!-- Minijuego: Candado del Cofre -->
         <div id="combination-lock">
           <h2>Candado del Cofre</h2>
           <p>Gira los diales para formar la combinación correcta.</p>
@@ -343,9 +329,7 @@
         </div>
 
         <div id="continue-button" style="display: none;">
-          <button class="action-btn" onclick="window.location.href='felicitaciones.html?stop=castillo'">
-            Continuar búsqueda
-          </button>
+          <button class="action-btn" onclick="window.location.href='felicitaciones.html?stop=castillo'">Continuar búsqueda</button>
         </div>
       </div>
     </section>
@@ -355,7 +339,7 @@
     <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
     <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
     <audio id="ambient-sound" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-    <audio id="sonar-ping" src="sounds/sonar-ping.mp3" preload="auto"></audio>
+
   </div>
 
   <footer>
@@ -363,9 +347,7 @@
   </footer>
 
   <script>
-    /*----------------------------------------*/
-    /* 1. VERIFICACIÓN DE UBICACIÓN           */
-    /*----------------------------------------*/
+    /* --- VERIFICACIÓN DE UBICACIÓN --- */
     const targetLat = 40.123456;
     const targetLon = -3.123456;
     const thresholdDistance = 50;
@@ -391,10 +373,10 @@
     }
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
-      const toRad = (x) => x * Math.PI / 180;
+      const toRad = x => x * Math.PI / 180;
       const φ1 = toRad(lat1), φ2 = toRad(lat2);
       const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
-      const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+      const a = Math.sin(Δφ/2)**2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2)**2;
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
@@ -413,9 +395,7 @@
       playSound("ambient-sound");
     }
 
-    /*----------------------------------------*/
-    /* 2. CARRUSEL PRINCIPAL                  */
-    /*----------------------------------------*/
+    /* --- CARRUSEL PRINCIPAL --- */
     let currentSlide = 0, slides;
     function initCarousel() {
       slides = document.querySelectorAll('.slide');
@@ -423,8 +403,7 @@
       const prevButton = document.querySelector('.prev-slide');
       const nextButton = document.querySelector('.next-slide');
       const carouselContainer = document.querySelector('.carousel-slides');
-      // Forzamos el ancho total del contenedor según el número de slides
-      carouselContainer.style.width = (totalSlides * 100) + '%';
+      carouselContainer.style.width = (totalSlides * 100) + '%'; // Fuerza ancho total
       
       function updateCarousel() {
         carouselContainer.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
@@ -434,16 +413,13 @@
         currentSlide = (currentSlide > 0) ? currentSlide - 1 : totalSlides - 1;
         updateCarousel();
       });
-      
       nextButton.addEventListener('click', function() {
         currentSlide = (currentSlide < totalSlides - 1) ? currentSlide + 1 : 0;
         updateCarousel();
       });
     }
 
-    /*----------------------------------------*/
-    /* 3. RETOS VISUALES Y QUIZ              */
-    /*----------------------------------------*/
+    /* --- RETOS VISUALES Y QUIZ --- */
     let quiz1Correct = false, quiz2Correct = false, quiz3Correct = false;
     function checkVisualAnswer(selected, correct, n) {
       const result = document.getElementById('visual-resultado-' + n);
@@ -476,9 +452,7 @@
       }
     }
 
-    /*----------------------------------------*/
-    /* 4. MINIJUEGO: CANDADO DEL COFRE         */
-    /*----------------------------------------*/
+    /* --- MINIJUEGO: CANDADO DEL COFRE --- */
     function initCombinationLock() {
       document.getElementById("combination-lock").style.display = "block";
       const dials = document.querySelectorAll(".dial");
@@ -502,7 +476,7 @@
       showPistaLock("La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!");
     }
     function showPistaLock(text) {
-      alert("Pista Candado: " + text);
+      alert("Pista para el Candado: " + text);
     }
     function checkCombination() {
       const dials = document.querySelectorAll(".dial");
@@ -518,16 +492,14 @@
       }
     }
 
-    /*----------------------------------------*/
-    /* 5. FRAGMENTO FINAL / CONTINUAR         */
-    /*----------------------------------------*/
+    /* --- FRAGMENTO FINAL / CONTINUAR --- */
     function unlockFinalFragment() {
       document.getElementById("combination-lock").style.display = "none";
       document.getElementById("fragmento-final").style.display = "block";
       document.getElementById("continue-button").style.display = "block";
       updateChronicle();
       updateRanking();
-      playSound("cheers-sound");
+      playSound("success-sound");
     }
     function updateChronicle() {
       localStorage.setItem("cronica_castillo", document.getElementById("message-piece").textContent);
@@ -538,17 +510,13 @@
       localStorage.setItem("ranking", JSON.stringify(ranking));
     }
 
-    /*----------------------------------------*/
-    /* 6. SONIDOS                             */
-    /*----------------------------------------*/
+    /* --- SONIDOS --- */
     function playSound(id) {
       const sound = document.getElementById(id);
       if (sound) sound.play();
     }
 
-    /*----------------------------------------*/
-    /* 7. BOTÓN DE MÚSICA                      */
-    /*----------------------------------------*/
+    /* --- BOTÓN DE MÚSICA --- */
     function toggleMusic() {
       const backgroundMusic = document.getElementById('ambient-sound');
       const musicBtn = document.querySelector('.music-btn');
@@ -561,9 +529,7 @@
       }
     }
 
-    /*----------------------------------------*/
-    /* 8. LOCALSTORAGE                        */
-    /*----------------------------------------*/
+    /* --- LOCALSTORAGE --- */
     localStorage.setItem("castillo-completed", "true");
   </script>
 </body>
