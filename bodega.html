@@ -43,7 +43,7 @@
     .music-control { text-align: center; margin-bottom: 10px; }
 
     /* ============================
-           Verificación de Ubicación 
+         Verificación de Ubicación 
        ============================ */
     #location-check {
       text-align: center;
@@ -111,7 +111,7 @@
     .next-slide { right: 10px; }
 
     /* ============================
-         Minijuego 1: Puzzle Arrastrable
+         Minijuego 1: Puzzle Arrastrable (Drag & Drop)
        ============================ */
     /* Contenedor principal para el puzzle */
     #puzzle-game {
@@ -123,7 +123,7 @@
       border-radius: 10px;
       margin: 20px auto;
     }
-    /* Área destino con la cuadrícula: se muestran las celdas en donde colocar las piezas */
+    /* Zona destino: cuadrícula de 4x4 para ubicar las piezas */
     #target-zone {
       position: absolute;
       top: 0;
@@ -143,7 +143,7 @@
       height: 100px;
       box-sizing: border-box;
     }
-    /* Zona donde se ubicarán (inicialmente esparcidas) las piezas */
+    /* Zona de las piezas: se superpone sobre la cuadrícula */
     #pieces-zone {
       position: absolute;
       top: 0;
@@ -159,6 +159,7 @@
       background-image: url('images/bodega-barriles.jpeg');
       background-size: 400px 400px;
       cursor: grab;
+      transition: left 0.3s ease, top 0.3s ease;
     }
     .puzzle-piece.placed {
       cursor: default;
@@ -272,9 +273,8 @@
         <div style="text-align:center; margin-bottom:20px;">
           <button class="action-btn" onclick="startPuzzleGame()">Iniciar Puzzle</button>
         </div>
-        <!-- Contenedor del Puzzle (se mostrará la zona destino y las piezas) -->
         <div id="puzzle-game">
-          <!-- El contenido se generará dinámicamente vía JavaScript -->
+          <!-- El contenido se genera dinámicamente -->
           <p id="puzzle-status" style="text-align:center; font-family:Georgia, serif; font-size:18px;"></p>
         </div>
 
@@ -396,7 +396,11 @@
     /* ============================
          Minijuego 1: Puzzle Arrastrable (Drag & Drop)
        ============================ */
-    // Al pulsar "Iniciar Puzzle" se genera el puzzle de arrastrar y soltar
+    // Se crea un puzzle que tiene un contenedor de 400x400 px
+    // Se genera una zona destino (target-zone) que muestra una cuadrícula 4x4
+    // Se genera la zona de piezas (pieces-zone) donde se colocan 16 piezas con posición aleatoria.
+    // Se añade un listener "drop" al contenedor del puzzle para determinar, en función de las coordenadas de drop,
+    // la celda destino y, si coincide con el índice de la pieza, la pieza se "engancha".
     function startPuzzleGame() {
       document.getElementById("puzzle-game").style.display = "block";
       document.getElementById("puzzle-status").textContent = "";
@@ -404,83 +408,111 @@
     }
     function initDragDropPuzzle() {
       const gridSize = 4;
-      const pieceSize = 100; // En píxeles para un área de 400px (4 piezas x 100px)
-      // Creamos la zona de destino (target zone)
-      const targetZone = document.createElement("div");
-      targetZone.id = "target-zone";
-      for (let row = 0; row < gridSize; row++) {
-        for (let col = 0; col < gridSize; col++) {
-          const cell = document.createElement("div");
-          cell.classList.add("target-cell");
-          cell.dataset.index = row * gridSize + col; // índice correcto
-          // Permitir drop en cada celda
-          cell.addEventListener("dragover", function(e) {
-            e.preventDefault();
-          });
-          cell.addEventListener("drop", function(e) {
-            e.preventDefault();
-            const pieceId = e.dataTransfer.getData("text/plain");
-            const piece = document.querySelector(`.puzzle-piece[data-id='${pieceId}']`);
-            if(piece) {
-              // Verificamos si el índice de la pieza coincide con el índice de la celda
-              if(piece.dataset.id === cell.dataset.index) {
-                // Calcular posición relativa de la celda dentro de #puzzle-game
-                const cellRect = cell.getBoundingClientRect();
-                const puzzleRect = document.getElementById("puzzle-game").getBoundingClientRect();
-                piece.style.left = (cellRect.left - puzzleRect.left) + "px";
-                piece.style.top = (cellRect.top - puzzleRect.top) + "px";
-                piece.classList.add("placed");
-                piece.draggable = false;
-                checkPuzzleSolved();
-              }
-            }
-          });
-          targetZone.appendChild(cell);
-        }
-      }
-      // Limpiar contenedor del puzzle y agregar target y piezas
+      const puzzleDimension = 400; // ancho y alto del contenedor
+      const pieceSize = puzzleDimension / gridSize; // 100 px por pieza
       const puzzleGame = document.getElementById("puzzle-game");
       puzzleGame.innerHTML = "";
+      
+      // Crear zona destino (target-zone)
+      const targetZone = document.createElement("div");
+      targetZone.id = "target-zone";
+      targetZone.style.position = "absolute";
+      targetZone.style.top = "0";
+      targetZone.style.left = "0";
+      targetZone.style.width = puzzleDimension + "px";
+      targetZone.style.height = puzzleDimension + "px";
+      targetZone.style.display = "grid";
+      targetZone.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+      targetZone.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+      targetZone.style.gap = "2px";
+      targetZone.style.border = "2px dashed #aaa";
+      targetZone.style.zIndex = "1";
+      for (let i = 0; i < gridSize * gridSize; i++) {
+         const cell = document.createElement("div");
+         cell.classList.add("target-cell");
+         cell.dataset.index = i; // índice correcto
+         cell.style.border = "1px dashed #ddd";
+         cell.style.width = pieceSize + "px";
+         cell.style.height = pieceSize + "px";
+         targetZone.appendChild(cell);
+      }
       puzzleGame.appendChild(targetZone);
+      
+      // Crear zona de piezas (pieces-zone)
       const piecesZone = document.createElement("div");
       piecesZone.id = "pieces-zone";
+      piecesZone.style.position = "absolute";
+      piecesZone.style.top = "0";
+      piecesZone.style.left = "0";
+      piecesZone.style.width = puzzleDimension + "px";
+      piecesZone.style.height = puzzleDimension + "px";
+      piecesZone.style.zIndex = "2";
       puzzleGame.appendChild(piecesZone);
-      // Crear las 16 piezas con posición aleatoria inicial dentro del área del puzzle
+      
+      // Crear 16 piezas con posición aleatoria inicial
       for(let i = 0; i < gridSize * gridSize; i++){
-        const piece = document.createElement("div");
-        piece.classList.add("puzzle-piece");
-        piece.dataset.id = i; // Índice correcto de la pieza
-        // Definir background-position para mostrar la sección correcta de la imagen
-        const col = i % gridSize;
-        const row = Math.floor(i / gridSize);
-        piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
-        // Ubicar la pieza en posición aleatoria dentro de [0, 300] en x e y
-        const randomX = Math.floor(Math.random() * (400 - pieceSize));
-        const randomY = Math.floor(Math.random() * (400 - pieceSize));
-        piece.style.left = randomX + "px";
-        piece.style.top = randomY + "px";
-        piece.draggable = true;
-        piece.addEventListener("dragstart", function(e) {
-          e.dataTransfer.setData("text/plain", this.dataset.id);
-        });
-        piecesZone.appendChild(piece);
+         const piece = document.createElement("div");
+         piece.classList.add("puzzle-piece");
+         piece.dataset.id = i; // cada pieza tiene índice
+         const col = i % gridSize;
+         const row = Math.floor(i / gridSize);
+         piece.style.backgroundImage = "url('images/bodega-barriles.jpeg')";
+         piece.style.backgroundSize = puzzleDimension + "px " + puzzleDimension + "px";
+         piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
+         // Ubicar la pieza en posición aleatoria en el área (dentro de 400 - 100)
+         const randomX = Math.floor(Math.random() * (puzzleDimension - pieceSize));
+         const randomY = Math.floor(Math.random() * (puzzleDimension - pieceSize));
+         piece.style.position = "absolute";
+         piece.style.left = randomX + "px";
+         piece.style.top = randomY + "px";
+         piece.draggable = true;
+         piece.addEventListener("dragstart", function(e) {
+             e.dataTransfer.setData("text/plain", this.dataset.id);
+         });
+         piecesZone.appendChild(piece);
       }
+      
+      // Listener para permitir drop sobre el contenedor del puzzle
+      puzzleGame.addEventListener("dragover", function(e) {
+         e.preventDefault();
+      });
+      puzzleGame.addEventListener("drop", function(e) {
+         e.preventDefault();
+         const pieceId = e.dataTransfer.getData("text/plain");
+         const piece = document.querySelector(`.puzzle-piece[data-id='${pieceId}']`);
+         if (!piece) return;
+         const puzzleRect = puzzleGame.getBoundingClientRect();
+         // Coordenadas de drop relativas al contenedor
+         const dropX = e.clientX - puzzleRect.left;
+         const dropY = e.clientY - puzzleRect.top;
+         // Determinar en qué celda cae el drop
+         const col = Math.floor(dropX / pieceSize);
+         const row = Math.floor(dropY / pieceSize);
+         const targetIndex = row * gridSize + col;
+         // Si la pieza corresponde al índice correcto, se fija
+         if (piece.dataset.id === String(targetIndex)) {
+             piece.style.left = (col * pieceSize) + "px";
+             piece.style.top = (row * pieceSize) + "px";
+             piece.classList.add("placed");
+             piece.draggable = false;
+             checkPuzzleSolved();
+         }
+      });
     }
     function checkPuzzleSolved() {
       const pieces = document.querySelectorAll(".puzzle-piece");
       let placedCount = 0;
       pieces.forEach(piece => {
-        if(piece.classList.contains("placed")) {
-          placedCount++;
-        }
+         if(piece.classList.contains("placed")) {
+            placedCount++;
+         }
       });
-      if(placedCount === pieces.length) {
-        document.getElementById("puzzle-status").textContent = "¡Puzzle resuelto!";
-        // Tras 1.5 segundos se oculta el puzzle y se muestra el Quiz
-        setTimeout(() => {
-          document.getElementById("puzzle-game").style.display = "none";
-          document.getElementById("bodega-quiz").style.display = "block";
-        }, 1500);
+      if (placedCount === pieces.length) {
+         document.getElementById("puzzle-status").textContent = "¡Puzzle resuelto!";
+         setTimeout(() => {
+           document.getElementById("puzzle-game").style.display = "none";
+           document.getElementById("bodega-quiz").style.display = "block";
+         }, 1500);
       }
     }
 
