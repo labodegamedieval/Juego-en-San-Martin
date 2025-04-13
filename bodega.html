@@ -113,7 +113,7 @@
     /* ============================
          Minijuego 1: Puzzle Arrastrable (Drag & Drop)
        ============================ */
-    /* Área general del Puzzle: contiene el área destino y el contenedor de piezas */
+    /* Sección del Puzzle: contiene el área destino y el contenedor de piezas */
     #puzzle-section {
       display: none;
       width: 400px;
@@ -136,7 +136,7 @@
       height: 100px;
       box-sizing: border-box;
     }
-    /* Contenedor de piezas: se colocan aquí las piezas esparcidas */
+    /* Contenedor de piezas: se muestran las piezas esparcidas */
     #pieces-container {
       width: 400px;
       height: 200px;
@@ -159,14 +159,46 @@
     }
 
     /* ============================
-         Minijuego 2: Quiz (Preguntas corregidas)
+         Minijuego 2: Tetris
        ============================ */
-    #bodega-quiz, #final-game, #final-button {
+    #tetris-game {
+      display: none;
+      text-align: center;
+      margin: 20px auto;
+    }
+    #tetris {
+      background: #333;
+      border: 2px solid #fff;
+      display: block;
+      margin: auto;
+    }
+    .tetris-info {
+      display: flex;
+      justify-content: space-between;
+      width: 300px;
+      margin: 10px auto;
+    }
+    .tetris-btn {
+      background: #444;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .tetris-btn:hover {
+      background: #555;
+    }
+
+    /* ============================
+         Minijuego Final: La Cata del Vino
+       ============================ */
+    #final-game, #final-button {
       display: none;
       text-align: center;
       margin: 20px 0;
     }
-    #bodega-quiz p, #final-game p {
+    #final-game p {
       font-family: Georgia, serif;
       font-size: 18px;
       margin: 15px 0 8px;
@@ -201,12 +233,14 @@
       .container { max-width: 90%; }
       .carousel img { height: 200px; }
       .carousel-btn { font-size: 20px; padding: 6px; }
-      #puzzle-section { width: 300px; }
+      #puzzle-section, #tetris-game { width: 300px; }
       #puzzle-target, #pieces-container { width: 300px; }
       #puzzle-target { height: 300px; }
       #pieces-container { height: 150px; }
       .target-cell { width: 75px; height: 75px; }
       .puzzle-piece { width: 75px; height: 75px; background-size: 300px 300px; }
+      #tetris { width: 300px; height: 600px; }
+      .tetris-info { width: 250px; }
     }
   </style>
 </head>
@@ -264,41 +298,28 @@
           <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
         </div>
 
-        <!-- Minijuego 1: Puzzle Arrastrable (Drag & Drop) -->
+        <!-- Minijuego 1: Puzzle Arrastrable -->
         <div style="text-align:center; margin-bottom:20px;">
           <button class="action-btn" onclick="startPuzzleGame()">Iniciar Puzzle</button>
         </div>
-        <!-- Sección del Puzzle: Área destino (cuadrícula) y contenedor de piezas esparcidas -->
         <div id="puzzle-section">
           <div id="puzzle-target"></div>
           <div id="pieces-container"></div>
           <p id="puzzle-status" style="text-align:center; font-family:Georgia, serif; font-size:18px;"></p>
         </div>
 
-        <!-- Minijuego 2: Quiz de la Bodega (Preguntas corregidas) -->
-        <div id="bodega-quiz">
-          <h2>📝 Quiz de la Bodega</h2>
-          <p>1. ¿En qué siglo se estableció La Bodega Medieval?</p>
-          <button class="action-btn" onclick="checkQuizAnswer(1, 'Siglo XVI')">Siglo XV</button>
-          <button class="action-btn" onclick="checkQuizAnswer(1, 'Siglo XVI')">Siglo XVI</button>
-          <button class="action-btn" onclick="checkQuizAnswer(1, 'Siglo XVII')">Siglo XVII</button>
-          <p id="quiz-result-1"></p>
-
-          <p>2. ¿Qué tipo de vino representa tradicionalmente la bodega?</p>
-          <button class="action-btn" onclick="checkQuizAnswer(2, 'Vino Tinto')">Vino Tinto</button>
-          <button class="action-btn" onclick="checkQuizAnswer(2, 'Vino Blanco')">Vino Blanco</button>
-          <button class="action-btn" onclick="checkQuizAnswer(2, 'Vino Rosado')">Vino Rosado</button>
-          <p id="quiz-result-2"></p>
-
-          <p>3. ¿Cuál es el elemento arquitectónico distintivo de la bodega?</p>
-          <button class="action-btn" onclick="checkQuizAnswer(3, 'Arco de medio punto')">Arco de medio punto</button>
-          <button class="action-btn" onclick="checkQuizAnswer(3, 'Bóveda romana')">Bóveda romana</button>
-          <button class="action-btn" onclick="checkQuizAnswer(3, 'Fachada barroca')">Fachada barroca</button>
-          <p id="quiz-result-3"></p>
+        <!-- Minijuego 2: Tetris -->
+        <div id="tetris-game" style="display: none;">
+          <h2>Minijuego 2: Tetris</h2>
+          <canvas id="tetris" width="300" height="600"></canvas>
+          <div class="tetris-info">
+            <button class="tetris-btn" id="tetris-start">Start</button>
+            <span id="tetris-score">Score: 0</span>
+          </div>
         </div>
 
         <!-- Minijuego Final: La Cata del Vino -->
-        <div id="final-game">
+        <div id="final-game" style="display: none;">
           <h2>🍷 Desafío Final: La Cata del Vino</h2>
           <p>Elige el maridaje perfecto que realza nuestro vino emblemático.</p>
           <div id="cata-options">
@@ -334,7 +355,6 @@
          Funciones de Ubicación y Audio
        ============================ */
     function checkLocation() {
-      // Para demostración: simulamos éxito inmediato
       document.getElementById("location-check").style.display = "none";
       document.getElementById("game-content").style.display = "block";
       playSound("background-music");
@@ -400,10 +420,9 @@
     }
     function initDragDropPuzzle() {
       const gridSize = 4;
-      const puzzleDimension = 400; // Dimensiones del área destino
-      const pieceSize = puzzleDimension / gridSize; // 100px por pieza
+      const puzzleDimension = 400;
+      const pieceSize = puzzleDimension / gridSize;
 
-      // Limpiar el área destino y el contenedor de piezas
       const puzzleTarget = document.getElementById("puzzle-target");
       puzzleTarget.innerHTML = "";
       const piecesContainer = document.getElementById("pieces-container");
@@ -422,11 +441,14 @@
             const pieceId = e.dataTransfer.getData("text/plain");
             const piece = document.querySelector(`.puzzle-piece[data-id='${pieceId}']`);
             if (!piece) return;
-            // Usar los offsets de la celda (cell) que, al ser hija de puzzleTarget, están en coordenadas relativas
-            piece.style.left = this.offsetLeft + "px";
-            piece.style.top = this.offsetTop + "px";
+            const cellRect = this.getBoundingClientRect();
+            const targetRect = puzzleTarget.getBoundingClientRect();
+            const left = cellRect.left - targetRect.left;
+            const top = cellRect.top - targetRect.top;
+            piece.style.left = left + "px";
+            piece.style.top = top + "px";
             piece.dataset.current = this.dataset.index;
-            // Para que el elemento fijo se ubique en el contenedor destino (por capas)
+            // Mover la pieza al contenedor destino para que queden fijas en la misma capa de la cuadrícula
             puzzleTarget.appendChild(piece);
             if(piece.dataset.id === this.dataset.index) {
                piece.classList.add("placed");
@@ -440,7 +462,7 @@
          puzzleTarget.appendChild(cell);
       }
 
-      // Crear las piezas en el contenedor de piezas esparcidas
+      // Crear las piezas en el contenedor de piezas (fuera de la cuadrícula)
       const containerWidth = piecesContainer.clientWidth;
       const containerHeight = piecesContainer.clientHeight;
       for(let i = 0; i < gridSize * gridSize; i++){
@@ -452,7 +474,6 @@
          piece.style.backgroundImage = "url('images/bodega-barriles.jpeg')";
          piece.style.backgroundSize = puzzleDimension + "px " + puzzleDimension + "px";
          piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
-         // Ubicar la pieza en posición aleatoria dentro del contenedor de piezas
          const randomX = Math.floor(Math.random() * (containerWidth - pieceSize));
          const randomY = Math.floor(Math.random() * (containerHeight - pieceSize));
          piece.style.position = "absolute";
@@ -466,7 +487,7 @@
          piece.addEventListener("dragend", function(e) {
              this.style.zIndex = "";
          });
-         // Agregar soporte para eventos táctiles en móviles
+         // Soporte para eventos táctiles
          piece.addEventListener("touchstart", onTouchStart, false);
          piece.addEventListener("touchmove", onTouchMove, false);
          piece.addEventListener("touchend", onTouchEnd, false);
@@ -474,11 +495,10 @@
       }
     }
     
-    // Variables globales para eventos táctiles
+    // Variables para eventos táctiles
     let currentPiece = null;
     let touchOffsetX = 0;
     let touchOffsetY = 0;
-    
     function onTouchStart(e) {
       e.preventDefault();
       currentPiece = this;
@@ -492,7 +512,6 @@
       e.preventDefault();
       if (!currentPiece) return;
       const touch = e.touches[0];
-      // Determinar posición relativa en puzzle-section (para que el drop se realice sobre puzzle-target)
       const containerRect = document.getElementById("puzzle-section").getBoundingClientRect();
       let newLeft = touch.clientX - containerRect.left - touchOffsetX;
       let newTop = touch.clientY - containerRect.top - touchOffsetY;
@@ -503,23 +522,20 @@
       e.preventDefault();
       if (!currentPiece) return;
       currentPiece.style.zIndex = "";
-      // Al finalizar el toque, determinar en qué celda del puzzle-target se soltó la pieza.
+      // Determinar el centro de la pieza dentro del contenedor destino
       const targetRect = document.getElementById("puzzle-target").getBoundingClientRect();
-      const pieceRect = currentPiece.getBoundingClientRect();
-      // Usamos el centro de la pieza
-      const centerX = pieceRect.left + pieceRect.width / 2;
-      const centerY = pieceRect.top + pieceRect.height / 2;
-      let relX = centerX - targetRect.left;
-      let relY = centerY - targetRect.top;
-      const pieceSize = targetRect.width / 4; // 400/4=100 (o ajustado en móvil)
+      const rect = currentPiece.getBoundingClientRect();
+      const centerX = rect.left + rect.width/2;
+      const centerY = rect.top + rect.height/2;
+      const relX = centerX - targetRect.left;
+      const relY = centerY - targetRect.top;
+      const pieceSize = targetRect.width / 4;
       const col = Math.floor(relX / pieceSize);
       const row = Math.floor(relY / pieceSize);
       const targetIndex = row * 4 + col;
-      // Posicionar la pieza en la celda correspondiente
       currentPiece.style.left = (col * pieceSize) + "px";
       currentPiece.style.top = (row * pieceSize) + "px";
       currentPiece.dataset.current = targetIndex;
-      // Mover la pieza al contenedor de destino para solaparla con la cuadrícula
       const puzzleTarget = document.getElementById("puzzle-target");
       puzzleTarget.appendChild(currentPiece);
       if(currentPiece.dataset.id === String(targetIndex)) {
@@ -545,59 +561,239 @@
          document.getElementById("puzzle-status").textContent = "¡Puzzle resuelto!";
          setTimeout(() => {
            document.getElementById("puzzle-section").style.display = "none";
-           document.getElementById("bodega-quiz").style.display = "block";
+           document.getElementById("tetris-game").style.display = "block";
          }, 1500);
       }
     }
 
     /* ============================
-         Minijuego 2: Quiz de la Bodega (Preguntas nuevas)
+         Minijuego 2: Tetris
        ============================ */
-    // Pregunta 1: ¿En qué siglo se estableció la bodega?
-    // Pregunta 2: ¿Qué tipo de vino es el más representativo?
-    // Pregunta 3: ¿Cuál es el elemento arquitectónico distintivo de la bodega?
-    const quizAnswers = {
-      1: "Siglo XVI",
-      2: "Vino Tinto",
-      3: "Arco de medio punto"
+    // Adaptamos el código base de Tetris para integrarlo como minijuego
+    const tetrisCanvas = document.getElementById('tetris');
+    const tetrisContext = tetrisCanvas.getContext('2d');
+    tetrisContext.scale(30, 30);
+
+    let tetrisArena = createMatrixTetris(10, 20);
+    let tetrisPlayer = {
+      pos: {x: 0, y: 0},
+      matrix: null,
+      score: 0
     };
-    const quizCorrect = {1: false, 2: false, 3: false};
-    function checkQuizAnswer(question, answer) {
-      const resultElem = document.getElementById("quiz-result-" + question);
-      // Comparamos ignorando mayúsculas
-      if(quizAnswers[question].toLowerCase() === answer.toLowerCase()) {
-        quizCorrect[question] = true;
-        resultElem.textContent = "¡Correcto!";
-        playSound("success-sound");
-      } else {
-        quizCorrect[question] = false;
-        resultElem.textContent = "Incorrecto, intenta nuevamente.";
-        playSound("error-sound");
+
+    const tetrisColors = [
+      null,
+      '#FF0D72',
+      '#0DC2FF',
+      '#0DFF72',
+      '#F538FF',
+      '#FF8E0D',
+      '#FFE138',
+      '#3877FF'
+    ];
+
+    function createMatrixTetris(w, h) {
+      const matrix = [];
+      while (h--) {
+        matrix.push(new Array(w).fill(0));
       }
-      if(quizCorrect[1] && quizCorrect[2] && quizCorrect[3]) {
-        document.getElementById("bodega-quiz").style.display = "none";
+      return matrix;
+    }
+
+    function createPieceTetris(type) {
+      switch(type) {
+        case 'T':
+          return [
+            [0, 0, 0],
+            [1, 1, 1],
+            [0, 1, 0]
+          ];
+        case 'O':
+          return [
+            [2, 2],
+            [2, 2]
+          ];
+        case 'L':
+          return [
+            [0, 3, 0],
+            [0, 3, 0],
+            [0, 3, 3]
+          ];
+        case 'J':
+          return [
+            [0, 4, 0],
+            [0, 4, 0],
+            [4, 4, 0]
+          ];
+        case 'I':
+          return [
+            [0, 5, 0, 0],
+            [0, 5, 0, 0],
+            [0, 5, 0, 0],
+            [0, 5, 0, 0]
+          ];
+        case 'S':
+          return [
+            [0, 6, 6],
+            [6, 6, 0],
+            [0, 0, 0]
+          ];
+        case 'Z':
+          return [
+            [7, 7, 0],
+            [0, 7, 7],
+            [0, 0, 0]
+          ];
+      }
+    }
+
+    function tetrisCollide(arena, player) {
+      const [m, o] = [player.matrix, player.pos];
+      for (let y = 0; y < m.length; ++y) {
+        for (let x = 0; x < m[y].length; ++x) {
+          if (m[y][x] !== 0 &&
+              (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    function tetrisMerge(arena, player) {
+      player.matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value !== 0) {
+            arena[y + player.pos.y][x + player.pos.x] = value;
+          }
+        });
+      });
+    }
+
+    function tetrisRotate(matrix, dir) {
+      for (let y = 0; y < matrix.length; ++y) {
+        for (let x = 0; x < y; ++x) {
+          [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
+        }
+      }
+      if (dir > 0) {
+        matrix.forEach(row => row.reverse());
+      } else {
+        matrix.reverse();
+      }
+    }
+
+    function tetrisPlayerDrop() {
+      tetrisPlayer.pos.y++;
+      if (tetrisCollide(tetrisArena, tetrisPlayer)) {
+        tetrisPlayer.pos.y--;
+        tetrisMerge(tetrisArena, tetrisPlayer);
+        tetrisPlayerReset();
+        tetrisArenaSweep();
+        tetrisUpdateScore();
+      }
+      tetrisDropCounter = 0;
+    }
+
+    function tetrisPlayerMove(offset) {
+      tetrisPlayer.pos.x += offset;
+      if (tetrisCollide(tetrisArena, tetrisPlayer)) {
+        tetrisPlayer.pos.x -= offset;
+      }
+    }
+
+    function tetrisPlayerReset() {
+      const pieces = 'TJLOSZI';
+      tetrisPlayer.matrix = createPieceTetris(pieces[pieces.length * Math.random() | 0]);
+      tetrisPlayer.pos.y = 0;
+      tetrisPlayer.pos.x = ((tetrisArena[0].length / 2) | 0) - ((tetrisPlayer.matrix[0].length / 2) | 0);
+      if (tetrisCollide(tetrisArena, tetrisPlayer)) {
+        // Si pierde, reinicia arena y score
+        tetrisArena.forEach(row => row.fill(0));
+        tetrisPlayer.score = 0;
+        tetrisUpdateScore();
+      }
+    }
+
+    function tetrisArenaSweep() {
+      outer: for (let y = tetrisArena.length - 1; y >= 0; --y) {
+        for (let x = 0; x < tetrisArena[y].length; ++x) {
+          if (tetrisArena[y][x] === 0) {
+            continue outer;
+          }
+        }
+        const row = tetrisArena.splice(y, 1)[0].fill(0);
+        tetrisArena.unshift(row);
+        tetrisPlayer.score += 10;
+      }
+    }
+
+    function tetrisDrawMatrix(matrix, offset) {
+      matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value !== 0) {
+            tetrisContext.fillStyle = tetrisColors[value];
+            tetrisContext.fillRect(x + offset.x, y + offset.y, 1, 1);
+          }
+        });
+      });
+    }
+
+    function tetrisDraw() {
+      tetrisContext.fillStyle = '#000';
+      tetrisContext.fillRect(0, 0, tetrisCanvas.width, tetrisCanvas.height);
+      tetrisDrawMatrix(tetrisArena, {x: 0, y: 0});
+      tetrisDrawMatrix(tetrisPlayer.matrix, tetrisPlayer.pos);
+    }
+
+    let tetrisDropCounter = 0;
+    let tetrisDropInterval = 1000;
+    let tetrisLastTime = 0;
+
+    function tetrisUpdate(time = 0) {
+      const deltaTime = time - tetrisLastTime;
+      tetrisLastTime = time;
+      tetrisDropCounter += deltaTime;
+      if (tetrisDropCounter > tetrisDropInterval) {
+        tetrisPlayerDrop();
+      }
+      tetrisDraw();
+      // Si el score es menor a 100, seguir actualizando; si llega a 100, pasar al siguiente minijuego
+      if (tetrisPlayer.score < 100) {
+        requestAnimationFrame(tetrisUpdate);
+      } else {
+        // Se cumple la condición mínima para aprobar el Tetris
+        document.getElementById("tetris-game").style.display = "none";
         document.getElementById("final-game").style.display = "block";
       }
     }
 
-    /* ============================
-         Minijuego Final: La Cata del Vino
-       ============================ */
-    function checkCata(selection) {
-      // La opción correcta: "queso" (queso curado)
-      if(selection === "queso") {
-        document.getElementById("cata-status").textContent = "¡Excelente! El queso curado realza perfectamente nuestro vino.";
-        playSound("success-sound");
-        document.getElementById("final-game").style.display = "none";
-        document.getElementById("final-button").style.display = "block";
-      } else if(selection === "chorizo") {
-        document.getElementById("cata-status").textContent = "El chorizo ibérico es intenso, pero no acompaña idealmente el vino.";
-        playSound("error-sound");
-      } else {
-        document.getElementById("cata-status").textContent = "Esa opción no resalta el vino, intenta de nuevo.";
-        playSound("error-sound");
-      }
+    function tetrisUpdateScore() {
+      document.getElementById('tetris-score').innerText = `Score: ${tetrisPlayer.score}`;
     }
+
+    document.getElementById('tetris-start').addEventListener('click', () => {
+      tetrisPlayerReset();
+      tetrisUpdateScore();
+      tetrisUpdate();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (document.getElementById("tetris-game").style.display === "block") {
+        if (event.key === 'ArrowLeft') {
+          tetrisPlayerMove(-1);
+        } else if (event.key === 'ArrowRight') {
+          tetrisPlayerMove(1);
+        } else if (event.key === 'ArrowDown') {
+          tetrisPlayerDrop();
+        } else if (event.key === 'ArrowUp') {
+          tetrisRotate(tetrisPlayer.matrix, 1);
+          if (tetrisCollide(tetrisArena, tetrisPlayer)) {
+            tetrisRotate(tetrisPlayer.matrix, -1);
+          }
+        }
+      }
+    });
   </script>
 </body>
 </html>
