@@ -748,7 +748,7 @@
       }
       tetrisDraw();
       // Mientras el puntaje sea inferior a 100, continuar actualizando
-      if (tetrisPlayer.score < 100) {
+      if (tetrisPlayer.score < 50) {
         requestAnimationFrame(tetrisUpdate);
       } else {
         // Se alcanza la meta mínima para aprobar
