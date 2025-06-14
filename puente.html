@@ -102,105 +102,106 @@
       </p>
     </footer>
 
-    <script src="scripts/script.js"></script>
     <script>
-      function revealMessage() {
-        const msg = document.getElementById("message-piece");
-        const feedback = document.getElementById("puzzle-feedback");
-        const btn = document.getElementById("continue-button");
-
-        if (msg.style.display !== "inline") {
-          msg.style.display = "inline";
-          feedback.textContent = "✅ ¡Símbolo encontrado! Estaba en el arco.";
-          btn.style.display = "block";
-          playSound("cheers-sound");
-          localStorage.setItem("puente-completed", "true");
-        }
-      }
-
-      function showHint() {
-        const feedback = document.getElementById("puzzle-feedback");
-        feedback.textContent = "💡 Pista: Está justo en el arco central del puente, cerca de la base.";
-        playSound("success-sound");
-      }
-    </script>
-
-    <script>
-  localStorage.setItem("puente-completed", "true");
-</script>
-
-    // Coordenadas exactas del Puente Medieval
-const puenteCoords = {
-  lat: 40.544256,  // <- Sustituye por la coordenada real si cambia
-  lng: -6.013472,  // <- Idem
-  maxDistance: 60  // metros
-};
-
-function checkLocation() {
-  if (!navigator.geolocation) {
-    showStatus("❌ Geolocalización no disponible en este navegador.");
-    playSound("error-sound");
-    return;
+  function playSound(id) {
+    const sound = document.getElementById(id);
+    if (sound) {
+      sound.currentTime = 0;
+      sound.play();
+    }
   }
 
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const distance = getDistanceFromLatLonInMeters(
-        position.coords.latitude,
-        position.coords.longitude,
-        puenteCoords.lat,
-        puenteCoords.lng
-      );
+  function revealMessage() {
+    const msg = document.getElementById("message-piece");
+    const feedback = document.getElementById("puzzle-feedback");
+    const btn = document.getElementById("continue-button");
 
-      if (distance <= puenteCoords.maxDistance) {
-        unlockContent("✅ Ubicación verificada. Puedes continuar.");
-      } else {
-        showStatus(`📍 Estás a ${Math.round(distance)} metros del puente. Acércate más para continuar.`);
+    if (msg.style.display !== "inline") {
+      msg.style.display = "inline";
+      feedback.textContent = "✅ ¡Símbolo encontrado! Estaba en el arco.";
+      btn.style.display = "block";
+      playSound("cheers-sound");
+      localStorage.setItem("puente-completed", "true");
+    }
+  }
+
+  function showHint() {
+    const feedback = document.getElementById("puzzle-feedback");
+    feedback.textContent = "💡 Pista: Está justo en el arco central del puente, cerca de la base.";
+    playSound("success-sound");
+  }
+
+  const puenteCoords = {
+    lat: 40.544256,
+    lng: -6.013472,
+    maxDistance: 60
+  };
+
+  function checkLocation() {
+    if (!navigator.geolocation) {
+      showStatus("❌ Geolocalización no disponible en este navegador.");
+      playSound("error-sound");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const distance = getDistanceFromLatLonInMeters(
+          position.coords.latitude,
+          position.coords.longitude,
+          puenteCoords.lat,
+          puenteCoords.lng
+        );
+
+        if (distance <= puenteCoords.maxDistance) {
+          unlockContent("✅ Ubicación verificada. Puedes continuar.");
+        } else {
+          showStatus(`📍 Estás a ${Math.round(distance)} metros del puente. Acércate más para continuar.`);
+          playSound("error-sound");
+        }
+      },
+      () => {
+        showStatus("❌ No se pudo obtener tu ubicación.");
         playSound("error-sound");
       }
-    },
-    () => {
-      showStatus("❌ No se pudo obtener tu ubicación.");
+    );
+  }
+
+  function checkLocationManual() {
+    const input = document.getElementById("location-input").value.trim().toLowerCase();
+    if (input === "puente" || input === "puente medieval") {
+      unlockContent("✅ Verificación manual correcta. Puedes continuar.");
+    } else {
+      showStatus("❌ Nombre incorrecto. Intenta de nuevo.");
       playSound("error-sound");
     }
-  );
-}
-
-function checkLocationManual() {
-  const input = document.getElementById("location-input").value.trim().toLowerCase();
-  if (input === "puente" || input === "puente medieval") {
-    unlockContent("✅ Verificación manual correcta. Puedes continuar.");
-  } else {
-    showStatus("❌ Nombre incorrecto. Intenta de nuevo.");
-    playSound("error-sound");
   }
-}
 
-function unlockContent(message) {
-  document.getElementById("location-status").textContent = message;
-  document.getElementById("game-content").style.display = "block";
-  document.getElementById("location-check").style.display = "none";
-  playSound("success-sound");
-  localStorage.setItem("puente-completed", "true");
-}
+  function unlockContent(message) {
+    document.getElementById("location-status").textContent = message;
+    document.getElementById("game-content").style.display = "block";
+    document.getElementById("location-check").style.display = "none";
+    playSound("success-sound");
+    localStorage.setItem("puente-completed", "true");
+  }
 
-function showStatus(message) {
-  document.getElementById("location-status").textContent = message;
-}
+  function showStatus(message) {
+    document.getElementById("location-status").textContent = message;
+  }
 
-// Haversine para calcular distancia entre dos puntos GPS
-function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
-  const R = 6371e3; // Radio de la tierra en metros
-  const toRad = (value) => value * Math.PI / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-    Math.sin(dLon / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-}
+  function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
+    const R = 6371e3;
+    const toRad = (value) => value * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+</script>
 
 </body>
 </html>
