@@ -82,8 +82,8 @@
     }
 
     .action-btn {
-      display: none;
-      margin: 30px auto 20px;
+      display: block;
+      margin: 20px auto;
       padding: 12px 20px;
       font-size: 18px;
       background-color: #d6b88a;
@@ -97,24 +97,40 @@
 <body>
   <div class="container">
     <h1>🏟️ Plaza de Toros</h1>
-    <div class="carousel">
-      <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
-      <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
-      <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
-      <p><a href="https://sanmartindelcastanar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
-      <p>🎪 ¡Bienvenido a la caseta de puntería! Acierta a la copa, el escudo y el racimo de uvas para revelar el secreto oculto entre aplausos y capeas.</p>
+
+    <!-- 🔐 VERIFICACIÓN -->
+    <div id="location-check">
+      <h2>Verifica tu ubicación</h2>
+      <p>Acércate a la Plaza de Toros para continuar.</p>
+      <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
+      <p>O escribe el nombre del lugar:</p>
+      <input type="text" id="location-input" placeholder="Ej: Plaza" />
+      <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
+      <p id="location-status"></p>
     </div>
 
-    <canvas id="gameCanvas" width="600" height="360"></canvas>
-    <div id="score-display">Puntuación: 0 / 3</div>
-    <div id="fragmento">📜 Fragmento revelado: "...en..."</div>
-    <button id="continue-button" class="action-btn" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
+    <!-- 🔓 CONTENIDO DEL JUEGO -->
+    <div id="game-content" style="display:none;">
+      <div class="carousel">
+        <img src="images/plaza-tradicion.jpg" alt="Capeas en la plaza" />
+        <p>Las capeas del 11 de agosto, símbolo de identidad local. Esta plaza de toros es una de las más antiguas de España, construida en el siglo XVII aprovechando el patio de armas del castillo. Conserva gradas originales de piedra y se sigue utilizando durante las fiestas patronales.</p>
+        <p><strong>Curiosidad:</strong> Algunos vecinos afirman que Gonzalo fue visto por última vez entre los burladeros antes de su desaparición misteriosa en una noche de capeas.</p>
+        <p><a href="https://sanmartindelcastanar.es/plaza-de-toros/" target="_blank">🔗 Más información sobre la Plaza de Toros</a></p>
+        <p>🎪 ¡Bienvenido a la caseta de puntería! Acierta a la copa, el escudo y el racimo de uvas para revelar el secreto oculto entre aplausos y capeas.</p>
+      </div>
+
+      <canvas id="gameCanvas" width="600" height="360"></canvas>
+      <div id="score-display">Puntuación: 0 / 3</div>
+      <div id="fragmento">📜 Fragmento revelado: "...en..."</div>
+      <button id="continue-button" class="action-btn" style="display:none;" onclick="location.href='felicitaciones.html?stop=plaza'">Continuar la aventura</button>
+    </div>
   </div>
 
   <audio id="hit-sound" src="sounds/cheers.mp3" preload="auto"></audio>
   <audio id="miss-sound" src="sounds/error.mp3" preload="auto"></audio>
   <audio id="arrow-sound" src="sounds/arrow.mp3" preload="auto"></audio>
 
+  <!-- 🎯 JUEGO -->
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
@@ -139,8 +155,7 @@
           y,
           icono: objetivos[Math.floor(Math.random() * objetivos.length)],
           roto: false,
-          alpha: 1,
-          rebote: false
+          alpha: 1
         });
       }
     }
@@ -206,6 +221,70 @@
     });
 
     dibujar();
+  </script>
+
+  <!-- 📍 VERIFICACIÓN -->
+  <script>
+    const plazaCoords = {
+      lat: 40.520621,
+      lng: -6.063455,
+      maxDistance: 20
+    };
+
+    function checkLocation() {
+      if (!navigator.geolocation) {
+        showStatus("❌ Geolocalización no disponible.");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const distance = getDistanceFromLatLonInMeters(
+            position.coords.latitude,
+            position.coords.longitude,
+            plazaCoords.lat,
+            plazaCoords.lng
+          );
+          if (distance <= plazaCoords.maxDistance) {
+            unlockContent("✅ GPS correcto. ¡Bienvenido a la plaza!");
+          } else {
+            showStatus(`📍 Estás a ${Math.round(distance)} m. Acércate más.`);
+          }
+        },
+        () => showStatus("❌ No se pudo obtener la ubicación.")
+      );
+    }
+
+    function checkLocationManual() {
+      const val = document.getElementById("location-input").value.trim().toLowerCase();
+      if (val === "plaza" || val === "plaza de toros") {
+        unlockContent("✅ Verificación manual correcta. Puedes continuar.");
+      } else {
+        showStatus("❌ Nombre incorrecto. Intenta con 'plaza'.");
+      }
+    }
+
+    function unlockContent(msg) {
+      document.getElementById("location-status").textContent = msg;
+      document.getElementById("location-check").style.display = "none";
+      document.getElementById("game-content").style.display = "block";
+    }
+
+    function showStatus(msg) {
+      document.getElementById("location-status").textContent = msg;
+    }
+
+    function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const toRad = x => x * Math.PI / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) ** 2 +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) ** 2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
   </script>
 </body>
 </html>
