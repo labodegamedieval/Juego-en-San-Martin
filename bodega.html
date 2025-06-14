@@ -111,53 +111,6 @@
      .next-slide { right: 10px; }
 
      /* ============================
-          Minijuego 1: Puzzle Arrastrable (Drag & Drop)
-        ============================ */
-     #puzzle-section {
-       display: none;
-       width: 400px;
-       margin: 20px auto;
-     }
-     /* Área destino: cuadrícula 4x4 */
-     #puzzle-target {
-       width: 400px;
-       height: 400px;
-       display: grid;
-       grid-template-columns: repeat(4, 1fr);
-       grid-template-rows: repeat(4, 1fr);
-       gap: 2px;
-       border: 2px dashed #aaa;
-       position: relative;
-     }
-     .target-cell {
-       border: 1px dashed #ddd;
-       width: 100px;
-       height: 100px;
-       box-sizing: border-box;
-     }
-     /* Contenedor de piezas: se muestran esparcidas */
-     #pieces-container {
-       width: 400px;
-       height: 200px;
-       position: relative;
-       border: 2px solid #ccc;
-       margin-top: 10px;
-     }
-     .puzzle-piece {
-       width: 100px;
-       height: 100px;
-       background-image: url('images/bodega-barriles.jpeg');
-       background-size: 400px 400px;
-       cursor: grab;
-       position: absolute;
-       transition: left 0.3s ease, top 0.3s ease;
-       pointer-events: auto;
-     }
-     .puzzle-piece.placed {
-       cursor: default;
-     }
-
-     /* ============================
           Minijuego 2: Tetris
         ============================ */
      #tetris-game {
