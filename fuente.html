@@ -356,57 +356,60 @@
       /* 1. VERIFICACIÓN DE UBICACIÓN           */
       /*----------------------------------------*/
       const targetLat = 40.522185;
-      const targetLon = -6.064564;
-      const thresholdDistance = 10;
-      function checkLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
-        } else {
-          document.getElementById("location-status").textContent =
-            "Tu navegador no soporta geolocalización.";
-        }
-      }
-      function geoSuccess(position) {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        const distance = calculateDistance(lat, lon, targetLat, targetLon);
-        if (distance <= thresholdDistance) {
-          unlockStop();
-        } else {
-          document.getElementById("location-status").textContent =
-            "No estás lo suficientemente cerca de la Fuente y Portalón.";
-        }
-      }
-      function locationError(err) {
-        document.getElementById("location-status").textContent =
-          "Error al obtener tu ubicación: " + err.message;
-      }
-      function calculateDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371e3;
-        const toRad = (x) => x * Math.PI / 180;
-        const φ1 = toRad(lat1), φ2 = toRad(lat2);
-        const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
-        const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        return R * c;
-      }
-      function checkLocationManual() {
-        const input = document.getElementById("location-input").value.trim().toLowerCase();
-        if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") {
-          unlockStop();
-        } else {
-          document.getElementById("location-status").textContent =
-            "Nombre incorrecto. Inténtalo nuevamente.";
-        }
-      }
-      function unlockStop() {
-        document.getElementById("location-check").style.display = "none";
-        document.getElementById("game-content").style.display = "block";
-        initCarousel();
-        // Mostramos el quiz y retos visuales; el puzzle de cántaros se mostrará
-        // solo cuando se contesten correctamente las preguntas del quiz.
-        playSound("background-music");
-      }
+const targetLon = -6.064564;
+const thresholdDistance = 10;
+
+function checkLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
+  } else {
+    document.getElementById("location-status").textContent =
+      "Tu navegador no soporta geolocalización.";
+  }
+}
+
+function geoSuccess(position) {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
+  const distance = calculateDistance(lat, lon, targetLat, targetLon);
+  if (distance <= thresholdDistance) {
+    unlockStop();
+  } else {
+    document.getElementById("location-status").textContent =
+      `Estás a ${Math.round(distance)} metros de la parada. Acércate un poco más.`;
+  }
+}
+
+function locationError(err) {
+  document.getElementById("location-status").textContent =
+    "Error al obtener tu ubicación: " + err.message;
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371e3;
+  const toRad = (x) => x * Math.PI / 180;
+  const φ1 = toRad(lat1), φ2 = toRad(lat2);
+  const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
+  const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+function checkLocationManual() {
+  const input = document.getElementById("location-input").value.trim().toLowerCase();
+  if (input === "fuente" || input === "fuente y portalón" || input === "fuente y portalon") {
+    unlockStop();
+  } else {
+    document.getElementById("location-status").textContent =
+      "Nombre incorrecto. Inténtalo nuevamente.";
+  }
+}
+
+function unlockStop() {
+  document.getElementById("location-check").style.display = "none";
+  document.getElementById("game-content").style.display = "block";
+  initCarousel();
+}
 
       /*----------------------------------------*/
       /* 2. CARRUSEL                            */
