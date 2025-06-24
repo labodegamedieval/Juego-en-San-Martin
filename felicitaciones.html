@@ -4,13 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🎉 Felicitaciones</title>
-  <link rel="stylesheet" href="styles/style.css"/>
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
   <style>
     body {
       background: url('images/pergamino.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #4a2c2a;
+      font-family: 'Georgia', serif;
     }
 
     .reward-container {
@@ -18,24 +17,53 @@
       padding: 40px 20px;
       max-width: 700px;
       margin: 60px auto;
-      background: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.95);
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .reward-container h1 {
-      font-size: 2em;
-    }
-
-    .reward-container p {
-      font-size: 1.2em;
-      margin-top: 15px;
+      font-size: 2.2em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
 
     .stars {
-      font-size: 40px;
+      font-size: 50px;
       margin: 20px 0;
-      color: gold;
+      animation: sparkle 2s infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .progress-indicator {
+      background: #f0e6d2;
+      border-radius: 20px;
+      padding: 10px;
+      margin: 20px 0;
+      border: 2px solid #8b0000;
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, #8b0000, #d4af37);
+      height: 8px;
+      border-radius: 4px;
+      transition: width 1s ease-out;
+    }
+
+    .progress-text {
+      font-weight: bold;
+      margin-top: 5px;
+      font-size: 1.1em;
     }
 
     .pergamino-fragmento {
@@ -45,126 +73,297 @@
       max-width: 500px;
       height: 200px;
       margin: 20px auto;
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
+      animation: fadeIn 1s ease-out 0.5s both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .fragmento {
-  font-size: 1.6em;
-  font-weight: bold;
-  font-style: italic;
-  color: #8b0000;
-  text-align: center;
-}
+      font-size: 1.6em;
+      font-weight: bold;
+      font-style: italic;
+      color: #8b0000;
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .share-section {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(240, 230, 210, 0.8);
+      border-radius: 10px;
+      border: 1px solid #d4af37;
+    }
+
+    .share-section h3 {
+      color: #8b0000;
+      margin-bottom: 15px;
+      font-size: 1.4em;
+    }
 
     .button-group {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 15px;
-      margin-top: 30px;
+      gap: 12px;
+      margin-top: 20px;
     }
 
     .action-btn {
       display: flex;
       align-items: center;
       gap: 8px;
-      background-color: #f0e6d2;
-      border: none;
-      padding: 10px 16px;
+      background: linear-gradient(135deg, #f0e6d2, #e8d5b7);
+      border: 2px solid #8b0000;
+      padding: 12px 18px;
       font-size: 16px;
       cursor: pointer;
-      border-radius: 8px;
+      border-radius: 25px;
       text-decoration: none;
       color: #4a2c2a;
-      transition: background-color 0.3s;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
     .action-btn:hover {
-      background-color: #e0d2b3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      background: linear-gradient(135deg, #e8d5b7, #d4af37);
     }
 
     .action-btn img {
       height: 24px;
+      filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
+    }
+
+    .location-badge {
+      display: inline-block;
+      background: #8b0000;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+
+    .achievement-unlock {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      border: 2px solid #8b0000;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px 0;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 5px #ffd700; }
+      to { box-shadow: 0 0 20px #ffd700; }
+    }
+
+    .copy-success {
+      color: #2d5016;
+      font-weight: bold;
+      animation: fadeInOut 3s ease-out;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .reward-container {
+        margin: 20px;
+        padding: 30px 15px;
+      }
+      
+      .action-btn {
+        flex: 1;
+        min-width: 140px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="reward-container">
-    <h1>🎉 ¡Bien hecho!</h1>
-    <p>Has superado este reto del mensaje oculto de Gonzalo.</p>
-    <div class="stars">⭐ ⭐ ⭐</div>
-    <p id="completion-text">Tu valentía será recordada en San Martín del Castañar...</p>
+    <h1>🎉 ¡Magistral!</h1>
+    <div class="location-badge" id="location-name">Castillo Medieval</div>
+    
+    <div class="achievement-unlock">
+      <p><strong>🏆 ¡Nuevo Logro Desbloqueado!</strong></p>
+      <p id="achievement-text">Explorador del Castillo</p>
+    </div>
+
+    <div class="stars" id="stars">⭐ ⭐ ⭐</div>
+    
+    <!-- Indicador de progreso -->
+    <div class="progress-indicator">
+      <div class="progress-text" id="progress-text">Parada 1 de 6 completada</div>
+      <div class="progress-bar" id="progress-bar" style="width: 16.6%"></div>
+    </div>
 
     <div class="pergamino-fragmento" id="fragment-container">
       <p class="fragmento" id="fragment-text"></p>
     </div>
 
-    <div class="share-section" style="margin-top: 30px;">
-      <h3>📣 Comparte tu aventura</h3>
-      <p>¡Anima a tus amigos a descubrir el mensaje oculto de Gonzalo!</p>
+    <div class="share-section">
+      <h3>📣 ¡Comparte tu hazaña!</h3>
+      <p id="share-description">¡Estoy siguiendo las pistas de Gonzalo de la Sierra en San Martín del Castañar! 🏰</p>
+      
       <div class="button-group">
-        <a href="https://wa.me/?text=¡He jugado al juego del mensaje oculto en San Martín del Castañar! %0Ahttps://labodegamedieval.github.io/Juego-en-San-Martin/" target="_blank" class="action-btn">
+        <a href="#" id="whatsapp-share" target="_blank" class="action-btn">
           <img src="images/whatsapp.png" alt="WhatsApp" /> WhatsApp
         </a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://labodegamedieval.github.io/Juego-en-San-Martin/" target="_blank" class="action-btn">
+        <a href="#" id="facebook-share" target="_blank" class="action-btn">
           <img src="images/facebook.png" alt="Facebook" /> Facebook
         </a>
-        <a href="https://www.instagram.com/" target="_blank" class="action-btn">
-          <img src="images/instagram.png" alt="Instagram" /> Instagram
+        <a href="#" id="twitter-share" target="_blank" class="action-btn">
+          <img src="images/twitter.png" alt="Twitter" /> Twitter
         </a>
-        <button class="action-btn" onclick="copiarEnlace()">
+        <button class="action-btn" onclick="copiarEnlacePersonalizado()">
           <img src="images/enlace.png" alt="Copiar enlace" /> Copiar Enlace
         </button>
       </div>
-      <p id="copiar-msg" style="margin-top: 10px; font-style: italic;"></p>
+      <p id="copiar-msg"></p>
     </div>
 
     <div class="button-group" id="button-group">
-      <button class="action-btn" onclick="window.location.href='explorar.html'">🗺️ Continuar Búsqueda</button>
-      <button class="action-btn" onclick="window.location.href='guia.html'">📖 Guía Histórica</button>
-      <button class="action-btn" onclick="window.location.href='cronica.html'">📜 Crónica</button>
+      <button class="action-btn" onclick="window.location.href='explorar.html'">
+        🗺️ Continuar Aventura
+      </button>
+      <button class="action-btn" onclick="window.location.href='guia.html'">
+        📖 Guía Histórica
+      </button>
+      <button class="action-btn" onclick="window.location.href='cronica.html'">
+        📜 Crónica
+      </button>
     </div>
   </div>
 
   <audio id="success-sound" src="sounds/success.mp3" preload="auto" autoplay></audio>
-  <audio id="ambient-sound" src="sounds/musica-medieval.mp3" preload="auto" loop autoplay></audio>
+  <audio id="ambient-sound" src="sounds/musica-medieval.mp3" preload="auto" loop autoplay volume="0.3"></audio>
 
   <script>
-    function copiarEnlace() {
-      const enlace = "https://labodegamedieval.github.io/Juego-en-San-Martin/";
-      navigator.clipboard.writeText(enlace).then(() => {
-        document.getElementById("copiar-msg").textContent = "✅ Enlace copiado al portapapeles.";
+    // Configuración de paradas
+    const paradasInfo = {
+      "castillo": {
+        nombre: "Castillo Medieval",
+        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>Oculto</span>",
+        progreso: 1,
+        logro: "🏰 Conquistador del Castillo",
+        shareText: "¡Acabo de explorar el misterioso Castillo de San Martín del Castañar! 🏰 Siguiendo las pistas de Gonzalo de la Sierra... ¿Te atreves a descubrir el secreto? 🕵️‍♂️"
+      },
+      "plaza": {
+        nombre: "Plaza Mayor",
+        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>en</span>",
+        progreso: 2,
+        logro: "🏛️ Guardián de la Plaza",
+        shareText: "¡Ya son 2 pistas del misterio de Gonzalo! 🧩 La Plaza Mayor de San Martín del Castañar guarda secretos increíbles... ¡Ven a descubrirlos!"
+      },
+      "iglesia": {
+        nombre: "Iglesia Parroquial",
+        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>la</span>",
+        progreso: 3,
+        logro: "⛪ Peregrino Sagrado",
+        shareText: "¡3 fragmentos encontrados! ⛪ La iglesia medieval me ha revelado nuevos secretos del bodeguero desaparecido... ¡La aventura continúa!"
+      },
+      "fuente": {
+        nombre: "Fuente Antigua",
+        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>bodega</span>",
+        progreso: 4,
+        logro: "💧 Guardián de las Aguas",
+        shareText: "¡Ya voy por la mitad! 💧 La fuente antigua susurra pistas sobre Gonzalo... ¿Será aquí donde escondió su tesoro? 🗝️"
+      },
+      "ermita": {
+        nombre: "Ermita del Humilladero",
+        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>sin</span>",
+        progreso: 5,
+        logro: "🙏 Místico Peregrino",
+        shareText: "¡Solo queda una parada! 🙏 La ermita me ha dado la penúltima pista... ¡El misterio de la bodega medieval está a punto de resolverse!"
+      },
+      "puente": {
+        nombre: "Puente Romano",
+        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>escudo</span>",
+        progreso: 6,
+        logro: "🌉 Cruzador de Ríos",
+        shareText: "¡TODAS las pistas reunidas! 🌉 El puente romano me ha dado la última pieza del puzzle... ¡Ya puedo descubrir qué pasó con Gonzalo! 🔍"
+      },
+      "bodega": {
+        nombre: "Bodega Final",
+        fragmento: "¡Has completado la búsqueda! 🍷",
+        progreso: 7,
+        logro: "🍷 Maestro Bodeguero",
+        shareText: "¡RESUELTO! 🍷 He descubierto el secreto de Gonzalo de la Sierra en San Martín del Castañar... ¡Una aventura medieval increíble que tienes que vivir!"
+      }
+    };
+
+    function copiarEnlacePersonalizado() {
+      const stop = new URLSearchParams(window.location.search).get("stop");
+      const parada = paradasInfo[stop];
+      const enlace = "https://el-misterio-de-san-martin.netlify.app/";
+      const textoCompleto = `${parada?.shareText || "¡Ven a descubrir el misterio medieval!"}\n\n${enlace}`;
+      
+      navigator.clipboard.writeText(textoCompleto).then(() => {
+        const msg = document.getElementById("copiar-msg");
+        msg.textContent = "✅ ¡Texto completo copiado! Listo para pegar en cualquier red social.";
+        msg.className = "copy-success";
       });
     }
 
-    const stop = new URLSearchParams(window.location.search).get("stop");
-    const fragmentos = {
-      "castillo": "Fragmento: <span style='font-size:1.6em; color:#8b0000; font-weight:bold;'>Oculto</span>",
-      "plaza": "Fragmento: en",
-      "iglesia": "Fragmento: la",
-      "fuente": "Fragmento: bodega",
-      "ermita": "Fragmento: sin",
-      "puente": "Fragmento: escudo",
-      "bodega": "Fragmento: desarmado"
-    };
+    function configurarCompartir() {
+      const stop = new URLSearchParams(window.location.search).get("stop");
+      const parada = paradasInfo[stop];
+      
+      if (!parada) return;
 
-    const completionText = document.getElementById("completion-text");
-    const fragmentContainer = document.getElementById("fragment-container");
-    const fragmentText = document.getElementById("fragment-text");
+      const baseUrl = "https://el-misterio-de-san-martin.netlify.app/";
+      const shareText = encodeURIComponent(parada.shareText);
+      const shareUrl = encodeURIComponent(baseUrl);
 
-    if (stop === "bodega") {
-      completionText.textContent = "Has llegado al final de la aventura...";
-      fragmentText.textContent = "🧩 Has reunido todos los fragmentos. ¡Dirígete a la bodega para desvelar el secreto!";
-      fragmentContainer.style.display = "flex";
-      document.getElementById("button-group").innerHTML += `
-        <button class="action-btn" onclick="window.location.href='final.html'">🔓 Ver Mensaje Completo</button>
-      `;
-    } else if (fragmentos[stop]) {
-      fragmentText.innerHTML = fragmentos[stop];
-      fragmentContainer.style.display = "flex";
+      // WhatsApp
+      document.getElementById("whatsapp-share").href = 
+        `https://wa.me/?text=${shareText}%0A%0A${shareUrl}`;
+
+      // Facebook
+      document.getElementById("facebook-share").href = 
+        `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${shareText}`;
+
+      // Twitter
+      document.getElementById("twitter-share").href = 
+        `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}&hashtags=SanMartinDelCastañar,TurismoMedieval,MisterioGonzalo`;
+
+      // Actualizar elementos de la página
+      document.getElementById("location-name").textContent = parada.nombre;
+      document.getElementById("achievement-text").textContent = parada.logro;
+      document.getElementById("share-description").textContent = parada.shareText;
+      document.getElementById("fragment-text").innerHTML = parada.fragmento;
+      
+      // Progreso
+      const progressPercent = (parada.progreso / 6) * 100;
+      document.getElementById("progress-text").textContent = 
+        parada.progreso <= 6 ? `Parada ${parada.progreso} de 6 completada` : "¡Aventura Completada!";
+      document.getElementById("progress-bar").style.width = `${Math.min(progressPercent, 100)}%`;
+
+      // Estrellas según progreso
+      let stars = "⭐ ⭐ ⭐";
+      if (parada.progreso >= 3) stars += " ⭐";
+      if (parada.progreso >= 5) stars += " ⭐";
+      if (parada.progreso >= 6) stars = "🌟 ⭐ ⭐ ⭐ ⭐ 🌟";
+      document.getElementById("stars").textContent = stars;
     }
+
+    // Ejecutar al cargar
+    document.addEventListener('DOMContentLoaded', configurarCompartir);
   </script>
 </body>
 </html>
