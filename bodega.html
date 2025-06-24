@@ -392,5 +392,69 @@
       }
     });
   </script>
+  <script>
+  function checkLocationManual() {
+    const input = document.getElementById('location-input').value.trim().toLowerCase();
+    const validNames = ['bodega', 'la bodega', 'bodega medieval'];
+    const status = document.getElementById('location-status');
+    const arrow = document.getElementById('direction-arrow');
+
+    if (validNames.includes(input)) {
+      document.getElementById('location-check').style.display = 'none';
+      document.getElementById('game-content').style.display = 'block';
+      status.innerText = '';
+      arrow.style.display = 'none';
+    } else {
+      status.innerText = '❌ Nombre incorrecto. Intenta con "bodega".';
+      arrow.style.display = 'none';
+    }
+  }
+
+  function checkLocation() {
+    const status = document.getElementById('location-status');
+    const arrow = document.getElementById('direction-arrow');
+    if (!navigator.geolocation) {
+      status.innerText = 'La geolocalización no está disponible.';
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        const latBodega = 40.5485;  // coordenadas reales o estimadas
+        const lonBodega = -6.0291;
+        const distance = getDistanceFromLatLonInMeters(lat, lon, latBodega, lonBodega);
+
+        if (distance < 50) {
+          document.getElementById('location-check').style.display = 'none';
+          document.getElementById('game-content').style.display = 'block';
+          status.innerText = '';
+        } else {
+          status.innerText = `Estás a ${Math.round(distance)} metros. Acércate más.`;
+          arrow.style.display = 'block';
+        }
+      },
+      () => {
+        status.innerText = 'No se pudo obtener la ubicación.';
+      }
+    );
+  }
+
+  function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
+    const R = 6371e3;
+    const φ1 = lat1 * Math.PI/180;
+    const φ2 = lat2 * Math.PI/180;
+    const Δφ = (lat2-lat1) * Math.PI/180;
+    const Δλ = (lon2-lon1) * Math.PI/180;
+
+    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    return R * c;
+  }
+</script>
 </body>
 </html>
