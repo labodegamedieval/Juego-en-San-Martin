@@ -230,6 +230,9 @@
         <a href="#" id="twitter-share" target="_blank" class="action-btn">
           <img src="images/twitter.png" alt="Twitter" /> Twitter
         </a>
+        <a href="#" id="instagram-share" target="_blank" class="action-btn">
+          <img src="images/instagram.png" alt="Instagram" /> Instagram
+        </a>
         <button class="action-btn" onclick="copiarEnlacePersonalizado()">
           <img src="images/enlace.png" alt="Copiar enlace" /> Copiar Enlace
         </button>
@@ -340,8 +343,17 @@
 
       // Twitter
       document.getElementById("twitter-share").href = 
-        `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}&hashtags=SanMartinDelCastañar,BodegaMedieval,MisteriodeGonzalo`;
+        `https://x.com/intent/tweet?text=${shareText}&url=${shareUrl}&hashtags=SanMartinDelCastañar,BodegaMedieval,MisteriodeGonzalo`;
 
+      // Instagram (abre la app o web)
+      document.getElementById("instagram-share").href = 
+        `https://www.instagram.com/`;
+      
+      // Para Instagram, añadimos un click handler especial
+      document.getElementById("instagram-share").addEventListener('click', function(e) {
+        e.preventDefault();
+        copiarParaInstagram();
+        
       // Actualizar elementos de la página
       document.getElementById("location-name").textContent = parada.nombre;
       document.getElementById("achievement-text").textContent = parada.logro;
