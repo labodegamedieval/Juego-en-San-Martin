@@ -257,125 +257,115 @@
   <audio id="ambient-sound" src="sounds/musica-medieval.mp3" preload="auto" loop autoplay volume="0.3"></audio>
 
   <script>
-    // Configuración de paradas
-    const paradasInfo = {
-      "castillo": {
-        nombre: "Castillo Medieval",
-        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>Oculto</span>",
-        progreso: 1,
-        logro: "🏰 Conquistador del Castillo",
-        shareText: "¡Acabo de explorar el misterioso Castillo de San Martín del Castañar! 🏰 Siguiendo las pistas de Gonzalo de la Sierra... ¿Te atreves a descubrir el secreto? 🕵️‍♂️"
-      },
-      "plaza": {
-        nombre: "Plaza Mayor",
-        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>en</span>",
-        progreso: 2,
-        logro: "🏛️ Guardián de la Plaza",
-        shareText: "¡Ya son 2 pistas del misterio de Gonzalo! 🧩 La Plaza Mayor de San Martín del Castañar guarda secretos increíbles... ¡Ven a descubrirlos!"
-      },
-      "iglesia": {
-        nombre: "Iglesia Parroquial",
-        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>la</span>",
-        progreso: 3,
-        logro: "⛪ Peregrino Sagrado",
-        shareText: "¡3 fragmentos encontrados! ⛪ La iglesia medieval me ha revelado nuevos secretos del bodeguero desaparecido... ¡La aventura continúa!"
-      },
-      "fuente": {
-        nombre: "Fuente Antigua",
-        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>bodega</span>",
-        progreso: 4,
-        logro: "💧 Guardián de las Aguas",
-        shareText: "¡Ya voy por la mitad! 💧 La fuente antigua susurra pistas sobre Gonzalo... ¿Será aquí donde escondió su tesoro? 🗝️"
-      },
-      "ermita": {
-        nombre: "Ermita del Humilladero",
-        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>sin</span>",
-        progreso: 5,
-        logro: "🙏 Místico Peregrino",
-        shareText: "¡Solo queda una parada! 🙏 La ermita me ha dado la penúltima pista... ¡El misterio de la bodega medieval está a punto de resolverse!"
-      },
-      "puente": {
-        nombre: "Puente Romano",
-        fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>escudo</span>",
-        progreso: 6,
-        logro: "🌉 Cruzador de Ríos",
-        shareText: "¡TODAS las pistas reunidas! 🌉 El puente romano me ha dado la última pieza del puzzle... ¡Ya puedo descubrir qué pasó con Gonzalo! 🔍"
-      },
-      "bodega": {
-        nombre: "Bodega Final",
-        fragmento: "¡Has completado la búsqueda! 🍷",
-        progreso: 7,
-        logro: "🍷 Maestro Bodeguero",
-        shareText: "¡RESUELTO! 🍷 He descubierto el secreto de Gonzalo de la Sierra en San Martín del Castañar... ¡Una aventura medieval increíble que tienes que vivir!"
-      }
-    };
-
-    function copiarEnlacePersonalizado() {
-      const stop = new URLSearchParams(window.location.search).get("stop");
-      const parada = paradasInfo[stop];
-      const enlace = "https://el-misterio-de-san-martin.netlify.app/";
-      const textoCompleto = `${parada?.shareText || "¡Ven a descubrir el misterio medieval!"}\n\n${enlace}`;
-      
-      navigator.clipboard.writeText(textoCompleto).then(() => {
-        const msg = document.getElementById("copiar-msg");
-        msg.textContent = "✅ ¡Texto completo copiado! Listo para pegar en cualquier red social.";
-        msg.className = "copy-success";
-      });
+  const paradasInfo = {
+    "castillo": {
+      nombre: "Castillo Medieval",
+      fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>Oculto</span>",
+      progreso: 1,
+      logro: "🏰 Conquistador del Castillo",
+      shareText: "¡Acabo de explorar el misterioso Castillo de San Martín del Castañar! 🏰 Siguiendo las pistas de Gonzalo de la Sierra... ¿Te atreves a descubrir el secreto? 🕵️‍♂️"
+    },
+    "plaza": {
+      nombre: "Plaza Mayor",
+      fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>en</span>",
+      progreso: 2,
+      logro: "🏛️ Guardián de la Plaza",
+      shareText: "¡Ya son 2 pistas del misterio de Gonzalo! 🧩 La Plaza Mayor de San Martín del Castañar guarda secretos increíbles... ¡Ven a descubrirlos!"
+    },
+    "iglesia": {
+      nombre: "Iglesia Parroquial",
+      fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>la</span>",
+      progreso: 3,
+      logro: "⛪ Peregrino Sagrado",
+      shareText: "¡3 fragmentos encontrados! ⛪ La iglesia medieval me ha revelado nuevos secretos del bodeguero desaparecido... ¡La aventura continúa!"
+    },
+    "fuente": {
+      nombre: "Fuente Antigua",
+      fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>bodega</span>",
+      progreso: 4,
+      logro: "💧 Guardián de las Aguas",
+      shareText: "¡Ya voy por la mitad! 💧 La fuente antigua susurra pistas sobre Gonzalo... ¿Será aquí donde escondió su tesoro? 🗝️"
+    },
+    "ermita": {
+      nombre: "Ermita del Humilladero",
+      fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>sin</span>",
+      progreso: 5,
+      logro: "🙏 Místico Peregrino",
+      shareText: "¡Solo queda una parada! 🙏 La ermita me ha dado la penúltima pista... ¡El misterio de la bodega medieval está a punto de resolverse!"
+    },
+    "puente": {
+      nombre: "Puente Romano",
+      fragmento: "Fragmento: <span style='font-size:1.8em; color:#8b0000; font-weight:bold;'>escudo</span>",
+      progreso: 6,
+      logro: "🌉 Cruzador de Ríos",
+      shareText: "¡TODAS las pistas reunidas! 🌉 El puente romano me ha dado la última pieza del puzzle... ¡Ya puedo descubrir qué pasó con Gonzalo! 🔍"
+    },
+    "bodega": {
+      nombre: "Bodega Final",
+      fragmento: "¡Has completado la búsqueda! 🍷",
+      progreso: 7,
+      logro: "🍷 Maestro Bodeguero",
+      shareText: "¡RESUELTO! 🍷 He descubierto el secreto de Gonzalo de la Sierra en San Martín del Castañar... ¡Una aventura medieval increíble que tienes que vivir!"
     }
+  };
 
-    function configurarCompartir() {
-      const stop = new URLSearchParams(window.location.search).get("stop");
-      const parada = paradasInfo[stop];
-      
-      if (!parada) return;
+  function copiarEnlacePersonalizado() {
+    const stop = new URLSearchParams(window.location.search).get("stop");
+    const parada = paradasInfo[stop];
+    const enlace = "https://el-misterio-de-san-martin.netlify.app/";
+    const textoCompleto = `${parada?.shareText || "¡Ven a descubrir el misterio medieval!"}\n\n${enlace}`;
+    
+    navigator.clipboard.writeText(textoCompleto).then(() => {
+      const msg = document.getElementById("copiar-msg");
+      msg.textContent = "✅ ¡Texto completo copiado! Listo para pegar en cualquier red social.";
+      msg.className = "copy-success";
+    });
+  }
 
-      const baseUrl = "https://el-misterio-de-san-martin.netlify.app/";
-      const shareText = encodeURIComponent(parada.shareText);
-      const shareUrl = encodeURIComponent(baseUrl);
+  function configurarCompartir() {
+    const stop = new URLSearchParams(window.location.search).get("stop");
+    const parada = paradasInfo[stop];
+    if (!parada) return;
 
-      // WhatsApp
-      document.getElementById("whatsapp-share").href = 
-        `https://wa.me/?text=${shareText}%0A%0A${shareUrl}`;
+    const baseUrl = "https://el-misterio-de-san-martin.netlify.app/";
+    const shareText = encodeURIComponent(parada.shareText);
+    const shareUrl = encodeURIComponent(baseUrl);
 
-      // Facebook
-      document.getElementById("facebook-share").href = 
-        `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${shareText}`;
+    // Actualizar texto y títulos
+    document.getElementById("location-name").textContent = parada.nombre;
+    document.getElementById("achievement-text").textContent = parada.logro;
+    document.getElementById("share-description").textContent = parada.shareText;
+    document.getElementById("fragment-text").innerHTML = parada.fragmento;
 
-      // Twitter
-      document.getElementById("twitter-share").href = 
-        `https://x.com/intent/tweet?text=${shareText}&url=${shareUrl}&hashtags=SanMartinDelCastañar,BodegaMedieval,MisteriodeGonzalo`;
+    // Progreso
+    const progressPercent = (parada.progreso / 6) * 100;
+    document.getElementById("progress-text").textContent = 
+      parada.progreso <= 6 ? `Parada ${parada.progreso} de 6 completada` : "¡Aventura Completada!";
+    document.getElementById("progress-bar").style.width = `${Math.min(progressPercent, 100)}%`;
 
-      // Instagram (abre la app o web)
-      document.getElementById("instagram-share").href = 
-        `https://www.instagram.com/`;
-      
-      // Para Instagram, añadimos un click handler especial
-      document.getElementById("instagram-share").addEventListener('click', function(e) {
-        e.preventDefault();
-        copiarParaInstagram();
-        
-      // Actualizar elementos de la página
-      document.getElementById("location-name").textContent = parada.nombre;
-      document.getElementById("achievement-text").textContent = parada.logro;
-      document.getElementById("share-description").textContent = parada.shareText;
-      document.getElementById("fragment-text").innerHTML = parada.fragmento;
-      
-      // Progreso
-      const progressPercent = (parada.progreso / 6) * 100;
-      document.getElementById("progress-text").textContent = 
-        parada.progreso <= 6 ? `Parada ${parada.progreso} de 6 completada` : "¡Aventura Completada!";
-      document.getElementById("progress-bar").style.width = `${Math.min(progressPercent, 100)}%`;
+    // Estrellas
+    let stars = "⭐ ⭐ ⭐";
+    if (parada.progreso >= 3) stars += " ⭐";
+    if (parada.progreso >= 5) stars += " ⭐";
+    if (parada.progreso >= 6) stars = "🌟 ⭐ ⭐ ⭐ ⭐ 🌟";
+    document.getElementById("stars").textContent = stars;
 
-      // Estrellas según progreso
-      let stars = "⭐ ⭐ ⭐";
-      if (parada.progreso >= 3) stars += " ⭐";
-      if (parada.progreso >= 5) stars += " ⭐";
-      if (parada.progreso >= 6) stars = "🌟 ⭐ ⭐ ⭐ ⭐ 🌟";
-      document.getElementById("stars").textContent = stars;
-    }
+    // Redes sociales
+    document.getElementById("whatsapp-share").href = `https://wa.me/?text=${shareText}%0A%0A${shareUrl}`;
+    document.getElementById("facebook-share").href = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${shareText}`;
+    document.getElementById("x-share").href = `https://x.com/intent/tweet?text=${shareText}&url=${shareUrl}&hashtags=SanMartinDelCastañar,BodegaMedieval,MisteriodeGonzalo`;
+    document.getElementById("instagram-share").href = `https://www.instagram.com/`;
 
-    // Ejecutar al cargar
-    document.addEventListener('DOMContentLoaded', configurarCompartir);
-  </script>
+    // Instagram requiere copiar texto manual
+    document.getElementById("instagram-share").addEventListener('click', function(e) {
+      e.preventDefault();
+      copiarEnlacePersonalizado();
+      alert("📸 Abre Instagram y pega el texto copiado en tu historia o publicación.");
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', configurarCompartir);
+</script>
+  
 </body>
 </html>
