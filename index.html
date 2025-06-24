@@ -1,4 +1,4 @@
-p<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -6,6 +6,16 @@ p<!DOCTYPE html>
   <title>🏰 El enigma de Gonzalo de la Sierra</title>
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/png" href="images/icon-192.png"/>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GE0YB9PL8Q');
+  </script>
+
   <style>
     body {
       background: url('images/pergamino.jpg') no-repeat center center fixed;
@@ -174,8 +184,8 @@ p<!DOCTYPE html>
 
       <h2>🧾 ¿Cómo funciona el juego?</h2>
       <ol>
-        <li>Activa el GPS, los datos de tu móvil y recorre el pueblo. No hace falta descargar nada!</li>
-        <li>Visita las 6 paradas y supera los retos en cada una. .</li>
+        <li>Activa el GPS, los datos de tu móvil y recorre el pueblo. ¡No hace falta descargar nada!</li>
+        <li>Visita las 6 paradas y supera los retos en cada una.</li>
         <li>Escanea el QR en cada lugar para descubrir un fragmento del mensaje.</li>
         <li>Solo si completas todas las paradas, podrás desvelar la parada final y descubrir el misterio de la desaparición de Gonzalo.</li>
       </ol>
@@ -210,7 +220,7 @@ p<!DOCTYPE html>
 
     <footer>
       <p>
-        © Made with love by La Bodega Medieval 2025|
+        © Made with love by La Bodega Medieval 2025 |
         <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu Experiencia</a>
       </p>
     </footer>
@@ -223,6 +233,12 @@ p<!DOCTYPE html>
       if (nombre.length >= 3) {
         localStorage.setItem("jugador", nombre);
         document.getElementById("nombre-jugador").style.display = "none";
+        
+        // Seguimiento en Google Analytics
+        gtag('event', 'jugador_inicio', {
+          'event_category': 'Juego',
+          'event_label': nombre
+        });
       } else {
         alert("Por favor, escribe al menos 3 caracteres.");
       }
