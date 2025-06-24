@@ -51,7 +51,7 @@
     }
     #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
     #direction-arrow { width: 50px; margin-top: 10px; }
-    .carousel, #tetris-game, #final-game { display: none; }
+
     .carousel {
       position: relative;
       overflow: hidden;
@@ -60,10 +60,7 @@
       border-radius: 10px;
       border: 2px solid #5e3b1b;
     }
-    .carousel .slide {
-      display: none;
-      text-align: center;
-    }
+    .carousel .slide { display: none; text-align: center; }
     .carousel .slide.active { display: block; }
     .carousel img {
       width: 100%;
@@ -98,195 +95,335 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
-    #tetris-game {
-      text-align: center;
-      margin: 30px auto;
-      background: rgba(255, 248, 228, 0.95);
-      border: 3px double #5e3b1b;
-      border-radius: 12px;
-      padding: 20px;
-      max-width: 360px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-    }
-    #tetris {
-      background: #111;
-      border: 2px solid #fff;
-      display: block;
-      margin: 10px auto;
-      width: 100%;
-      max-width: 300px;
-      aspect-ratio: 1 / 2;
-    }
-    .tetris-info {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      margin-top: 15px;
-    }
-    .tetris-btn {
-      background: #dec79b;
-      color: #5e3b1b;
-      border: 2px solid #5e3b1b;
-      border-radius: 10px;
-      padding: 8px 16px;
-      font-size: 16px;
-      font-family: Georgia, serif;
-      cursor: pointer;
-      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-    .tetris-btn:hover {
-      background: #cdb68a;
-    }
-    #tetris-score {
-      font-family: Georgia, serif;
-      font-size: 16px;
-      color: #333;
-    }
-    footer p {
-      text-align: center;
-      font-size: 0.9em;
-      margin-top: 20px;
-    }
   </style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <h1>🍷 La Bodega Medieval</h1>
-    <div class="music-control">
-      <button class="action-btn music-btn" onclick="toggleMusic()">🎵 Música</button>
-    </div>
-  </header>
-
-  <section id="content">
-    <div id="location-check">
-      <h2>Verifica tu ubicación</h2>
-      <p>Acércate al escudo tallado sobre la puerta de la bodega para continuar.</p>
-      <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
-      <p>O escribe el nombre:</p>
-      <input type="text" id="location-input" placeholder="Ej: Bodega" />
-      <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
-      <p id="location-status"></p>
-      <img id="direction-arrow" src="images/flecha.png" style="display: none;" />
-    </div>
-
-    <div id="game-content" style="display: none; text-align: center;">
-      <button class="action-btn" onclick="iniciarReto()">🧙‍♂️ Iniciar reto medieval</button>
-
-      <div class="carousel" id="carousel">
-        <div class="slide active">
-          <img src="images/bodega-barriles.jpeg" alt="Interior bodega" />
-          <p><strong>Interior:</strong> Conserva barricas antiguas y utensilios tradicionales.  
-            <a href="https://www.labodegamedieval.es/">Más información</a></p>
-        </div>
-        <div class="slide">
-          <img src="images/bodega-cueva.jpeg" alt="Entrada bodega" />
-          <p><strong>Entrada:</strong> Sus muros ocultan secretos y leyendas.  
-            <a href="https://www.labodegamedieval.es/experiencias/">Más información</a></p>
-        </div>
-        <div class="slide">
-          <img src="images/bodega-escudo.jpeg" alt="Escudo Borrado" />
-          <p><strong>Escudo:</strong> Guarda el legado de Gonzalo de la Sierra.  
-            <a href="https://www.labodegamedieval.es/la-bodega/">Más información</a></p>
-        </div>
-        <button class="carousel-btn prev-slide" onclick="prevSlide()">←</button>
-        <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
+  <div class="container">
+    <header>
+      <h1>🍷 La Bodega Medieval</h1>
+      <div class="music-control">
+        <button class="action-btn music-btn" onclick="toggleMusic()">🎵 Música</button>
+      </div>
+    </header>
+    <section id="content">
+      <div id="location-check">
+        <h2>Verifica tu ubicación</h2>
+        <p>Acércate al escudo tallado sobre la puerta de la bodega para continuar.</p>
+        <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
+        <p>O escribe el nombre:</p>
+        <input type="text" id="location-input" placeholder="Ej: Bodega" />
+        <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
+        <p id="location-status"></p>
+        <img id="direction-arrow" src="images/flecha.png" style="display: none;" />
       </div>
 
-      <div id="tetris-game">
-        <h2>🧱 Reto Medieval: Tetris</h2>
-        <p>Consigue 50 puntos para desbloquear la pista secreta de la bodega...</p>
-        <canvas id="tetris" width="300" height="600"></canvas>
-        <div class="tetris-info">
-          <button class="tetris-btn" id="tetris-start">▶️ Iniciar</button>
-          <span id="tetris-score">Score: 0</span>
+      <div id="game-content" style="display: none;">
+        <div class="carousel" id="bodega-carousel">
+          <div class="slide active">
+            <img src="images/bodega-barriles.jpeg" alt="Interior bodega" />
+            <p><strong>Interior:</strong> Conserva barricas antiguas y utensilios tradicionales.  
+              <a href="https://www.labodegamedieval.es/">Más información</a></p>
+          </div>
+          <div class="slide">
+            <img src="images/bodega-cueva.jpeg" alt="Entrada bodega" />
+            <p><strong>Entrada:</strong> Sus muros ocultan secretos y leyendas.  
+              <a href="https://www.labodegamedieval.es/experiencias/">Más información</a></p>
+          </div>
+          <div class="slide">
+            <img src="images/bodega-escudo.jpeg" alt="Escudo Borrado" />
+            <p><strong>Escudo:</strong> Guarda el legado de Gonzalo de la Sierra.  
+              <a href="https://www.labodegamedieval.es/la-bodega/">Más información</a></p>
+          </div>
+          <button class="carousel-btn prev-slide" onclick="prevSlide()">←</button>
+          <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
+        </div>
+
+        <div id="start-challenge" style="text-align: center; margin-top: 20px;">
+          <button class="action-btn" onclick="startTetris()">🧙‍♂️ Iniciar reto medieval</button>
+        </div>
+
+        <div id="tetris-game" style="display: none;">
+          <h2>🧱 Reto: Tetris</h2>
+          <p>Consigue 50 puntos para desbloquear la pista secreta de la bodega...</p>
+          <canvas id="tetris" width="300" height="600"></canvas>
+          <div class="tetris-info">
+            <button class="tetris-btn" id="tetris-start">▶️ Iniciar</button>
+            <span id="tetris-score">Score: 0</span>
+          </div>
+        </div>
+
+        <div id="final-game" style="display: none;">
+          <h3>🎉 ¡Lo lograste!</h3>
+          <p>Has demostrado tu inteligencia, destreza y valentía. Aquí tienes el último fragmento del mensaje:</p>
+          <p><em>"...en la penumbra de la bodega, renace la verdad..."</em></p>
+          <button class="action-btn" onclick="window.location.href='final.html'">Finalizar búsqueda</button>
         </div>
       </div>
+    </section>
+    <footer>
+      <p>© 2025 La Bodega Medieval · Idea y desarrollo de @alexroman.leis</p>
+    </footer>
+  </div>
 
-      <div id="final-game" style="display: none;">
-        <h3>🎉 ¡Lo lograste!</h3>
-        <p>Has demostrado tu destreza. Aquí tienes el siguiente fragmento del mensaje:</p>
-        <p><em>"...en la penumbra de la bodega, renace la verdad..."</em></p>
-        <button class="action-btn" onclick="window.location.href='final.html'">Finalizar búsqueda</button>
-      </div>
-    </div>
-  </section>
+  <script>
+    // Carrusel
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel .slide');
 
-  <footer>
-    <p>© 2025 La Bodega Medieval · Juego creado por @alexroman.leis</p>
-  </footer>
-</div>
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+    }
 
-<script>
-// GPS y verificación manual
-function checkLocationManual() {
-  const input = document.getElementById('location-input').value.trim().toLowerCase();
-  const validNames = ['bodega', 'la bodega', 'bodega medieval'];
-  const status = document.getElementById('location-status');
-  const arrow = document.getElementById('direction-arrow');
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
 
-  if (validNames.includes(input)) {
-    document.getElementById('location-check').style.display = 'none';
-    document.getElementById('game-content').style.display = 'block';
-    status.innerText = '';
-    arrow.style.display = 'none';
-  } else {
-    status.innerText = '❌ Nombre incorrecto. Intenta con "bodega".';
-    arrow.style.display = 'none';
-  }
-}
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
 
-function checkLocation() {
-  const status = document.getElementById('location-status');
-  const arrow = document.getElementById('direction-arrow');
-  if (!navigator.geolocation) {
-    status.innerText = 'La geolocalización no está disponible.';
-    return;
-  }
-  navigator.geolocation.getCurrentPosition(
-    position => {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-      const latBodega = 40.5485;
-      const lonBodega = -6.0291;
-      const distance = getDistanceFromLatLonInMeters(lat, lon, latBodega, lonBodega);
+    // Mostrar reto al pulsar botón
+    function startTetris() {
+      document.getElementById('start-challenge').style.display = 'none';
+      document.getElementById('tetris-game').style.display = 'block';
+    }
 
-      if (distance < 50) {
+    // Verificación manual
+    function checkLocationManual() {
+      const input = document.getElementById('location-input').value.trim().toLowerCase();
+      const validNames = ['bodega', 'la bodega', 'bodega medieval'];
+      const status = document.getElementById('location-status');
+      const arrow = document.getElementById('direction-arrow');
+
+      if (validNames.includes(input)) {
         document.getElementById('location-check').style.display = 'none';
         document.getElementById('game-content').style.display = 'block';
         status.innerText = '';
+        arrow.style.display = 'none';
       } else {
-        status.innerText = `Estás a ${Math.round(distance)} metros. Acércate más.`;
-        arrow.style.display = 'block';
+        status.innerText = '❌ Nombre incorrecto. Intenta con "bodega".';
+        arrow.style.display = 'none';
       }
-    },
-    () => {
-      status.innerText = 'No se pudo obtener la ubicación.';
     }
-  );
-}
 
-function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
-  const R = 6371e3;
-  const φ1 = lat1 * Math.PI/180;
-  const φ2 = lat2 * Math.PI/180;
-  const Δφ = (lat2-lat1) * Math.PI/180;
-  const Δλ = (lon2-lon1) * Math.PI/180;
+    // Verificación por GPS
+    function checkLocation() {
+      const status = document.getElementById('location-status');
+      const arrow = document.getElementById('direction-arrow');
+      if (!navigator.geolocation) {
+        status.innerText = 'La geolocalización no está disponible.';
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const latBodega = 40.5485;
+          const lonBodega = -6.0291;
+          const distance = getDistanceFromLatLonInMeters(lat, lon, latBodega, lonBodega);
+          if (distance < 50) {
+            document.getElementById('location-check').style.display = 'none';
+            document.getElementById('game-content').style.display = 'block';
+            status.innerText = '';
+          } else {
+            status.innerText = `Estás a ${Math.round(distance)} metros. Acércate más.`;
+            arrow.style.display = 'block';
+          }
+        },
+        () => {
+          status.innerText = 'No se pudo obtener la ubicación.';
+        }
+      );
+    }
 
-  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-            Math.cos(φ1) * Math.cos(φ2) *
-            Math.sin(Δλ/2) * Math.sin(Δλ/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
-}
+    function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const φ1 = lat1 * Math.PI/180;
+      const φ2 = lat2 * Math.PI/180;
+      const Δφ = (lat2-lat1) * Math.PI/180;
+      const Δλ = (lon2-lon1) * Math.PI/180;
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
 
-// Mostrar reto cuando se pulsa el botón
-function iniciarReto() {
-  document.getElementById('carousel').style.display = 'block';
-  document.getElementById('tetris-game').style.display = 'block';
-}
+    // --- Tetris ---
+    const canvas = document.getElementById('tetris');
+    const context = canvas.getContext('2d');
+    context.scale(30, 30);
+    const matrix = {
+      T: [[0, 0, 0], [1, 1, 1], [0, 1, 0]],
+      O: [[2, 2], [2, 2]],
+      L: [[0, 3, 0], [0, 3, 0], [0, 3, 3]],
+      J: [[0, 4, 0], [0, 4, 0], [4, 4, 0]],
+      I: [[0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0]],
+      S: [[0, 6, 6], [6, 6, 0], [0, 0, 0]],
+      Z: [[7, 7, 0], [0, 7, 7], [0, 0, 0]]
+    };
+    const colors = [null, '#FF0D72', '#0DC2FF', '#0DFF72', '#F538FF', '#FF8E0D', '#FFE138', '#3877FF'];
+    const arena = createMatrix(10, 20);
+    const player = { pos: { x: 0, y: 0 }, matrix: null, score: 0 };
 
-// ... (aquí iría el script del Tetris, que ya tienes integrado)
-</script>
+    function createMatrix(w, h) {
+      const matrix = [];
+      while (h--) matrix.push(new Array(w).fill(0));
+      return matrix;
+    }
+
+    function drawMatrix(matrix, offset) {
+      matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value !== 0) {
+            context.fillStyle = colors[value];
+            context.fillRect(x + offset.x, y + offset.y, 1, 1);
+          }
+        });
+      });
+    }
+
+    function draw() {
+      context.fillStyle = '#000';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      drawMatrix(arena, { x: 0, y: 0 });
+      drawMatrix(player.matrix, player.pos);
+    }
+
+    function merge(arena, player) {
+      player.matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value !== 0) arena[y + player.pos.y][x + player.pos.x] = value;
+        });
+      });
+    }
+
+    function collide(arena, player) {
+      const m = player.matrix;
+      const o = player.pos;
+      for (let y = 0; y < m.length; ++y) {
+        for (let x = 0; x < m[y].length; ++x) {
+          if (m[y][x] !== 0 &&
+              (arena[y + o.y] &&
+               arena[y + o.y][x + o.x]) !== 0) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    function playerDrop() {
+      player.pos.y++;
+      if (collide(arena, player)) {
+        player.pos.y--;
+        merge(arena, player);
+        playerReset();
+        arenaSweep();
+        updateScore();
+      }
+      dropCounter = 0;
+    }
+
+    function playerMove(dir) {
+      player.pos.x += dir;
+      if (collide(arena, player)) {
+        player.pos.x -= dir;
+      }
+    }
+
+    function playerReset() {
+      const pieces = 'TJLOSZI';
+      player.matrix = matrix[pieces[Math.floor(Math.random() * pieces.length)]];
+      player.pos.y = 0;
+      player.pos.x = Math.floor((arena[0].length / 2) - (player.matrix[0].length / 2));
+      if (collide(arena, player)) {
+        arena.forEach(row => row.fill(0));
+        player.score = 0;
+        updateScore();
+      }
+    }
+
+    function rotate(matrix, dir) {
+      for (let y = 0; y < matrix.length; ++y) {
+        for (let x = 0; x < y; ++x) {
+          [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
+        }
+      }
+      if (dir > 0) matrix.forEach(row => row.reverse());
+      else matrix.reverse();
+    }
+
+    function playerRotate(dir) {
+      const pos = player.pos.x;
+      let offset = 1;
+      rotate(player.matrix, dir);
+      while (collide(arena, player)) {
+        player.pos.x += offset;
+        offset = -(offset + (offset > 0 ? 1 : -1));
+        if (offset > player.matrix[0].length) {
+          rotate(player.matrix, -dir);
+          player.pos.x = pos;
+          return;
+        }
+      }
+    }
+
+    function arenaSweep() {
+      let rowCount = 1;
+      outer: for (let y = arena.length - 1; y >= 0; --y) {
+        for (let x = 0; x < arena[y].length; ++x) {
+          if (arena[y][x] === 0) continue outer;
+        }
+        const row = arena.splice(y, 1)[0].fill(0);
+        arena.unshift(row);
+        player.score += rowCount * 10;
+        rowCount *= 2;
+      }
+    }
+
+    function updateScore() {
+      document.getElementById('tetris-score').innerText = `Score: ${player.score}`;
+    }
+
+    let dropCounter = 0;
+    let dropInterval = 1000;
+    let lastTime = 0;
+
+    function update(time = 0) {
+      const deltaTime = time - lastTime;
+      lastTime = time;
+      dropCounter += deltaTime;
+      if (dropCounter > dropInterval) {
+        playerDrop();
+      }
+      draw();
+      if (player.score < 50) {
+        requestAnimationFrame(update);
+      } else {
+        document.getElementById("tetris-game").style.display = "none";
+        document.getElementById("final-game").style.display = "block";
+      }
+    }
+
+    document.getElementById('tetris-start').addEventListener('click', () => {
+      playerReset();
+      updateScore();
+      update();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (document.getElementById("tetris-game").style.display === "block") {
+        if (event.key === 'ArrowLeft') playerMove(-1);
+        else if (event.key === 'ArrowRight') playerMove(1);
+        else if (event.key === 'ArrowDown') playerDrop();
+        else if (event.key === 'ArrowUp') playerRotate(1);
+      }
+    });
+  </script>
 </body>
 </html>
