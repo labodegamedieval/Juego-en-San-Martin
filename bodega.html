@@ -1,558 +1,245 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>🍷 La Bodega Medieval</title>
-    <link rel="stylesheet" href="styles/style.css"/>
-    <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
-    <style>
-     /* ============================
-          Estilos Globales y Layout
-        ============================ */
-     body {
-       font-family: Arial, sans-serif;
-       background: url('images/fondo-bodega.jpg') no-repeat center center fixed;
-       background-size: cover;
-       margin: 0;
-       padding: 0;
-       color: #333;
-     }
-     .container {
-       max-width: 960px;
-       margin: auto;
-       background: rgba(255,248,228,0.95);
-       border: 3px double #5e3b1b;
-       border-radius: 12px;
-       padding: 20px;
-       box-shadow: 0 0 15px rgba(0,0,0,0.4);
-       position: relative;
-     }
-     header h1 { text-align: center; }
-     .action-btn {
-       display: inline-block;
-       margin: 5px;
-       padding: 10px 20px;
-       font-size: 16px;
-       background: #dec79b;
-       border: 2px solid #5e3b1b;
-       border-radius: 10px;
-       cursor: pointer;
-       box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-     }
-     .music-control { text-align: center; margin-bottom: 10px; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🍷 La Bodega Medieval</title>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('images/fondo-bodega.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 960px;
+      margin: auto;
+      background: rgba(255,248,228,0.95);
+      border: 3px double #5e3b1b;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    header h1 { text-align: center; }
+    .action-btn {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #dec79b;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .music-control { text-align: center; margin-bottom: 10px; }
 
-     /* ============================
-          Verificación de Ubicación  
-        ============================ */
-     #location-check {
-       text-align: center;
-       margin-bottom: 30px;
-     }
-     #location-check input {
-       padding: 8px;
-       font-size: 16px;
-       width: 200px;
-       margin: 10px;
-       border: 1px solid #5e3b1b;
-       border-radius: 4px;
-     }
-     #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
-     #direction-arrow { width: 50px; margin-top: 10px; }
+    #location-check {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    #location-check input {
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      margin: 10px;
+      border: 1px solid #5e3b1b;
+      border-radius: 4px;
+    }
+    #location-status { margin-top: 10px; font-size: 1.1em; color: red; }
+    #direction-arrow { width: 50px; margin-top: 10px; }
 
-     /* ============================
-              Carrusel
-        ============================ */
-     .carousel {
-       position: relative;
-       overflow: hidden;
-       width: 100%;
-       margin-bottom: 20px;
-       border-radius: 10px;
-       border: 2px solid #5e3b1b;
-     }
-     .carousel .slide {
-       display: none;
-       text-align: center;
-     }
-     .carousel .slide.active { display: block; }
-     .carousel img {
-       width: 100%;
-       height: 300px;
-       object-fit: cover;
-       border-radius: 10px;
-       border: 2px solid #6e3e2e;
-     }
-     .carousel .slide p {
-       font-family: Georgia, serif;
-       font-size: 16px;
-       color: #2e2e2e;
-       line-height: 1.5;
-       margin: 10px auto;
-       max-width: 800px;
-     }
-     .carousel .slide a {
-       color: #5e3b1b;
-       text-decoration: underline;
-     }
-     .carousel .slide a:hover { color: #a65c3a; }
-     .carousel-btn {
-       position: absolute;
-       top: 50%;
-       transform: translateY(-50%);
-       background: rgba(255,255,255,0.7);
-       border: none;
-       font-size: 24px;
-       cursor: pointer;
-       padding: 8px;
-       border-radius: 50%;
-     }
-     .prev-slide { left: 10px; }
-     .next-slide { right: 10px; }
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 2px solid #5e3b1b;
+    }
+    .carousel .slide {
+      display: none;
+      text-align: center;
+    }
+    .carousel .slide.active { display: block; }
+    .carousel img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #6e3e2e;
+    }
+    .carousel .slide p {
+      font-family: Georgia, serif;
+      font-size: 16px;
+      color: #2e2e2e;
+      line-height: 1.5;
+      margin: 10px auto;
+      max-width: 800px;
+    }
+    .carousel .slide a {
+      color: #5e3b1b;
+      text-decoration: underline;
+    }
+    .carousel .slide a:hover { color: #a65c3a; }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.7);
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+    }
+    .prev-slide { left: 10px; }
+    .next-slide { right: 10px; }
 
-     /* ============================
-          Minijuego 2: Tetris
-        ============================ */
-     #tetris-game {
-       display: none;
-       text-align: center;
-       margin: 20px auto;
-     }
-     #tetris {
-       background: #333;
-       border: 2px solid #fff;
-       display: block;
-       margin: auto;
-     }
-     .tetris-info {
-       display: flex;
-       justify-content: space-between;
-       width: 300px;
-       margin: 10px auto;
-     }
-     .tetris-btn {
-       background: #444;
-       color: #fff;
-       border: none;
-       padding: 10px 20px;
-       cursor: pointer;
-       font-size: 16px;
-     }
-     .tetris-btn:hover {
-       background: #555;
-     }
-
-     /* ============================
-          Footer y Adornos
-        ============================ */
-     footer p {
-       text-align: center;
-       font-size: 0.9em;
-       margin-top: 20px;
-     }
-     .container:before {
-       content: "🍇";
-       position: absolute;
-       top: 10px;
-       left: 10px;
-       font-size: 32px;
-       color: #5e3b1b;
-     }
-     .container:after {
-       content: "🍷";
-       position: absolute;
-       bottom: 10px;
-       right: 10px;
-       font-size: 32px;
-       color: #5e3b1b;
-     }
-     @media screen and (max-width: 768px) {
-       .container { max-width: 90%; }
-       .carousel img { height: 200px; }
-       .carousel-btn { font-size: 20px; padding: 6px; }
-       #puzzle-section, #tetris-game { width: 300px; }
-       #puzzle-target, #pieces-container { width: 300px; }
-       #puzzle-target { height: 300px; }
-       #pieces-container { height: 150px; }
-       .target-cell { width: 75px; height: 75px; }
-       .puzzle-piece { width: 75px; height: 75px; background-size: 300px 300px; }
-       #tetris { width: 300px; height: 600px; }
-       .tetris-info { width: 250px; }
-     }
-    </style>
+    footer p {
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: 20px;
+    }
+    .container:before {
+      content: "🍇";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
+    }
+    .container:after {
+      content: "🍷";
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 32px;
+      color: #5e3b1b;
+    }
+    @media screen and (max-width: 768px) {
+      .container { max-width: 90%; }
+      .carousel img { height: 200px; }
+      .carousel-btn { font-size: 20px; padding: 6px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🍷 La Bodega Medieval</h1>
-            <div class="music-control">
-                <button class="action-btn music-btn" onclick="toggleMusic()">
-                    <span class="music-icon">🎵</span> Música
-                </button>
-            </div>
-        </header>
+  <div class="container">
+    <header>
+      <h1>🍷 La Bodega Medieval</h1>
+      <div class="music-control">
+        <button class="action-btn music-btn" onclick="toggleMusic()">
+          <span class="music-icon">🎵</span> Música
+        </button>
+      </div>
+    </header>
 
-        <section id="content">
-            <div class="stop-icon">🍷</div>
-            <div id="location-check">
-                <h2>Verifica tu ubicación</h2>
-                <p>Acércate al escudo tallado sobre la puerta de la bodega para continuar.</p>
-                <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
-                <p>O escribe el nombre:</p>
-                <input type="text" id="location-input" placeholder="Ej: Bodega" />
-                <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
-                <p id="location-status"></p>
-                <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
-            </div>
+    <section id="content">
+      <div class="stop-icon">🍷</div>
+      <div id="location-check">
+        <h2>Verifica tu ubicación</h2>
+        <p>Acércate al escudo tallado sobre la puerta de la bodega para continuar.</p>
+        <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
+        <p>O escribe el nombre:</p>
+        <input type="text" id="location-input" placeholder="Ej: Bodega" />
+        <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
+        <p id="location-status"></p>
+        <img id="direction-arrow" src="images/flecha.png" class="arrow-icon" style="display: none;" />
+      </div>
 
-            <div id="game-content" style="display: none;">
-                <div class="carousel">
-                    <div class="slide active">
-                        <img src="images/bodega-barriles.jpeg" alt="Interior bodega" />
-                        <p>
-                            <strong>Interior:</strong> Conserva barricas antiguas y utensilios tradicionales.  
-                            <a href="https://www.labodegamedieval.es/" target="_blank">Más información</a>
-                        </p>
-                    </div>
-                    <div class="slide">
-                        <img src="images/bodega-cueva.jpeg" alt="Entrada bodega" />
-                        <p>
-                            <strong>Entrada:</strong> Sus muros ocultan secretos y leyendas olvidadas desde hace siglos.  
-                            <a href="https://www.labodegamedieval.es/experiencias/" target="_blank">Más información</a>
-                        </p>
-                    </div>
-                    <div class="slide">
-                        <img src="images/bodega-escudo.jpeg" alt="Escudo Borrado" />
-                        <p>
-                            <strong>Escudo:</strong> El escudo tallado guarda el legado de la familia de Gonzalo de la Sierra.  
-                            <a href="https://www.labodegamedieval.es/la-bodega/" target="_blank">Más información</a>
-                        </p>
-                    </div>
-                    <button class="carousel-btn prev-slide" onclick="prevSlide()">←</button>
-                    <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
-                </div>
+      <div id="game-content" style="display: none;">
+        <div class="carousel">
+          <div class="slide active">
+            <img src="images/bodega-barriles.jpeg" alt="Interior bodega" />
+            <p><strong>Interior:</strong> Conserva barricas antiguas y utensilios tradicionales.  
+              <a href="https://www.labodegamedieval.es/" target="_blank">Más información</a></p>
+          </div>
+          <div class="slide">
+            <img src="images/bodega-cueva.jpeg" alt="Entrada bodega" />
+            <p><strong>Entrada:</strong> Sus muros ocultan secretos y leyendas olvidadas desde hace siglos.  
+              <a href="https://www.labodegamedieval.es/experiencias/" target="_blank">Más información</a></p>
+          </div>
+          <div class="slide">
+            <img src="images/bodega-escudo.jpeg" alt="Escudo Borrado" />
+            <p><strong>Escudo:</strong> El escudo tallado guarda el legado de la familia de Gonzalo de la Sierra.  
+              <a href="https://www.labodegamedieval.es/la-bodega/" target="_blank">Más información</a></p>
+          </div>
+          <button class="carousel-btn prev-slide" onclick="prevSlide()">←</button>
+          <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
+        </div>
 
-                <div style="text-align:center; margin-bottom:20px;">
-                    <button class="action-btn" onclick="startPuzzleGame()">Iniciar Puzzle</button>
-                </div>
+        <div id="final-game" style="display: none;">
+          <h2>¡Felicidades!</h2>
+          <p>Has superado La Bodega Medieval.</p>
+          <button class="action-btn" onclick="finishGame()">Finalizar búsqueda</button>
+        </div>
+      </div>
+    </section>
 
-                <div id="tetris-game" style="display: none;">
-                    <h2>Minijuego 2: Tetris</h2>
-                    <canvas id="tetris" width="300" height="600"></canvas>
-                    <div class="tetris-info">
-                        <button class="tetris-btn" id="tetris-start">Start</button>
-                        <span id="tetris-score">Score: 0</span>
-                    </div>
-                </div>
+    <footer>
+      <p>© 2025 La Bodega Medieval |  
+        <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
+      </p>
+    </footer>
 
-                <div id="final-game" style="display: none;">
-                  <h2>¡Felicidades!</h2>
-                  <p>Has superado La Bodega Medieval.</p>
-                  <button class="action-btn" onclick="finishGame()">
-                      Finalizar búsqueda
-                  </button>
-                </div>
-            </div>
-        </section>
+    <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
+    <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
+    <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
+    <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
+  </div>
 
-        <footer>
-            <p>© 2025 La Bodega Medieval |  
-                <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>
-            </p>
-        </footer>
-
-        <audio id="success-sound" src="sounds/success.mp3" preload="auto"></audio>
-        <audio id="error-sound" src="sounds/error.mp3" preload="auto"></audio>
-        <audio id="coins-sound" src="sounds/coins.mp3" preload="auto"></audio>
-        <audio id="background-music" src="sounds/musica-medieval.mp3" preload="auto" loop></audio>
-    </div>
-
-    <script>
-     /* ============================
-          Funciones de Ubicación y Audio
-        ============================ */
-     function checkLocation() {
-       document.getElementById("location-check").style.display = "none";
-       document.getElementById("game-content").style.display = "block";
-       playSound("background-music");
-     }
-     function checkLocationManual() {
-       const input = document.getElementById("location-input").value.trim().toLowerCase();
-       if(input === "bodega") { checkLocation(); }
-       else {
-         document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo de nuevo.";
-       }
-     }
-     function playSound(id) {
-       const s = document.getElementById(id);
-       if(s) s.play();
-     }
-     function toggleMusic() {
-       const bg = document.getElementById('background-music');
-       const btn = document.querySelector('.music-btn');
-       if(bg.paused) {
-         bg.play();
-         btn.innerHTML = '<span class="music-icon">🎵</span> Pausar Música';
-       } else {
-         bg.pause();
-         btn.innerHTML = '<span class="music-icon">🔇</span> Reproducir Música';
-       }
-     }
-     function finishGame() {
-       updateRanking();
-       window.location.href = "final.html?stop=bodega";
-     }
-     function updateRanking() {
-       let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
-       ranking.push({ stop: "bodega", score: 100 });
-       localStorage.setItem("ranking", JSON.stringify(ranking));
-     }
-
-     /* ============================
-          Carrusel Básico
-        ============================ */
-     let currentSlide = 0;
-     function showSlide(index) {
-       const slides = document.querySelectorAll(".carousel .slide");
-       if(index >= slides.length) { currentSlide = 0; }
-       if(index < 0) { currentSlide = slides.length - 1; }
-       slides.forEach((s, i) => { s.classList.toggle("active", i === currentSlide); });
-     }
-     function nextSlide() {
-       currentSlide++;
-       showSlide(currentSlide);
-     }
-     function prevSlide() {
-       currentSlide--;
-       showSlide(currentSlide);
-     }
-
-     /* ============================
-          Minijuego 2: Tetris
-        ============================ */
-     const tetrisCanvas = document.getElementById('tetris');
-     const tetrisContext = tetrisCanvas.getContext('2d');
-     tetrisContext.scale(30, 30);
-
-     let tetrisArena = createMatrixTetris(10, 20);
-     let tetrisPlayer = {
-       pos: {x: 0, y: 0},
-       matrix: null,
-       score: 0
-     };
-
-     const tetrisColors = [
-       null,
-       '#FF0D72',
-       '#0DC2FF',
-       '#0DFF72',
-       '#F538FF',
-       '#FF8E0D',
-       '#FFE138',
-       '#3877FF'
-     ];
-
-     function createMatrixTetris(w, h) {
-       const matrix = [];
-       while (h--) {
-         matrix.push(new Array(w).fill(0));
-       }
-       return matrix;
-     }
-
-     function createPieceTetris(type) {
-       switch(type) {
-         case 'T':
-           return [
-             [0, 0, 0],
-             [1, 1, 1],
-             [0, 1, 0]
-           ];
-         case 'O':
-           return [
-             [2, 2],
-             [2, 2]
-           ];
-         case 'L':
-           return [
-             [0, 3, 0],
-             [0, 3, 0],
-             [0, 3, 3]
-           ];
-         case 'J':
-           return [
-             [0, 4, 0],
-             [0, 4, 0],
-             [4, 4, 0]
-           ];
-         case 'I':
-           return [
-             [0, 5, 0, 0],
-             [0, 5, 0, 0],
-             [0, 5, 0, 0],
-             [0, 5, 0, 0]
-           ];
-         case 'S':
-           return [
-             [0, 6, 6],
-             [6, 6, 0],
-             [0, 0, 0]
-           ];
-         case 'Z':
-           return [
-             [7, 7, 0],
-             [0, 7, 7],
-             [0, 0, 0]
-           ];
-       }
-     }
-
-     function tetrisCollide(arena, player) {
-       const [m, o] = [player.matrix, player.pos];
-       for (let y = 0; y < m.length; ++y) {
-         for (let x = 0; x < m[y].length; ++x) {
-           if (m[y][x] !== 0 &&
-               (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) {
-             return true;
-           }
-         }
-       }
-       return false;
-     }
-
-     function tetrisMerge(arena, player) {
-       player.matrix.forEach((row, y) => {
-         row.forEach((value, x) => {
-           if (value !== 0) {
-             arena[y + player.pos.y][x + player.pos.x] = value;
-           }
-         });
-       });
-     }
-
-     function tetrisRotate(matrix, dir) {
-       for (let y = 0; y < matrix.length; ++y) {
-         for (let x = 0; x < y; ++x) {
-           [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
-         }
-       }
-       if (dir > 0) {
-         matrix.forEach(row => row.reverse());
-       } else {
-         matrix.reverse();
-       }
-     }
-
-     function tetrisPlayerDrop() {
-       tetrisPlayer.pos.y++;
-       if (tetrisCollide(tetrisArena, tetrisPlayer)) {
-         tetrisPlayer.pos.y--;
-         tetrisMerge(tetrisArena, tetrisPlayer);
-         tetrisPlayerReset();
-         tetrisArenaSweep();
-         tetrisUpdateScore();
-       }
-       tetrisDropCounter = 0;
-     }
-
-     function tetrisPlayerMove(offset) {
-       tetrisPlayer.pos.x += offset;
-       if (tetrisCollide(tetrisArena, tetrisPlayer)) {
-         tetrisPlayer.pos.x -= offset;
-       }
-     }
-
-     function tetrisPlayerReset() {
-       const piecesStr = 'TJLOSZI';
-       tetrisPlayer.matrix = createPieceTetris(piecesStr[piecesStr.length * Math.random() | 0]);
-       tetrisPlayer.pos.y = 0;
-       tetrisPlayer.pos.x = (tetrisArena[0].length / 2 | 0) - (tetrisPlayer.matrix[0].length / 2 | 0);
-       if (tetrisCollide(tetrisArena, tetrisPlayer)) {
-         tetrisArena.forEach(row => row.fill(0));
-         tetrisPlayer.score = 0;
-         tetrisUpdateScore();
-       }
-     }
-
-     function tetrisArenaSweep() {
-       outer: for (let y = tetrisArena.length - 1; y >= 0; --y) {
-         for (let x = 0; x < tetrisArena[y].length; ++x) {
-           if (tetrisArena[y][x] === 0) {
-             continue outer;
-           }
-         }
-         const row = tetrisArena.splice(y, 1)[0].fill(0);
-         tetrisArena.unshift(row);
-         tetrisPlayer.score += 10;
-       }
-     }
-
-     function tetrisDrawMatrix(matrix, offset) {
-       matrix.forEach((row, y) => {
-         row.forEach((value, x) => {
-           if (value !== 0) {
-             tetrisContext.fillStyle = tetrisColors[value];
-             tetrisContext.fillRect(x + offset.x, y + offset.y, 1, 1);
-           }
-         });
-       });
-     }
-
-     function tetrisDraw() {
-       tetrisContext.fillStyle = '#000';
-       tetrisContext.fillRect(0, 0, tetrisCanvas.width, tetrisCanvas.height);
-       tetrisDrawMatrix(tetrisArena, {x: 0, y: 0});
-       tetrisDrawMatrix(tetrisPlayer.matrix, tetrisPlayer.pos);
-     }
-
-     let tetrisDropCounter = 0;
-     let tetrisDropInterval = 1000;
-     let tetrisLastTime = 0;
-
-     function tetrisUpdate(time = 0) {
-       const deltaTime = time - tetrisLastTime;
-       tetrisLastTime = time;
-       tetrisDropCounter += deltaTime;
-       if (tetrisDropCounter > tetrisDropInterval) {
-         tetrisPlayerDrop();
-       }
-       tetrisDraw();
-       // Mientras el puntaje sea inferior a 100, continuar actualizando
-       if (tetrisPlayer.score < 50) {
-         requestAnimationFrame(tetrisUpdate);
-       } else {
-         // Se alcanza la meta mínima para aprobar
-         document.getElementById("tetris-game").style.display = "none";
-         document.getElementById("final-game").style.display = "block";
-       }
-     }
-
-     function tetrisUpdateScore() {
-       document.getElementById('tetris-score').innerText = `Score: ${tetrisPlayer.score}`;
-     }
-
-     document.getElementById('tetris-start').addEventListener('click', () => {
-       tetrisPlayerReset();
-       tetrisUpdateScore();
-       tetrisUpdate();
-     });
-
-     document.addEventListener('keydown', event => {
-       if (document.getElementById("tetris-game").style.display === "block") {
-         if (event.key === 'ArrowLeft') {
-           tetrisPlayerMove(-1);
-         } else if (event.key === 'ArrowRight') {
-           tetrisPlayerMove(1);
-         } else if (event.key === 'ArrowDown') {
-           tetrisPlayerDrop();
-         } else if (event.key === 'ArrowUp') {
-           tetrisRotate(tetrisPlayer.matrix, 1);
-           if (tetrisCollide(tetrisArena, tetrisPlayer)) {
-             tetrisRotate(tetrisPlayer.matrix, -1);
-           }
-         }
-       }
-     });
-    </script>
+  <script>
+    function checkLocation() {
+      document.getElementById("location-check").style.display = "none";
+      document.getElementById("game-content").style.display = "block";
+      playSound("background-music");
+    }
+    function checkLocationManual() {
+      const input = document.getElementById("location-input").value.trim().toLowerCase();
+      if(input === "bodega") { checkLocation(); }
+      else {
+        document.getElementById("location-status").textContent = "Nombre incorrecto. Inténtalo de nuevo.";
+      }
+    }
+    function playSound(id) {
+      const s = document.getElementById(id);
+      if(s) s.play();
+    }
+    function toggleMusic() {
+      const bg = document.getElementById('background-music');
+      const btn = document.querySelector('.music-btn');
+      if(bg.paused) {
+        bg.play();
+        btn.innerHTML = '<span class="music-icon">🎵</span> Pausar Música';
+      } else {
+        bg.pause();
+        btn.innerHTML = '<span class="music-icon">🔇</span> Reproducir Música';
+      }
+    }
+    function finishGame() {
+      updateRanking();
+      window.location.href = "final.html?stop=bodega";
+    }
+    function updateRanking() {
+      let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+      ranking.push({ stop: "bodega", score: 100 });
+      localStorage.setItem("ranking", JSON.stringify(ranking));
+    }
+    let currentSlide = 0;
+    function showSlide(index) {
+      const slides = document.querySelectorAll(".carousel .slide");
+      if(index >= slides.length) { currentSlide = 0; }
+      if(index < 0) { currentSlide = slides.length - 1; }
+      slides.forEach((s, i) => { s.classList.toggle("active", i === currentSlide); });
+    }
+    function nextSlide() { currentSlide++; showSlide(currentSlide); }
+    function prevSlide() { currentSlide--; showSlide(currentSlide); }
+  </script>
 </body>
 </html>
