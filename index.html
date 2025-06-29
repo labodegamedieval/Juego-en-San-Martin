@@ -302,69 +302,69 @@
     };
 
     function aplicarIdioma() {
-      const idioma = localStorage.getItem("idioma") || "es";
-      const t = textos[idioma];
-      document.getElementById("titulo").innerText = t.titulo;
-      document.getElementById("slide1").innerText = t.slide1;
-      document.getElementById("slide2").innerText = t.slide2;
-      document.getElementById("slide3").innerText = t.slide3;
-      document.getElementById("como").innerText = t.como;
-      const lista = document.getElementById("lista-como");
-      lista.innerHTML = "";
-      t.lista.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        lista.appendChild(li);
+    const idioma = localStorage.getItem("idioma") || "es";
+    const t = textos[idioma];
+    document.getElementById("titulo").innerText = t.titulo;
+    document.getElementById("slide1").innerText = t.slide1;
+    document.getElementById("slide2").innerText = t.slide2;
+    document.getElementById("slide3").innerText = t.slide3;
+    document.getElementById("como").innerText = t.como;
+    const lista = document.getElementById("lista-como");
+    lista.innerHTML = "";
+    t.lista.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      lista.appendChild(li);
+    });
+    document.getElementById("info-extra").innerHTML = t.info;
+    document.getElementById("antes").innerText = t.antes;
+    document.getElementById("introduce").innerText = t.introduce;
+    document.getElementById("btnGuardar").innerText = t.btnGuardar;
+    document.querySelector(".button-group button:nth-child(1)").innerText = t.btnExplorar;
+    document.querySelector(".button-group button:nth-child(2)").innerText = t.btnGuia;
+    document.querySelector(".button-group button:nth-child(3)").innerText = t.btnCronica;
+    document.querySelector(".button-group button:nth-child(4)").innerText = t.btnRanking;
+  }
+
+  function guardarNombreJugador() {
+    const nombre = document.getElementById("nombre-input").value.trim();
+    if (nombre.length >= 3) {
+      localStorage.setItem("jugador", nombre);
+      document.getElementById("nombre-jugador").style.display = "none";
+      gtag('event', 'jugador_inicio', {
+        'event_category': 'Juego',
+        'event_label': nombre
       });
-      document.getElementById("info-extra").innerHTML = t.info;
-      document.getElementById("antes").innerText = t.antes;
-      document.getElementById("introduce").innerText = t.introduce;
-      document.getElementById("btnGuardar").innerText = t.btnGuardar;
-      document.querySelector(".button-group button:nth-child(1)").innerText = t.btnExplorar;
-      document.querySelector(".button-group button:nth-child(2)").innerText = t.btnGuia;
-      document.querySelector(".button-group button:nth-child(3)").innerText = t.btnCronica;
-      document.querySelector(".button-group button:nth-child(4)").innerText = t.btnRanking;
+    } else {
+      alert("Por favor, escribe al menos 3 caracteres.");
+    }
+  }
+
+  function toggleMusic() {
+    const music = document.getElementById("background-music");
+    const btn = document.querySelector(".music-btn");
+    if (music.paused) {
+      music.play();
+      btn.innerText = "🎵 Pausar Música";
+    } else {
+      music.pause();
+      btn.innerText = "🎵 Reanudar Música";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    aplicarIdioma();
+    if (localStorage.getItem("jugador")) {
+      document.getElementById("nombre-jugador").style.display = "none";
     }
 
-      if (localStorage.getItem("jugador")) {
-        document.getElementById("nombre-jugador").style.display = "none";
-      }
+    // Cambio de idioma en tiempo real
+    document.getElementById("selector-idioma").addEventListener("change", (e) => {
+      localStorage.setItem("idioma", e.target.value);
+      aplicarIdioma();
     });
-    
-    function guardarNombreJugador() {
-      const nombre = document.getElementById("nombre-input").value.trim();
-      if (nombre.length >= 3) {
-        localStorage.setItem("jugador", nombre);
-        document.getElementById("nombre-jugador").style.display = "none";
-        
-        // Seguimiento en Google Analytics
-        gtag('event', 'jugador_inicio', {
-          'event_category': 'Juego',
-          'event_label': nombre
-        });
-      } else {
-        alert("Por favor, escribe al menos 3 caracteres.");
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      if (localStorage.getItem("jugador")) {
-        document.getElementById("nombre-jugador").style.display = "none";
-      }
-    });
-
-    function toggleMusic() {
-      const music = document.getElementById("background-music");
-      const btn = document.querySelector(".music-btn");
-      if (music.paused) {
-        music.play();
-        btn.innerText = "🎵 Pausar Música";
-      } else {
-        music.pause();
-        btn.innerText = "🎵 Reanudar Música";
-      }
-    }
-  </script>
+  });
+</script>
   
 </body>
 </html>
