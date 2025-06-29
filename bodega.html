@@ -146,14 +146,13 @@
           <button class="carousel-btn prev-slide" onclick="prevSlide()">←</button>
           <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
         </div>
-
         <div id="start-challenge" style="text-align: center; margin-top: 20px;">
   <h2>🧠 Reto final: Las tres claves de Gonzalo</h2>
-  <p>Resuelve las adivinanzas y elige las palabras correctas para completar la frase final.</p>
+  <p>Resuelve las adivinanzas y colócalas en el orden correcto para completar la frase.</p>
 
   <div class="riddle">
     <p><strong>1.</strong> Fruto pequeño, en racimo colgado,<br>me pisan sin miedo, y acabo envasado.</p>
-    <select id="r1">
+    <select id="a1">
       <option value="">Elige una palabra</option>
       <option>cereza</option>
       <option>mora</option>
@@ -163,7 +162,7 @@
 
   <div class="riddle">
     <p><strong>2.</strong> No tengo edad, pero maduro.<br>No tengo boca, pero cuento historias.<br>Nací de la tierra y vivo en la copa.</p>
-    <select id="r2">
+    <select id="a2">
       <option value="">Elige una palabra</option>
       <option>aceite</option>
       <option>vino</option>
@@ -173,7 +172,7 @@
 
   <div class="riddle">
     <p><strong>3.</strong> Si lo tienes, no lo cuentas.<br>Si lo cuentas, ya no está.<br>Si lo guardas, pesa poco.<br>Si lo dices, pesará.</p>
-    <select id="r3">
+    <select id="a3">
       <option value="">Elige una palabra</option>
       <option>promesa</option>
       <option>sombra</option>
@@ -181,19 +180,33 @@
     </select>
   </div>
 
-  <button class="action-btn" onclick="checkRiddles()">📜 Comprobar respuestas</button>
-  <p id="riddle-feedback" style="margin-top: 15px; font-weight: bold;"></p>
+  <hr style="margin: 30px 0;">
 
-  <div id="final-phrase" style="display:none; margin-top: 20px;">
-    <p><strong>Frase final:</strong></p>
-    <p>
-      Donde la <select disabled><option selected>uva</option></select>
-      fue el inicio y el <select disabled><option selected>vino</option></select>
-      su legado, solo el <select disabled><option selected>secreto</option></select>
-      perdido puede explicar la desaparición de Gonzalo.
-    </p>
-    <button class="action-btn" onclick="document.getElementById('final-game').style.display='block'; window.scrollTo(0, document.body.scrollHeight);">➡️ Continuar</button>
-  </div>
+  <p><strong>Frase final:</strong> Coloca las tres palabras en el orden correcto:</p>
+  <p>
+    Donde la 
+    <select id="f1">
+      <option value="">---</option>
+      <option>uva</option>
+      <option>vino</option>
+      <option>secreto</option>
+    </select> fue el inicio y el 
+    <select id="f2">
+      <option value="">---</option>
+      <option>uva</option>
+      <option>vino</option>
+      <option>secreto</option>
+    </select> su legado, solo el 
+    <select id="f3">
+      <option value="">---</option>
+      <option>uva</option>
+      <option>vino</option>
+      <option>secreto</option>
+    </select> perdido puede explicar la desaparición de Gonzalo.
+  </p>
+
+  <button class="action-btn" onclick="checkDoubleRiddle()">📜 Comprobar todo</button>
+  <p id="riddle-feedback" style="margin-top: 15px; font-weight: bold;"></p>
 </div>
 
 <div id="final-game" style="display: none; text-align: center; margin-top: 40px;">
@@ -203,24 +216,40 @@
 </div>
 
 <script>
-  function checkRiddles() {
-    const r1 = document.getElementById("r1").value;
-    const r2 = document.getElementById("r2").value;
-    const r3 = document.getElementById("r3").value;
-    const feedback = document.getElementById("riddle-feedback");
-    const final = document.getElementById("final-phrase");
+  function checkDoubleRiddle() {
+    const r1 = document.getElementById("a1").value;
+    const r2 = document.getElementById("a2").value;
+    const r3 = document.getElementById("a3").value;
 
-    if (r1 === "uva" && r2 === "vino" && r3 === "secreto") {
+    const f1 = document.getElementById("f1").value;
+    const f2 = document.getElementById("f2").value;
+    const f3 = document.getElementById("f3").value;
+
+    const feedback = document.getElementById("riddle-feedback");
+    const isCorrectAnswers = (r1 === "uva" && r2 === "vino" && r3 === "secreto");
+    const isCorrectOrder = (f1 === "uva" && f2 === "vino" && f3 === "secreto");
+
+    if (!r1 || !r2 || !r3 || !f1 || !f2 || !f3) {
+      feedback.style.color = "darkred";
+      feedback.innerText = "⚠️ Completa todas las adivinanzas y selecciona las tres palabras en la frase.";
+      return;
+    }
+
+    if (isCorrectAnswers && isCorrectOrder) {
       feedback.style.color = "green";
-      feedback.innerText = "✔️ ¡Correcto! Has reunido las tres claves de Gonzalo.";
-      final.style.display = "block";
+      feedback.innerText = "✔️ ¡Correcto! Has resuelto el misterio de Gonzalo.";
+      document.getElementById("final-game").style.display = "block";
+      window.scrollTo(0, document.body.scrollHeight);
+    } else if (isCorrectAnswers && !isCorrectOrder) {
+      feedback.style.color = "orange";
+      feedback.innerText = "🔁 Las palabras son correctas, pero el orden en la frase no es el adecuado.";
     } else {
       feedback.style.color = "darkred";
-      feedback.innerText = "❌ Alguna respuesta es incorrecta. Revisa las pistas.";
-      final.style.display = "none";
+      feedback.innerText = "❌ Alguna respuesta de las adivinanzas es incorrecta.";
     }
   }
 </script>
+          
         <div id="final-game" style="display: none;">
           <h3>🎉 ¡Lo lograste!</h3>
           <p>Has demostrado tu inteligencia, destreza y valentía. Aquí tienes el último fragmento del mensaje:</p>
