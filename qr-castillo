@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Castillo</title>
+  <style>
+    body {
+      background-image: url('pergamino-fondo.jpg');
+      background-size: cover;
+      font-family: 'MedievalSharp', serif;
+      color: #3e2f1c;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .contenedor {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 255, 240, 0.85);
+      border: 8px solid #5a4126;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00000088;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+    .imagen {
+      margin: 1rem 0;
+    }
+    .volver {
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #7b5e3c;
+      color: #fff;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .volver:hover {
+      background-color: #5a4126;
+    }
+    audio {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+    <h1>🏛️ El Castillo de San Martín del Castañar</h1>
+
+    <div class="imagen">
+      <img src="castillo-real.jpg" alt="Castillo de San Martín del Castañar" width="100%" />
+    </div>
+
+    <p>
+      <strong>Fortaleza original del siglo XIII</strong>, erigida durante la repoblación impulsada por Alfonso IX de León con colonos gascones del sur de Francia. Esta construcción defensiva protegía el paso entre el valle del Alagón y la Sierra de Francia.
+    </p>
+    <p>
+      En el siglo XV, el castillo fue transformado en <strong>residencia episcopal fortificada</strong> y más tarde habitado por la <strong>hija del conde de Miranda</strong> y su esposo.
+    </p>
+    <p>
+      Durante el siglo XVI, se utilizó como <strong>cárcel comarcal</strong>. Hoy en día, el edificio pertenece al Ayuntamiento y alberga el <strong>Centro de Interpretación de la Reserva de la Biosfera</strong> de las Sierras de Béjar y Francia.
+    </p>
+
+    <audio controls>
+      <source src="audio-castillo.mp3" type="audio/mpeg">
+      Tu navegador no soporta el audio.
+    </audio>
+
+    <div>
+      <a class="volver" href="../explorar.html">🔙 Volver al juego</a>
+    </div>
+  </div>
+</body>
+</html>
