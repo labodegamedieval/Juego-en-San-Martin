@@ -3,82 +3,411 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QR Castillo</title>
+  <title>QR Castillo de San Martín del Castañar | Historia y Información</title>
+  
+  <!-- Metadatos SEO -->
+  <meta name="description" content="Historia completa del Castillo de San Martín del Castañar, fortaleza del siglo XIII en Salamanca">
+  <meta name="keywords" content="castillo, San Martín del Castañar, Salamanca, turismo, historia medieval, reserva biosfera">
+  
+  <!-- Open Graph / Redes Sociales -->
+  <meta property="og:title" content="El Castillo de San Martín del Castañar">
+  <meta property="og:description" content="Descubre la historia de esta fortaleza medieval en Salamanca">
+  <meta property="og:type" content="website">
+  
+  <!-- Preconexión y precarga -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" href="pergamino-fondo.jpg" as="image">
+  <link rel="preload" href="castillo-real.jpg" as="image">
+  <link rel="preload" href="audio-castillo.mp3" as="audio">
+  
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  
   <style>
+    /* Variables CSS */
+    :root {
+      --color-papel: rgba(255, 255, 240, 0.85);
+      --color-marron-oscuro: #5a4126;
+      --color-marron-medio: #7b5e3c;
+      --color-texto: #3e2f1c;
+      --sombra: 0 0 20px #00000088;
+      --borde: 8px solid var(--color-marron-oscuro);
+    }
+    
     body {
       background-image: url('pergamino-fondo.jpg');
       background-size: cover;
-      font-family: 'MedievalSharp', serif;
-      color: #3e2f1c;
+      background-attachment: fixed;
+      font-family: 'MedievalSharp', serif, system-ui;
+      color: var(--color-texto);
       margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-    .contenedor {
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-      background: rgba(255, 255, 240, 0.85);
-      border: 8px solid #5a4126;
-      border-radius: 20px;
-      box-shadow: 0 0 20px #00000088;
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    p {
-      font-size: 1.2rem;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
       line-height: 1.6;
     }
-    .imagen {
+    
+    main.contenedor {
+      padding: clamp(1rem, 5vw, 2rem);
+      width: min(90%, 800px);
+      background: var(--color-papel);
+      border: var(--borde);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      margin: 2rem auto;
+      position: relative;
+    }
+    
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+    
+    p {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      text-align: justify;
+      hyphens: auto;
       margin: 1rem 0;
     }
+    
+    figure.imagen {
+      margin: 1.5rem 0;
+      border: 4px solid var(--color-marron-medio);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
     .volver {
+      display: inline-block;
       margin-top: 2rem;
       padding: 0.75rem 1.5rem;
-      background-color: #7b5e3c;
+      background-color: var(--color-marron-medio);
       color: #fff;
       border: none;
       font-size: 1.1rem;
       border-radius: 8px;
       cursor: pointer;
       text-decoration: none;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
-    .volver:hover {
-      background-color: #5a4126;
+    
+    .volver:hover, .volver:focus {
+      background-color: var(--color-marron-oscuro);
+      transform: translateY(-2px);
+      outline: 2px solid var(--color-marron-oscuro);
     }
+    
     audio {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    
+    /* Selector de idioma */
+    .language-selector {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .language-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-size: 1.5rem;
+      transition: transform 0.2s;
+    }
+    
+    .language-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .language-btn.active {
+      border-bottom: 2px solid var(--color-marron-oscuro);
+    }
+    
+    /* Modo oscuro */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-papel: rgba(30, 25, 15, 0.9);
+        --color-texto: #e8e0d0;
+      }
+      
+      .volver {
+        color: #f0f0f0;
+      }
+    }
+    
+    /* Accesibilidad - contenido oculto visualmente */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+    
+    /* Mejoras para impresión */
+    @media print {
+      body {
+        background: none;
+        font-size: 12pt;
+      }
+      
+      .contenedor {
+        background: white;
+        border: 1px solid #000;
+        box-shadow: none;
+        width: 100%;
+      }
+      
+      .volver, .language-selector {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="contenedor">
-    <h1>🏛️ El Castillo de San Martín del Castañar</h1>
-
-    <div class="imagen">
-      <img src="castillo-real.jpg" alt="Castillo de San Martín del Castañar" width="100%" />
+  <main class="contenedor">
+    <!-- Selector de idioma -->
+    <div class="language-selector">
+      <button class="language-btn active" data-lang="es" aria-label="Español">🇪🇸</button>
+      <button class="language-btn" data-lang="en" aria-label="English">🇬🇧</button>
+      <button class="language-btn" data-lang="fr" aria-label="Français">🇫🇷</button>
+      <button class="language-btn" data-lang="de" aria-label="Deutsch">🇩🇪</button>
     </div>
 
-    <p>
-      <strong>Fortaleza original del siglo XIII</strong>, erigida durante la repoblación impulsada por Alfonso IX de León con colonos gascones del sur de Francia. Esta construcción defensiva protegía el paso entre el valle del Alagón y la Sierra de Francia.
-    </p>
-    <p>
-      En el siglo XV, el castillo fue transformado en <strong>residencia episcopal fortificada</strong> y más tarde habitado por la <strong>hija del conde de Miranda</strong> y su esposo.
-    </p>
-    <p>
-      Durante los siglo XVI y XVII, bajo jurisdicción episcopal, se utilizó como <strong>cárcel comarcal</strong>. Hoy en día, el edificio pertenece al Ayuntamiento y alberga el <strong>Centro de Interpretación de la Reserva de la Biosfera</strong> de las Sierras de Béjar y Francia.
-    </p>
+    <!-- Contenido en español -->
+    <div id="es-content" class="language-content">
+      <h1><span role="img" aria-label="Castillo">🏛️</span> El Castillo de San Martín del Castañar</h1>
 
-    <audio controls>
-      <source src="audio-castillo.mp3" type="audio/mpeg">
-      Tu navegador no soporta el audio.
-    </audio>
+      <figure class="imagen">
+        <img 
+          src="castillo-real.jpg" 
+          alt="Vista frontal del Castillo de San Martín del Castañar mostrando sus muros de piedra y arquitectura medieval" 
+          width="100%"
+          loading="lazy"
+        />
+        <figcaption class="sr-only">Fotografía del Castillo de San Martín del Castañar</figcaption>
+      </figure>
 
-    <div>
-      <a class="volver" href="../explorar.html">🔙 Volver al juego</a>
+      <p>
+        <strong>Fortaleza original del siglo XIII</strong>, erigida durante la repoblación impulsada por Alfonso IX de León con colonos gascones del sur de Francia. Esta construcción defensiva protegía el paso estratégico entre el valle del Alagón y la Sierra de Francia, siendo un punto clave en la defensa del territorio.
+      </p>
+      
+      <p>
+        En el siglo XV, el castillo experimentó una transformación radical pasando a ser <strong>residencia episcopal fortificada</strong>. Posteriormente, fue habitado por la <strong>hija del conde de Miranda</strong> y su esposo, quienes adaptaron las estancias para mayor comodidad sin perder su carácter defensivo.
+      </p>
+      
+      <p>
+        Durante el siglo XVI, el edificio tuvo un uso menos noble pero igualmente importante como <strong>cárcel comarcal</strong>. En la actualidad, el castillo es propiedad del Ayuntamiento y alberga el <strong>Centro de Interpretación de la Reserva de la Biosfera</strong> de las Sierras de Béjar y Francia, cumpliendo una función educativa y turística.
+      </p>
+
+      <audio controls preload="metadata" aria-label="Audio descriptivo del castillo">
+        <source src="audio-castillo.mp3" type="audio/mpeg">
+        <source src="audio-castillo.ogg" type="audio/ogg">
+        <p>Tu navegador no soporta audio HTML5. <a href="audio-castillo.mp3">Descarga el audio aquí</a>.</p>
+      </audio>
+
+      <div>
+        <a class="volver" href="../explorar.html" aria-label="Volver al juego principal">
+          <span aria-hidden="true">🔙</span> Volver al juego
+        </a>
+      </div>
     </div>
-  </div>
+
+    <!-- Contenido en inglés -->
+    <div id="en-content" class="language-content" hidden>
+      <h1><span role="img" aria-label="Castle">🏛️</span> The Castle of San Martín del Castañar</h1>
+
+      <figure class="imagen">
+        <img 
+          src="castillo-real.jpg" 
+          alt="Front view of San Martín del Castañar Castle showing its stone walls and medieval architecture" 
+          width="100%"
+          loading="lazy"
+        />
+        <figcaption class="sr-only">Photo of San Martín del Castañar Castle</figcaption>
+      </figure>
+
+      <p>
+        <strong>Original 13th century fortress</strong>, built during the repopulation promoted by Alfonso IX of León with Gascon settlers from southern France. This defensive construction protected the strategic passage between the Alagón valley and the Sierra de Francia, being a key point in the territory's defense.
+      </p>
+      
+      <p>
+        In the 15th century, the castle underwent a radical transformation becoming a <strong>fortified episcopal residence</strong>. Later, it was inhabited by the <strong>daughter of the Count of Miranda</strong> and her husband, who adapted the rooms for greater comfort without losing their defensive character.
+      </p>
+      
+      <p>
+        During the 16th century, the building had a less noble but equally important use as a <strong>regional prison</strong>. Today, the castle is owned by the City Council and houses the <strong>Interpretation Center of the Biosphere Reserve</strong> of the Sierras de Béjar y Francia, fulfilling an educational and touristic function.
+      </p>
+
+      <audio controls preload="metadata" aria-label="Castle descriptive audio">
+        <source src="audio-castle-en.mp3" type="audio/mpeg">
+        <source src="audio-castle-en.ogg" type="audio/ogg">
+        <p>Your browser does not support HTML5 audio. <a href="audio-castle-en.mp3">Download the audio here</a>.</p>
+      </audio>
+
+      <div>
+        <a class="volver" href="../explorar.html" aria-label="Return to main game">
+          <span aria-hidden="true">🔙</span> Return to game
+        </a>
+      </div>
+    </div>
+
+    <!-- Contenido en francés -->
+    <div id="fr-content" class="language-content" hidden>
+      <h1><span role="img" aria-label="Château">🏛️</span> Le Château de San Martín del Castañar</h1>
+
+      <figure class="imagen">
+        <img 
+          src="castillo-real.jpg" 
+          alt="Vue frontale du château de San Martín del Castañar montrant ses murs en pierre et son architecture médiévale" 
+          width="100%"
+          loading="lazy"
+        />
+        <figcaption class="sr-only">Photo du château de San Martín del Castañar</figcaption>
+      </figure>
+
+      <p>
+        <strong>Forteresse originale du XIIIe siècle</strong>, érigée pendant la repopulation promue par Alphonse IX de León avec des colons gascons du sud de la France. Cette construction défensive protégeait le passage stratégique entre la vallée de l'Alagón et la Sierra de Francia, étant un point clé dans la défense du territoire.
+      </p>
+      
+      <p>
+        Au XVe siècle, le château a subi une transformation radicale devenant une <strong>résidence épiscopale fortifiée</strong>. Plus tard, il a été habité par la <strong>fille du comte de Miranda</strong> et son mari, qui ont adapté les pièces pour plus de confort sans perdre leur caractère défensif.
+      </p>
+      
+      <p>
+        Pendant le XVIe siècle, le bâtiment a eu un usage moins noble mais tout aussi important comme <strong>prison régionale</strong>. Aujourd'hui, le château appartient à la Mairie et abrite le <strong>Centre d'Interprétation de la Réserve de Biosphère</strong> des Sierras de Béjar y Francia, remplissant une fonction éducative et touristique.
+      </p>
+
+      <audio controls preload="metadata" aria-label="Audio descriptif du château">
+        <source src="audio-chateau-fr.mp3" type="audio/mpeg">
+        <source src="audio-chateau-fr.ogg" type="audio/ogg">
+        <p>Votre navigateur ne prend pas en charge l'audio HTML5. <a href="audio-chateau-fr.mp3">Téléchargez l'audio ici</a>.</p>
+      </audio>
+
+      <div>
+        <a class="volver" href="../explorar.html" aria-label="Retour au jeu principal">
+          <span aria-hidden="true">🔙</span> Retour au jeu
+        </a>
+      </div>
+    </div>
+
+    <!-- Contenido en alemán -->
+    <div id="de-content" class="language-content" hidden>
+      <h1><span role="img" aria-label="Schloss">🏛️</span> Die Burg von San Martín del Castañar</h1>
+
+      <figure class="imagen">
+        <img 
+          src="castillo-real.jpg" 
+          alt="Frontansicht der Burg San Martín del Castañar mit ihren Steinmauern und mittelalterlichen Architektur" 
+          width="100%"
+          loading="lazy"
+        />
+        <figcaption class="sr-only">Foto der Burg San Martín del Castañar</figcaption>
+      </figure>
+
+      <p>
+        <strong>Ursprüngliche Festung aus dem 13. Jahrhundert</strong>, erbaut während der von Alfonso IX. von León geförderten Wiederbesiedlung mit Siedlern aus dem südlichen Frankreich. Diese Verteidigungsanlage schützte den strategischen Durchgang zwischen dem Alagón-Tal und der Sierra de Francia und war ein Schlüsselpunkt in der Verteidigung des Gebiets.
+      </p>
+      
+      <p>
+        Im 15. Jahrhundert wurde die Burg zu einem <strong>befestigten bischöflichen Wohnsitz</strong> umgebaut. Später wurde sie von der <strong>Tochter des Grafen von Miranda</strong> und ihrem Ehemann bewohnt, die die Räume für mehr Komfort anpassten, ohne den Verteidigungscharakter zu verlieren.
+      </p>
+      
+      <p>
+        Im 16. Jahrhundert diente das Gebäude als <strong>regionales Gefängnis</strong>, eine weniger edle, aber ebenso wichtige Funktion. Heute gehört die Burg dem Stadtrat und beherbergt das <strong>Interpretationszentrum des Biosphärenreservats</strong> der Sierras de Béjar y Francia, wo sie eine Bildungs- und Tourismusfunktion erfüllt.
+      </p>
+
+      <audio controls preload="metadata" aria-label="Beschreibendes Audio der Burg">
+        <source src="audio-burg-de.mp3" type="audio/mpeg">
+        <source src="audio-burg-de.ogg" type="audio/ogg">
+        <p>Ihr Browser unterstützt kein HTML5-Audio. <a href="audio-burg-de.mp3">Laden Sie die Audio hier herunter</a>.</p>
+      </audio>
+
+      <div>
+        <a class="volver" href="../explorar.html" aria-label="Zurück zum Hauptspiel">
+          <span aria-hidden="true">🔙</span> Zum Spiel zurückkehren
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Configuración del selector de idioma
+      const languageButtons = document.querySelectorAll('.language-btn');
+      const languageContents = document.querySelectorAll('.language-content');
+      
+      languageButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const lang = this.dataset.lang;
+          
+          // Actualizar botones activos
+          languageButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Mostrar contenido del idioma seleccionado
+          languageContents.forEach(content => {
+            content.hidden = content.id !== `${lang}-content`;
+          });
+          
+          // Cambiar el atributo lang del html
+          document.documentElement.lang = lang;
+          
+          // Guardar preferencia de idioma
+          localStorage.setItem('preferredLanguage', lang);
+        });
+      });
+      
+      // Cargar idioma preferido
+      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'es';
+      const defaultButton = document.querySelector(`.language-btn[data-lang="${preferredLanguage}"]`);
+      if (defaultButton) {
+        defaultButton.click();
+      }
+      
+      // Mejorar la experiencia del audio
+      const audio = document.querySelector('audio');
+      if(audio) {
+        audio.preload = 'auto';
+        
+        // Guardar volumen preferido
+        audio.volume = localStorage.getItem('audioVolume') || 0.7;
+        audio.addEventListener('volumechange', () => {
+          localStorage.setItem('audioVolume', audio.volume);
+        });
+      }
+      
+      // Confirmación al salir
+      const botonVolver = document.querySelector('.volver');
+      if(botonVolver) {
+        botonVolver.addEventListener('click', function(e) {
+          const currentAudio = document.querySelector(`${document.documentElement.lang}-content audio`);
+          if(currentAudio && !currentAudio.paused) {
+            if(!confirm(currentAudio.lang === 'es' ? 'El audio seguirá reproduciéndose si sales. ¿Continuar?' :
+                 currentAudio.lang === 'en' ? 'Audio will keep playing if you leave. Continue?' :
+                 currentAudio.lang === 'fr' ? "L'audio continuera de jouer si vous partez. Continuer?" :
+                 "Die Audio wird weiter abgespielt, wenn Sie gehen. Fortfahren?")) {
+              e.preventDefault();
+            }
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
