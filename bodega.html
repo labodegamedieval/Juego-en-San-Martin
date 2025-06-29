@@ -210,7 +210,7 @@
 </div>
 
 <div id="final-game" style="display: none; text-align: center; margin-top: 40px;">
-  <h3>🎉 Has desvelado el misterio</h3>
+  <h3>🎉 Enhorabuena valiente viajero!, has superado las pruebas y llegado al origen del misterio de Gonzalo.</h3>
   <p><em>Gonzalo dejó pistas en cada rincón de la bodega. Ahora sabes dónde empezó todo solo te queda descubrir el secreto de la bodega...</em></p>
   <button class="action-btn" onclick="window.location.href='final.html'">Finalizar búsqueda</button>
 </div>
@@ -237,7 +237,7 @@
 
     if (isCorrectAnswers && isCorrectOrder) {
       feedback.style.color = "green";
-      feedback.innerText = "✔️ ¡Correcto! Has llegado al origen del misterio de Gonzalo.";
+      feedback.innerText = "✔️ ¡Correcto! Ya casi lo tienes!";
       document.getElementById("final-game").style.display = "block";
       window.scrollTo(0, document.body.scrollHeight);
     } else if (isCorrectAnswers && !isCorrectOrder) {
