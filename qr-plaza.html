@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Plaza de Toros de San Martín del Castañar | Historia y Curiosidades</title>
+  <meta name="description" content="Historia de la Plaza de Toros medieval de San Martín del Castañar, una de las más antiguas de España." />
+  <meta name="keywords" content="plaza de toros, San Martín del Castañar, historia medieval, fiestas patronales, Sierra de Francia" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" href="pergamino-fondo.jpg" as="image" />
+  <link rel="preload" href="images/plaza-toros-comic.png" as="image" />
+  <link rel="preload" href="sounds/audio-plaza.mp3" as="audio" />
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-papel: rgba(255, 255, 240, 0.85);
+      --color-rojo-oscuro: #8B0000;
+      --color-rojo-medio: #A52A2A;
+      --color-texto: #3e2f1c;
+      --sombra: 0 0 20px #00000088;
+      --borde: 8px solid var(--color-rojo-oscuro);
+    }
+    body {
+      background: url('pergamino-fondo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'MedievalSharp', serif;
+      color: var(--color-texto);
+      margin: 0;
+      padding: 1rem;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+    }
+    main.contenedor {
+      background: var(--color-papel);
+      border: var(--borde);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      max-width: 800px;
+      width: 90%;
+      padding: 2rem;
+      position: relative;
+    }
+    h1 {
+      color: var(--color-rojo-oscuro);
+      font-size: 2rem;
+      text-align: center;
+    }
+    p {
+      font-size: 1.2rem;
+      text-align: justify;
+      margin: 1rem 0;
+    }
+    figure.imagen {
+      margin: 1.5rem 0;
+      border: 4px solid var(--color-rojo-medio);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .curiosidad {
+      background-color: rgba(139, 0, 0, 0.1);
+      border-left: 4px solid var(--color-rojo-medio);
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    audio {
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+    .volver {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--color-rojo-medio);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+    .volver:hover {
+      background-color: var(--color-rojo-oscuro);
+    }
+    .language-selector {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(255, 255, 240, 0.7);
+      padding: 0.5rem;
+      border-radius: 20px;
+    }
+    .language-btn {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .language-btn:hover {
+      transform: scale(1.1);
+    }
+    .language-btn.active {
+      border-bottom: 2px solid var(--color-rojo-oscuro);
+    }
+    @media print {
+      body {
+        background: none;
+      }
+      .volver, .language-selector {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="contenedor">
+    <div class="language-selector">
+      <button class="language-btn active" data-lang="es">🇪🇸</button>
+      <button class="language-btn" data-lang="en">🇬🇧</button>
+      <button class="language-btn" data-lang="fr">🇫🇷</button>
+      <button class="language-btn" data-lang="de">🇩🇪</button>
+    </div>
+
+    <div id="es-content" class="language-content">
+      <h1>🐂 La Plaza de Toros de San Martín del Castañar</h1>
+      <figure class="imagen">
+        <img src="images/plaza-toros-comic.png" alt="Ilustración estilo cómic de la plaza de toros" width="100%" loading="lazy" />
+        <figcaption class="sr-only">Representación de la Plaza de Toros de San Martín del Castañar</figcaption>
+      </figure>
+      <p>La Plaza de Toros de San Martín del Castañar ocupa el espacio que fue, en origen, el <strong>patio de armas del castillo</strong>. Con referencias escritas desde el <strong>siglo XVII</strong>, está considerada una de las plazas taurinas más antiguas de España.</p>
+      <p>Su <strong>estructura irregular</strong>, a medio camino entre lo rectangular y lo ovalado, y sus <strong>burladeros de granito</strong> integrados en los muros conservan la huella de su uso militar y festivo a lo largo de los siglos.</p>
+      <p>Durante siglos, ha acogido no solo espectáculos taurinos, sino también celebraciones religiosas, bailes, obras de teatro y todo tipo de festejos populares. La integración de la plaza en el conjunto del castillo otorga a este lugar una acústica peculiar y una atmósfera medieval única.</p>
+      <p>Hoy, además de sus tradicionales <em>novilladas</em>, se celebran actividades culturales dentro del programa <strong>Escenario Patrimonio</strong>, que busca dinamizar espacios históricos de Castilla y León con propuestas artísticas contemporáneas.</p>
+      <div class="curiosidad">
+        <strong>¿Sabías que...?</strong> El graderío se monta de forma artesanal cada año sobre estructuras de madera que se conservan desde hace generaciones. El ruedo no es de albero, sino de tierra prensada y piedras, como en los antiguos circos romanos.
+      </div>
+      <audio controls preload="metadata">
+        <source src="sounds/audio-plaza.mp3" type="audio/mpeg" />
+        <p>Tu navegador no soporta audio HTML5. <a href="sounds/audio-plaza.mp3">Descarga el audio aquí</a>.</p>
+      </audio>
+      <div><a class="volver" href="../explorar.html">🔙 Volver al juego</a></div>
+    </div>
+
+    <div id="en-content" class="language-content" hidden>
+      <h1>🐂 The Bullring of San Martín del Castañar</h1>
+      <figure class="imagen">
+        <img src="images/plaza-toros-comic.png" alt="Comic-style illustration of the bullring" width="100%" loading="lazy" />
+        <figcaption class="sr-only">Representation of the Bullring of San Martín del Castañar</figcaption>
+      </figure>
+      <p>The bullring of San Martín del Castañar occupies what was originally the <strong>castle’s parade ground</strong>. With written references dating back to the <strong>seventeenth century</strong>, it is considered one of the oldest bullrings in Spain.</p>
+      <p>Its <strong>irregular layout</strong>—somewhere between rectangular and oval—and the <strong>granite barriers</strong> integrated into its walls reflect its long-standing dual use as both a defensive and festive space.</p>
+      <p>Over the centuries, it has hosted not only bullfights, but also religious celebrations, traditional dances, theatre plays and other village festivities. The bullring’s setting within the castle creates a unique acoustic and a distinctive medieval atmosphere.</p>
+      <p>Today, in addition to traditional <em>novilladas</em>, it serves as a venue for cultural activities held under the <strong>Escenario Patrimonio</strong> initiative, which promotes contemporary performances in historic locations across Castilla y León.</p>
+      <div class="curiosidad">
+        <strong>Did you know...?</strong> The seating stands are manually built each year using wooden structures passed down through generations. The arena floor is not covered in sand, but made of compacted earth and stones—much like the ancient Roman circuses.
+      </div>
+      <audio controls preload="metadata">
+        <source src="sounds/audio-plaza-en.mp3" type="audio/mpeg" />
+        <p>Your browser does not support HTML5 audio. <a href="sounds/audio-plaza-en.mp3">Download the audio here</a>.</p>
+      </audio>
+      <div><a class="volver" href="../explorar.html">🔙 Back to game</a></div>
+    </div>
+
+    <div id="fr-content" class="language-content" hidden>
+      <h1>🐂 L'Arène de San Martín del Castañar</h1>
+      <figure class="imagen">
+        <img src="images/plaza-toros-comic.png" alt="Illustration de l'arène en style bande dessinée" width="100%" loading="lazy" />
+      </figure>
+      <p>L'arène de San Martín del Castañar occupe ce qui était à l'origine la <strong>cour d'armes du château</strong>. Mentionnée dans des écrits dès le <strong>dix-septième siècle</strong>, elle est considérée comme l'une des plus anciennes arènes d'Espagne.</p>
+      <p>Sa <strong>forme irrégulière</strong>, entre rectangle et ovale, et ses <strong>barricades en granit</strong> intégrées dans les murs témoignent de son double usage défensif et festif à travers les siècles.</p>
+      <p>Au fil du temps, elle a accueilli non seulement des corridas, mais aussi des célébrations religieuses, des danses traditionnelles, des pièces de théâtre et d'autres fêtes populaires. Son emplacement à l'intérieur du château lui confère une acoustique particulière et une ambiance médiévale unique.</p>
+      <p>Aujourd'hui, en plus des <em>novilladas</em> traditionnelles, elle est le théâtre d'événements culturels organisés dans le cadre du programme <strong>Escenario Patrimonio</strong>, promouvant l'art contemporain dans les lieux historiques de Castille-et-León.</p>
+      <div class="curiosidad">
+        <strong>Le saviez-vous&nbsp;?</strong> Les gradins sont montés chaque année à la main avec des structures en bois transmises de génération en génération. L'arène n'est pas recouverte de sable, mais de terre battue et de pierres, comme dans les anciens cirques romains.
+      </div>
+    </div>
+
+    <div id="de-content" class="language-content" hidden>
+      <h1>🐂 Die Stierkampfarena von San Martín del Castañar</h1>
+      <figure class="imagen">
+        <img src="images/plaza-toros-comic.png" alt="Comicartige Illustration der Stierkampfarena" width="100%" loading="lazy" />
+      </figure>
+      <p>Die Stierkampfarena von San Martín del Castañar befindet sich auf dem Gelände des ehemaligen <strong>Exerzierplatzes der Burg</strong>. Erste schriftliche Erwähnungen stammen aus dem <strong>siebzehnten Jahrhundert</strong>. Sie gilt als eine der ältesten Arenen Spaniens.</p>
+      <p>Ihr <strong>unregelmäßiger Grundriss</strong> – zwischen rechteckig und oval – sowie die <strong>in die Mauern integrierten Granit-Barrieren</strong> zeugen von der langen Nutzung sowohl für Verteidigungs- als auch für Festzwecke.</p>
+      <p>Im Laufe der Jahrhunderte fanden hier nicht nur Stierkämpfe statt, sondern auch religiöse Feste, traditionelle Tänze, Theateraufführungen und andere Volksveranstaltungen. Die Integration in das Burggelände verleiht der Arena eine besondere Akustik und eine einzigartige mittelalterliche Atmosphäre.</p>
+      <p>Heute finden neben den traditionellen <em>Novilladas</em> auch kulturelle Veranstaltungen im Rahmen des Programms <strong>Escenario Patrimonio</strong> statt, das historische Orte in Kastilien und León durch zeitgenössische Kunst belebt.</p>
+      <div class="curiosidad">
+        <strong>Wusstest du schon...?</strong> Die Tribünen werden jedes Jahr in Handarbeit mit Holzstrukturen aufgebaut, die über Generationen erhalten geblieben sind. Der Arenaboden besteht aus festgestampfter Erde und Steinen – wie in den römischen Zirkussen der Antike.
+      </div>
+    </div>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btns = document.querySelectorAll('.language-btn');
+      const sections = document.querySelectorAll('.language-content');
+      btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lang = btn.dataset.lang;
+          btns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          sections.forEach(s => s.hidden = s.id !== `${lang}-content`);
+          document.documentElement.lang = lang;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
