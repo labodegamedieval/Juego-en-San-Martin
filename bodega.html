@@ -97,14 +97,13 @@
     .next-slide { right: 10px; }
   </style>
   <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', 'G-GE0YB9PL8Q');
-</script>
-
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-GE0YB9PL8Q');
+  </script>
 </head>
 <body>
   <div class="container">
@@ -114,6 +113,7 @@
         <button class="action-btn music-btn" onclick="toggleMusic()">🎵 Música</button>
       </div>
     </header>
+
     <section id="content">
       <div id="location-check">
         <h2>Verifica tu ubicación</h2>
@@ -148,19 +148,79 @@
         </div>
 
         <div id="start-challenge" style="text-align: center; margin-top: 20px;">
-          <button class="action-btn" onclick="startTetris()">🧙‍♂️ Iniciar reto medieval</button>
-        </div>
+  <h2>🧠 Reto final: Las tres claves de Gonzalo</h2>
+  <p>Resuelve las adivinanzas y elige las palabras correctas para completar la frase final.</p>
 
-        <div id="tetris-game" style="display: none;">
-          <h2>🧱 Reto: Tetris</h2>
-          <p>Consigue 50 puntos para desbloquear la pista secreta de la bodega...</p>
-          <canvas id="tetris" width="300" height="600"></canvas>
-          <div class="tetris-info">
-            <button class="tetris-btn" id="tetris-start">▶️ Iniciar</button>
-            <span id="tetris-score">Score: 0</span>
-          </div>
-        </div>
+  <div class="riddle">
+    <p><strong>1.</strong> Fruto pequeño, en racimo colgado,<br>me pisan sin miedo, y acabo envasado.</p>
+    <select id="r1">
+      <option value="">Elige una palabra</option>
+      <option>cereza</option>
+      <option>mora</option>
+      <option>uva</option>
+    </select>
+  </div>
 
+  <div class="riddle">
+    <p><strong>2.</strong> No tengo edad, pero maduro.<br>No tengo boca, pero cuento historias.<br>Nací de la tierra y vivo en la copa.</p>
+    <select id="r2">
+      <option value="">Elige una palabra</option>
+      <option>aceite</option>
+      <option>vino</option>
+      <option>sangre</option>
+    </select>
+  </div>
+
+  <div class="riddle">
+    <p><strong>3.</strong> Si lo tienes, no lo cuentas.<br>Si lo cuentas, ya no está.<br>Si lo guardas, pesa poco.<br>Si lo dices, pesará.</p>
+    <select id="r3">
+      <option value="">Elige una palabra</option>
+      <option>promesa</option>
+      <option>sombra</option>
+      <option>secreto</option>
+    </select>
+  </div>
+
+  <button class="action-btn" onclick="checkRiddles()">📜 Comprobar respuestas</button>
+  <p id="riddle-feedback" style="margin-top: 15px; font-weight: bold;"></p>
+
+  <div id="final-phrase" style="display:none; margin-top: 20px;">
+    <p><strong>Frase final:</strong></p>
+    <p>
+      Donde la <select disabled><option selected>uva</option></select>
+      fue el inicio y el <select disabled><option selected>vino</option></select>
+      su legado, solo el <select disabled><option selected>secreto</option></select>
+      perdido puede explicar la desaparición de Gonzalo.
+    </p>
+    <button class="action-btn" onclick="document.getElementById('final-game').style.display='block'; window.scrollTo(0, document.body.scrollHeight);">➡️ Continuar</button>
+  </div>
+</div>
+
+<div id="final-game" style="display: none; text-align: center; margin-top: 40px;">
+  <h3>🎉 Has desvelado el misterio</h3>
+  <p><em>Gonzalo dejó pistas en cada rincón de la bodega. Ahora sabes dónde empezó todo y por qué desapareció...</em></p>
+  <button class="action-btn" onclick="window.location.href='final.html'">Finalizar búsqueda</button>
+</div>
+
+<script>
+  function checkRiddles() {
+    const r1 = document.getElementById("r1").value;
+    const r2 = document.getElementById("r2").value;
+    const r3 = document.getElementById("r3").value;
+    const feedback = document.getElementById("riddle-feedback");
+    const final = document.getElementById("final-phrase");
+
+    if (r1 === "uva" && r2 === "vino" && r3 === "secreto") {
+      feedback.style.color = "green";
+      feedback.innerText = "✔️ ¡Correcto! Has reunido las tres claves de Gonzalo.";
+      final.style.display = "block";
+    } else {
+      feedback.style.color = "darkred";
+      feedback.innerText = "❌ Alguna respuesta es incorrecta. Revisa las pistas.";
+      final.style.display = "none";
+    }
+  }
+</script>
         <div id="final-game" style="display: none;">
           <h3>🎉 ¡Lo lograste!</h3>
           <p>Has demostrado tu inteligencia, destreza y valentía. Aquí tienes el último fragmento del mensaje:</p>
@@ -169,13 +229,13 @@
         </div>
       </div>
     </section>
+
     <footer>
       <p>© 2025 La Bodega Medieval · Idea y desarrollo de @alexroman.leis</p>
     </footer>
   </div>
 
   <script>
-    // Carrusel
     let currentSlide = 0;
     const slides = document.querySelectorAll('.carousel .slide');
 
@@ -195,13 +255,6 @@
       showSlide(currentSlide);
     }
 
-    // Mostrar reto al pulsar botón
-    function startTetris() {
-      document.getElementById('start-challenge').style.display = 'none';
-      document.getElementById('tetris-game').style.display = 'block';
-    }
-
-    // Verificación manual
     function checkLocationManual() {
       const input = document.getElementById('location-input').value.trim().toLowerCase();
       const validNames = ['bodega', 'la bodega', 'bodega medieval'];
@@ -219,7 +272,6 @@
       }
     }
 
-    // Verificación por GPS
     function checkLocation() {
       const status = document.getElementById('location-status');
       const arrow = document.getElementById('direction-arrow');
@@ -262,177 +314,9 @@
       return R * c;
     }
 
-    // --- Tetris ---
-    const canvas = document.getElementById('tetris');
-    const context = canvas.getContext('2d');
-    context.scale(30, 30);
-    const matrix = {
-      T: [[0, 0, 0], [1, 1, 1], [0, 1, 0]],
-      O: [[2, 2], [2, 2]],
-      L: [[0, 3, 0], [0, 3, 0], [0, 3, 3]],
-      J: [[0, 4, 0], [0, 4, 0], [4, 4, 0]],
-      I: [[0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0]],
-      S: [[0, 6, 6], [6, 6, 0], [0, 0, 0]],
-      Z: [[7, 7, 0], [0, 7, 7], [0, 0, 0]]
-    };
-    const colors = [null, '#FF0D72', '#0DC2FF', '#0DFF72', '#F538FF', '#FF8E0D', '#FFE138', '#3877FF'];
-    const arena = createMatrix(10, 20);
-    const player = { pos: { x: 0, y: 0 }, matrix: null, score: 0 };
-
-    function createMatrix(w, h) {
-      const matrix = [];
-      while (h--) matrix.push(new Array(w).fill(0));
-      return matrix;
+    function toggleMusic() {
+      alert("🎶 Función de música en desarrollo.");
     }
-
-    function drawMatrix(matrix, offset) {
-      matrix.forEach((row, y) => {
-        row.forEach((value, x) => {
-          if (value !== 0) {
-            context.fillStyle = colors[value];
-            context.fillRect(x + offset.x, y + offset.y, 1, 1);
-          }
-        });
-      });
-    }
-
-    function draw() {
-      context.fillStyle = '#000';
-      context.fillRect(0, 0, canvas.width, canvas.height);
-      drawMatrix(arena, { x: 0, y: 0 });
-      drawMatrix(player.matrix, player.pos);
-    }
-
-    function merge(arena, player) {
-      player.matrix.forEach((row, y) => {
-        row.forEach((value, x) => {
-          if (value !== 0) arena[y + player.pos.y][x + player.pos.x] = value;
-        });
-      });
-    }
-
-    function collide(arena, player) {
-      const m = player.matrix;
-      const o = player.pos;
-      for (let y = 0; y < m.length; ++y) {
-        for (let x = 0; x < m[y].length; ++x) {
-          if (m[y][x] !== 0 &&
-              (arena[y + o.y] &&
-               arena[y + o.y][x + o.x]) !== 0) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-
-    function playerDrop() {
-      player.pos.y++;
-      if (collide(arena, player)) {
-        player.pos.y--;
-        merge(arena, player);
-        playerReset();
-        arenaSweep();
-        updateScore();
-      }
-      dropCounter = 0;
-    }
-
-    function playerMove(dir) {
-      player.pos.x += dir;
-      if (collide(arena, player)) {
-        player.pos.x -= dir;
-      }
-    }
-
-    function playerReset() {
-      const pieces = 'TJLOSZI';
-      player.matrix = matrix[pieces[Math.floor(Math.random() * pieces.length)]];
-      player.pos.y = 0;
-      player.pos.x = Math.floor((arena[0].length / 2) - (player.matrix[0].length / 2));
-      if (collide(arena, player)) {
-        arena.forEach(row => row.fill(0));
-        player.score = 0;
-        updateScore();
-      }
-    }
-
-    function rotate(matrix, dir) {
-      for (let y = 0; y < matrix.length; ++y) {
-        for (let x = 0; x < y; ++x) {
-          [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
-        }
-      }
-      if (dir > 0) matrix.forEach(row => row.reverse());
-      else matrix.reverse();
-    }
-
-    function playerRotate(dir) {
-      const pos = player.pos.x;
-      let offset = 1;
-      rotate(player.matrix, dir);
-      while (collide(arena, player)) {
-        player.pos.x += offset;
-        offset = -(offset + (offset > 0 ? 1 : -1));
-        if (offset > player.matrix[0].length) {
-          rotate(player.matrix, -dir);
-          player.pos.x = pos;
-          return;
-        }
-      }
-    }
-
-    function arenaSweep() {
-      let rowCount = 1;
-      outer: for (let y = arena.length - 1; y >= 0; --y) {
-        for (let x = 0; x < arena[y].length; ++x) {
-          if (arena[y][x] === 0) continue outer;
-        }
-        const row = arena.splice(y, 1)[0].fill(0);
-        arena.unshift(row);
-        player.score += rowCount * 10;
-        rowCount *= 2;
-      }
-    }
-
-    function updateScore() {
-      document.getElementById('tetris-score').innerText = `Score: ${player.score}`;
-    }
-
-    let dropCounter = 0;
-    let dropInterval = 1000;
-    let lastTime = 0;
-
-    function update(time = 0) {
-      const deltaTime = time - lastTime;
-      lastTime = time;
-      dropCounter += deltaTime;
-      if (dropCounter > dropInterval) {
-        playerDrop();
-      }
-      draw();
-      if (player.score < 50) {
-        requestAnimationFrame(update);
-      } else {
-        document.getElementById("tetris-game").style.display = "none";
-        document.getElementById("final-game").style.display = "block";
-      }
-    }
-
-    document.getElementById('tetris-start').addEventListener('click', () => {
-      playerReset();
-      updateScore();
-      update();
-    });
-
-    document.addEventListener('keydown', event => {
-      if (document.getElementById("tetris-game").style.display === "block") {
-        if (event.key === 'ArrowLeft') playerMove(-1);
-        else if (event.key === 'ArrowRight') playerMove(1);
-        else if (event.key === 'ArrowDown') playerDrop();
-        else if (event.key === 'ArrowUp') playerRotate(1);
-      }
-    });
   </script>
 </body>
 </html>
