@@ -653,5 +653,193 @@ function unlockStop() {
     /* --- LOCALSTORAGE --- */
     localStorage.setItem("castillo-completed", "true");
   </script>
+  <script>
+  const textosCastillo = {
+    es: {
+      titulo: "🏰 Castillo de Gonzalo",
+      verifica: "Verifica tu ubicación",
+      indicacion: "Acércate a la puerta principal del Castillo de San Martín para iniciar la búsqueda del mensaje.",
+      verificarGPS: "Verificar GPS",
+      oEscribe: "O ingresa el nombre:",
+      verificarManual: "Verificar Manual",
+      retoTitulo: "Retos Visuales: Afina tus sentidos",
+      reto1: "¿Qué destaca en la fachada principal del castillo?",
+      reto2: "¿Cuántas torres tenía originalmente el castillo?",
+      quizTitulo: "Quiz: Descubre el mensaje",
+      quiz1: "¿En qué siglo se funda esta fortificación?",
+      quiz2: "¿Qué alberga el castillo desde el siglo XIX?",
+      quiz3: "¿Qué función tiene hoy el castillo?",
+      opciones: {
+        escudos: "Escudos", muralla: "Muralla", columnas: "Columnas",
+        uno: "1", dos: "2", tres: "3",
+        XII: "XII", XIII: "XIII", XIV: "XIV",
+        discoteca: "Discoteca", cementerio: "Cementerio municipal", museo: "Museo",
+        centro: "Centro de Interpretacion de la Biosfera", biblioteca: "Biblioteca"
+      },
+      candado: "Candado del Cofre",
+      comprobar: "Comprobar Combinación",
+      pistaCandado: "La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!",
+      cerrarPista: "Cerrar Pista",
+      continuar: "Continuar búsqueda",
+      fragmento: "Fragmento del Mensaje: Oculto",
+      qr: "QR en el pueblo: CASTILLO-1523 (cerca de la entrada).",
+      datoCurioso: "Dato Curioso: Cerámicas y monedas del siglo XIII halladas aquí inspiraron a Gonzalo."
+    },
+    // Versión en inglés
+    en: {
+      titulo: "🏰 Gonzalo's Castle",
+      verifica: "Verify your location",
+      indicacion: "Approach the castle gate to begin your quest.",
+      verificarGPS: "Verify GPS",
+      oEscribe: "Or enter the name:",
+      verificarManual: "Verify Manually",
+      retoTitulo: "Visual Challenges: Sharpen your senses",
+      reto1: "What stands out on the castle’s main façade?",
+      reto2: "How many towers did the castle originally have?",
+      quizTitulo: "Quiz: Discover the message",
+      quiz1: "In which century was this fortress built?",
+      quiz2: "What has the castle housed since the 19th century?",
+      quiz3: "What is the castle's function today?",
+      opciones: {
+        escudos: "Coats of arms", muralla: "Wall", columnas: "Columns",
+        uno: "1", dos: "2", tres: "3",
+        XII: "12th", XIII: "13th", XIV: "14th",
+        discoteca: "Nightclub", cementerio: "Municipal Cemetery", museo: "Museum",
+        centro: "Biosphere Interpretation Center", biblioteca: "Library"
+      },
+      candado: "Treasure Chest Lock",
+      comprobar: "Check Combination",
+      pistaCandado: "The code corresponds to a date that marked a milestone in the castle’s history. Look for it in the images!",
+      cerrarPista: "Close Hint",
+      continuar: "Continue exploration",
+      fragmento: "Message Fragment: Hidden",
+      qr: "QR in town: CASTILLO-1523 (near the entrance).",
+      datoCurioso: "Fun Fact: XIII-century ceramics and coins found here inspired Gonzalo."
+    },
+    // Francés
+    fr: {
+      titulo: "🏰 Château de Gonzalo",
+      verifica: "Vérifiez votre position",
+      indicacion: "Approchez-vous de la porte principale du château pour commencer la quête.",
+      verificarGPS: "Vérifier GPS",
+      oEscribe: "Ou entrez le nom :",
+      verificarManual: "Vérifier manuellement",
+      retoTitulo: "Défis visuels : Aiguisez vos sens",
+      reto1: "Qu'est-ce qui se distingue sur la façade principale du château ?",
+      reto2: "Combien de tours le château avait-il à l'origine ?",
+      quizTitulo: "Quiz : Découvrez le message",
+      quiz1: "En quel siècle cette forteresse a-t-elle été fondée ?",
+      quiz2: "Que le château abrite-t-il depuis le XIXe siècle ?",
+      quiz3: "Quelle est la fonction actuelle du château ?",
+      opciones: {
+        escudos: "Blasons", muralla: "Mur", columnas: "Colonnes",
+        uno: "1", dos: "2", tres: "3",
+        XII: "XIIe", XIII: "XIIIe", XIV: "XIVe",
+        discoteca: "Discothèque", cementerio: "Cimetière municipal", museo: "Musée",
+        centro: "Centre d'interprétation de la biosphère", biblioteca: "Bibliothèque"
+      },
+      candado: "Cadenas du Coffre",
+      comprobar: "Vérifier la combinaison",
+      pistaCandado: "Le code correspond à une date importante dans l’histoire du château. Cherchez-la dans les images !",
+      cerrarPista: "Fermer la piste",
+      continuar: "Continuer l’exploration",
+      fragmento: "Fragment du message : Caché",
+      qr: "QR dans le village : CASTILLO-1523 (près de l'entrée).",
+      datoCurioso: "Le saviez-vous ? Des céramiques et pièces du XIIIe siècle ont inspiré Gonzalo."
+    },
+    // Alemán
+    de: {
+      titulo: "🏰 Gonzalos Burg",
+      verifica: "Standort überprüfen",
+      indicacion: "Gehe zum Burgtor, um die Suche zu starten.",
+      verificarGPS: "GPS überprüfen",
+      oEscribe: "Oder gib den Namen ein:",
+      verificarManual: "Manuell überprüfen",
+      retoTitulo: "Visuelle Rätsel: Schärfe deine Sinne",
+      reto1: "Was fällt an der Hauptfassade der Burg auf?",
+      reto2: "Wie viele Türme hatte die Burg ursprünglich?",
+      quizTitulo: "Quiz: Entdecke die Nachricht",
+      quiz1: "In welchem Jahrhundert wurde die Festung gegründet?",
+      quiz2: "Was beherbergt die Burg seit dem 19. Jahrhundert?",
+      quiz3: "Was ist heute die Funktion der Burg?",
+      opciones: {
+        escudos: "Wappen", muralla: "Mauer", columnas: "Säulen",
+        uno: "1", dos: "2", tres: "3",
+        XII: "12.", XIII: "13.", XIV: "14.",
+        discoteca: "Diskothek", cementerio: "Gemeindefriedhof", museo: "Museum",
+        centro: "Biosphären-Informationszentrum", biblioteca: "Bibliothek"
+      },
+      candado: "Schloss der Truhe",
+      comprobar: "Kombination prüfen",
+      pistaCandado: "Der Code entspricht einem bedeutenden Datum in der Geschichte der Burg. Schau in die Bilder!",
+      cerrarPista: "Hinweis schließen",
+      continuar: "Weiterforschen",
+      fragmento: "Nachrichtenfragment: Versteckt",
+      qr: "QR im Dorf: CASTILLO-1523 (nahe dem Eingang).",
+      datoCurioso: "Wissenswertes: Im 13. Jh. gefundene Keramik und Münzen inspirierten Gonzalo."
+    }
+  };
+
+  function aplicarIdiomaCastillo() {
+    const idioma = localStorage.getItem("idioma") || "es";
+    const t = textosCastillo[idioma];
+
+    // Títulos y textos generales
+    document.title = t.titulo;
+    document.querySelector("header h1").innerText = t.titulo;
+    document.querySelector("#location-check h2").innerText = t.verifica;
+    document.querySelector("#location-check p").innerText = t.indicacion;
+    document.querySelector("#location-check button:nth-of-type(1)").innerText = t.verificarGPS;
+    document.querySelector("#location-check p:nth-of-type(2)").innerText = t.oEscribe;
+    document.querySelector("#location-check button:nth-of-type(2)").innerText = t.verificarManual;
+
+    // Retos visuales
+    const reto = document.querySelector(".visual-challenge");
+    reto.querySelector("h2").innerText = t.retoTitulo;
+    reto.querySelectorAll("p")[0].innerText = t.reto1;
+    reto.querySelectorAll("p")[1].innerText = t.reto2;
+    const botonesVisuales = reto.querySelectorAll("button");
+    botonesVisuales[0].innerText = t.opciones.escudos;
+    botonesVisuales[1].innerText = t.opciones.muralla;
+    botonesVisuales[2].innerText = t.opciones.columnas;
+    botonesVisuales[3].innerText = t.opciones.uno;
+    botonesVisuales[4].innerText = t.opciones.dos;
+    botonesVisuales[5].innerText = t.opciones.tres;
+
+    // Quiz
+    const quiz = document.querySelector(".quiz");
+    quiz.querySelector("h2").innerText = t.quizTitulo;
+    quiz.querySelectorAll("p")[0].innerText = t.quiz1;
+    quiz.querySelectorAll("p")[1].innerText = t.quiz2;
+    quiz.querySelectorAll("p")[2].innerText = t.quiz3;
+    const botonesQuiz = quiz.querySelectorAll("button");
+    botonesQuiz[0].innerText = t.opciones.XII;
+    botonesQuiz[1].innerText = t.opciones.XIII;
+    botonesQuiz[2].innerText = t.opciones.XIV;
+    botonesQuiz[3].innerText = t.opciones.discoteca;
+    botonesQuiz[4].innerText = t.opciones.cementerio;
+    botonesQuiz[5].innerText = t.opciones.museo;
+    botonesQuiz[6].innerText = t.opciones.museo;
+    botonesQuiz[7].innerText = t.opciones.centro;
+    botonesQuiz[8].innerText = t.opciones.biblioteca;
+
+    // Candado
+    document.querySelector("#combination-lock h2").innerText = t.candado;
+    document.getElementById("check-combination").innerText = t.comprobar;
+    document.querySelector("#pista-lock p").innerText = t.pistaCandado;
+    document.querySelector("#pista-lock button").innerText = t.cerrarPista;
+
+    // Fragmento final
+    const fragmento = document.getElementById("fragmento-final");
+    fragmento.querySelector("p strong").innerText = t.fragmento;
+    fragmento.querySelectorAll("p")[1].innerText = t.qr;
+    fragmento.querySelectorAll("p")[2].innerText = t.datoCurioso;
+
+    document.querySelector("#continue-button button").innerText = t.continuar;
+  }
+
+  document.addEventListener("DOMContentLoaded", aplicarIdiomaCastillo);
+</script>
+
 </body>
 </html>
