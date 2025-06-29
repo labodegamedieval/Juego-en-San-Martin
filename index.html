@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="styles/style.css"/>
   <link rel="icon" type="image/png" href="images/icon-192.png"/>
 
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -39,7 +38,7 @@
       margin-bottom: 10px;
     }
 
-    .music-control {
+    .music-control, .language-select {
       text-align: center;
       margin-bottom: 20px;
     }
@@ -148,11 +147,18 @@
 <body>
   <div class="container">
     <header>
-      <h1>🏰 El enigma de Gonzalo de la Sierra</h1>
+      <h1 id="titulo"></h1>
       <div class="music-control">
-        <button class="music-btn" onclick="toggleMusic()">
-          🎵 Música
-        </button>
+        <button class="music-btn" onclick="toggleMusic()">🎵 Música</button>
+      </div>
+      <div class="language-select">
+        <label for="selector-idioma">🌍 Idioma:</label>
+        <select id="selector-idioma">
+          <option value="es">🇪🇸 Español</option>
+          <option value="en">🇬🇧 English</option>
+          <option value="fr">🇫🇷 Français</option>
+          <option value="de">🇩🇪 Deutsch</option>
+        </select>
       </div>
     </header>
 
@@ -160,54 +166,35 @@
       <div class="carousel">
         <div class="slide active">
           <img src="images/portada.jpg" alt="San Martín del Castañar" />
-          <p>
-            San Martín del Castañar, un pueblo medieval que esconde un secreto
-            que solo los más curiosos pueden descubrir... ¿te atreves?
-          </p>
+          <p id="slide1"></p>
         </div>
         <div class="slide">
           <img src="images/gonzalo.jpg" alt="Gonzalo de la Sierra" />
-          <p>
-            Gonzalo de la Sierra, antiguo bodeguero del siglo XVI, desapareció sin dejar rastro.
-            Pero dejó un mensaje oculto entre los rincones del pueblo. Busca los fragmentos, sigue las pistas y descubre el enigma.
-          </p>
+          <p id="slide2"></p>
         </div>
         <div class="slide">
           <img src="images/mapa-san-martin.jpg" alt="Mapa del Pueblo" />
-          <p>
-            Visita cada parada, supera los retos, escanea el QR... y desvela el secreto oculto.
-          </p>
+          <p id="slide3"></p>
         </div>
         <button class="carousel-btn prev-slide">←</button>
         <button class="carousel-btn next-slide">→</button>
       </div>
 
-      <h2>🧾 ¿Cómo funciona el juego?</h2>
-      <ol>
-        <li>Activa el GPS, los datos de tu móvil y recorre el pueblo. ¡No hace falta descargar nada!</li>
-        <li>Visita las 6 paradas y supera los retos en cada una.</li>
-        <li>Escanea el QR en cada lugar para descubrir un fragmento del mensaje.</li>
-        <li>Solo si completas todas las paradas, podrás desvelar la parada final y descubrir el misterio de la desaparición de Gonzalo.</li>
-      </ol>
+      <h2 id="como"></h2>
+      <ol id="lista-como"></ol>
 
-      <div class="info-extra">
-        🎮 Este juego es <strong>gratuito</strong> y pensado como una forma divertida de conocer este
-        pueblo tan peculiar y lleno de historia.  
-        <br><br>
-        💡 Se trata de una <strong>iniciativa privada</strong>, sin financiación pública, creada por emprendedores que buscan
-        mejorar la experiencia turística de quienes nos visitan.
-      </div>
+      <div class="info-extra" id="info-extra"></div>
 
       <div id="nombre-jugador" style="margin: 20px 0;">
-        <h2>📝 Antes de comenzar...</h2>
-        <p>Introduce tu nombre o apodo para registrar tu progreso:</p>
+        <h2 id="antes"></h2>
+        <p id="introduce"></p>
         <input type="text" id="nombre-input" placeholder="Ej: Valiente123" />
         <br>
-        <button class="action-btn" onclick="guardarNombreJugador()">Guardar y Empezar</button>
+        <button class="action-btn" onclick="guardarNombreJugador()" id="btnGuardar"></button>
       </div>
 
       <div class="button-group">
-        <button onclick="window.location.href='explorar.html'">🗺️ Explorar</button>
+        <button onclick="window.location.href='explorar.html'">🗘️ Explorar</button>
         <button onclick="window.location.href='guia.html'">📖 Guía Histórica</button>
         <button onclick="window.location.href='cronica.html'">📜 Crónica</button>
         <button onclick="window.location.href='ranking.html'">🏆 Ranking</button>
@@ -226,8 +213,114 @@
     </footer>
   </div>
 
-  <script src="scripts/script.js"></script>
   <script>
+    const textos = {
+      es: {
+        titulo: "🏰 El enigma de Gonzalo de la Sierra",
+        slide1: "San Martín del Castañar, un pueblo medieval que esconde un secreto que solo los más curiosos pueden descubrir... ¿te atreves?",
+        slide2: "Gonzalo de la Sierra, antiguo bodeguero del siglo XVI, desapareció sin dejar rastro. Pero dejó un mensaje oculto entre los rincones del pueblo. Busca los fragmentos, sigue las pistas y descubre el enigma.",
+        slide3: "Visita cada parada, supera los retos, escanea el QR... y desvela el secreto oculto.",
+        como: "🧾 ¿Cómo funciona el juego?",
+        lista: [
+          "Activa el GPS, los datos de tu móvil y recorre el pueblo. ¡No hace falta descargar nada!",
+          "Visita las 6 paradas y supera los retos en cada una.",
+          "Escanea el QR en cada lugar para descubrir un fragmento del mensaje.",
+          "Solo si completas todas las paradas, podrás desvelar la parada final y descubrir el misterio de la desaparición de Gonzalo."
+        ],
+        info: "🎮 Este juego es <strong>gratuito</strong> y pensado como una forma divertida de conocer este pueblo tan peculiar y lleno de historia.<br><br>💡 Se trata de una <strong>iniciativa privada</strong>, sin financiación pública, creada por emprendedores que buscan mejorar la experiencia turística de quienes nos visitan.",
+        antes: "📝 Antes de comenzar...",
+        introduce: "Introduce tu nombre o apodo para registrar tu progreso:",
+        btnGuardar: "Guardar y Empezar"
+      },
+      en: {
+        titulo: "🏰 Gonzalo de la Sierra's Enigma",
+        slide1: "San Martín del Castañar, a medieval village hiding a secret only the curious can uncover... dare you?",
+        slide2: "Gonzalo de la Sierra, a 16th-century winemaker, vanished mysteriously. But he left a hidden message scattered around the village. Find the fragments, follow the clues, and solve the enigma.",
+        slide3: "Visit each stop, complete the challenges, scan the QR... and reveal the hidden secret.",
+        como: "🧾 How does the game work?",
+        lista: [
+          "Activate your GPS and mobile data and explore the village. No downloads needed!",
+          "Visit the 6 stops and complete each challenge.",
+          "Scan the QR code at each location to discover a message fragment.",
+          "Only after completing all the stops will you unlock the final location and solve the mystery of Gonzalo's disappearance."
+        ],
+        info: "🎮 This game is <strong>free</strong> and designed as a fun way to discover this unique and historic village.<br><br>💡 It's a <strong>private initiative</strong>, without public funding, created by local entrepreneurs to enhance the visitor experience.",
+        antes: "📝 Before you begin...",
+        introduce: "Enter your name or nickname to track your progress:",
+        btnGuardar: "Save and Start"
+      },
+      fr: {
+        titulo: "🏰 L'énigme de Gonzalo de la Sierra",
+        slide1: "San Martín del Castañar, un village médiéval qui cache un secret que seuls les plus curieux peuvent découvrir... Oserez-vous ?",
+        slide2: "Gonzalo de la Sierra, ancien vigneron du XVIe siècle, a disparu sans laisser de trace. Mais il a laissé un message caché dans les recoins du village. Trouvez les fragments, suivez les indices et résolvez l'énigme.",
+        slide3: "Visitez chaque arrêt, relevez les défis, scannez le QR... et révélez le secret caché.",
+        como: "🧾 Comment fonctionne le jeu ?",
+        lista: [
+          "Activez le GPS et les données de votre mobile, puis explorez le village. Aucun téléchargement nécessaire !",
+          "Visitez les 6 arrêts et relevez les défis à chaque endroit.",
+          "Scannez le QR code à chaque lieu pour découvrir un fragment du message.",
+          "Ce n'est qu'en complétant toutes les étapes que vous découvrirez l'arrêt final et percerez le mystère de la disparition de Gonzalo."
+        ],
+        info: "🎮 Ce jeu est <strong>gratuit</strong> et conçu comme un moyen ludique de découvrir ce village plein d'histoire.<br><br>💡 C'est une <strong>initiative privée</strong>, sans financement public, créée par des entrepreneurs locaux pour enrichir l'expérience touristique.",
+        antes: "📝 Avant de commencer...",
+        introduce: "Entrez votre nom ou surnom pour enregistrer vos progrès :",
+        btnGuardar: "Enregistrer et commencer"
+      },
+      de: {
+        titulo: "🏰 Das Rätsel von Gonzalo de la Sierra",
+        slide1: "San Martín del Castañar, ein mittelalterliches Dorf, das ein Geheimnis birgt, das nur die Neugierigsten lüften können... wagst du es?",
+        slide2: "Gonzalo de la Sierra, ein Winzer aus dem 16. Jahrhundert, verschwand spurlos. Doch er hinterließ eine Nachricht, versteckt in den Winkeln des Dorfes. Finde die Fragmente, folge den Spuren und lüfte das Rätsel.",
+        slide3: "Besuche jede Station, löse die Aufgaben, scanne den QR-Code... und enthülle das verborgene Geheimnis.",
+        como: "🧾 Wie funktioniert das Spiel?",
+        lista: [
+          "Aktiviere GPS und mobile Daten und erkunde das Dorf. Kein Download erforderlich!",
+          "Besuche die 6 Stationen und löse die Herausforderungen an jedem Ort.",
+          "Scanne den QR-Code an jedem Ort, um ein Nachrichtenfragment zu entdecken.",
+          "Nur wenn du alle Stationen abschließt, wird der letzte Ort freigeschaltet und du kannst das Rätsel um Gonzalos Verschwinden lösen."
+        ],
+        info: "🎮 Dieses Spiel ist <strong>kostenlos</strong> und als unterhaltsamer Weg gedacht, dieses historische Dorf zu entdecken.<br><br>💡 Es handelt sich um eine <strong>private Initiative</strong> ohne öffentliche Finanzierung, die von lokalen Unternehmern zur Verbesserung des Besuchererlebnisses entwickelt wurde.",
+        antes: "📝 Bevor du beginnst...",
+        introduce: "Gib deinen Namen oder Spitznamen ein, um deinen Fortschritt zu speichern:",
+        btnGuardar: "Speichern und Starten"
+      }
+    };
+
+    function aplicarIdioma() {
+      const idioma = localStorage.getItem("idioma") || "es";
+      const t = textos[idioma];
+      document.getElementById("titulo").innerText = t.titulo;
+      document.getElementById("slide1").innerText = t.slide1;
+      document.getElementById("slide2").innerText = t.slide2;
+      document.getElementById("slide3").innerText = t.slide3;
+      document.getElementById("como").innerText = t.como;
+      const lista = document.getElementById("lista-como");
+      lista.innerHTML = "";
+      t.lista.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        lista.appendChild(li);
+      });
+      document.getElementById("info-extra").innerHTML = t.info;
+      document.getElementById("antes").innerText = t.antes;
+      document.getElementById("introduce").innerText = t.introduce;
+      document.getElementById("btnGuardar").innerText = t.btnGuardar;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const selector = document.getElementById("selector-idioma");
+      const idiomaGuardado = localStorage.getItem("idioma") || "es";
+      selector.value = idiomaGuardado;
+      selector.addEventListener("change", () => {
+        localStorage.setItem("idioma", selector.value);
+        location.reload();
+      });
+      aplicarIdioma();
+
+      if (localStorage.getItem("jugador")) {
+        document.getElementById("nombre-jugador").style.display = "none";
+      }
+    });
+    
     function guardarNombreJugador() {
       const nombre = document.getElementById("nombre-input").value.trim();
       if (nombre.length >= 3) {
