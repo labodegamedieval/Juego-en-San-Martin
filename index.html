@@ -230,7 +230,11 @@
         info: "🎮 Este juego es <strong>gratuito</strong> y pensado como una forma divertida de conocer este pueblo tan peculiar y lleno de historia.<br><br>💡 Se trata de una <strong>iniciativa privada</strong>, sin financiación pública, creada por emprendedores que buscan mejorar la experiencia turística de quienes nos visitan.",
         antes: "📝 Antes de comenzar...",
         introduce: "Introduce tu nombre o apodo para registrar tu progreso:",
-        btnGuardar: "Guardar y Empezar"
+        btnGuardar: "Guardar y Empezar",
+        btnExplorar: "🗺️ Explorar",
+        btnGuia: "📖 Guía Histórica",
+        btnCronica: "📜 Crónica",
+        btnRanking: "🏆 Ranking"
       },
       en: {
         titulo: "🏰 Gonzalo de la Sierra's Enigma",
@@ -247,7 +251,11 @@
         info: "🎮 This game is <strong>free</strong> and designed as a fun way to discover this unique and historic village.<br><br>💡 It's a <strong>private initiative</strong>, without public funding, created by local entrepreneurs to enhance the visitor experience.",
         antes: "📝 Before you begin...",
         introduce: "Enter your name or nickname to track your progress:",
-        btnGuardar: "Save and Start"
+        btnGuardar: "Save and Start",
+        btnExplorar: "🗺️ Explore",
+        btnGuia: "📖 Historical Guide",
+        btnCronica: "📜 Chronicle",
+        btnRanking: "🏆 Ranking"
       },
       fr: {
         titulo: "🏰 L'énigme de Gonzalo de la Sierra",
@@ -264,7 +272,11 @@
         info: "🎮 Ce jeu est <strong>gratuit</strong> et conçu comme un moyen ludique de découvrir ce village plein d'histoire.<br><br>💡 C'est une <strong>initiative privée</strong>, sans financement public, créée par des entrepreneurs locaux pour enrichir l'expérience touristique.",
         antes: "📝 Avant de commencer...",
         introduce: "Entrez votre nom ou surnom pour enregistrer vos progrès :",
-        btnGuardar: "Enregistrer et commencer"
+        btnGuardar: "Enregistrer et commencer",
+        btnExplorar: "🗺️ Explorer",
+        btnGuia: "📖 Guide Historique",
+        btnCronica: "📜 Chronique",
+        btnRanking: "🏆 Classement"
       },
       de: {
         titulo: "🏰 Das Rätsel von Gonzalo de la Sierra",
@@ -281,7 +293,11 @@
         info: "🎮 Dieses Spiel ist <strong>kostenlos</strong> und als unterhaltsamer Weg gedacht, dieses historische Dorf zu entdecken.<br><br>💡 Es handelt sich um eine <strong>private Initiative</strong> ohne öffentliche Finanzierung, die von lokalen Unternehmern zur Verbesserung des Besuchererlebnisses entwickelt wurde.",
         antes: "📝 Bevor du beginnst...",
         introduce: "Gib deinen Namen oder Spitznamen ein, um deinen Fortschritt zu speichern:",
-        btnGuardar: "Speichern und Starten"
+        btnGuardar: "Speichern und Starten",
+        btnExplorar: "🗺️ Erforschen",
+        btnGuia: "📖 Historischer Führer",
+        btnCronica: "📜 Chronik",
+        btnRanking: "🏆 Bestenliste"
       }
     };
 
@@ -304,17 +320,11 @@
       document.getElementById("antes").innerText = t.antes;
       document.getElementById("introduce").innerText = t.introduce;
       document.getElementById("btnGuardar").innerText = t.btnGuardar;
+      document.querySelector(".button-group button:nth-child(1)").innerText = t.btnExplorar;
+      document.querySelector(".button-group button:nth-child(2)").innerText = t.btnGuia;
+      document.querySelector(".button-group button:nth-child(3)").innerText = t.btnCronica;
+      document.querySelector(".button-group button:nth-child(4)").innerText = t.btnRanking;
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const selector = document.getElementById("selector-idioma");
-      const idiomaGuardado = localStorage.getItem("idioma") || "es";
-      selector.value = idiomaGuardado;
-      selector.addEventListener("change", () => {
-        localStorage.setItem("idioma", selector.value);
-        location.reload();
-      });
-      aplicarIdioma();
 
       if (localStorage.getItem("jugador")) {
         document.getElementById("nombre-jugador").style.display = "none";
@@ -355,5 +365,6 @@
       }
     }
   </script>
+  
 </body>
 </html>
