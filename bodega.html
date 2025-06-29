@@ -151,17 +151,7 @@
   <p>Resuelve las adivinanzas y colócalas en el orden correcto para completar la frase.</p>
 
   <div class="riddle">
-    <p><strong>1.</strong> Fruto pequeño, en racimo colgado,<br>me pisan sin miedo, y acabo envasado.</p>
-    <select id="a1">
-      <option value="">Elige una palabra</option>
-      <option>cereza</option>
-      <option>mora</option>
-      <option>uva</option>
-    </select>
-  </div>
-
-  <div class="riddle">
-    <p><strong>2.</strong> No tengo edad, pero maduro.<br>No tengo boca, pero cuento historias.<br>Nací de la tierra y vivo en la copa.</p>
+    <p><strong>1.</strong> No tengo edad, pero maduro.<br>No tengo boca, pero cuento historias.<br>Nací de la tierra y vivo en la copa.</p>
     <select id="a2">
       <option value="">Elige una palabra</option>
       <option>aceite</option>
@@ -169,14 +159,24 @@
       <option>sangre</option>
     </select>
   </div>
-
+          
   <div class="riddle">
-    <p><strong>3.</strong> Si lo tienes, no lo cuentas.<br>Si lo cuentas, ya no está.<br>Si lo guardas, pesa poco.<br>Si lo dices, pesará.</p>
+    <p><strong>2.</strong> Si lo tienes, no lo cuentas.<br>Si lo cuentas, ya no está.<br>Si lo guardas, pesa poco.<br>Si lo dices, pesará.</p>
     <select id="a3">
       <option value="">Elige una palabra</option>
       <option>promesa</option>
       <option>sombra</option>
       <option>secreto</option>
+    </select>
+  </div>
+          
+  <div class="riddle">
+    <p><strong>3.</strong> Fruto pequeño, en racimo colgado,<br>me pisan sin miedo, y acabo envasado.</p>
+    <select id="a1">
+      <option value="">Elige una palabra</option>
+      <option>cereza</option>
+      <option>mora</option>
+      <option>uva</option>
     </select>
   </div>
 
@@ -211,7 +211,7 @@
 
 <div id="final-game" style="display: none; text-align: center; margin-top: 40px;">
   <h3>🎉 Has desvelado el misterio</h3>
-  <p><em>Gonzalo dejó pistas en cada rincón de la bodega. Ahora sabes dónde empezó todo y por qué desapareció...</em></p>
+  <p><em>Gonzalo dejó pistas en cada rincón de la bodega. Ahora sabes dónde empezó todo solo te queda descubrir el secreto de la bodega...</em></p>
   <button class="action-btn" onclick="window.location.href='final.html'">Finalizar búsqueda</button>
 </div>
 
@@ -237,7 +237,7 @@
 
     if (isCorrectAnswers && isCorrectOrder) {
       feedback.style.color = "green";
-      feedback.innerText = "✔️ ¡Correcto! Has resuelto el misterio de Gonzalo.";
+      feedback.innerText = "✔️ ¡Correcto! Has llegado al origen del misterio de Gonzalo.";
       document.getElementById("final-game").style.display = "block";
       window.scrollTo(0, document.body.scrollHeight);
     } else if (isCorrectAnswers && !isCorrectOrder) {
@@ -249,15 +249,6 @@
     }
   }
 </script>
-          
-        <div id="final-game" style="display: none;">
-          <h3>🎉 ¡Lo lograste!</h3>
-          <p>Has demostrado tu inteligencia, destreza y valentía. Aquí tienes el último fragmento del mensaje:</p>
-          <p><em>"...en la penumbra de la bodega, renace la verdad..."</em></p>
-          <button class="action-btn" onclick="window.location.href='final.html'">Finalizar búsqueda</button>
-        </div>
-      </div>
-    </section>
 
     <footer>
       <p>© 2025 La Bodega Medieval · Idea y desarrollo de @alexroman.leis</p>
