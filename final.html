@@ -12,7 +12,6 @@
       background-size: cover;
       color: #f9f4e8;
     }
-
     .final-container {
       text-align: center;
       padding: 40px 20px;
@@ -20,190 +19,226 @@
       border-radius: 16px;
       max-width: 800px;
       margin: 60px auto;
-      box-shadow: 0 0 30px rgba(0,0,0,0.5);
     }
-
-    .final-container h1 {
-      font-size: 2.4em;
-      margin-bottom: 20px;
-    }
-
-    .final-message {
-      font-size: 1.6em;
-      font-style: italic;
-      color: #ffe6b3;
-      margin-bottom: 30px;
-      animation: fadeIn 2s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .button-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 25px;
-    }
-
     .action-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
       background-color: #f0e6d2;
       border: none;
       padding: 14px 22px;
       font-size: 18px;
-      cursor: pointer;
       border-radius: 10px;
       text-decoration: none;
       color: #4a2c2a;
-      transition: background-color 0.3s;
+      margin: 5px;
     }
-
-    .action-btn:hover {
-      background-color: #e0d2b3;
+    #donateBtn {
+      margin-top: 30px;
+      background-color: #f7f1e1;
+      color: #7c4d00;
+      border: 2px solid #7c4d00;
+      font-family: serif;
     }
-
-    .action-btn img {
-      height: 24px;
+    #donationModal {
+      display: none;
+      position: fixed;
+      z-index: 9998;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.7);
     }
-
-    .ranking {
-      margin-top: 40px;
-      background-color: rgba(255,255,255,0.9);
-      border-radius: 12px;
-      color: #4a2c2a;
+    #donationModalContent {
+      background-color: #f7f1e1;
+      margin: 10% auto;
       padding: 20px;
+      border: 2px solid #7c4d00;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      font-family: serif;
+      color: #4a2c2a;
     }
-
-    .ranking h3 {
-      margin-bottom: 10px;
-    }
-
-    .ranking-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .ranking-list li {
-      margin: 5px 0;
+    .closeModal {
+      float: right;
+      font-size: 1.4em;
+      cursor: pointer;
+      color: #7c4d00;
     }
   </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GE0YB9PL8Q');
+  </script>
 </head>
 <body>
   <div class="final-container">
-    <h1>🎉 ¡Felicidades, valiente viajero!</h1>
-    <p class="final-message">"El secreto familiar se esconde tras el escudo desarmado."</p>
-    <p>Has reunido todas las piezas del mensaje oculto de Gonzalo. <br>Pero para completar tu aventura aún queda un paso más... ¿sabes guardar un secreto? Reserva tu Experiencia</p>
-
+    <h1 id="titulo"></h1>
+    <p id="mensaje-final"></p>
+    <p id="texto-instruccion"></p>
+    <div class="action-btn" onclick="document.getElementById('donationModal').style.display='block'" id="donateBtn">💰 ¿Quieres apoyar?</div>
     <div class="button-group">
-      <a class="action-btn" href="https://www.labodegamedieval.es/reservar" target="_blank">
-        🍷 Reserva tu Experiencia en la Bodega Medieval ahora!
-      </a>
+      <a class="action-btn" href="https://www.labodegamedieval.es/reservar" target="_blank" id="btn-reservar"></a>
+      <a class="action-btn" href="explorar.html" id="btn-explorar"></a>
     </div>
-
-    <!-- BLOQUE DE DONACIONES -->
-    <div class="donation-block" style="border: 2px solid #7c4d00; padding: 20px; border-radius: 12px; background: #f7f1e1; max-width: 600px; margin: 30px auto; font-family: serif; color: #4a2c2a;">
-      <h2 style="text-align: center;">🎁 ¿Te ha gustado la aventura?</h2>
-      <p style="text-align: justify;">
-        Este juego ha sido creado con mucho cariño y esfuerzo para que descubras San Martín del Castañar de una forma divertida, misteriosa y gratuita.<br><br>
-        Si te ha gustado y quieres apoyar este proyecto local, puedes hacer una <strong>donación simbólica de 1 €</strong>.  
-        Tu ayuda nos permite seguir creando magia para todos los visitantes.
-      </p>
-      <hr>
-      <div style="text-align: center; margin-top: 15px;">
-        <p><strong>💳 Donación con PayPal</strong></p>
-        <form action="https://www.paypal.com/donate" method="post" target="_blank">
-          <input type="hidden" name="business" value="TU_CORREO_PAYPAL@ejemplo.com" />
-          <input type="hidden" name="no_recurring" value="0" />
-          <input type="hidden" name="item_name" value="Apoya el juego turístico de San Martín del Castañar" />
-          <input type="hidden" name="currency_code" value="EUR" />
-          <input type="submit" value="Donar 1 € con PayPal" style="padding: 8px 16px; font-weight: bold;" />
-        </form>
-      </div>
-      <hr>
-      <div style="text-align: center; margin-top: 15px;">
-        <p><strong>📲 Donación por Bizum</strong></p>
-        <p>Envía 1 € al código corto: <strong style="font-size: 1.2em;">03456</strong><br>(introduce el código en tu app bancaria)</p>
-      </div>
-      <hr>
-      <div style="text-align: center; margin-top: 15px;">
-        <p><strong>⚡ Donación con Bitcoin Lightning</strong></p>
-        <p>Escanea este código con tu monedero Lightning o envía a:</p>
-        <p><code>celestialmelody936348@getalby.com</code></p>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data=lightning:celestialmelody936348@getalby.com&size=200x200" alt="QR Lightning" style="margin-top: 10px;" />
+    <!-- MODAL DE DONACIÓN -->
+    <div id="donationModal" onclick="this.style.display='none'">
+      <div id="donationModalContent" onclick="event.stopPropagation();">
+        <span class="closeModal" onclick="document.getElementById('donationModal').style.display='none'">&times;</span>
+        <h2 id="don-titulo"></h2>
+        <p id="don-texto"></p>
+        <hr>
+        <div style="text-align:center;">
+          <p><strong>💳 PayPal</strong></p>
+          <form action="https://www.paypal.com/donate" method="post" target="_blank">
+            <input type="hidden" name="business" value="nuriasm60@gmail.com" />
+            <input type="hidden" name="item_name" value="Juego turístico de San Martín del Castañar" />
+            <input type="hidden" name="currency_code" value="EUR" />
+            <input type="submit" value="Donar 1 € con PayPal" />
+          </form>
+          <hr>
+          <p><strong>📲 Bizum</strong></p>
+          <p>En tu app bancaria, envía 1 € al código: <strong>Esperando Activacion</strong></p>
+          <hr>
+          <p><strong>⚡ Lightning</strong></p>
+          <p>Envía a: <code>celestialmelody936348@getalby.com</code></p>
+        </div>
       </div>
     </div>
-
-    <!-- Botones siguientes -->
-    <div class="button-group">
-      <a class="action-btn" href="explorar.html">🗺️ Volver a Explorar</a>
-      <a class="action-btn" href="cronica.html">📜 Ver Crónica</a>
-      <a class="action-btn" href="index.html">🏠 Inicio</a>
-    </div>
-
-    <!-- Compartir -->
+        <!-- BOTONES DE REDES SOCIALES -->
     <div class="share-section" style="margin-top: 40px;">
-      <h3>📣 Comparte tu aventura</h3>
-      <p>¡Anima a tus amigos a descubrir el mensaje oculto de Gonzalo!</p>
+      <h3 id="titulo-compartir">📣 Comparte tu aventura</h3>
+      <p id="texto-compartir">¡Anima a tus amigos a descubrir el mensaje oculto de Gonzalo!</p>
       <div class="button-group">
         <a href="https://wa.me/?text=¡He jugado al juego del mensaje oculto en San Martín del Castañar! Tienes que probarlo %0Ahttps://el-misterio-de-san-martin.netlify.app/" target="_blank" class="action-btn">
           <img src="images/whatsapp.png" alt="WhatsApp" /> WhatsApp
         </a>
         <a href="https://www.instagram.com/tuperfil" target="_blank" class="action-btn">
-          <img src="images/instagram.png" alt="Instagram" /> Síguenos
+          <img src="images/instagram.png" alt="Instagram" /> Instagram
         </a>
         <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fel-misterio-de-san-martin.netlify.app%2F" target="_blank" class="action-btn">
-          <img src="images/facebook.png" alt="Facebook" /> Compartir
+          <img src="images/facebook.png" alt="Facebook" /> Facebook
         </a>
         <a href="https://x.com/intent/tweet?text=%C2%A1He%20jugado%20al%20juego%20del%20mensaje%20oculto%20en%20San%20Mart%C3%ADn%20del%20Casta%C3%B1ar!%20Tienes%20que%20probarlo%20https%3A%2F%2Fel-misterio-de-san-martin.netlify.app%2F" target="_blank" class="action-btn">
           <img src="images/x.png" alt="Twitter" /> Twitter
         </a>
         <button class="action-btn" onclick="copiarEnlace()">
-          <img src="images/enlace.png" alt="Copiar enlace" /> Copiar Enlace
+          <img src="images/enlace.png" alt="Copiar enlace" /> <span id="boton-copiar">Copiar enlace</span>
         </button>
       </div>
       <p id="copiar-msg" style="margin-top: 10px; font-style: italic;"></p>
     </div>
-
-    <!-- Ranking -->
-    <div class="ranking">
-      <h3>🏆 Ranking de Aventureros</h3>
-      <ul class="ranking-list" id="ranking-list"></ul>
-    </div>
-  </div>
-
+  </div> <!-- fin de .final-container -->
+  <!-- SONIDO FINAL -->
   <audio id="cheers-sound" src="sounds/cheers.mp3" preload="auto" autoplay></audio>
 
+  <!-- SCRIPT -->
   <script>
+    const idioma = localStorage.getItem("idioma") || "es";
+
+    const textos = {
+      es: {
+        titulo: "🎉 ¡Felicidades, valiente viajero!",
+        mensaje: "El secreto familiar se esconde tras el escudo desarmado.",
+        instruccion: "Has reunido todas las piezas del mensaje oculto de Gonzalo. <br>Pero para completar tu aventura aún queda un paso más... ¿sabes guardar un secreto? Reserva tu Experiencia.",
+        reservar: "🍷 Reserva tu Experiencia en la Bodega Medieval ahora",
+        explorar: "🗺️ Volver a Explorar",
+        compartir: "📣 Comparte tu aventura",
+        compartirTexto: "¡Anima a tus amigos a descubrir el mensaje oculto de Gonzalo!",
+        copiar: "Copiar enlace",
+        copiado: "✅ Enlace copiado al portapapeles.",
+        don: "🎁 ¿Te ha gustado la aventura?",
+        donTexto: "Este juego ha sido creado con cariño y esfuerzo para que descubras San Martín del Castañar.",
+      },
+      en: {
+        titulo: "🎉 Congratulations, brave traveler!",
+        mensaje: "The family secret lies behind the disarmed shield.",
+        instruccion: "You’ve gathered all parts of Gonzalo’s hidden message. <br>But to finish your journey there's one last step... Can you keep a secret? Book your Experience.",
+        reservar: "🍷 Book your Medieval Winery Experience now",
+        explorar: "🗺️ Back to Explore",
+        compartir: "📣 Share your adventure",
+        compartirTexto: "Invite your friends to discover Gonzalo’s hidden message!",
+        copiar: "Copy link",
+        copiado: "✅ Link copied to clipboard.",
+        don: "🎁 Did you enjoy the adventure?",
+        donTexto: "This game was lovingly crafted to help you discover San Martín del Castañar.",
+      },
+      fr: {
+        titulo: "🎉 Félicitations, voyageur intrépide !",
+        mensaje: "Le secret de famille se cache derrière l’écu désarmé.",
+        instruccion: "Tu as réuni tous les fragments du message caché de Gonzalo. <br>Mais pour conclure l’aventure, il te reste une étape… Sauras-tu garder un secret ? Réserve ton expérience.",
+        reservar: "🍷 Réserve ton expérience à la Bodega Médiévale maintenant",
+        explorar: "🗺️ Revenir Explorer",
+        compartir: "📣 Partage ton aventure",
+        compartirTexto: "Invite tes amis à découvrir le message caché de Gonzalo !",
+        copiar: "Copier le lien",
+        copiado: "✅ Lien copié dans le presse-papiers.",
+        don: "🎁 Tu as aimé l’aventure ?",
+        donTexto: "Ce jeu a été créé avec passion pour te faire découvrir San Martín del Castañar.",
+      },
+      de: {
+        titulo: "🎉 Glückwunsch, tapferer Abenteurer!",
+        mensaje: "Das Familiengeheimnis liegt hinter dem entwaffneten Schild.",
+        instruccion: "Du hast alle Teile von Gonzalos geheimer Botschaft gesammelt. <br>Doch ein letzter Schritt bleibt... Kannst du ein Geheimnis bewahren? Buche dein Erlebnis.",
+        reservar: "🍷 Buche jetzt dein Erlebnis im mittelalterlichen Weinkeller",
+        explorar: "🗺️ Zurück zur Erkundung",
+        compartir: "📣 Teile dein Abenteuer",
+        compartirTexto: "Lade deine Freunde ein, Gonzalos geheime Botschaft zu entdecken!",
+        copiar: "Link kopieren",
+        copiado: "✅ Link wurde kopiert.",
+        don: "🎁 Hat dir das Abenteuer gefallen?",
+        donTexto: "Dieses Spiel wurde mit Liebe gestaltet, um dir San Martín del Castañar näherzubringen.",
+      }
+    };
+
+    document.getElementById("titulo").innerHTML = textos[idioma].titulo;
+    document.getElementById("mensaje-final").innerHTML = textos[idioma].mensaje;
+    document.getElementById("texto-instruccion").innerHTML = textos[idioma].instruccion;
+    document.getElementById("btn-reservar").innerHTML = textos[idioma].reservar;
+    document.getElementById("btn-explorar").innerHTML = textos[idioma].explorar;
+    document.getElementById("titulo-compartir").textContent = textos[idioma].compartir;
+    document.getElementById("texto-compartir").textContent = textos[idioma].compartirTexto;
+    document.getElementById("boton-copiar").textContent = textos[idioma].copiar;
+    document.getElementById("don-titulo").textContent = textos[idioma].don;
+    document.getElementById("don-texto").textContent = textos[idioma].donTexto;
+
     function copiarEnlace() {
       const enlace = "https://el-misterio-de-san-martin.netlify.app/";
       navigator.clipboard.writeText(enlace).then(() => {
-        document.getElementById("copiar-msg").textContent = "✅ Enlace copiado al portapapeles.";
+        document.getElementById("copiar-msg").textContent = textos[idioma].copiado;
       });
     }
 
+    // RANKING LOCALSTORAGE
     const nombre = localStorage.getItem("jugador") || "Anónimo";
     const puntos = ["castillo","plaza","iglesia","fuente","ermita","puente","bodega"]
       .filter(s => localStorage.getItem(`${s}-completed`) === "true").length;
 
     let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
     const index = ranking.findIndex(j => j.nombre === nombre);
-    if (index !== -1) ranking[index].puntos = puntos;
-    else ranking.push({ nombre, puntos });
+    if (index !== -1) {
+      ranking[index].puntos = puntos;
+    } else {
+      ranking.push({ nombre, puntos });
+    }
     ranking.sort((a, b) => b.puntos - a.puntos);
     localStorage.setItem("ranking", JSON.stringify(ranking));
-
-    const rankingList = document.getElementById("ranking-list");
-    ranking.forEach((jugador, idx) => {
+    const ul = document.createElement("ul");
+    ul.style.backgroundColor = "rgba(255,255,255,0.8)";
+    ul.style.padding = "20px";
+    ul.style.marginTop = "30px";
+    ul.style.color = "#4a2c2a";
+    ul.style.borderRadius = "12px";
+    ranking.forEach((j, i) => {
       const li = document.createElement("li");
-      li.textContent = `${idx + 1}. ${jugador.nombre} — ${jugador.puntos} puntos`;
-      rankingList.appendChild(li);
+      li.textContent = `${i + 1}. ${j.nombre} — ${j.puntos} puntos`;
+      ul.appendChild(li);
     });
+    document.querySelector(".final-container").appendChild(ul);
   </script>
 </body>
 </html>
+
