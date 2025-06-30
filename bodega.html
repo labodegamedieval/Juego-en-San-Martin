@@ -137,6 +137,7 @@
 </head>
 <body>
   <div class="container">
+    <audio id="background-music" src="sounds/musica-medieval.mp3" loop></audio>
     <header>
       <h1>🍷 La Bodega Medieval</h1>
       <div class="music-control">
@@ -324,8 +325,18 @@
     }
 
     function toggleMusic() {
-      alert("🎶 Función de música en desarrollo.");
-    }
+  const audio = document.getElementById("background-music");
+  const button = document.querySelector(".music-btn");
+
+  if (audio.paused) {
+    audio.play();
+    button.innerText = "🔇 Parar música";
+  } else {
+    audio.pause();
+    button.innerText = "🔊 Activar música";
+  }
+}
+    
   </script>
 </body>
 </html>
