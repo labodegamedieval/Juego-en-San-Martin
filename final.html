@@ -93,33 +93,60 @@
       margin: 5px 0;
     }
   </style>
-  <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', 'G-GE0YB9PL8Q');
-</script>
-
 </head>
 <body>
   <div class="final-container">
     <h1>🎉 ¡Felicidades, valiente viajero!</h1>
     <p class="final-message">"El secreto familiar se esconde tras el escudo desarmado."</p>
-    <p>Has reunido todas las piezas del mensaje oculto de Gonzalo. <br>Pero para completar tu aventura aún queda un paso más...sabes guardar un secreto? Reserva tu Experiencia</p>
+    <p>Has reunido todas las piezas del mensaje oculto de Gonzalo. <br>Pero para completar tu aventura aún queda un paso más... ¿sabes guardar un secreto? Reserva tu Experiencia</p>
 
-    <!-- Botones principales -->
     <div class="button-group">
       <a class="action-btn" href="https://www.labodegamedieval.es/reservar" target="_blank">
         🍷 Reserva tu Experiencia en la Bodega Medieval ahora!
       </a>
+    </div>
+
+    <!-- BLOQUE DE DONACIONES -->
+    <div class="donation-block" style="border: 2px solid #7c4d00; padding: 20px; border-radius: 12px; background: #f7f1e1; max-width: 600px; margin: 30px auto; font-family: serif; color: #4a2c2a;">
+      <h2 style="text-align: center;">🎁 ¿Te ha gustado la aventura?</h2>
+      <p style="text-align: justify;">
+        Este juego ha sido creado con mucho cariño y esfuerzo para que descubras San Martín del Castañar de una forma divertida, misteriosa y gratuita.<br><br>
+        Si te ha gustado y quieres apoyar este proyecto local, puedes hacer una <strong>donación simbólica de 1 €</strong>.  
+        Tu ayuda nos permite seguir creando magia para todos los visitantes.
+      </p>
+      <hr>
+      <div style="text-align: center; margin-top: 15px;">
+        <p><strong>💳 Donación con PayPal</strong></p>
+        <form action="https://www.paypal.com/donate" method="post" target="_blank">
+          <input type="hidden" name="business" value="TU_CORREO_PAYPAL@ejemplo.com" />
+          <input type="hidden" name="no_recurring" value="0" />
+          <input type="hidden" name="item_name" value="Apoya el juego turístico de San Martín del Castañar" />
+          <input type="hidden" name="currency_code" value="EUR" />
+          <input type="submit" value="Donar 1 € con PayPal" style="padding: 8px 16px; font-weight: bold;" />
+        </form>
+      </div>
+      <hr>
+      <div style="text-align: center; margin-top: 15px;">
+        <p><strong>📲 Donación por Bizum</strong></p>
+        <p>Envía 1 € al código corto: <strong style="font-size: 1.2em;">03456</strong><br>(introduce el código en tu app bancaria)</p>
+      </div>
+      <hr>
+      <div style="text-align: center; margin-top: 15px;">
+        <p><strong>⚡ Donación con Bitcoin Lightning</strong></p>
+        <p>Escanea este código con tu monedero Lightning o envía a:</p>
+        <p><code>celestialmelody936348@getalby.com</code></p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=lightning:celestialmelody936348@getalby.com&size=200x200" alt="QR Lightning" style="margin-top: 10px;" />
+      </div>
+    </div>
+
+    <!-- Botones siguientes -->
+    <div class="button-group">
       <a class="action-btn" href="explorar.html">🗺️ Volver a Explorar</a>
       <a class="action-btn" href="cronica.html">📜 Ver Crónica</a>
       <a class="action-btn" href="index.html">🏠 Inicio</a>
     </div>
 
-    <!-- Redes sociales -->
+    <!-- Compartir -->
     <div class="share-section" style="margin-top: 40px;">
       <h3>📣 Comparte tu aventura</h3>
       <p>¡Anima a tus amigos a descubrir el mensaje oculto de Gonzalo!</p>
@@ -160,24 +187,17 @@
       });
     }
 
-    // Registrar puntuación
     const nombre = localStorage.getItem("jugador") || "Anónimo";
     const puntos = ["castillo","plaza","iglesia","fuente","ermita","puente","bodega"]
       .filter(s => localStorage.getItem(`${s}-completed`) === "true").length;
 
     let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
     const index = ranking.findIndex(j => j.nombre === nombre);
-
-    if (index !== -1) {
-      ranking[index].puntos = puntos;
-    } else {
-      ranking.push({ nombre, puntos });
-    }
-
+    if (index !== -1) ranking[index].puntos = puntos;
+    else ranking.push({ nombre, puntos });
     ranking.sort((a, b) => b.puntos - a.puntos);
     localStorage.setItem("ranking", JSON.stringify(ranking));
 
-    // Mostrar ranking
     const rankingList = document.getElementById("ranking-list");
     ranking.forEach((jugador, idx) => {
       const li = document.createElement("li");
@@ -185,64 +205,5 @@
       rankingList.appendChild(li);
     });
   </script>
-  <!-- 💰 BOTÓN FLOTANTE DE DONACIÓN -->
-<style>
-  #donateBtn {
-    position: fixed;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    background-color: #f7f1e1;
-    color: #7c4d00;
-    border: 2px solid #7c4d00;
-    border-radius: 8px 0 0 8px;
-    padding: 12px 16px;
-    font-size: 1.5em;
-    cursor: pointer;
-    z-index: 9999;
-    font-family: serif;
-  }
-
-  #donationModal {
-    display: none;
-    position: fixed;
-    z-index: 9998;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.7);
-  }
-
-  #donationModalContent {
-    background-color: #f7f1e1;
-    margin: 10% auto;
-    padding: 20px;
-    border: 2px solid #7c4d00;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 600px;
-    font-family: serif;
-  }
-
-  .closeModal {
-    float: right;
-    font-size: 1.4em;
-    cursor: pointer;
-    color: #7c4d00;
-  }
-</style>
-
-<!-- BOTÓN FLOTANTE -->
-<div id="donateBtn" onclick="document.getElementById('donationModal').style.display='block'">¿Quieres apoyar?💰</div>
-
-<!-- MODAL DE DONACIÓN -->
-<div id="donationModal" onclick="this.style.display='none'">
-  <div id="donationModalContent" onclick="event.stopPropagation();">
-    <span class="closeModal" onclick="document.getElementById('donationModal').style.display='none'">&times;</span>
-    <h2 style="text-align: center;">🎁 ¿Te ha gustado la aventura?</h2>
-    <p style="text-align: justify;">
-      Este juego ha sido creado con mucho cariño y esfuerzo para que descubras San Martín del Castañar
 </body>
 </html>
