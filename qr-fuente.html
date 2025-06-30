@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Fuente | Juego Turístico San Martín</title>
+  <meta name="description" content="Historia y curiosidades de la fuente renacentista de San Martín del Castañar." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-papel: rgba(255, 255, 240, 0.85);
+      --color-rojo-oscuro: #8B0000;
+      --color-rojo-medio: #A52A2A;
+      --color-texto: #3e2f1c;
+      --sombra: 0 0 20px #00000088;
+      --borde: 8px solid var(--color-rojo-oscuro);
+    }
+    body {
+      background: url('pergamino-fondo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'MedievalSharp', serif;
+      color: var(--color-texto);
+      margin: 0;
+      padding: 1rem;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+    }
+    main.contenedor {
+      background: var(--color-papel);
+      border: var(--borde);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      max-width: 800px;
+      width: 90%;
+      padding: 2rem;
+      position: relative;
+    }
+    h1 {
+      color: var(--color-rojo-oscuro);
+      font-size: 2rem;
+      text-align: center;
+    }
+    p {
+      font-size: 1.2rem;
+      text-align: justify;
+      margin: 1rem 0;
+    }
+    figure.imagen {
+      margin: 1.5rem 0;
+      border: 4px solid var(--color-rojo-medio);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    figure.imagen img {
+      width: 100%;
+      display: block;
+    }
+    figcaption {
+      text-align: center;
+      font-style: italic;
+      margin-top: 0.5rem;
+    }
+    audio {
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+    .volver {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--color-rojo-medio);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+    .volver:hover {
+      background-color: var(--color-rojo-oscuro);
+    }
+    .language-selector {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(255, 255, 240, 0.7);
+      padding: 0.5rem;
+      border-radius: 20px;
+    }
+    .language-btn {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .language-btn:hover {
+      transform: scale(1.1);
+    }
+    .language-btn.active {
+      border-bottom: 2px solid var(--color-rojo-oscuro);
+    }
+    @media print {
+      body {
+        background: none;
+      }
+      .volver, .language-selector {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="contenedor">
+    <div class="language-selector">
+      <button class="language-btn active" data-lang="es">🇪🇸</button>
+      <button class="language-btn" data-lang="en">🇬🇧</button>
+      <button class="language-btn" data-lang="fr">🇫🇷</button>
+      <button class="language-btn" data-lang="de">🇩🇪</button>
+    </div>
+
+    <div id="es-content" class="language-content">
+      <h1>⛲ La Fuente</h1>
+      <p>Justo al pie de la iglesia, esta fuente de estilo renacentista ha dado de beber a generaciones enteras. Su estructura sobria de piedra clara contrasta con el rumor constante del agua, que nace unos metros más arriba en el monte.</p>
+      <p>Durante siglos, fue el lugar de encuentro diario para mujeres que venían a llenar cántaros, intercambiar noticias… o miradas furtivas. También fue parada de viajeros y pastores que encontraban aquí descanso y frescor.</p>
+      <p>Se cuenta que en los años de vendimia, más de uno enjuagó aquí la cara con vino por error —o por deseo—, celebrando el final de la cosecha. ¿Verdad o leyenda? Quién sabe…</p>
+      <figure class="imagen">
+        <img src="images/vino-qr.png" alt="Jarra de vino tinto" />
+        <figcaption>🍷 Recuerda este líquido color rubí… puede ser la clave para descorchar el misterio final.</figcaption>
+      </figure>
+      <audio controls preload="metadata">
+        <source src="sounds/audio-fuente.mp3" type="audio/mpeg" />
+      </audio>
+      <div><a class="volver" href="../explorar.html">🔙 Volver al juego</a></div>
+    </div>
+
+    <div id="en-content" class="language-content" hidden>
+      <h1>⛲ The Fountain</h1>
+      <p>Right at the foot of the church, this Renaissance-style fountain has quenched the thirst of entire generations. Its sober stone structure contrasts with the constant murmur of water, which springs just uphill.</p>
+      <p>For centuries, it was the daily meeting point for women filling their jugs, exchanging news… or secret glances. It was also a stop for travelers and shepherds looking for rest and refreshment.</p>
+      <p>It is said that during harvest time, some would wash their faces here with wine by mistake —or on purpose— to celebrate the end of the grape season. Truth or legend? Who knows...</p>
+      <figure class="imagen">
+        <img src="images/vino-qr.png" alt="Pitcher of red wine" />
+        <figcaption>🍷 Remember this ruby-colored liquid… it might be the key to uncorking the final mystery.</figcaption>
+      </figure>
+      <audio controls preload="metadata">
+        <source src="sounds/audio-fountain.mp3" type="audio/mpeg" />
+      </audio>
+      <div><a class="volver" href="../explorar.html">🔙 Back to the game</a></div>
+    </div>
+
+    <div id="fr-content" class="language-content" hidden>
+      <h1>⛲ La Fontaine</h1>
+      <p>Au pied de l’église, cette fontaine de style Renaissance a désaltéré des générations entières. Sa structure sobre en pierre claire contraste avec le murmure constant de l’eau, qui jaillit un peu plus haut sur la colline.</p>
+      <p>Pendant des siècles, ce fut un lieu de rencontre quotidien pour les femmes venues remplir leurs cruches, échanger des nouvelles… ou des regards furtifs. Elle servait aussi de halte aux voyageurs et bergers en quête de fraîcheur.</p>
+      <p>On raconte qu’en période de vendanges, certains s’y seraient lavé le visage avec du vin —par erreur ou par plaisir— pour fêter la fin de la récolte. Vérité ou légende ? Allez savoir…</p>
+      <figure class="imagen">
+        <img src="images/vino-qr.png" alt="Carafe de vin rouge" />
+        <figcaption>🍷 Souviens-toi de ce liquide couleur rubis… il pourrait être la clé pour déboucher le mystère final.</figcaption>
+      </figure>
+      <audio controls preload="metadata">
+        <source src="sounds/audio-fontaine.mp3" type="audio/mpeg" />
+      </audio>
+      <div><a class="volver" href="../explorar.html">🔙 Retour au jeu</a></div>
+    </div>
+
+    <div id="de-content" class="language-content" hidden>
+      <h1>⛲ Der Brunnen</h1>
+      <p>Direkt am Fuße der Kirche hat dieser Brunnen im Renaissancestil ganze Generationen mit Wasser versorgt. Seine schlichte Struktur aus hellem Stein kontrastiert mit dem ständigen Murmeln des Wassers, das nur wenige Meter weiter oben entspringt.</p>
+      <p>Jahrhundertelang war er täglicher Treffpunkt für Frauen, die ihre Krüge füllten, Neuigkeiten austauschten… oder verstohlene Blicke warfen. Auch Reisende und Hirten hielten hier an, um sich zu erfrischen.</p>
+      <p>Man erzählt sich, dass während der Weinlese manche sich hier versehentlich —oder absichtlich— mit Wein das Gesicht wuschen, um das Ende der Ernte zu feiern. Wahrheit oder Legende? Wer weiß das schon…</p>
+      <figure class="imagen">
+        <img src="images/vino-qr.png" alt="Weinkrug mit Rotwein" />
+        <figcaption>🍷 Merke dir diese rubinrote Flüssigkeit… sie könnte der Schlüssel zum letzten Geheimnis sein.</figcaption>
+      </figure>
+      <audio controls preload="metadata">
+        <source src="sounds/audio-brunnen.mp3" type="audio/mpeg" />
+      </audio>
+      <div><a class="volver" href="../explorar.html">🔙 Zurück zum Spiel</a></div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btns = document.querySelectorAll('.language-btn');
+      const sections = document.querySelectorAll('.language-content');
+      btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lang = btn.dataset.lang;
+          btns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          sections.forEach(s => s.hidden = s.id !== `${lang}-content`);
+          document.documentElement.lang = lang;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
