@@ -132,13 +132,13 @@
       <a class="action-btn" id="btn-explorar" href="explorar.html"></a>
     </div>
 
-    <div class="action-btn" id="donateBtn" onclick="document.getElementById('donationModal').style.display='block'">
+    <button class="action-btn" id="donateBtn">
       💰 ¿Quieres apoyar esta iniciativa?
-    </div>
+    </button>
 
-    <div id="donationModal" onclick="this.style.display='none'">
-      <div id="donationModalContent" onclick="event.stopPropagation();">
-        <span class="closeModal" onclick="document.getElementById('donationModal').style.display='none'">&times;</span>
+    <div id="donationModal">
+      <div id="donationModalContent">
+        <span class="closeModal">&times;</span>
         <h2 id="don-titulo"></h2>
         <p id="don-texto"></p>
         <hr />
@@ -148,7 +148,7 @@
             <input type="hidden" name="business" value="nuriasm60@gmail.com" />
             <input type="hidden" name="item_name" value="Juego turistico de San Martin del Castanar" />
             <input type="hidden" name="currency_code" value="EUR" />
-            <input type="submit" value="Donar desde 1 € con PayPal" />
+            <input type="submit" value="Donar desde 1 € con PayPal" class="action-btn" />
           </form>
           <hr />
           <p><strong>📲 Bizum o sin comisiones</strong></p>
@@ -179,17 +179,44 @@
   <script>
     const idioma = localStorage.getItem("idioma") || "es";
     const textos = {
-      es: { titulo: "🎉 ¡Felicidades, valiente viajero!", mensaje: "Has reunido todas las piezas del mensaje oculto de Gonzalo y has encontrado el origen del misterio de su desaparición... pero aún te queda un último paso, y tu esfuerzo será recompensado.", instruccion: "¿Sabes guardar un secreto? Reserva tu experiencia...", reservar: "🍷 Reserva tu Experiencia en la Bodega Medieval ahora!", explorar: "🗺️ Volver a Explorar", donTitulo: "🎁 ¿Te ha gustado la aventura?", donTexto: "Si te ha gustado y has pasado un buen rato, puedes hacer una donación simbólica desde 1 € para apoyar este proyecto local y que siga vivo y creciendo.
-
-." },
-      en: { titulo: "🎉 Congratulations, brave traveler!", mensaje: "You have gathered all the pieces of Gonzalo’s hidden message and uncovered the origin of the mystery behind his disappearance... but one final step remains, and your effort will be rewarded.", instruccion: "Can you keep a secret? Book your experience now...", reservar: "🍷 Book your Medieval Winery Experience now!", explorar: "🗺️ Return to Explore", donTitulo: "🎁 Enjoyed the adventure?", donTexto: "If you enjoyed it and had a good time, you can make a symbolic donation starting from €1 to support this local project and help it stay alive and grow.
-
-" },
-      fr: { titulo: "🎉 Félicitations, valeureux voyageur !", mensaje: "Tu as réuni toutes les pièces du message caché de Gonzalo et découvert l’origine du mystère de sa disparition... mais il te reste encore une dernière étape, et tes efforts seront récompensés.", instruccion: "Sauras-tu garder un secret ? Réserve ton expérience...", reservar: "🍷 Réserve ton Expérience à la Bodega Médiévale !", explorar: "🗺️ Revenir à l’exploration", donTitulo: "🎁 Tu as aimé l’aventure ?", donTexto: "Si cela t’a plu et que tu as passé un bon moment, tu peux faire un don symbolique à partir de 1 € pour soutenir ce projet local et l’aider à rester vivant et à se développer.
-
-" },
-      de: { titulo: "🎉 Glückwunsch, tapferer Reisender!", mensaje: "Du hast alle Teile von Gonzalos verborgener Botschaft gesammelt und das Geheimnis seines Verschwindens gelüftet... doch es bleibt noch ein letzter Schritt, und deine Mühe wird belohnt werden.", instruccion: "Kannst du ein Geheimnis bewahren? Buche dein Erlebnis...", reservar: "🍷 Buche jetzt dein Erlebnis im mittelalterlichen Weinkeller!", explorar: "🗺️ Zurück zur Erkundung", donTitulo: "🎁 Hat dir das Abenteuer gefallen?", donTexto: "Wenn es dir gefallen hat und du eine schöne Zeit hattest, kannst du eine symbolische Spende ab 1 € leisten, um dieses lokale Projekt zu unterstützen und sein Fortbestehen und Wachstum zu sichern." }
+      es: { 
+        titulo: "🎉 ¡Felicidades, valiente viajero!", 
+        mensaje: "Has reunido todas las piezas del mensaje oculto de Gonzalo y has encontrado el origen del misterio de su desaparición... pero aún te queda un último paso, y tu esfuerzo será recompensado.", 
+        instruccion: "¿Sabes guardar un secreto? Reserva tu experiencia...", 
+        reservar: "🍷 Reserva tu Experiencia en la Bodega Medieval ahora!", 
+        explorar: "🗺️ Volver a Explorar", 
+        donTitulo: "🎁 ¿Te ha gustado la aventura?", 
+        donTexto: "Si te ha gustado y has pasado un buen rato, puedes hacer una donación simbólica desde 1 € para apoyar este proyecto local y que siga vivo y creciendo." 
+      },
+      en: { 
+        titulo: "🎉 Congratulations, brave traveler!", 
+        mensaje: "You have gathered all the pieces of Gonzalo's hidden message and uncovered the origin of the mystery behind his disappearance... but one final step remains, and your effort will be rewarded.", 
+        instruccion: "Can you keep a secret? Book your experience now...", 
+        reservar: "🍷 Book your Medieval Winery Experience now!", 
+        explorar: "🗺️ Return to Explore", 
+        donTitulo: "🎁 Enjoyed the adventure?", 
+        donTexto: "If you enjoyed it and had a good time, you can make a symbolic donation starting from €1 to support this local project and help it stay alive and grow." 
+      },
+      fr: { 
+        titulo: "🎉 Félicitations, valeureux voyageur !", 
+        mensaje: "Tu as réuni toutes les pièces du message caché de Gonzalo et découvert l'origine du mystère de sa disparition... mais il te reste encore une dernière étape, et tes efforts seront récompensés.", 
+        instruccion: "Sauras-tu garder un secret ? Réserve ton expérience...", 
+        reservar: "🍷 Réserve ton Expérience à la Bodega Médiévale !", 
+        explorar: "🗺️ Revenir à l'exploration", 
+        donTitulo: "🎁 Tu as aimé l'aventure ?", 
+        donTexto: "Si cela t'a plu et que tu as passé un bon moment, tu peux faire un don symbolique à partir de 1 € pour soutenir ce projet local et l'aider à rester vivant et à se développer." 
+      },
+      de: { 
+        titulo: "🎉 Glückwunsch, tapferer Reisender!", 
+        mensaje: "Du hast alle Teile von Gonzalos verborgener Botschaft gesammelt und das Geheimnis seines Verschwindens gelüftet... doch es bleibt noch ein letzter Schritt, und deine Mühe wird belohnt werden.", 
+        instruccion: "Kannst du ein Geheimnis bewahren? Buche dein Erlebnis...", 
+        reservar: "🍷 Buche jetzt dein Erlebnis im mittelalterlichen Weinkeller!", 
+        explorar: "🗺️ Zurück zur Erkundung", 
+        donTitulo: "🎁 Hat dir das Abenteuer gefallen?", 
+        donTexto: "Wenn es dir gefallen hat und du eine schöne Zeit hattest, kannst du eine symbolische Spende ab 1 € leisten, um dieses lokale Projekt zu unterstützen und sein Fortbestehen und Wachstum zu sichern." 
+      }
     };
+    
     const t = textos[idioma];
     document.getElementById("titulo").textContent = t.titulo;
     document.getElementById("mensaje-final").textContent = t.mensaje;
@@ -200,19 +227,64 @@
     document.getElementById("don-texto").textContent = t.donTexto;
 
     const idiomas = {
-      es: { compartir: "📣 Comparte tu aventura", texto: "¡Anima a tus amigos a descubrir el mensaje oculto de Gonzalo!", copiar: "Copiar enlace", copiado: "✅ Enlace copiado al portapapeles." },
-      en: { compartir: "📣 Share your adventure", texto: "Invite your friends to discover Gonzalo’s hidden message!", copiar: "Copy link", copiado: "✅ Link copied to clipboard." },
-      fr: { compartir: "📣 Partage ton aventure", texto: "Invite tes amis à découvrir le message caché de Gonzalo !", copiar: "Copier le lien", copiado: "✅ Lien copié dans le presse-papiers." },
-      de: { compartir: "📣 Teile dein Abenteuer", texto: "Lade deine Freunde ein, Gonzalos geheime Botschaft zu entdecken!", copiar: "Link kopieren", copiado: "✅ Link wurde kopiert." }
+      es: { 
+        compartir: "📣 Comparte tu aventura", 
+        texto: "¡Anima a tus amigos a descubrir el mensaje oculto de Gonzalo!", 
+        copiar: "Copiar enlace", 
+        copiado: "✅ Enlace copiado al portapapeles." 
+      },
+      en: { 
+        compartir: "📣 Share your adventure", 
+        texto: "Invite your friends to discover Gonzalo's hidden message!", 
+        copiar: "Copy link", 
+        copiado: "✅ Link copied to clipboard." 
+      },
+      fr: { 
+        compartir: "📣 Partage ton aventure", 
+        texto: "Invite tes amis à découvrir le message caché de Gonzalo !", 
+        copiar: "Copier le lien", 
+        copiado: "✅ Lien copié dans le presse-papiers." 
+      },
+      de: { 
+        compartir: "📣 Teile dein Abenteuer", 
+        texto: "Lade deine Freunde ein, Gonzalos geheime Botschaft zu entdecken!", 
+        copiar: "Link kopieren", 
+        copiado: "✅ Link wurde kopiert." 
+      }
     };
+    
     document.getElementById("titulo-compartir").textContent = idiomas[idioma].compartir;
     document.getElementById("texto-compartir").textContent = idiomas[idioma].texto;
     document.getElementById("boton-copiar").textContent = idiomas[idioma].copiar;
+
+    // Manejo del modal de donación
+    const donateBtn = document.getElementById("donateBtn");
+    const donationModal = document.getElementById("donationModal");
+    const closeModal = document.querySelector(".closeModal");
+
+    donateBtn.addEventListener("click", () => {
+      donationModal.style.display = "block";
+    });
+
+    closeModal.addEventListener("click", () => {
+      donationModal.style.display = "none";
+    });
+
+    donationModal.addEventListener("click", (e) => {
+      if (e.target === donationModal) {
+        donationModal.style.display = "none";
+      }
+    });
 
     function copiarEnlace() {
       const enlace = "https://el-misterio-de-san-martin.netlify.app/";
       navigator.clipboard.writeText(enlace).then(() => {
         document.getElementById("copiar-msg").textContent = idiomas[idioma].copiado;
+        setTimeout(() => {
+          document.getElementById("copiar-msg").textContent = "";
+        }, 3000);
+      }).catch(err => {
+        console.error("Error al copiar: ", err);
       });
     }
   </script>
