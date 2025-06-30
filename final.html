@@ -1,41 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🎉 Has completado la aventura</title>
-  <link rel="stylesheet" href="styles/style.css"/>
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg"/>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="icon" href="images/escudo-borrado.jpg" type="image/jpeg" />
   <style>
     body {
       background: url('images/bodega-cueva.jpeg') no-repeat center center fixed;
       background-size: cover;
       color: #f9f4e8;
+      margin: 0;
+      font-family: 'Georgia', serif;
     }
+
     .final-container {
-      text-align: center;
-      padding: 40px 20px;
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 16px;
       max-width: 800px;
       margin: 60px auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.75);
+      border-radius: 16px;
+      text-align: center;
     }
+
     .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       background-color: #f0e6d2;
-      border: none;
-      padding: 14px 22px;
-      font-size: 18px;
-      border-radius: 10px;
-      text-decoration: none;
       color: #4a2c2a;
+      padding: 12px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      flex-wrap: wrap;
     }
+
+    .action-btn:hover {
+      background-color: #e6d8bc;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
     #donateBtn {
-      margin-top: 30px;
       background-color: #f7f1e1;
       color: #7c4d00;
       border: 2px solid #7c4d00;
       font-family: serif;
+      margin: 20px auto;
     }
+
     #donationModal {
       display: none;
       position: fixed;
@@ -45,8 +71,9 @@
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0,0,0,0.7);
+      background-color: rgba(0, 0, 0, 0.7);
     }
+
     #donationModalContent {
       background-color: #f7f1e1;
       margin: 10% auto;
@@ -58,17 +85,38 @@
       font-family: serif;
       color: #4a2c2a;
     }
+
     .closeModal {
       float: right;
       font-size: 1.4em;
       cursor: pointer;
       color: #7c4d00;
     }
+
+    .share-section {
+      margin-top: 40px;
+    }
+
+    .share-section img {
+      height: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .action-btn {
+        font-size: 14px;
+        padding: 10px 14px;
+      }
+
+      .final-container {
+        padding: 10px;
+        margin: 20px 10px;
+      }
+    }
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-GE0YB9PL8Q');
   </script>
@@ -79,81 +127,60 @@
     <p id="mensaje-final"></p>
     <p id="texto-instruccion"></p>
 
-    <!-- Botón de donación -->
-    <div class="action-btn" onclick="document.getElementById('donationModal').style.display='block'" id="donateBtn">💰 ¿Quieres apoyar?</div>
-
-    <!-- Botones -->
     <div class="button-group">
-      <a class="action-btn" href="https://www.labodegamedieval.es/reservar" target="_blank" id="btn-reservar"></a>
-      <a class="action-btn" href="explorar.html" id="btn-explorar"></a>
+      <a class="action-btn" id="btn-reservar" href="https://www.labodegamedieval.es/reservar" target="_blank"></a>
+      <a class="action-btn" id="btn-explorar" href="explorar.html"></a>
     </div>
 
-    <!-- Modal de donación -->
+    <div class="action-btn" id="donateBtn" onclick="document.getElementById('donationModal').style.display='block'">
+      💰 ¿Quieres apoyar?
+    </div>
+
     <div id="donationModal" onclick="this.style.display='none'">
       <div id="donationModalContent" onclick="event.stopPropagation();">
         <span class="closeModal" onclick="document.getElementById('donationModal').style.display='none'">&times;</span>
         <h2 id="don-titulo"></h2>
         <p id="don-texto"></p>
-        <hr>
+        <hr />
         <div style="text-align:center;">
           <p><strong>💳 PayPal</strong></p>
           <form action="https://www.paypal.com/donate" method="post" target="_blank">
-            <input type="hidden" name="business" value="TU_CORREO_PAYPAL@ejemplo.com" />
+            <input type="hidden" name="business" value="nuriasm60@gmail.com" />
             <input type="hidden" name="item_name" value="Juego turístico de San Martín del Castañar" />
             <input type="hidden" name="currency_code" value="EUR" />
             <input type="submit" value="Donar 1 € con PayPal" />
           </form>
-          <hr>
+          <hr />
           <p><strong>📲 Bizum</strong></p>
-          <p>En tu app bancaria, envía 1 € al código: <strong>03456</strong></p>
-          <hr>
+          <p>En tu app bancaria, envía 1 € al código: <strong>En espera de activacion</strong></p>
+          <hr />
           <p><strong>⚡ Lightning</strong></p>
           <p>Envía a: <code>celestialmelody936348@getalby.com</code></p>
         </div>
       </div>
     </div>
+
+    <div class="share-section">
+      <h3 id="titulo-compartir"></h3>
+      <p id="texto-compartir"></p>
+      <div class="button-group">
+        <a class="action-btn" href="https://wa.me/?text=¡He%20jugado%20al%20juego%20del%20mensaje%20oculto!%20https://el-misterio-de-san-martin.netlify.app/" target="_blank"><img src="images/whatsapp.png" alt="WhatsApp" /> WhatsApp</a>
+        <a class="action-btn" href="https://www.instagram.com/tuperfil" target="_blank"><img src="images/instagram.png" alt="Instagram" /> Instagram</a>
+        <a class="action-btn" href="https://www.facebook.com/sharer/sharer.php?u=https://el-misterio-de-san-martin.netlify.app/" target="_blank"><img src="images/facebook.png" alt="Facebook" /> Facebook</a>
+        <a class="action-btn" href="https://x.com/intent/tweet?text=¡He%20jugado%20al%20juego%20del%20mensaje%20oculto!%20https://el-misterio-de-san-martin.netlify.app/" target="_blank"><img src="images/x.png" alt="Twitter" /> Twitter</a>
+        <button class="action-btn" onclick="copiarEnlace()"><img src="images/enlace.png" alt="Copiar enlace" /> <span id="boton-copiar"></span></button>
+      </div>
+      <p id="copiar-msg" style="margin-top: 10px; font-style: italic;"></p>
+    </div>
   </div>
 
-  <!-- Script de traducción por idioma -->
   <script>
     const idioma = localStorage.getItem("idioma") || "es";
     const textos = {
-      es: {
-        titulo: "🎉 ¡Felicidades, valiente viajero!",
-        mensaje: "Has reunido todas las piezas del mensaje oculto de Gonzalo.",
-        instruccion: "¿Sabes guardar un secreto? Reserva tu experiencia...",
-        reservar: "🍷 Reserva tu Experiencia en la Bodega Medieval ahora!",
-        explorar: "🗺️ Volver a Explorar",
-        donTitulo: "🎁 ¿Te ha gustado la aventura?",
-        donTexto: "Puedes hacer una donación simbólica de 1 € para apoyar este proyecto local."
-      },
-      en: {
-        titulo: "🎉 Congratulations, brave traveler!",
-        mensaje: "You've gathered all the pieces of Gonzalo’s hidden message.",
-        instruccion: "Can you keep a secret? Book your experience now...",
-        reservar: "🍷 Book your Medieval Winery Experience now!",
-        explorar: "🗺️ Return to Explore",
-        donTitulo: "🎁 Enjoyed the adventure?",
-        donTexto: "You can support this local project with a symbolic €1 donation."
-      },
-      fr: {
-        titulo: "🎉 Félicitations, valeureux voyageur !",
-        mensaje: "Tu as rassemblé tous les fragments du message caché de Gonzalo.",
-        instruccion: "Sauras-tu garder un secret ? Réserve ton expérience...",
-        reservar: "🍷 Réserve ton Expérience à la Bodega Médiévale !",
-        explorar: "🗺️ Revenir à l’exploration",
-        donTitulo: "🎁 Tu as aimé l’aventure ?",
-        donTexto: "Soutiens ce projet local avec un don symbolique de 1 €."
-      },
-      de: {
-        titulo: "🎉 Glückwunsch, tapferer Reisender!",
-        mensaje: "Du hast alle Teile von Gonzalos geheimer Botschaft gesammelt.",
-        instruccion: "Kannst du ein Geheimnis bewahren? Buche dein Erlebnis...",
-        reservar: "🍷 Buche jetzt dein Erlebnis im mittelalterlichen Weinkeller!",
-        explorar: "🗺️ Zurück zur Erkundung",
-        donTitulo: "🎁 Hat dir das Abenteuer gefallen?",
-        donTexto: "Du kannst dieses lokale Projekt mit 1 € symbolisch unterstützen."
-      }
+      es: { titulo: "🎉 ¡Felicidades, valiente viajero!", mensaje: "Has reunido todas las piezas del mensaje oculto de Gonzalo.", instruccion: "¿Sabes guardar un secreto? Reserva tu experiencia...", reservar: "🍷 Reserva tu Experiencia en la Bodega Medieval ahora!", explorar: "🗺️ Volver a Explorar", donTitulo: "🎁 ¿Te ha gustado la aventura?", donTexto: "Puedes hacer una donación simbólica de 1 € para apoyar este proyecto local." },
+      en: { titulo: "🎉 Congratulations, brave traveler!", mensaje: "You've gathered all the pieces of Gonzalo’s hidden message.", instruccion: "Can you keep a secret? Book your experience now...", reservar: "🍷 Book your Medieval Winery Experience now!", explorar: "🗺️ Return to Explore", donTitulo: "🎁 Enjoyed the adventure?", donTexto: "You can support this local project with a symbolic €1 donation." },
+      fr: { titulo: "🎉 Félicitations, valeureux voyageur !", mensaje: "Tu as rassemblé tous les fragments du message caché de Gonzalo.", instruccion: "Sauras-tu garder un secret ? Réserve ton expérience...", reservar: "🍷 Réserve ton Expérience à la Bodega Médiévale !", explorar: "🗺️ Revenir à l’exploration", donTitulo: "🎁 Tu as aimé l’aventure ?", donTexto: "Soutiens ce projet local avec un don symbolique de 1 €." },
+      de: { titulo: "🎉 Glückwunsch, tapferer Reisender!", mensaje: "Du hast alle Teile von Gonzalos geheimer Botschaft gesammelt.", instruccion: "Kannst du ein Geheimnis bewahren? Buche dein Erlebnis...", reservar: "🍷 Buche jetzt dein Erlebnis im mittelalterlichen Weinkeller!", explorar: "🗺️ Zurück zur Erkundung", donTitulo: "🎁 Hat dir das Abenteuer gefallen?", donTexto: "Du kannst dieses lokale Projekt mit 1 € symbolisch unterstützen." }
     };
     const t = textos[idioma];
     document.getElementById("titulo").textContent = t.titulo;
@@ -163,6 +190,23 @@
     document.getElementById("btn-explorar").textContent = t.explorar;
     document.getElementById("don-titulo").textContent = t.donTitulo;
     document.getElementById("don-texto").textContent = t.donTexto;
+
+    const idiomas = {
+      es: { compartir: "📣 Comparte tu aventura", texto: "¡Anima a tus amigos a descubrir el mensaje oculto de Gonzalo!", copiar: "Copiar enlace", copiado: "✅ Enlace copiado al portapapeles." },
+      en: { compartir: "📣 Share your adventure", texto: "Invite your friends to discover Gonzalo’s hidden message!", copiar: "Copy link", copiado: "✅ Link copied to clipboard." },
+      fr: { compartir: "📣 Partage ton aventure", texto: "Invite tes amis à découvrir le message caché de Gonzalo !", copiar: "Copier le lien", copiado: "✅ Lien copié dans le presse-papiers." },
+      de: { compartir: "📣 Teile dein Abenteuer", texto: "Lade deine Freunde ein, Gonzalos geheime Botschaft zu entdecken!", copiar: "Link kopieren", copiado: "✅ Link wurde kopiert." }
+    };
+    document.getElementById("titulo-compartir").textContent = idiomas[idioma].compartir;
+    document.getElementById("texto-compartir").textContent = idiomas[idioma].texto;
+    document.getElementById("boton-copiar").textContent = idiomas[idioma].copiar;
+
+    function copiarEnlace() {
+      const enlace = "https://el-misterio-de-san-martin.netlify.app/";
+      navigator.clipboard.writeText(enlace).then(() => {
+        document.getElementById("copiar-msg").textContent = idiomas[idioma].copiado;
+      });
+    }
   </script>
 </body>
 </html>
