@@ -95,6 +95,36 @@
     }
     .prev-slide { left: 10px; }
     .next-slide { right: 10px; }
+
+    .input-hueco {
+      position: relative;
+      display: inline-block;
+    }
+    .input-hueco input {
+      padding: 5px;
+      font-size: 16px;
+      width: 100px;
+      margin: 0 5px;
+      text-align: center;
+      border: 2px solid #5e3b1b;
+      border-radius: 6px;
+    }
+    .pista {
+      display: none;
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #fef2d8;
+      color: #333;
+      padding: 8px 10px;
+      border: 2px solid #5e3b1b;
+      border-radius: 8px;
+      font-size: 14px;
+      width: max-content;
+      max-width: 200px;
+      z-index: 10;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    }
   </style>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
@@ -146,109 +176,40 @@
           <button class="carousel-btn prev-slide" onclick="prevSlide()">←</button>
           <button class="carousel-btn next-slide" onclick="nextSlide()">→</button>
         </div>
+
         <div id="start-challenge" style="text-align: center; margin-top: 20px;">
-  <h2>🧠 Reto final: Las tres claves de Gonzalo</h2>
-  <p>Resuelve las adivinanzas y colócalas en el orden correcto para completar la frase.</p>
+          <h2>🧠 Completa la frase</h2>
+          <p>Rellena los huecos con las tres palabras clave, en el orden correcto. Pulsa sobre cada hueco para ver una pista.</p>
+          <p id="frase-final">
+            Donde la 
+            <span class="input-hueco">
+              <input type="text" id="input1" onclick="mostrarPista(1)" placeholder="..." />
+              <span class="pista" id="pista1">Fruto pequeño, colgado en racimo, pisado sin piedad.</span>
+            </span>
+            fue el inicio y el 
+            <span class="input-hueco">
+              <input type="text" id="input2" onclick="mostrarPista(2)" placeholder="..." />
+              <span class="pista" id="pista2">No tiene edad, pero cuenta historias en la copa.</span>
+            </span>
+            su legado, solo el 
+            <span class="input-hueco">
+              <input type="text" id="input3" onclick="mostrarPista(3)" placeholder="..." />
+              <span class="pista" id="pista3">Si lo cuentas, deja de existir.</span>
+            </span>
+            perdido puede explicar la desaparición de Gonzalo.
+          </p>
 
-  <div class="riddle">
-    <p><strong>1.</strong> No tengo edad, pero maduro.<br>No tengo boca, pero cuento historias.<br>Nací de la tierra y vivo en la copa.</p>
-    <select id="a2">
-      <option value="">Elige una palabra</option>
-      <option>aceite</option>
-      <option>vino</option>
-      <option>sangre</option>
-    </select>
-  </div>
-          
-  <div class="riddle">
-    <p><strong>2.</strong> Si lo tienes, no lo cuentas.<br>Si lo cuentas, ya no está.<br>Si lo guardas, pesa poco.<br>Si lo dices, pesará.</p>
-    <select id="a3">
-      <option value="">Elige una palabra</option>
-      <option>promesa</option>
-      <option>sombra</option>
-      <option>secreto</option>
-    </select>
-  </div>
-          
-  <div class="riddle">
-    <p><strong>3.</strong> Fruto pequeño, en racimo colgado,<br>me pisan sin miedo, y acabo envasado.</p>
-    <select id="a1">
-      <option value="">Elige una palabra</option>
-      <option>cereza</option>
-      <option>mora</option>
-      <option>uva</option>
-    </select>
-  </div>
+          <button class="action-btn" onclick="validarFrase()">📜 Comprobar</button>
+          <p id="feedback-frase" style="margin-top: 15px; font-weight: bold;"></p>
+        </div>
 
-  <hr style="margin: 30px 0;">
-
-  <p><strong>Frase final:</strong> Coloca las tres palabras en el orden correcto:</p>
-  <p>
-    Donde la 
-    <select id="f1">
-      <option value="">---</option>
-      <option>uva</option>
-      <option>vino</option>
-      <option>secreto</option>
-    </select> fue el inicio y el 
-    <select id="f2">
-      <option value="">---</option>
-      <option>uva</option>
-      <option>vino</option>
-      <option>secreto</option>
-    </select> su legado, solo el 
-    <select id="f3">
-      <option value="">---</option>
-      <option>uva</option>
-      <option>vino</option>
-      <option>secreto</option>
-    </select> perdido puede explicar la desaparición de Gonzalo.
-  </p>
-
-  <button class="action-btn" onclick="checkDoubleRiddle()">📜 Comprobar todo</button>
-  <p id="riddle-feedback" style="margin-top: 15px; font-weight: bold;"></p>
-</div>
-
-<div id="final-game" style="display: none; text-align: center; margin-top: 40px;">
-  <h3>🎉 Enhorabuena valiente viajero!, has superado las pruebas y llegado al origen del misterio de Gonzalo.</h3>
-  <p><em>Gonzalo dejó pistas en cada rincón de la bodega. Ahora sabes dónde empezó todo solo te queda descubrir el secreto de la bodega...</em></p>
-  <button class="action-btn" onclick="window.location.href='final.html'">Finalizar búsqueda</button>
-</div>
-
-<script>
-  function checkDoubleRiddle() {
-    const r1 = document.getElementById("a1").value;
-    const r2 = document.getElementById("a2").value;
-    const r3 = document.getElementById("a3").value;
-
-    const f1 = document.getElementById("f1").value;
-    const f2 = document.getElementById("f2").value;
-    const f3 = document.getElementById("f3").value;
-
-    const feedback = document.getElementById("riddle-feedback");
-    const isCorrectAnswers = (r1 === "uva" && r2 === "vino" && r3 === "secreto");
-    const isCorrectOrder = (f1 === "uva" && f2 === "vino" && f3 === "secreto");
-
-    if (!r1 || !r2 || !r3 || !f1 || !f2 || !f3) {
-      feedback.style.color = "darkred";
-      feedback.innerText = "⚠️ Completa todas las adivinanzas y selecciona las tres palabras en la frase.";
-      return;
-    }
-
-    if (isCorrectAnswers && isCorrectOrder) {
-      feedback.style.color = "green";
-      feedback.innerText = "✔️ ¡Correcto! Ya casi lo tienes!";
-      document.getElementById("final-game").style.display = "block";
-      window.scrollTo(0, document.body.scrollHeight);
-    } else if (isCorrectAnswers && !isCorrectOrder) {
-      feedback.style.color = "orange";
-      feedback.innerText = "🔁 Las palabras son correctas, pero el orden en la frase no es el adecuado.";
-    } else {
-      feedback.style.color = "darkred";
-      feedback.innerText = "❌ Alguna respuesta de las adivinanzas es incorrecta.";
-    }
-  }
-</script>
+        <div id="final-game" style="display: none; text-align: center; margin-top: 40px;">
+          <h3>🎉 Enhorabuena valiente viajero!, has superado las pruebas y llegado al origen del misterio de Gonzalo.</h3>
+          <p><em>Gonzalo dejó pistas en cada rincón de la bodega. Ahora sabes dónde empezó todo solo te queda descubrir el secreto de la bodega...</em></p>
+          <button class="action-btn" onclick="window.location.href='final.html'">Finalizar búsqueda</button>
+        </div>
+      </div>
+    </section>
 
     <footer>
       <p>© 2025 La Bodega Medieval · Idea y desarrollo de @alexroman.leis</p>
@@ -256,6 +217,34 @@
   </div>
 
   <script>
+    function mostrarPista(n) {
+      document.querySelectorAll('.pista').forEach(p => p.style.display = 'none');
+      document.getElementById('pista' + n).style.display = 'inline-block';
+    }
+
+    function validarFrase() {
+      const palabra1 = document.getElementById('input1').value.trim().toLowerCase();
+      const palabra2 = document.getElementById('input2').value.trim().toLowerCase();
+      const palabra3 = document.getElementById('input3').value.trim().toLowerCase();
+      const feedback = document.getElementById('feedback-frase');
+
+      if (!palabra1 || !palabra2 || !palabra3) {
+        feedback.style.color = 'darkred';
+        feedback.innerText = "⚠️ Rellena los tres huecos antes de comprobar.";
+        return;
+      }
+
+      if (palabra1 === 'uva' && palabra2 === 'vino' && palabra3 === 'secreto') {
+        feedback.style.color = 'green';
+        feedback.innerText = "✔️ ¡Perfecto! Las palabras están en el orden correcto.";
+        document.getElementById("final-game").style.display = "block";
+        window.scrollTo(0, document.body.scrollHeight);
+      } else {
+        feedback.style.color = 'darkred';
+        feedback.innerText = "❌ El orden no es correcto o alguna palabra es incorrecta.";
+      }
+    }
+
     let currentSlide = 0;
     const slides = document.querySelectorAll('.carousel .slide');
 
