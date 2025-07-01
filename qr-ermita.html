@@ -1,498 +1,328 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QR Ermita | Juego Turístico San Martín</title>
-  <meta name="description" content="Descubre los vestigios romanos y visigodos en la parada de la ermita de San Martín del Castañar." />
-  
-  <!-- Precargas optimizadas -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="pergamino-fondo.jpg" as="image" type="image/jpeg" />
-  <link rel="preload" href="images/ermita-humilladero.png" as="image" type="image/png" />
-  <link rel="preload" href="sounds/audio-ermita-es.mp3" as="audio" type="audio/mpeg" />
-  
-  <!-- Fuentes -->
-  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet" />
-  
-  <style>
-    /* Variables CSS mejoradas */
-    :root {
-      --color-papel: rgba(255, 255, 240, 0.92);
-      --color-rojo-oscuro: #8B0000;
-      --color-rojo-medio: #A52A2A;
-      --color-rojo-claro: #CD5C5C;
-      --color-texto: #3e2f1c;
-      --color-texto-claro: #5a4a37;
-      --sombra-principal: 0 8px 32px rgba(0, 0, 0, 0.3);
-      --sombra-secundaria: 0 4px 16px rgba(139, 0, 0, 0.2);
-      --borde-principal: 8px solid var(--color-rojo-oscuro);
-      --transicion-suave: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --radio-borde: 16px;
-    }
-
-    /* Reset y base */
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), 
-                  url('pergamino-fondo.jpg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'MedievalSharp', serif;
-      color: var(--color-texto);
-      margin: 0;
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-
-    /* Contenedor principal mejorado */
-    main.contenedor {
-      background: var(--color-papel);
-      border: var(--borde-principal);
-      border-radius: var(--radio-borde);
-      box-shadow: var(--sombra-principal);
-      max-width: 900px;
-      width: 100%;
-      padding: 2.5rem;
-      position: relative;
-      backdrop-filter: blur(8px);
-    }
-
-    /* Selector de idioma mejorado */
-    .language-selector {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      display: flex;
-      gap: 0.75rem;
-      background: rgba(255, 255, 240, 0.8);
-      padding: 0.75rem;
-      border-radius: 25px;
-      backdrop-filter: blur(4px);
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-      z-index: 10;
-    }
-
-    .language-btn {
-      font-size: 1.8rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: var(--transicion-suave);
-      padding: 0.5rem;
-      border-radius: 50%;
-      position: relative;
-    }
-
-    .language-btn:hover {
-      transform: scale(1.2);
-      background: rgba(139, 0, 0, 0.1);
-    }
-
-    .language-btn.active {
-      transform: scale(1.1);
-      background: var(--color-rojo-oscuro);
-      color: white;
-    }
-
-    .language-btn:focus {
-      outline: 2px solid var(--color-rojo-medio);
-      outline-offset: 2px;
-    }
-
-    /* Tipografía mejorada */
-    h1 {
-      color: var(--color-rojo-oscuro);
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      text-align: center;
-      margin: 0 0 2rem 0;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-      letter-spacing: 1px;
-    }
-
-    p {
-      font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-      text-align: justify;
-      margin: 1.5rem 0;
-      color: var(--color-texto);
-      text-indent: 1.5rem;
-    }
-
-    p:first-of-type {
-      margin-top: 0;
-    }
-
-    strong {
-      color: var(--color-rojo-oscuro);
-      font-weight: bold;
-    }
-
-    em {
-      color: var(--color-rojo-medio);
-      font-style: italic;
-    }
-
-    /* Figura e imagen mejoradas */
-    figure.imagen {
-      margin: 2rem 0;
-      border: 4px solid var(--color-rojo-medio);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: var(--sombra-secundaria);
-      transition: var(--transicion-suave);
-    }
-
-    figure.imagen:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(139, 0, 0, 0.3);
-    }
-
-    figure.imagen img {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: var(--transicion-suave);
-    }
-
-    figure.imagen:hover img {
-      transform: scale(1.02);
-    }
-
-    figcaption {
-      text-align: center;
-      font-style: italic;
-      margin: 1rem 0 0 0;
-      color: var(--color-texto-claro);
-      font-size: 1.1rem;
-      padding: 0 1rem;
-    }
-
-    /* Audio mejorado */
-    audio {
-      width: 100%;
-      margin: 2rem 0;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Botón volver mejorado */
-    .volver {
-      display: inline-block;
-      margin-top: 2.5rem;
-      padding: 1rem 2rem;
-      background: linear-gradient(45deg, var(--color-rojo-medio), var(--color-rojo-claro));
-      color: white;
-      text-decoration: none;
-      border-radius: 12px;
-      transition: var(--transicion-suave);
-      font-weight: bold;
-      font-size: 1.1rem;
-      box-shadow: 0 4px 12px rgba(165, 42, 42, 0.3);
-      border: 2px solid transparent;
-    }
-
-    .volver:hover {
-      background: linear-gradient(45deg, var(--color-rojo-oscuro), var(--color-rojo-medio));
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
-    }
-
-    .volver:focus {
-      outline: none;
-      border-color: white;
-    }
-
-    /* Animaciones de entrada */
-    .language-content {
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Estados de visibilidad */
-    .language-content[hidden] {
-      display: none;
-    }
-
-    /* Responsive mejorado */
-    @media (max-width: 768px) {
-      body {
-        padding: 0.5rem;
-      }
-
-      main.contenedor {
-        padding: 1.5rem;
-        margin-top: 4rem;
-      }
-
-      .language-selector {
-        top: 1rem;
-        right: 1rem;
-        padding: 0.5rem;
-        gap: 0.5rem;
-      }
-
-      .language-btn {
-        font-size: 1.5rem;
-        padding: 0.25rem;
-      }
-
-      p {
-        text-indent: 1rem;
-      }
-
-      .volver {
-        width: 100%;
-        text-align: center;
-        margin-top: 2rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      main.contenedor {
-        padding: 1rem;
-      }
-
-      h1 {
-        margin-bottom: 1.5rem;
-      }
-
-      figure.imagen {
-        margin: 1.5rem 0;
-      }
-    }
-
-    /* Modo impresión */
-    @media print {
-      body {
-        background: white;
-        color: black;
-      }
-
-      main.contenedor {
-        box-shadow: none;
-        border: 2px solid black;
-        background: white;
-      }
-
-      .volver, 
-      .language-selector,
-      audio {
-        display: none;
-      }
-
-      p {
-        color: black;
-      }
-
-      h1 {
-        color: black;
-      }
-    }
-
-    /* Accesibilidad mejorada */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    /* Focus visible para navegación por teclado */
-    :focus-visible {
-      outline: 3px solid var(--color-rojo-medio);
-      outline-offset: 2px;
-    }
-  </style>
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-GE0YB9PL8Q');
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ermita del Humilladero - San Martín del Castañar</title>
+    <meta name="description" content="Descubre la historia milenaria de la Ermita del Humilladero y la calzada romana de San Martín del Castañar">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GE0YB9PL8Q');
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f5dc 0%, #e6ddd4 100%);
+            min-height: 100vh;
+        }
+        
+        .contenedor {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .language-selector {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: #8B4513;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .language-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .lang-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lang-btn:hover, .lang-btn.active {
+            background: white;
+            color: #8B4513;
+            transform: translateY(-2px);
+        }
+        
+        .language-content {
+            display: none;
+        }
+        
+        .language-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            color: #8B4513;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.1em;
+            text-indent: 20px;
+        }
+        
+        strong {
+            color: #8B4513;
+            font-weight: bold;
+        }
+        
+        .imagen {
+            text-align: center;
+            margin: 30px 0;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .imagen img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        figcaption {
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        audio {
+            width: 100%;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+        
+        .volver {
+            display: inline-block;
+            background: #8B4513;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .volver:hover {
+            background: #A0522D;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .volver-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 600px) {
+            .contenedor {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .language-buttons {
+                gap: 5px;
+            }
+            
+            .lang-btn {
+                padding: 8px 12px;
+                font-size: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <main class="contenedor">
-    <div class="language-selector">
-      <button class="language-btn active" data-lang="es" aria-label="Español">🇪🇸</button>
-      <button class="language-btn" data-lang="en" aria-label="English">🇬🇧</button>
-      <button class="language-btn" data-lang="fr" aria-label="Français">🇫🇷</button>
-      <button class="language-btn" data-lang="de" aria-label="Deutsch">🇩🇪</button>
-    </div>
+    <main class="contenedor">
+        <div class="language-selector">
+            <div class="language-buttons">
+                <button class="lang-btn active" onclick="changeLanguage('es')" id="btn-es">🇪🇸</button>
+                <button class="lang-btn" onclick="changeLanguage('en')" id="btn-en">🇬🇧</button>
+                <button class="lang-btn" onclick="changeLanguage('fr')" id="btn-fr">🇫🇷</button>
+                <button class="lang-btn" onclick="changeLanguage('de')" id="btn-de">🇩🇪</button>
+            </div>
+        </div>
 
-    <div id="es-content" class="language-content" role="main">
-      <h1>🏛️ ¿Sabías que...?</h1>
-      <p>Muy cerca de esta ermita se conserva una <strong>auténtica estela funeraria romana</strong>, dedicada al pequeño <em>Tancino</em>, fallecido con apenas <strong>cuatro años</strong>, y recordado por su padre <em>Ambato</em>. No es la única: se han encontrado <strong>dos estelas</strong> romanas junto a este templo, lo que indica que por la zona <strong>existió una pequeña necrópolis rural</strong>.</p>
-      <p>Desde este lugar partía también una <strong>antigua calzada romana secundaria</strong>, hoy parcialmente conservada, que cruzaba el <strong>río Canderuelo</strong> y se dirigía hacia <strong>La Legoriza</strong>, un importante yacimiento metalúrgico visigodo del siglo <strong>VII</strong>. Allí se fundía hierro para fabricar herramientas, monedas y otros objetos esenciales.</p>
-      <p>San Martín del Castañar conserva, en muy poco espacio, <strong>milenios de historia superpuestos</strong>: del Imperio Romano a los pueblos visigodos, pasando por ermitas medievales y secretos tallados en piedra.</p>
-      <figure class="imagen">
-        <img src="images/ermita-humilladero.png" alt="Estela funeraria romana dedicada a Tancino" loading="lazy" />
-        <figcaption>⛪ Memoria de tiempos antiguos</figcaption>
-      </figure>
-      <audio controls preload="metadata" aria-label="Audio explicativo en español">
-        <source src="sounds/audio-ermita-es.mp3" type="audio/mpeg" />
-        Tu navegador no soporta el elemento de audio.
-      </audio>
-    </div>
+        <!-- Contenido en Español -->
+        <div id="es-content" class="language-content active" role="main">
+            <h1>🏛️ ¿Sabías que...?</h1>
+            <p>La <strong>Ermita del Humilladero</strong> se alza junto a una antigua <strong>calzada romana</strong>, justo en la entrada tradicional al pueblo, donde antaño se colocaban cruces de término para rezar al partir o regresar.</p>
+            <p>Este pequeño templo de planta cuadrada, datado en el siglo <strong>XVI</strong>, está cubierto por una techumbre de madera de estilo morisco y sostenido por seis pilares de granito. Sus <strong>puertas de hierro forjado</strong>, originales del siglo <strong>XVI</strong>, aún se conservan y protegían el acceso durante siglos.</p>
+            <p>Por este lugar pasaba también la <strong>antigua calzada romana secundaria</strong>, hoy parcialmente conservada, que cruzaba el <strong>río Canderuelo</strong> y se dirigía hacia <strong>La Legoriza</strong>, un importante yacimiento metalúrgico visigodo del siglo <strong>VII</strong>. Allí se fundía hierro para fabricar herramientas, monedas y otros objetos esenciales.</p>
+            <p>San Martín del Castañar conserva, en muy poco espacio, <strong>milenios de historia superpuestos</strong>: del Imperio Romano a los pueblos visigodos, pasando por ermitas medievales y secretos tallados en piedra.</p>
+            <figure class="imagen">
+                <img src="images/ermita-humilladero.png" alt="Ermita del Humilladero de San Martín del Castañar" loading="lazy" />
+                <figcaption>⛪ Las puertas originales de hierro forjado aún protegen su interior</figcaption>
+            </figure>
+            <audio controls preload="metadata" aria-label="Audio explicativo en español">
+                <source src="sounds/audio-ermita-es.mp3" type="audio/mpeg" />
+                Tu navegador no soporta el elemento de audio.
+            </audio>
+        </div>
 
-    <div id="en-content" class="language-content" role="main" hidden>
-      <h1>🏛️ Did you know...?</h1>
-      <p>Very close to this hermitage lies a <strong>genuine Roman funerary stele</strong>, dedicated to little <em>Tancinus</em>, who died at just <strong>four years old</strong>, remembered by his father <em>Ambatus</em>. It is not the only one: <strong>two Roman steles</strong> have been found next to this temple, suggesting the existence of a <strong>rural necropolis</strong> in the area.</p>
-      <p>From here also began an <strong>ancient Roman secondary road</strong>, partially preserved today, which crossed the <strong>Canderuelo River</strong> and led to <strong>La Legoriza</strong>, an important Visigothic metallurgical site from the <strong>7th century</strong>. There, iron was smelted to make tools, coins, and other essential objects.</p>
-      <p>San Martín del Castañar holds, in a small space, <strong>millennia of layered history</strong>: from the Roman Empire to the Visigoths, passing through medieval hermitages and secrets carved in stone.</p>
-      <figure class="imagen">
-        <img src="images/ermita-humilladero.png" alt="Roman funerary stele dedicated to Tancinus" loading="lazy" />
-        <figcaption>⛪ Memory of ancient times</figcaption>
-      </figure>
-      <audio controls preload="metadata" aria-label="Explanatory audio in English">
-        <source src="sounds/audio-ermita-en.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
-    </div>
+        <!-- Contenido en Inglés -->
+        <div id="en-content" class="language-content" role="main">
+            <h1>🏛️ Did you know...?</h1>
+            <p>The <strong>Hermitage of Humilladero</strong> stands beside an ancient <strong>Roman road</strong>, right at the traditional entrance to the village, where boundary crosses were once placed for prayer when departing or returning.</p>
+            <p>This small square-plan temple, dating from the <strong>16th century</strong>, is covered by a Moorish-style wooden roof and supported by six granite pillars. Its <strong>wrought iron doors</strong>, original from the <strong>16th century</strong>, are still preserved and protected access for centuries.</p>
+            <p>Through this place also passed the <strong>ancient secondary Roman road</strong>, now partially preserved, which crossed the <strong>Canderuelo river</strong> and headed towards <strong>La Legoriza</strong>, an important Visigothic metallurgical site from the <strong>7th century</strong>. There, iron was smelted to manufacture tools, coins, and other essential objects.</p>
+            <p>San Martín del Castañar preserves, in a very small space, <strong>millennia of overlapping history</strong>: from the Roman Empire to the Visigothic peoples, through medieval hermitages and secrets carved in stone.</p>
+            <figure class="imagen">
+                <img src="images/ermita-humilladero.png" alt="Hermitage of Humilladero in San Martín del Castañar" loading="lazy" />
+                <figcaption>⛪ The original wrought iron doors still protect its interior</figcaption>
+            </figure>
+            <audio controls preload="metadata" aria-label="Explanatory audio in English">
+                <source src="sounds/audio-ermita-en.mp3" type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+        </div>
 
-    <div id="fr-content" class="language-content" role="main" hidden>
-      <h1>🏛️ Le saviez-vous...?</h1>
-      <p>Tout près de cette chapelle se trouve une <strong>véritable stèle funéraire romaine</strong>, dédiée au petit <em>Tancinus</em>, décédé à seulement <strong>quatre ans</strong>, et commémoré par son père <em>Ambatus</em>. Ce n'est pas la seule : <strong>deux stèles</strong> romaines ont été retrouvées à côté de ce temple, indiquant l'existence probable d'une <strong>nécropole rurale</strong>.</p>
-      <p>De cet endroit partait aussi une <strong>ancienne voie secondaire romaine</strong>, aujourd'hui partiellement conservée, qui traversait la <strong>rivière Canderuelo</strong> et menait à <strong>La Legoriza</strong>, un important site métallurgique wisigothique du <strong>VIIe siècle</strong>. On y fondait le fer pour fabriquer outils, monnaies et autres objets essentiels.</p>
-      <p>San Martín del Castañar conserve, sur un espace réduit, <strong>des millénaires d'histoire superposée</strong> : de l'Empire romain aux Wisigoths, en passant par des ermitages médiévaux et des secrets gravés dans la pierre.</p>
-      <figure class="imagen">
-        <img src="images/ermita-humilladero.png" alt="Stèle funéraire romaine dédiée à Tancinus" loading="lazy" />
-        <figcaption>⛪ Mémoire des temps anciens</figcaption>
-      </figure>
-      <audio controls preload="metadata" aria-label="Audio explicatif en français">
-        <source src="sounds/audio-ermita-fr.mp3" type="audio/mpeg" />
-        Votre navigateur ne supporte pas l'élément audio.
-      </audio>
-    </div>
+        <!-- Contenido en Francés -->
+        <div id="fr-content" class="language-content" role="main">
+            <h1>🏛️ Saviez-vous que...?</h1>
+            <p>L'<strong>Ermitage du Humilladero</strong> se dresse à côté d'une ancienne <strong>voie romaine</strong>, juste à l'entrée traditionnelle du village, où autrefois on plaçait des croix de terme pour prier au départ ou au retour.</p>
+            <p>Ce petit temple de plan carré, datant du <strong>XVIe siècle</strong>, est couvert d'une toiture en bois de style mauresque et soutenu par six piliers de granit. Ses <strong>portes en fer forgé</strong>, originales du <strong>XVIe siècle</strong>, sont encore conservées et protégeaient l'accès pendant des siècles.</p>
+            <p>Par ce lieu passait également l'<strong>ancienne voie romaine secondaire</strong>, aujourd'hui partiellement conservée, qui traversait la <strong>rivière Canderuelo</strong> et se dirigeait vers <strong>La Legoriza</strong>, un important site métallurgique wisigoth du <strong>VIIe siècle</strong>. Là, on fondait le fer pour fabriquer des outils, des pièces de monnaie et d'autres objets essentiels.</p>
+            <p>San Martín del Castañar conserve, dans un très petit espace, <strong>des millénaires d'histoire superposés</strong> : de l'Empire romain aux peuples wisigoths, en passant par les ermitages médiévaux et les secrets sculptés dans la pierre.</p>
+            <figure class="imagen">
+                <img src="images/ermita-humilladero.png" alt="Ermitage du Humilladero de San Martín del Castañar" loading="lazy" />
+                <figcaption>⛪ Les portes originales en fer forgé protègent encore son intérieur</figcaption>
+            </figure>
+            <audio controls preload="metadata" aria-label="Audio explicatif en français">
+                <source src="sounds/audio-ermita-fr.mp3" type="audio/mpeg" />
+                Votre navigateur ne supporte pas l'élément audio.
+            </audio>
+        </div>
 
-    <div id="de-content" class="language-content" role="main" hidden>
-      <h1>🏛️ Wusstest du schon...?</h1>
-      <p>Ganz in der Nähe dieser Kapelle befindet sich eine <strong>echte römische Grabstele</strong>, gewidmet dem kleinen <em>Tancinus</em>, der mit nur <strong>vier Jahren</strong> verstarb, in Erinnerung an seinen Vater <em>Ambatus</em>. Es ist nicht die einzige: <strong>zwei Stelen</strong> wurden neben diesem Tempel gefunden, was auf eine <strong>ländliche Nekropole</strong> in der Umgebung hinweist.</p>
-      <p>Von hier aus führte auch eine <strong>alte römische Nebenstraße</strong>, die heute teilweise erhalten ist, über den <strong>Fluss Canderuelo</strong> nach <strong>La Legoriza</strong>, einem bedeutenden westgotischen Metallurgiezentrum aus dem <strong>7. Jahrhundert</strong>. Dort wurde Eisen geschmolzen, um Werkzeuge, Münzen und andere wichtige Gegenstände herzustellen.</p>
-      <p>San Martín del Castañar bewahrt auf kleinstem Raum <strong>Jahrtausende überlagerter Geschichte</strong>: vom Römischen Reich über die Westgoten bis hin zu mittelalterlichen Kapellen und in Stein gemeißelten Geheimnissen.</p>
-      <figure class="imagen">
-        <img src="images/ermita-humilladero.png" alt="Römische Grabstele gewidmet Tancinus" loading="lazy" />
-        <figcaption>⛪ Erinnerung an vergangene Zeiten</figcaption>
-      </figure>
-      <audio controls preload="metadata" aria-label="Erläuterndes Audio auf Deutsch">
-        <source src="sounds/audio-ermita-de.mp3" type="audio/mpeg" />
-        Ihr Browser unterstützt das Audio-Element nicht.
-      </audio>
-    </div>
+        <!-- Contenido en Alemán -->
+        <div id="de-content" class="language-content" role="main">
+            <h1>🏛️ Wussten Sie, dass...?</h1>
+            <p>Die <strong>Einsiedelei des Humilladero</strong> erhebt sich neben einer alten <strong>Römerstraße</strong>, genau am traditionellen Eingang zum Dorf, wo einst Grenzkreuze zum Beten beim Aufbruch oder bei der Rückkehr aufgestellt wurden.</p>
+            <p>Dieser kleine Tempel mit quadratischem Grundriss aus dem <strong>16. Jahrhundert</strong> ist von einem Holzdach im maurischen Stil bedeckt und wird von sechs Granitsäulen getragen. Seine <strong>schmiedeeisernen Türen</strong>, Originale aus dem <strong>16. Jahrhundert</strong>, sind noch erhalten und schützten jahrhundertelang den Zugang.</p>
+            <p>Durch diesen Ort führte auch die <strong>alte römische Nebenstraße</strong>, die heute teilweise erhalten ist und den <strong>Fluss Canderuelo</strong> überquerte und sich nach <strong>La Legoriza</strong> richtete, einer wichtigen westgotischen Metallurgie-Stätte aus dem <strong>7. Jahrhundert</strong>. Dort wurde Eisen geschmolzen, um Werkzeuge, Münzen und andere wesentliche Gegenstände herzustellen.</p>
+            <p>San Martín del Castañar bewahrt auf sehr kleinem Raum <strong>Jahrtausende übereinanderliegender Geschichte</strong>: vom Römischen Reich bis zu den westgotischen Völkern, über mittelalterliche Einsiedeleien und in Stein gemeißelte Geheimnisse.</p>
+            <figure class="imagen">
+                <img src="images/ermita-humilladero.png" alt="Einsiedelei des Humilladero in San Martín del Castañar" loading="lazy" />
+                <figcaption>⛪ Die originalen schmiedeeisernen Türen schützen noch immer das Innere</figcaption>
+            </figure>
+            <audio controls preload="metadata" aria-label="Erklärendes Audio auf Deutsch">
+                <source src="sounds/audio-ermita-de.mp3" type="audio/mpeg" />
+                Ihr Browser unterstützt das Audio-Element nicht.
+            </audio>
+        </div>
 
-    <div>
-      <a class="volver" href="../explorar.html" role="button">🔙 Volver al juego</a>
-    </div>
-  </main>
+        <div class="volver-container">
+            <a class="volver" href="../explorar.html" role="button" id="back-link">🔙 Volver al juego</a>
+        </div>
+    </main>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const languageButtons = document.querySelectorAll('.language-btn');
-      const languageContents = document.querySelectorAll('.language-content');
-      
-      // Función para cambiar idioma
-      function changeLanguage(targetLang) {
-        // Actualizar botones
-        languageButtons.forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.lang === targetLang);
-        });
-        
-        // Actualizar contenido
-        languageContents.forEach(content => {
-          const isTarget = content.id === `${targetLang}-content`;
-          content.hidden = !isTarget;
-          
-          if (isTarget) {
-            content.setAttribute('role', 'main');
-          } else {
-            content.removeAttribute('role');
-          }
-        });
-        
-        // Actualizar idioma del documento
-        document.documentElement.lang = targetLang;
-        
-        // Pausar todos los audios
-        document.querySelectorAll('audio').forEach(audio => {
-          audio.pause();
-        });
-      }
-      
-      // Event listeners para botones de idioma
-      languageButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const lang = this.dataset.lang;
-          changeLanguage(lang);
-          // Focus management for accessibility
-          this.focus();
-        });
-        
-        // Soporte para teclado
-        button.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.click();
-          }
-        });
-      });
-      
-      // Detectar idioma preferido del navegador
-      const browserLang = navigator.language.split('-')[0];
-      const supportedLangs = ['es', 'en', 'fr', 'de'];
-      const defaultLang = supportedLangs.includes(browserLang) ? browserLang : 'es';
-      
-      // Solo cambiar si no es español (ya está activo por defecto)
-      if (defaultLang !== 'es') {
-        changeLanguage(defaultLang);
-      }
-      
-      // Manejo de errores para audio
-      document.querySelectorAll('audio').forEach(audio => {
-        audio.addEventListener('error', function() {
-          console.warn('Error loading audio:', this.src);
-        });
-      });
-      
-      // Lazy loading para imágenes (fallback si el navegador no lo soporta)
-      if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const img = entry.target;
-              if (img.dataset.src) {
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                imageObserver.unobserve(img);
-              }
+    <script>
+        // Traducciones para el botón de volver
+        const translations = {
+            'es': '🔙 Volver al juego',
+            'en': '🔙 Back to game',
+            'fr': '🔙 Retour au jeu',
+            'de': '🔙 Zurück zum Spiel'
+        };
+
+        function changeLanguage(lang) {
+            // Ocultar todos los contenidos
+            const contents = document.querySelectorAll('.language-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Mostrar el contenido seleccionado
+            document.getElementById(lang + '-content').classList.add('active');
+            
+            // Actualizar botones activos
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('btn-' + lang).classList.add('active');
+            
+            // Actualizar el botón de volver
+            document.getElementById('back-link').textContent = translations[lang];
+            
+            // Actualizar el idioma del documento
+            document.documentElement.lang = lang;
+            
+            // Enviar evento a Google Analytics si está configurado
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'language_change', {
+                    'language': lang,
+                    'page_title': document.title
+                });
             }
-          });
+        }
+
+        // Detectar idioma del navegador al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            const browserLang = navigator.language.substr(0, 2);
+            const supportedLangs = ['es', 'en', 'fr', 'de'];
+            
+            if (supportedLangs.includes(browserLang) && browserLang !== 'es') {
+                changeLanguage(browserLang);
+            }
         });
-        
-        document.querySelectorAll('img[data-src]').forEach(img => {
-          imageObserver.observe(img);
-        });
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
