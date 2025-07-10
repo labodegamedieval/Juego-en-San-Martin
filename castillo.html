@@ -220,25 +220,35 @@
       gap: 12px;
       z-index: 15;
     }
-    .dial {
-      width: 48px;
-      height: 48px;
-      margin: 0;
-      border: 2px solid #5e3b1b;
-      border-radius: 50%;
-      background: #dec79b;
+    .dial-select {
+      width: 60px;
+      height: 60px;
+      padding: 8px;
       font-size: 24px;
-      line-height: 48px;
-      cursor: pointer;
-      user-select: none;
+      font-family: "Georgia", serif;
+      color: #5e3b1b;
+      background: url('images/pergamino.png') center center no-repeat;
+      background-size: cover;
+      border: 2px solid #5e3b1b;
+      border-radius: 10px;
       box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
       text-align: center;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
       touch-action: manipulation;
       z-index: 15;
-      transition: transform 0.2s ease;
+      transition: transform 0.3s ease;
     }
-    .dial:active {
-      transform: rotate(10deg);
+    .dial-select:focus, .dial-select:active {
+      transform: rotate(5deg);
+      outline: none;
+    }
+    .dial-select option {
+      font-size: 20px;
+      background: #dec79b;
+      color: #5e3b1b;
     }
     #check-combination, #combination-status {
       margin-top: 80px;
@@ -323,11 +333,11 @@
         min-width: 48px;
         min-height: 48px;
       }
-      .dial {
-        width: 44px;
-        height: 44px;
-        line-height: 44px;
+      .dial-select {
+        width: 50px;
+        height: 50px;
         font-size: 20px;
+        padding: 6px;
       }
       .carousel-slide img {
         height: 200px;
@@ -513,10 +523,54 @@
           <div class="cofre-container">
             <img src="images/baul.png" alt="Cofre antiguo con candado" class="cofre-img" />
             <div id="dials">
-              <div class="dial" data-digit="0" role="button" aria-label="Girar dial 1">0</div>
-              <div class="dial" data-digit="0" role="button" aria-label="Girar dial 2">0</div>
-              <div class="dial" data-digit="0" role="button" aria-label="Girar dial 3">0</div>
-              <div class="dial" data-digit="0" role="button" aria-label="Girar dial 4">0</div>
+              <select class="dial-select" aria-label="Seleccionar número para dial 1">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+              </select>
+              <select class="dial-select" aria-label="Seleccionar número para dial 2">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+              </select>
+              <select class="dial-select" aria-label="Seleccionar número para dial 3">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+              </select>
+              <select class="dial-select" aria-label="Seleccionar número para dial 4">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+              </select>
             </div>
           </div>
           <button class="action-btn" id="check-combination" aria-label="Comprobar combinación del candado">Comprobar Combinación</button>
@@ -564,6 +618,7 @@
 
     function checkLocation(event) {
       if (event) event.preventDefault();
+      console.log("Verificando ubicación con GPS...");
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
       } else {
@@ -576,6 +631,7 @@
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
       const distance = calculateDistance(lat, lon, targetLat, targetLon);
+      console.log(`Distancia calculada: ${distance} metros`);
       if (distance <= thresholdDistance) {
         unlockStop();
       } else {
@@ -587,6 +643,7 @@
     function locationError(err) {
       document.getElementById("location-status").textContent =
         "Error al obtener tu ubicación: " + err.message;
+      console.error("Error de geolocalización:", err.message);
     }
 
     function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -601,22 +658,31 @@
 
     function checkLocationManual(event) {
       if (event) event.preventDefault();
+      console.log("Verificando ubicación manualmente...");
       const input = document.getElementById("location-input").value.trim().toLowerCase();
       if (input === "castillo") {
         unlockStop();
       } else {
         document.getElementById("location-status").textContent =
           "Nombre incorrecto. Inténtalo nuevamente.";
+        console.log("Nombre de ubicación incorrecto:", input);
       }
     }
 
     function unlockStop() {
-      document.getElementById("location-check").style.display = "none";
-      document.getElementById("game-content").style.display = "block";
-      document.getElementById("game-content").setAttribute("aria-hidden", "false");
-      initCarousel();
-      initGameButtons();
-      aplicarIdiomaCastillo();
+      const locationCheck = document.getElementById("location-check");
+      const gameContent = document.getElementById("game-content");
+      if (locationCheck && gameContent) {
+        locationCheck.style.display = "none";
+        gameContent.style.display = "block";
+        gameContent.setAttribute("aria-hidden", "false");
+        console.log("Parada desbloqueada, mostrando #game-content");
+        initCarousel();
+        initGameButtons();
+        aplicarIdiomaCastillo();
+      } else {
+        console.error("Error: #location-check o #game-content no encontrados");
+      }
     }
 
     // --- CARRUSEL ---
@@ -635,6 +701,7 @@
 
       function updateCarousel() {
         carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+        console.log(`Carrusel actualizado a diapositiva ${currentSlide + 1}`);
       }
 
       function handleCarouselNavigation(event) {
@@ -655,16 +722,23 @@
 
     // --- INICIALIZAR BOTONES DEL JUEGO ---
     function initGameButtons() {
+      console.log("Inicializando botones del juego...");
       // Botones de verificación de ubicación
       const gpsBtn = document.querySelector('#location-check button[aria-label="Verificar ubicación con GPS"]');
       const manualBtn = document.querySelector('#location-check button[aria-label="Verificar ubicación manualmente"]');
       if (gpsBtn) {
         gpsBtn.addEventListener('click', (e) => handleButtonClick(e, checkLocation));
         gpsBtn.addEventListener('touchstart', (e) => handleButtonClick(e, checkLocation));
+        console.log("Eventos asignados a botón GPS");
+      } else {
+        console.error("Error: Botón GPS no encontrado");
       }
       if (manualBtn) {
         manualBtn.addEventListener('click', (e) => handleButtonClick(e, checkLocationManual));
         manualBtn.addEventListener('touchstart', (e) => handleButtonClick(e, checkLocationManual));
+        console.log("Eventos asignados a botón manual");
+      } else {
+        console.error("Error: Botón manual no encontrado");
       }
 
       // Botón de música
@@ -672,6 +746,9 @@
       if (musicBtn) {
         musicBtn.addEventListener('click', (e) => handleButtonClick(e, toggleMusic));
         musicBtn.addEventListener('touchstart', (e) => handleButtonClick(e, toggleMusic));
+        console.log("Eventos asignados a botón de música");
+      } else {
+        console.error("Error: Botón de música no encontrado");
       }
 
       // Botones de retos visuales
@@ -683,6 +760,7 @@
         btn.addEventListener('click', (e) => handleButtonClick(e, () => checkVisualAnswer(btn.textContent, '2', 2)));
         btn.addEventListener('touchstart', (e) => handleButtonClick(e, () => checkVisualAnswer(btn.textContent, '2', 2)));
       });
+      console.log("Eventos asignados a botones de retos visuales");
 
       // Botones de quiz
       document.querySelectorAll('#quiz-opciones-1 button').forEach(btn => {
@@ -697,12 +775,16 @@
         btn.addEventListener('click', (e) => handleButtonClick(e, () => checkAnswer(btn.textContent, 'Centro de Interpretación de la Biosfera', 3)));
         btn.addEventListener('touchstart', (e) => handleButtonClick(e, () => checkAnswer(btn.textContent, 'Centro de Interpretación de la Biosfera', 3)));
       });
+      console.log("Eventos asignados a botones de quiz");
 
       // Botón de comprobar combinación
       const checkCombinationBtn = document.getElementById('check-combination');
       if (checkCombinationBtn) {
         checkCombinationBtn.addEventListener('click', (e) => handleButtonClick(e, checkCombination));
         checkCombinationBtn.addEventListener('touchstart', (e) => handleButtonClick(e, checkCombination));
+        console.log("Eventos asignados a botón de comprobar combinación");
+      } else {
+        console.error("Error: Botón #check-combination no encontrado");
       }
 
       // Botón de pista
@@ -710,6 +792,9 @@
       if (hintBtn) {
         hintBtn.addEventListener('click', (e) => handleButtonClick(e, togglePistaLock));
         hintBtn.addEventListener('touchstart', (e) => handleButtonClick(e, togglePistaLock));
+        console.log("Eventos asignados a botón de pista");
+      } else {
+        console.error("Error: Botón .hint-btn no encontrado");
       }
 
       // Botón de cerrar pista
@@ -717,6 +802,9 @@
       if (closeHintBtn) {
         closeHintBtn.addEventListener('click', (e) => handleButtonClick(e, togglePistaLock));
         closeHintBtn.addEventListener('touchstart', (e) => handleButtonClick(e, togglePistaLock));
+        console.log("Eventos asignados a botón de cerrar pista");
+      } else {
+        console.error("Error: Botón de cerrar pista no encontrado");
       }
 
       // Botón de continuar
@@ -724,11 +812,17 @@
       if (continueBtn) {
         continueBtn.addEventListener('click', (e) => handleButtonClick(e, () => window.location.href = 'felicitaciones.html?stop=castillo'));
         continueBtn.addEventListener('touchstart', (e) => handleButtonClick(e, () => window.location.href = 'felicitaciones.html?stop=castillo'));
+        console.log("Eventos asignados a botón de continuar");
+      } else {
+        console.error("Error: Botón de continuar no encontrado");
       }
     }
 
     function handleButtonClick(event, callback) {
-      if (!event || !callback) return;
+      if (!event || !callback) {
+        console.error("Error en handleButtonClick: evento o callback no definidos");
+        return;
+      }
       event.preventDefault();
       const btn = event.target;
       btn.disabled = true;
@@ -750,6 +844,9 @@
           result.textContent = "Respuesta incorrecta...";
           playSound("error-sound");
         }
+        console.log(`Reto visual ${n}: Seleccionado "${selected}", Correcto "${correct}"`);
+      } else {
+        console.error(`Error: #visual-resultado-${n} no encontrado`);
       }
     }
 
@@ -769,104 +866,82 @@
           if (n === 2) quiz2Correct = false;
           if (n === 3) quiz3Correct = false;
         }
+        console.log(`Quiz ${n}: Seleccionado "${selected}", Correcto "${correct}", Estado: ${quiz1Correct}, ${quiz2Correct}, ${quiz3Correct}`);
         if (quiz1Correct && quiz2Correct && quiz3Correct) {
-          document.querySelector('.quiz').style.display = "none";
-          initCombinationLock();
+          const quizSection = document.querySelector('.quiz');
+          if (quizSection) {
+            quizSection.style.display = "none";
+            initCombinationLock();
+          } else {
+            console.error("Error: Sección .quiz no encontrada");
+          }
         }
+      } else {
+        console.error(`Error: #quiz-resultado-${n} no encontrado`);
       }
     }
 
     // --- MINIJUEGO: CANDADO DEL COFRE ---
     function initCombinationLock() {
       const combinationLock = document.getElementById("combination-lock");
-      const dials = document.querySelectorAll(".dial");
+      const dials = document.querySelectorAll(".dial-select");
       if (!combinationLock || !dials.length) {
         console.error("Error: Elementos del candado no encontrados");
         return;
       }
       combinationLock.style.display = "block";
-      dials.forEach(dial => {
-        dial.setAttribute("data-digit", "0");
-        dial.textContent = "0";
-        let lastTouchTime = 0;
-        function handleDialInteraction(event) {
-          if (!event) return;
-          event.preventDefault();
-          const now = Date.now();
-          if (now - lastTouchTime < 300) return; // Debounce
-          lastTouchTime = now;
-          let current = parseInt(dial.getAttribute("data-digit"));
-          if (event.type === 'touchstart' && event.touches && event.touches[0]) {
-            const startY = event.touches[0].clientY;
-            function handleTouchMove(e) {
-              if (!e.touches || !e.touches[0]) return;
-              const moveY = e.touches[0].clientY;
-              const deltaY = startY - moveY;
-              if (deltaY > 10) {
-                current = (current + 1) % 10;
-                dial.setAttribute("data-digit", current);
-                dial.textContent = current;
-                playSound("coins-sound");
-              } else if (deltaY < -10) {
-                current = (current - 1 + 10) % 10;
-                dial.setAttribute("data-digit", current);
-                dial.textContent = current;
-                playSound("coins-sound");
-              }
-            }
-            function handleTouchEnd() {
-              document.removeEventListener('touchmove', handleTouchMove);
-              document.removeEventListener('touchend', handleTouchEnd);
-            }
-            document.addEventListener('touchmove', handleTouchMove);
-            document.addEventListener('touchend', handleTouchEnd);
-          } else {
-            current = (current + 1) % 10;
-            dial.setAttribute("data-digit", current);
-            dial.textContent = current;
-            playSound("coins-sound");
-          }
-        }
-        dial.addEventListener("click", handleDialInteraction);
-        dial.addEventListener("touchstart", handleDialInteraction);
+      dials.forEach((dial, index) => {
+        dial.value = "0";
+        dial.addEventListener("change", () => {
+          console.log(`Dial ${index + 1} cambiado a ${dial.value}`);
+          playSound("coins-sound");
+        });
       });
       generateSecretCombination();
-      aplicarIdiomaCastillo(); // Actualizar texto de la pista
+      aplicarIdiomaCastillo();
+      console.log("Candado inicializado, desplegables listos");
     }
 
     let secretCombination = "";
     function generateSecretCombination() {
       const keys = ["1834", "1949", "2010"];
       secretCombination = keys[Math.floor(Math.random() * keys.length)];
-      console.log("Combinación secreta:", secretCombination);
+      console.log("Combinación secreta generada:", secretCombination);
     }
 
     function togglePistaLock(event) {
-      if (!event) return;
+      if (!event) {
+        console.error("Error: Evento no definido en togglePistaLock");
+        return;
+      }
       event.preventDefault();
       const pistaDiv = document.getElementById("pista-lock");
       if (pistaDiv) {
         const isHidden = pistaDiv.style.display !== "block";
         pistaDiv.style.display = isHidden ? "block" : "none";
-        console.log("Pista lock toggled:", isHidden ? "shown" : "hidden");
+        console.log(`Pista lock toggled: ${isHidden ? "mostrada" : "oculta"}`);
       } else {
         console.error("Error: #pista-lock no encontrado");
       }
     }
 
     function checkCombination(event) {
-      if (!event) return;
+      if (!event) {
+        console.error("Error: Evento no definido en checkCombination");
+        return;
+      }
       event.preventDefault();
-      const dials = document.querySelectorAll(".dial");
+      const dials = document.querySelectorAll(".dial-select");
       const combinationStatus = document.getElementById("combination-status");
       if (!dials.length || !combinationStatus) {
-        console.error("Error: Elementos del candado no encontrados");
+        console.error("Error: Elementos del candado no encontrados (#dials o #combination-status)");
         return;
       }
       let userCombination = "";
       dials.forEach(dial => {
-        userCombination += dial.getAttribute("data-digit");
+        userCombination += dial.value;
       });
+      console.log("Combinación ingresada:", userCombination, "Combinación secreta:", secretCombination);
       if (userCombination === secretCombination) {
         combinationStatus.textContent = "¡Candado desbloqueado!";
         playSound("success-sound");
@@ -889,6 +964,7 @@
         updateChronicle();
         updateRanking();
         playSound("success-sound");
+        console.log("Fragmento final desbloqueado");
       } else {
         console.error("Error: Elementos del fragmento final no encontrados");
       }
@@ -899,6 +975,9 @@
         const messagePiece = document.getElementById("message-piece");
         if (messagePiece) {
           localStorage.setItem("cronica_castillo", messagePiece.textContent);
+          console.log("Crónica actualizada en localStorage:", messagePiece.textContent);
+        } else {
+          console.error("Error: #message-piece no encontrado");
         }
       }
     }
@@ -908,39 +987,52 @@
         let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
         ranking.push({ stop: "castillo", score: 100 });
         localStorage.setItem("ranking", JSON.stringify(ranking));
+        console.log("Ranking actualizado en localStorage");
       }
     }
 
     // --- SONIDOS ---
     function playSound(id) {
       const sound = document.getElementById(id);
-      if (sound) sound.play().catch(err => console.log("Error al reproducir sonido:", err));
+      if (sound) {
+        sound.play().catch(err => console.error("Error al reproducir sonido:", err));
+      } else {
+        console.error(`Error: Sonido #${id} no encontrado`);
+      }
     }
 
     // --- BOTÓN DE MÚSICA ---
     function toggleMusic(event) {
-      if (!event) return;
+      if (!event) {
+        console.error("Error: Evento no definido en toggleMusic");
+        return;
+      }
       event.preventDefault();
       const backgroundMusic = document.getElementById('ambient-sound');
       const musicBtn = document.querySelector('.music-btn');
       if (backgroundMusic && musicBtn) {
         if (backgroundMusic.paused) {
-          backgroundMusic.play().catch(err => console.log("Error al reproducir música:", err));
+          backgroundMusic.play().catch(err => console.error("Error al reproducir música:", err));
           musicBtn.innerHTML = '<span class="music-icon">🎵</span> Pausar Música';
         } else {
           backgroundMusic.pause();
           musicBtn.innerHTML = '<span class="music-icon">🔇</span> Reproducir Música';
         }
+        console.log(`Música: ${backgroundMusic.paused ? "pausada" : "reproduciendo"}`);
+      } else {
+        console.error("Error: #ambient-sound o .music-btn no encontrados");
       }
     }
 
     // --- LOCALSTORAGE ---
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem("castillo-completed", "true");
+      console.log("LocalStorage: castillo-completed establecido");
     }
 
     // --- INICIALIZACIÓN ---
     document.addEventListener("DOMContentLoaded", () => {
+      console.log("DOMContentLoaded: Inicializando juego...");
       initGameButtons();
       aplicarIdiomaCastillo();
     });
@@ -1075,7 +1167,13 @@
 
       // Títulos y textos generales (siempre visibles)
       const headerTitle = document.querySelector("header h1");
-      if (headerTitle) document.title = headerTitle.innerText = t.titulo;
+      if (headerTitle) {
+        document.title = headerTitle.innerText = t.titulo;
+        console.log("Título actualizado:", t.titulo);
+      } else {
+        console.error("Error: header h1 no encontrado");
+      }
+
       const locationCheck = document.querySelector("#location-check");
       if (locationCheck) {
         locationCheck.querySelector("h2").innerText = t.verifica;
@@ -1083,8 +1181,11 @@
         const gpsBtn = locationCheck.querySelector("button[aria-label='Verificar ubicación con GPS']");
         if (gpsBtn) gpsBtn.innerText = t.verificarGPS;
         locationCheck.querySelector("p:nth-of-type(2)").innerText = t.oEscribe;
-        const manualBtn = locationCheck.querySelector("button[aria-label='Verificar ubicación manualmente']");
+        const manualBtn = document.querySelector("button[aria-label='Verificar ubicación manualmente']");
         if (manualBtn) manualBtn.innerText = t.verificarManual;
+        console.log("Textos de verificación de ubicación actualizados");
+      } else {
+        console.error("Error: #location-check no encontrado");
       }
 
       // Solo actualizar textos del juego si #game-content está visible
@@ -1103,7 +1204,12 @@
             botonesVisuales[3].innerText = t.opciones.uno;
             botonesVisuales[4].innerText = t.opciones.dos;
             botonesVisuales[5].innerText = t.opciones.tres;
+            console.log("Textos de retos visuales actualizados");
+          } else {
+            console.error("Error: Botones de retos visuales incompletos");
           }
+        } else {
+          console.error("Error: .visual-challenge no encontrado");
         }
 
         // Quiz
@@ -1124,7 +1230,12 @@
             botonesQuiz[6].innerText = t.opciones.museo;
             botonesQuiz[7].innerText = t.opciones.centro;
             botonesQuiz[8].innerText = t.opciones.biblioteca;
+            console.log("Textos de quiz actualizados");
+          } else {
+            console.error("Error: Botones de quiz incompletos");
           }
+        } else {
+          console.error("Error: .quiz no encontrado");
         }
 
         // Candado
@@ -1134,9 +1245,17 @@
           const checkBtn = document.getElementById("check-combination");
           if (checkBtn) checkBtn.innerText = t.comprobar;
           const pistaTexto = document.getElementById("pista-texto");
-          if (pistaTexto) pistaTexto.innerText = t.pistaCandado;
+          if (pistaTexto) {
+            pistaTexto.innerText = t.pistaCandado;
+            console.log("Texto de pista actualizado:", t.pistaCandado);
+          } else {
+            console.error("Error: #pista-texto no encontrado");
+          }
           const closePistaBtn = document.querySelector("#pista-lock button");
           if (closePistaBtn) closePistaBtn.innerText = t.cerrarPista;
+          console.log("Textos de candado actualizados");
+        } else {
+          console.error("Error: #combination-lock no encontrado");
         }
 
         // Fragmento final
@@ -1147,11 +1266,21 @@
           if (fragmentoPs.length >= 3) {
             fragmentoPs[1].innerText = t.qr;
             fragmentoPs[2].innerText = t.datoCurioso;
+            console.log("Textos de fragmento final actualizados");
+          } else {
+            console.error("Error: Elementos p en #fragmento-final incompletos");
           }
+        } else {
+          console.error("Error: #fragmento-final no encontrado");
         }
 
         const continueBtn = document.querySelector("#continue-button button");
-        if (continueBtn) continueBtn.innerText = t.continuar;
+        if (continueBtn) {
+          continueBtn.innerText = t.continuar;
+          console.log("Texto de botón continuar actualizado");
+        } else {
+          console.error("Error: Botón de continuar no encontrado");
+        }
       }
     }
   </script>
