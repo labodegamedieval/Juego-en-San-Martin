@@ -563,7 +563,7 @@
     const thresholdDistance = 10;
 
     function checkLocation(event) {
-      event.preventDefault();
+      if (event) event.preventDefault();
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
       } else {
@@ -600,7 +600,7 @@
     }
 
     function checkLocationManual(event) {
-      event.preventDefault();
+      if (event) event.preventDefault();
       const input = document.getElementById("location-input").value.trim().toLowerCase();
       if (input === "castillo") {
         unlockStop();
@@ -638,7 +638,7 @@
       }
 
       function handleCarouselNavigation(event) {
-        event.preventDefault();
+        if (event) event.preventDefault();
         if (event.target === prevBtn) {
           currentSlide = (currentSlide === 0) ? totalSlides - 1 : currentSlide - 1;
         } else if (event.target === nextBtn) {
@@ -658,15 +658,21 @@
       // Botones de verificación de ubicación
       const gpsBtn = document.querySelector('#location-check button[aria-label="Verificar ubicación con GPS"]');
       const manualBtn = document.querySelector('#location-check button[aria-label="Verificar ubicación manualmente"]');
-      gpsBtn.addEventListener('click', (e) => handleButtonClick(e, checkLocation));
-      gpsBtn.addEventListener('touchstart', (e) => handleButtonClick(e, checkLocation));
-      manualBtn.addEventListener('click', (e) => handleButtonClick(e, checkLocationManual));
-      manualBtn.addEventListener('touchstart', (e) => handleButtonClick(e, checkLocationManual));
+      if (gpsBtn) {
+        gpsBtn.addEventListener('click', (e) => handleButtonClick(e, checkLocation));
+        gpsBtn.addEventListener('touchstart', (e) => handleButtonClick(e, checkLocation));
+      }
+      if (manualBtn) {
+        manualBtn.addEventListener('click', (e) => handleButtonClick(e, checkLocationManual));
+        manualBtn.addEventListener('touchstart', (e) => handleButtonClick(e, checkLocationManual));
+      }
 
       // Botón de música
       const musicBtn = document.querySelector('.music-btn');
-      musicBtn.addEventListener('click', (e) => handleButtonClick(e, toggleMusic));
-      musicBtn.addEventListener('touchstart', (e) => handleButtonClick(e, toggleMusic));
+      if (musicBtn) {
+        musicBtn.addEventListener('click', (e) => handleButtonClick(e, toggleMusic));
+        musicBtn.addEventListener('touchstart', (e) => handleButtonClick(e, toggleMusic));
+      }
 
       // Botones de retos visuales
       document.querySelectorAll('#visual-opciones-1 button').forEach(btn => {
@@ -694,26 +700,35 @@
 
       // Botón de comprobar combinación
       const checkCombinationBtn = document.getElementById('check-combination');
-      checkCombinationBtn.addEventListener('click', (e) => handleButtonClick(e, checkCombination));
-      checkCombinationBtn.addEventListener('touchstart', (e) => handleButtonClick(e, checkCombination));
+      if (checkCombinationBtn) {
+        checkCombinationBtn.addEventListener('click', (e) => handleButtonClick(e, checkCombination));
+        checkCombinationBtn.addEventListener('touchstart', (e) => handleButtonClick(e, checkCombination));
+      }
 
       // Botón de pista
       const hintBtn = document.querySelector('#combination-lock .hint-btn');
-      hintBtn.addEventListener('click', (e) => handleButtonClick(e, togglePistaLock));
-      hintBtn.addEventListener('touchstart', (e) => handleButtonClick(e, togglePistaLock));
+      if (hintBtn) {
+        hintBtn.addEventListener('click', (e) => handleButtonClick(e, togglePistaLock));
+        hintBtn.addEventListener('touchstart', (e) => handleButtonClick(e, togglePistaLock));
+      }
 
       // Botón de cerrar pista
       const closeHintBtn = document.querySelector('#pista-lock button');
-      closeHintBtn.addEventListener('click', (e) => handleButtonClick(e, togglePistaLock));
-      closeHintBtn.addEventListener('touchstart', (e) => handleButtonClick(e, togglePistaLock));
+      if (closeHintBtn) {
+        closeHintBtn.addEventListener('click', (e) => handleButtonClick(e, togglePistaLock));
+        closeHintBtn.addEventListener('touchstart', (e) => handleButtonClick(e, togglePistaLock));
+      }
 
       // Botón de continuar
       const continueBtn = document.querySelector('#continue-button button');
-      continueBtn.addEventListener('click', (e) => handleButtonClick(e, () => window.location.href = 'felicitaciones.html?stop=castillo'));
-      continueBtn.addEventListener('touchstart', (e) => handleButtonClick(e, () => window.location.href = 'felicitaciones.html?stop=castillo'));
+      if (continueBtn) {
+        continueBtn.addEventListener('click', (e) => handleButtonClick(e, () => window.location.href = 'felicitaciones.html?stop=castillo'));
+        continueBtn.addEventListener('touchstart', (e) => handleButtonClick(e, () => window.location.href = 'felicitaciones.html?stop=castillo'));
+      }
     }
 
     function handleButtonClick(event, callback) {
+      if (!event || !callback) return;
       event.preventDefault();
       const btn = event.target;
       btn.disabled = true;
@@ -727,64 +742,76 @@
     let quiz1Correct = false, quiz2Correct = false, quiz3Correct = false;
     function checkVisualAnswer(selected, correct, n) {
       const result = document.getElementById('visual-resultado-' + n);
-      if (selected === correct) {
-        result.textContent = "¡Correcto!";
-        playSound("success-sound");
-      } else {
-        result.textContent = "Respuesta incorrecta...";
-        playSound("error-sound");
+      if (result) {
+        if (selected === correct) {
+          result.textContent = "¡Correcto!";
+          playSound("success-sound");
+        } else {
+          result.textContent = "Respuesta incorrecta...";
+          playSound("error-sound");
+        }
       }
     }
 
     function checkAnswer(selected, correct, n) {
       const result = document.getElementById('quiz-resultado-' + n);
-      if (selected === correct) {
-        result.textContent = "¡Correcto!";
-        playSound("success-sound");
-        if (n === 1) quiz1Correct = true;
-        if (n === 2) quiz2Correct = true;
-        if (n === 3) quiz3Correct = true;
-      } else {
-        result.textContent = "Incorrecto. Vuelve a intentarlo.";
-        playSound("error-sound");
-        if (n === 1) quiz1Correct = false;
-        if (n === 2) quiz2Correct = false;
-        if (n === 3) quiz3Correct = false;
-      }
-      if (quiz1Correct && quiz2Correct && quiz3Correct) {
-        document.querySelector('.quiz').style.display = "none";
-        initCombinationLock();
+      if (result) {
+        if (selected === correct) {
+          result.textContent = "¡Correcto!";
+          playSound("success-sound");
+          if (n === 1) quiz1Correct = true;
+          if (n === 2) quiz2Correct = true;
+          if (n === 3) quiz3Correct = true;
+        } else {
+          result.textContent = "Incorrecto. Vuelve a intentarlo.";
+          playSound("error-sound");
+          if (n === 1) quiz1Correct = false;
+          if (n === 2) quiz2Correct = false;
+          if (n === 3) quiz3Correct = false;
+        }
+        if (quiz1Correct && quiz2Correct && quiz3Correct) {
+          document.querySelector('.quiz').style.display = "none";
+          initCombinationLock();
+        }
       }
     }
 
     // --- MINIJUEGO: CANDADO DEL COFRE ---
     function initCombinationLock() {
-      document.getElementById("combination-lock").style.display = "block";
+      const combinationLock = document.getElementById("combination-lock");
       const dials = document.querySelectorAll(".dial");
+      if (!combinationLock || !dials.length) {
+        console.error("Error: Elementos del candado no encontrados");
+        return;
+      }
+      combinationLock.style.display = "block";
       dials.forEach(dial => {
         dial.setAttribute("data-digit", "0");
         dial.textContent = "0";
         let lastTouchTime = 0;
         function handleDialInteraction(event) {
+          if (!event) return;
           event.preventDefault();
           const now = Date.now();
           if (now - lastTouchTime < 300) return; // Debounce
           lastTouchTime = now;
           let current = parseInt(dial.getAttribute("data-digit"));
-          const touch = event.type === 'touchstart' && event.touches[0];
-          if (touch) {
-            const startY = touch.clientY;
+          if (event.type === 'touchstart' && event.touches && event.touches[0]) {
+            const startY = event.touches[0].clientY;
             function handleTouchMove(e) {
+              if (!e.touches || !e.touches[0]) return;
               const moveY = e.touches[0].clientY;
               const deltaY = startY - moveY;
               if (deltaY > 10) {
                 current = (current + 1) % 10;
                 dial.setAttribute("data-digit", current);
                 dial.textContent = current;
+                playSound("coins-sound");
               } else if (deltaY < -10) {
                 current = (current - 1 + 10) % 10;
                 dial.setAttribute("data-digit", current);
                 dial.textContent = current;
+                playSound("coins-sound");
               }
             }
             function handleTouchEnd() {
@@ -797,8 +824,8 @@
             current = (current + 1) % 10;
             dial.setAttribute("data-digit", current);
             dial.textContent = current;
+            playSound("coins-sound");
           }
-          playSound("coins-sound");
         }
         dial.addEventListener("click", handleDialInteraction);
         dial.addEventListener("touchstart", handleDialInteraction);
@@ -815,43 +842,64 @@
     }
 
     function togglePistaLock(event) {
+      if (!event) return;
       event.preventDefault();
       const pistaDiv = document.getElementById("pista-lock");
-      const isHidden = pistaDiv.style.display !== "block";
-      pistaDiv.style.display = isHidden ? "block" : "none";
-      console.log("Pista lock toggled:", isHidden ? "shown" : "hidden");
+      if (pistaDiv) {
+        const isHidden = pistaDiv.style.display !== "block";
+        pistaDiv.style.display = isHidden ? "block" : "none";
+        console.log("Pista lock toggled:", isHidden ? "shown" : "hidden");
+      } else {
+        console.error("Error: #pista-lock no encontrado");
+      }
     }
 
     function checkCombination(event) {
+      if (!event) return;
       event.preventDefault();
       const dials = document.querySelectorAll(".dial");
+      const combinationStatus = document.getElementById("combination-status");
+      if (!dials.length || !combinationStatus) {
+        console.error("Error: Elementos del candado no encontrados");
+        return;
+      }
       let userCombination = "";
       dials.forEach(dial => {
         userCombination += dial.getAttribute("data-digit");
       });
       if (userCombination === secretCombination) {
-        document.getElementById("combination-status").textContent = "¡Candado desbloqueado!";
+        combinationStatus.textContent = "¡Candado desbloqueado!";
         playSound("success-sound");
         unlockFinalFragment();
       } else {
-        document.getElementById("combination-status").textContent = "Combinación incorrecta. Inténtalo de nuevo.";
+        combinationStatus.textContent = "Combinación incorrecta. Inténtalo de nuevo.";
         playSound("error-sound");
       }
     }
 
     // --- FRAGMENTO FINAL / CONTINUAR ---
     function unlockFinalFragment() {
-      document.getElementById("combination-lock").style.display = "none";
-      document.getElementById("fragmento-final").style.display = "block";
-      document.getElementById("continue-button").style.display = "block";
-      updateChronicle();
-      updateRanking();
-      playSound("success-sound");
+      const combinationLock = document.getElementById("combination-lock");
+      const fragmentoFinal = document.getElementById("fragmento-final");
+      const continueButton = document.getElementById("continue-button");
+      if (combinationLock && fragmentoFinal && continueButton) {
+        combinationLock.style.display = "none";
+        fragmentoFinal.style.display = "block";
+        continueButton.style.display = "block";
+        updateChronicle();
+        updateRanking();
+        playSound("success-sound");
+      } else {
+        console.error("Error: Elementos del fragmento final no encontrados");
+      }
     }
 
     function updateChronicle() {
       if (typeof localStorage !== 'undefined') {
-        localStorage.setItem("cronica_castillo", document.getElementById("message-piece").textContent);
+        const messagePiece = document.getElementById("message-piece");
+        if (messagePiece) {
+          localStorage.setItem("cronica_castillo", messagePiece.textContent);
+        }
       }
     }
 
@@ -871,15 +919,18 @@
 
     // --- BOTÓN DE MÚSICA ---
     function toggleMusic(event) {
+      if (!event) return;
       event.preventDefault();
       const backgroundMusic = document.getElementById('ambient-sound');
       const musicBtn = document.querySelector('.music-btn');
-      if (backgroundMusic.paused) {
-        backgroundMusic.play().catch(err => console.log("Error al reproducir música:", err));
-        musicBtn.innerHTML = '<span class="music-icon">🎵</span> Pausar Música';
-      } else {
-        backgroundMusic.pause();
-        musicBtn.innerHTML = '<span class="music-icon">🔇</span> Reproducir Música';
+      if (backgroundMusic && musicBtn) {
+        if (backgroundMusic.paused) {
+          backgroundMusic.play().catch(err => console.log("Error al reproducir música:", err));
+          musicBtn.innerHTML = '<span class="music-icon">🎵</span> Pausar Música';
+        } else {
+          backgroundMusic.pause();
+          musicBtn.innerHTML = '<span class="music-icon">🔇</span> Reproducir Música';
+        }
       }
     }
 
@@ -1023,59 +1074,84 @@
       const t = textosCastillo[idioma];
 
       // Títulos y textos generales (siempre visibles)
-      document.title = t.titulo;
-      document.querySelector("header h1").innerText = t.titulo;
-      document.querySelector("#location-check h2").innerText = t.verifica;
-      document.querySelector("#location-check p").innerText = t.indicacion;
-      document.querySelector("#location-check button[aria-label='Verificar ubicación con GPS']").innerText = t.verificarGPS;
-      document.querySelector("#location-check p:nth-of-type(2)").innerText = t.oEscribe;
-      document.querySelector("#location-check button[aria-label='Verificar ubicación manualmente']").innerText = t.verificarManual;
+      const headerTitle = document.querySelector("header h1");
+      if (headerTitle) document.title = headerTitle.innerText = t.titulo;
+      const locationCheck = document.querySelector("#location-check");
+      if (locationCheck) {
+        locationCheck.querySelector("h2").innerText = t.verifica;
+        locationCheck.querySelector("p").innerText = t.indicacion;
+        const gpsBtn = locationCheck.querySelector("button[aria-label='Verificar ubicación con GPS']");
+        if (gpsBtn) gpsBtn.innerText = t.verificarGPS;
+        locationCheck.querySelector("p:nth-of-type(2)").innerText = t.oEscribe;
+        const manualBtn = locationCheck.querySelector("button[aria-label='Verificar ubicación manualmente']");
+        if (manualBtn) manualBtn.innerText = t.verificarManual;
+      }
 
       // Solo actualizar textos del juego si #game-content está visible
       if (document.getElementById("game-content").style.display === "block") {
         // Retos visuales
         const reto = document.querySelector(".visual-challenge");
-        reto.querySelector("h2").innerText = t.retoTitulo;
-        reto.querySelector("#visual-pregunta-1").innerText = t.reto1;
-        reto.querySelector("#visual-pregunta-2").innerText = t.reto2;
-        const botonesVisuales = reto.querySelectorAll("#visual-opciones-1 button, #visual-opciones-2 button");
-        botonesVisuales[0].innerText = t.opciones.escudos;
-        botonesVisuales[1].innerText = t.opciones.muralla;
-        botonesVisuales[2].innerText = t.opciones.columnas;
-        botonesVisuales[3].innerText = t.opciones.uno;
-        botonesVisuales[4].innerText = t.opciones.dos;
-        botonesVisuales[5].innerText = t.opciones.tres;
+        if (reto) {
+          reto.querySelector("h2").innerText = t.retoTitulo;
+          reto.querySelector("#visual-pregunta-1").innerText = t.reto1;
+          reto.querySelector("#visual-pregunta-2").innerText = t.reto2;
+          const botonesVisuales = reto.querySelectorAll("#visual-opciones-1 button, #visual-opciones-2 button");
+          if (botonesVisuales.length >= 6) {
+            botonesVisuales[0].innerText = t.opciones.escudos;
+            botonesVisuales[1].innerText = t.opciones.muralla;
+            botonesVisuales[2].innerText = t.opciones.columnas;
+            botonesVisuales[3].innerText = t.opciones.uno;
+            botonesVisuales[4].innerText = t.opciones.dos;
+            botonesVisuales[5].innerText = t.opciones.tres;
+          }
+        }
 
         // Quiz
         const quiz = document.querySelector(".quiz");
-        quiz.querySelector("h2").innerText = t.quizTitulo;
-        quiz.querySelector("#quiz-pregunta-1").innerText = t.quiz1;
-        quiz.querySelector("#quiz-pregunta-2").innerText = t.quiz2;
-        quiz.querySelector("#quiz-pregunta-3").innerText = t.quiz3;
-        const botonesQuiz = quiz.querySelectorAll("#quiz-opciones-1 button, #quiz-opciones-2 button, #quiz-opciones-3 button");
-        botonesQuiz[0].innerText = t.opciones.XII;
-        botonesQuiz[1].innerText = t.opciones.XIII;
-        botonesQuiz[2].innerText = t.opciones.XIV;
-        botonesQuiz[3].innerText = t.opciones.discoteca;
-        botonesQuiz[4].innerText = t.opciones.cementerio;
-        botonesQuiz[5].innerText = t.opciones.museo;
-        botonesQuiz[6].innerText = t.opciones.museo;
-        botonesQuiz[7].innerText = t.opciones.centro;
-        botonesQuiz[8].innerText = t.opciones.biblioteca;
+        if (quiz) {
+          quiz.querySelector("h2").innerText = t.quizTitulo;
+          quiz.querySelector("#quiz-pregunta-1").innerText = t.quiz1;
+          quiz.querySelector("#quiz-pregunta-2").innerText = t.quiz2;
+          quiz.querySelector("#quiz-pregunta-3").innerText = t.quiz3;
+          const botonesQuiz = quiz.querySelectorAll("#quiz-opciones-1 button, #quiz-opciones-2 button, #quiz-opciones-3 button");
+          if (botonesQuiz.length >= 9) {
+            botonesQuiz[0].innerText = t.opciones.XII;
+            botonesQuiz[1].innerText = t.opciones.XIII;
+            botonesQuiz[2].innerText = t.opciones.XIV;
+            botonesQuiz[3].innerText = t.opciones.discoteca;
+            botonesQuiz[4].innerText = t.opciones.cementerio;
+            botonesQuiz[5].innerText = t.opciones.museo;
+            botonesQuiz[6].innerText = t.opciones.museo;
+            botonesQuiz[7].innerText = t.opciones.centro;
+            botonesQuiz[8].innerText = t.opciones.biblioteca;
+          }
+        }
 
         // Candado
-        document.querySelector("#combination-lock h2").innerText = t.candado;
-        document.getElementById("check-combination").innerText = t.comprobar;
-        document.getElementById("pista-texto").innerText = t.pistaCandado;
-        document.querySelector("#pista-lock button").innerText = t.cerrarPista;
+        const combinationLock = document.querySelector("#combination-lock");
+        if (combinationLock) {
+          combinationLock.querySelector("h2").innerText = t.candado;
+          const checkBtn = document.getElementById("check-combination");
+          if (checkBtn) checkBtn.innerText = t.comprobar;
+          const pistaTexto = document.getElementById("pista-texto");
+          if (pistaTexto) pistaTexto.innerText = t.pistaCandado;
+          const closePistaBtn = document.querySelector("#pista-lock button");
+          if (closePistaBtn) closePistaBtn.innerText = t.cerrarPista;
+        }
 
         // Fragmento final
         const fragmento = document.getElementById("fragmento-final");
-        fragmento.querySelector("p strong").innerText = t.fragmento;
-        fragmento.querySelectorAll("p")[1].innerText = t.qr;
-        fragmento.querySelectorAll("p")[2].innerText = t.datoCurioso;
+        if (fragmento) {
+          fragmento.querySelector("p strong").innerText = t.fragmento;
+          const fragmentoPs = fragmento.querySelectorAll("p");
+          if (fragmentoPs.length >= 3) {
+            fragmentoPs[1].innerText = t.qr;
+            fragmentoPs[2].innerText = t.datoCurioso;
+          }
+        }
 
-        document.querySelector("#continue-button button").innerText = t.continuar;
+        const continueBtn = document.querySelector("#continue-button button");
+        if (continueBtn) continueBtn.innerText = t.continuar;
       }
     }
   </script>
