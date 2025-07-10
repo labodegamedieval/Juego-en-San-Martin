@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🏰 Castillo de Gonzalo</title>
   <link rel="stylesheet" href="styles/style.css" />
-  <link rel="icon" type="image/jpeg" href="images/escudo-borrado.jpg" />
+  <link rel="icon" type="image/x-icon" href="images/escudo-borrado.ico" />
   <style>
-    /* --- Estilos Globales --- */
+    /* Estilos Globales */
     body {
       font-family: Arial, sans-serif;
       background: url('images/fondo-castillo.jpg') no-repeat center center fixed;
@@ -19,11 +19,11 @@
     .container {
       max-width: 960px;
       margin: auto;
-      background: rgba(255,248,228,0.95);
+      background: rgba(255, 248, 228, 0.95);
       border: 3px double #5e3b1b;
       border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
       position: relative;
     }
     header h1 {
@@ -38,13 +38,18 @@
       border: 2px solid #5e3b1b;
       border-radius: 10px;
       cursor: pointer;
-      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s ease;
+    }
+    .action-btn:hover {
+      background: #d1b88a;
     }
     .music-control {
       text-align: center;
       margin-bottom: 10px;
     }
-    /* --- Verificación de Ubicación --- */
+
+    /* Verificación de Ubicación */
     #location-check {
       text-align: center;
       margin-bottom: 30px;
@@ -62,11 +67,17 @@
       font-size: 1.1em;
       color: red;
     }
-    #direction-arrow {
-      width: 50px;
+    #sonar-radar {
       margin-top: 10px;
     }
-    /* --- Carrusel (Nuevo) --- */
+
+    /* Contenido del Juego */
+    #game-content {
+      display: none;
+      aria-hidden: true;
+    }
+
+    /* Carrusel */
     .carousel-container {
       position: relative;
       overflow: hidden;
@@ -92,7 +103,6 @@
       border-radius: 10px;
       border: 2px solid #6b3e2e;
     }
-    /* Reglas especiales para el texto de las diapositivas */
     .carousel-slide p {
       font-family: "Georgia", serif;
       font-size: 16px;
@@ -112,16 +122,21 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255,255,255,0.7);
+      background: rgba(255, 255, 255, 0.7);
       border: none;
       font-size: 24px;
       cursor: pointer;
       padding: 8px;
       border-radius: 50%;
+      transition: background 0.3s ease;
+    }
+    .carousel-prev:hover, .carousel-next:hover {
+      background: rgba(255, 255, 255, 0.9);
     }
     .carousel-prev { left: 10px; }
     .carousel-next { right: 10px; }
-    /* --- Retos Visuales y Quiz --- */
+
+    /* Retos Visuales y Quiz */
     .visual-challenge, .quiz {
       margin: 20px 0;
       text-align: center;
@@ -134,22 +149,24 @@
       border: 1px solid #5e3b1b;
       border-radius: 5px;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
-    /* --- Minijuego: Candado del Cofre --- */
+    .hint-btn:hover {
+      background: #e8de7e;
+    }
+
+    /* Minijuego: Candado del Cofre */
     #combination-lock {
       display: none;
       text-align: center;
       margin-top: 20px;
       padding: 15px;
-      border: none;
       border-radius: 10px;
-      background: none;
       position: relative;
     }
     #combination-lock h2 {
       margin-bottom: 10px;
     }
-    /* Contenedor del cofre con la imagen y posición relativa */
     .cofre-container {
       position: relative;
       display: inline-block;
@@ -162,10 +179,9 @@
       height: auto;
       display: block;
     }
-    /* Dials superpuestos sobre el cofre */
     #dials {
       position: absolute;
-      top: 35%;       /* Ajusta para colocar los diales en la ubicación deseada */
+      top: 35%;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -182,13 +198,14 @@
       line-height: 45px;
       cursor: pointer;
       user-select: none;
-      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
       text-align: center;
     }
     #check-combination, #combination-status, .hint-btn {
       margin-top: 20px;
     }
-    /* --- Pista para el Candado (Pergamino) --- */
+
+    /* Pista para el Candado (Pergamino) */
     #pista-lock {
       display: none;
       margin-top: 10px;
@@ -212,8 +229,9 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    /* --- Fragmento Final --- */
-    .fragmento-final {
+
+    /* Fragmento Final */
+    #fragmento-final {
       margin: 20px auto;
       display: none;
       text-align: center;
@@ -235,6 +253,8 @@
       font-size: 0.9em;
       margin-top: 20px;
     }
+
+    /* Media Queries */
     @media screen and (max-width: 768px) {
       .container {
         max-width: 90%;
@@ -256,7 +276,8 @@
         top: 30%;
       }
     }
-    /* --- Adornos Medievales --- */
+
+    /* Adornos Medievales */
     .container:before {
       content: "⚔️";
       position: absolute;
@@ -275,22 +296,21 @@
     }
   </style>
   <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', 'G-GE0YB9PL8Q');
-</script>
-
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-GE0YB9PL8Q');
+  </script>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>🏰 Castillo de Gonzalo</h1>
       <div class="music-control">
-        <button class="action-btn music-btn" onclick="toggleMusic()">
-          <span class="music-icon">🎵</span> Pausar Música
+        <button class="action-btn music-btn" onclick="toggleMusic()" aria-label="Controlar música">
+          <span class="music-icon">🔇</span> Reproducir Música
         </button>
       </div>
     </header>
@@ -303,48 +323,48 @@
         <p>Acércate a la puerta principal del Castillo de San Martín para iniciar la búsqueda del mensaje.</p>
         <button class="action-btn" onclick="checkLocation()">Verificar GPS</button>
         <p>O ingresa el nombre:</p>
-        <input type="text" id="location-input" placeholder="Ej: Castillo" />
+        <input type="text" id="location-input" placeholder="Ej: Castillo" aria-label="Ingresar nombre de ubicación" />
         <button class="action-btn" onclick="checkLocationManual()">Verificar Manual</button>
         <p id="location-status"></p>
-        <canvas id="sonar-radar" width="200" height="200"></canvas>
+        <canvas id="sonar-radar" width="200" height="200" aria-label="Radar de localización"></canvas>
       </div>
 
       <!-- Contenido del Juego (tras verificación) -->
-      <div id="game-content" style="display: none;">
+      <div id="game-content">
         <div class="content-wrapper">
           <!-- Carrusel con tres imágenes, texto descriptivo y contexto histórico -->
           <div class="carousel-container">
             <div class="carousel-slides">
               <!-- Slide 1 -->
               <div class="carousel-slide">
-                <img src="images/castillo-entrada.jpg" alt="Entrada del Castillo" />
+                <img src="images/castillo-entrada.jpg" alt="Entrada fortificada del Castillo de San Martín" />
                 <p>
                   <strong>Entrada Fortificada:</strong> Construida en el siglo XIII, sirvió de defensa en la Reconquista y fue remodelada en el siglo XV. <br>
                   <em>1834:</em> Se trasladó el cementerio local dentro de los muros del castillo. <br>
-                  <a href="https://sanmartindelcastañar.es/castillo-de-la-biosfera/" target="_blank">Más información</a>
+                  <a href="https://sanmartindelcastañar.es/castillo-de-la-biosfera/" target="_blank" rel="noopener noreferrer">Más información</a>
                 </p>
               </div>
-              <!-- Slide 2: Imagen mostrada entera -->
+              <!-- Slide 2 -->
               <div class="carousel-slide">
-                <img src="images/castillo-torre.jpg" alt="Torre del Homenaje" style="object-fit: contain; height: auto; max-height:300px;" />
+                <img src="images/castillo-torre.jpg" alt="Torre del Homenaje del Castillo de San Martín" style="object-fit: contain; height: auto; max-height: 300px;" />
                 <p>
-                  <strong>Torre del Homenaje:</strong> Dañada por un rayo a pincipios del siglo XX, fue restaurada y ofrece vistas espectaculares. <br>
+                  <strong>Torre del Homenaje:</strong> Dañada por un rayo a principios del siglo XX, fue restaurada y ofrece vistas espectaculares. <br>
                   <em>1949:</em> Declarada Bien de Interés Cultural. <br>
-                  <a href="https://www.turismocastillayleon.com/es/patrimonio-cultura/castillo-san-martin-castanar" target="_blank">Más información</a>
+                  <a href="https://www.turismocastillayleon.com/es/patrimonio-cultura/castillo-san-martin-castanar" target="_blank" rel="noopener noreferrer">Más información</a>
                 </p>
               </div>
               <!-- Slide 3 -->
               <div class="carousel-slide">
-                <img src="images/castillo-vista.jpg" alt="Vista Panorámica" />
+                <img src="images/castillo-vista.jpg" alt="Vista panorámica desde el Castillo de San Martín" />
                 <p>
                   <strong>Vista Panorámica:</strong> Desde aquí se observan las sierras de Béjar y Francia, impregnadas de historia. <br>
                   <em>2010:</em> Reformada para albergar el Centro de Interpretación de la Biosfera de las Sierras de Francia y Béjar. <br>
-                  <a href="https://www.castillosdeespaña.es/es/content/san-martin-del-castanar/" target="_blank">Más información</a>
+                  <a href="https://www.castillosdeespaña.es/es/content/san-martin-del-castanar/" target="_blank" rel="noopener noreferrer">Más información</a>
                 </p>
               </div>
             </div>
-            <button class="carousel-prev">&#10094;</button>
-            <button class="carousel-next">&#10095;</button>
+            <button class="carousel-prev" aria-label="Diapositiva anterior">❮</button>
+            <button class="carousel-next" aria-label="Diapositiva siguiente">❯</button>
           </div>
 
           <!-- Retos Visuales -->
@@ -389,9 +409,9 @@
 
           <p>3. ¿Qué función tiene actualmente el castillo?</p>
           <div id="quiz-opciones-3">
-            <button class="action-btn" onclick="checkAnswer('Museo','Centro de Interpretacion de la Biosfera',3)">Museo</button>
-            <button class="action-btn" onclick="checkAnswer('Centro de Interpretacion de la Biosfera','Centro de Interpretacion de la Biosfera',3)">Centro de Interpretacion de la Biosfera</button>
-            <button class="action-btn" onclick="checkAnswer('Biblioteca','Centro de Interpretacion de la Biosfera',3)">Biblioteca</button>
+            <button class="action-btn" onclick="checkAnswer('Museo','Centro de Interpretación de la Biosfera',3)">Museo</button>
+            <button class="action-btn" onclick="checkAnswer('Centro de Interpretación de la Biosfera','Centro de Interpretación de la Biosfera',3)">Centro de Interpretación de la Biosfera</button>
+            <button class="action-btn" onclick="checkAnswer('Biblioteca','Centro de Interpretación de la Biosfera',3)">Biblioteca</button>
           </div>
           <p id="quiz-resultado-3"></p>
         </div>
@@ -400,9 +420,7 @@
         <div id="combination-lock">
           <h2>Candado del Cofre</h2>
           <div class="cofre-container">
-            <!-- Imagen del cofre sin fondo -->
-            <img src="images/baul.png" alt="Cofre Antiguo" class="cofre-img" />
-            <!-- Dials superpuestos -->
+            <img src="images/baul.png" alt="Cofre antiguo con candado" class="cofre-img" />
             <div id="dials">
               <div class="dial" data-digit="0">0</div>
               <div class="dial" data-digit="0">0</div>
@@ -413,7 +431,6 @@
           <button class="action-btn" id="check-combination" onclick="checkCombination()">Comprobar Combinación</button>
           <p id="combination-status"></p>
           <button class="hint-btn" onclick="togglePistaLock()">Pista para el Candado</button>
-          <!-- La pista se muestra debajo del botón y se podrá cerrar -->
           <div id="pista-lock">
             <p></p>
             <button class="action-btn" onclick="togglePistaLock()">Cerrar Pista</button>
@@ -430,7 +447,7 @@
           <p><strong>Dato Curioso:</strong> Cerámicas y monedas del siglo XIII halladas aquí inspiraron a Gonzalo.</p>
         </div>
 
-        <div id="continue-button" style="display: none;">
+        <div id="continue-button">
           <button class="action-btn" onclick="window.location.href='felicitaciones.html?stop=castillo'">
             Continuar búsqueda
           </button>
@@ -447,76 +464,81 @@
   </div>
 
   <footer>
-    <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
+    <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank" rel="noopener noreferrer">Reserva tu visita</a></p>
   </footer>
 
-  <script>
-    /* --- VERIFICACIÓN DE UBICACIÓN --- */
+  <script defer>
+    // --- VERIFICACIÓN DE UBICACIÓN ---
     const targetLat = 40.520512;
-const targetLon = -6.063541;
-const thresholdDistance = 10;
+    const targetLon = -6.063541;
+    const thresholdDistance = 10;
 
-function checkLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
-  } else {
-    document.getElementById("location-status").textContent =
-      "Tu navegador no soporta geolocalización.";
-  }
-}
-
-function geoSuccess(position) {
-  const lat = position.coords.latitude;
-  const lon = position.coords.longitude;
-  const distance = calculateDistance(lat, lon, targetLat, targetLon);
-  if (distance <= thresholdDistance) {
-    unlockStop();
-  } else {
-    document.getElementById("location-status").textContent =
-      `Estás a ${Math.round(distance)} metros de la parada. Acércate un poco más.`;
-  }
-}
-
-function locationError(err) {
-  document.getElementById("location-status").textContent =
-    "Error al obtener tu ubicación: " + err.message;
-}
-
-function calculateDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371e3;
-  const toRad = (x) => x * Math.PI / 180;
-  const φ1 = toRad(lat1), φ2 = toRad(lat2);
-  const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
-  const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
-}
-
-function checkLocationManual() {
-  const input = document.getElementById("location-input").value.trim().toLowerCase();
-  if (input === "castillo" || input === "castillo" || input === "castillo") {
-    unlockStop();
-  } else {
-    document.getElementById("location-status").textContent =
-      "Nombre incorrecto. Inténtalo nuevamente.";
-  }
-}
-
-function unlockStop() {
-  document.getElementById("location-check").style.display = "none";
-  document.getElementById("game-content").style.display = "block";
-      initCarousel();
-      playSound("ambient-sound");
+    function checkLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(geoSuccess, locationError);
+      } else {
+        document.getElementById("location-status").textContent =
+          "Tu navegador no soporta geolocalización.";
+      }
     }
 
-    /* --- CARRUSEL (Nuevo) --- */
+    function geoSuccess(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const distance = calculateDistance(lat, lon, targetLat, targetLon);
+      if (distance <= thresholdDistance) {
+        unlockStop();
+      } else {
+        document.getElementById("location-status").textContent =
+          `Estás a ${Math.round(distance)} metros de la parada. Acércate un poco más.`;
+      }
+    }
+
+    function locationError(err) {
+      document.getElementById("location-status").textContent =
+        "Error al obtener tu ubicación: " + err.message;
+    }
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const toRad = (x) => x * Math.PI / 180;
+      const φ1 = toRad(lat1), φ2 = toRad(lat2);
+      const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
+      const a = Math.sin(Δφ / 2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    function checkLocationManual() {
+      const input = document.getElementById("location-input").value.trim().toLowerCase();
+      if (input === "castillo") {
+        unlockStop();
+      } else {
+        document.getElementById("location-status").textContent =
+          "Nombre incorrecto. Inténtalo nuevamente.";
+      }
+    }
+
+    function unlockStop() {
+      document.getElementById("location-check").style.display = "none";
+      document.getElementById("game-content").style.display = "block";
+      document.getElementById("game-content").setAttribute("aria-hidden", "false");
+      initCarousel();
+      // TODO: Implementar initSonarRadar() para el canvas del radar
+      // No iniciar música automáticamente para respetar preferencias del usuario
+      aplicarIdiomaCastillo(); // Actualizar textos del juego
+    }
+
+    // --- CARRUSEL ---
     function initCarousel() {
       const carouselContainer = document.querySelector('.carousel-slides');
       const slides = document.querySelectorAll('.carousel-slide');
-      let currentSlide = 0;
-      const totalSlides = slides.length;
       const prevBtn = document.querySelector('.carousel-prev');
       const nextBtn = document.querySelector('.carousel-next');
+      if (!carouselContainer || !slides.length || !prevBtn || !nextBtn) return;
+
+      let currentSlide = 0;
+      const totalSlides = slides.length;
 
       function updateCarousel() {
         carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -533,7 +555,7 @@ function unlockStop() {
       });
     }
 
-    /* --- RETOS VISUALES Y QUIZ --- */
+    // --- RETOS VISUALES Y QUIZ ---
     let quiz1Correct = false, quiz2Correct = false, quiz3Correct = false;
     function checkVisualAnswer(selected, correct, n) {
       const result = document.getElementById('visual-resultado-' + n);
@@ -545,6 +567,7 @@ function unlockStop() {
         playSound("error-sound");
       }
     }
+
     function checkAnswer(selected, correct, n) {
       const result = document.getElementById('quiz-resultado-' + n);
       if (selected === correct) {
@@ -560,13 +583,13 @@ function unlockStop() {
         if (n === 2) quiz2Correct = false;
         if (n === 3) quiz3Correct = false;
       }
-      if (quiz1Correct && quiz2Correct && quiz3Correct) {
+      if ( | quiz1Correct && quiz2Correct && quiz3Correct) {
         document.querySelector('.quiz').style.display = "none";
         initCombinationLock();
       }
     }
 
-    /* --- MINIJUEGO: CANDADO DEL COFRE --- */
+    // --- MINIJUEGO: CANDADO DEL COFRE ---
     function initCombinationLock() {
       document.getElementById("combination-lock").style.display = "block";
       const dials = document.querySelectorAll(".dial");
@@ -582,23 +605,20 @@ function unlockStop() {
       });
       generateSecretCombination();
     }
+
     let secretCombination = "";
     function generateSecretCombination() {
       const keys = ["1834", "1949", "2010"];
       secretCombination = keys[Math.floor(Math.random() * keys.length)];
       console.log("Combinación secreta:", secretCombination);
-      const pistaDiv = document.getElementById("pista-lock");
-      pistaDiv.querySelector("p").textContent = "La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!";
+      // La pista se actualiza en aplicarIdiomaCastillo()
     }
-    // Función toggle para la pista
+
     function togglePistaLock() {
       const pistaDiv = document.getElementById("pista-lock");
-      if (pistaDiv.style.display === "block") {
-        pistaDiv.style.display = "none";
-      } else {
-        pistaDiv.style.display = "block";
-      }
+      pistaDiv.style.display = pistaDiv.style.display === "block" ? "none" : "block";
     }
+
     function checkCombination() {
       const dials = document.querySelectorAll(".dial");
       let userCombination = "";
@@ -613,7 +633,7 @@ function unlockStop() {
       }
     }
 
-    /* --- FRAGMENTO FINAL / CONTINUAR --- */
+    // --- FRAGMENTO FINAL / CONTINUAR ---
     function unlockFinalFragment() {
       document.getElementById("combination-lock").style.display = "none";
       document.getElementById("fragmento-final").style.display = "block";
@@ -622,27 +642,33 @@ function unlockStop() {
       updateRanking();
       playSound("success-sound");
     }
+
     function updateChronicle() {
-      localStorage.setItem("cronica_castillo", document.getElementById("message-piece").textContent);
-    }
-    function updateRanking() {
-      let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
-      ranking.push({ stop: "castillo", score: 100 });
-      localStorage.setItem("ranking", JSON.stringify(ranking));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem("cronica_castillo", document.getElementById("message-piece").textContent);
+      }
     }
 
-    /* --- SONIDOS --- */
+    function updateRanking() {
+      if (typeof localStorage !== 'undefined') {
+        let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+        ranking.push({ stop: "castillo", score: 100 });
+        localStorage.setItem("ranking", JSON.stringify(ranking));
+      }
+    }
+
+    // --- SONIDOS ---
     function playSound(id) {
       const sound = document.getElementById(id);
-      if (sound) sound.play();
+      if (sound) sound.play().catch(err => console.log("Error al reproducir sonido:", err));
     }
 
-    /* --- BOTÓN DE MÚSICA --- */
+    // --- BOTÓN DE MÚSICA ---
     function toggleMusic() {
       const backgroundMusic = document.getElementById('ambient-sound');
       const musicBtn = document.querySelector('.music-btn');
       if (backgroundMusic.paused) {
-        backgroundMusic.play();
+        backgroundMusic.play().catch(err => console.log("Error al reproducir música:", err));
         musicBtn.innerHTML = '<span class="music-icon">🎵</span> Pausar Música';
       } else {
         backgroundMusic.pause();
@@ -650,196 +676,197 @@ function unlockStop() {
       }
     }
 
-    /* --- LOCALSTORAGE --- */
-    localStorage.setItem("castillo-completed", "true");
-  </script>
-  <script>
-  const textosCastillo = {
-    es: {
-      titulo: "🏰 Castillo de Gonzalo",
-      verifica: "Verifica tu ubicación",
-      indicacion: "Acércate a la puerta principal del Castillo de San Martín para iniciar la búsqueda del mensaje.",
-      verificarGPS: "Verificar GPS",
-      oEscribe: "O ingresa el nombre:",
-      verificarManual: "Verificar Manual",
-      retoTitulo: "Retos Visuales: Afina tus sentidos",
-      reto1: "¿Qué destaca en la fachada principal del castillo?",
-      reto2: "¿Cuántas torres tenía originalmente el castillo?",
-      quizTitulo: "Quiz: Descubre el mensaje",
-      quiz1: "¿En qué siglo se funda esta fortificación?",
-      quiz2: "¿Qué alberga el castillo desde el siglo XIX?",
-      quiz3: "¿Qué función tiene hoy el castillo?",
-      opciones: {
-        escudos: "Escudos", muralla: "Muralla", columnas: "Columnas",
-        uno: "1", dos: "2", tres: "3",
-        XII: "XII", XIII: "XIII", XIV: "XIV",
-        discoteca: "Discoteca", cementerio: "Cementerio municipal", museo: "Museo",
-        centro: "Centro de Interpretacion de la Biosfera", biblioteca: "Biblioteca"
-      },
-      candado: "Candado del Cofre",
-      comprobar: "Comprobar Combinación",
-      pistaCandado: "La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!",
-      cerrarPista: "Cerrar Pista",
-      continuar: "Continuar búsqueda",
-      fragmento: "Fragmento del Mensaje: Oculto",
-      qr: "QR en el pueblo: CASTILLO-1523 (cerca de la entrada).",
-      datoCurioso: "Dato Curioso: Cerámicas y monedas del siglo XIII halladas aquí inspiraron a Gonzalo."
-    },
-    // Versión en inglés
-    en: {
-      titulo: "🏰 Gonzalo's Castle",
-      verifica: "Verify your location",
-      indicacion: "Approach the castle gate to begin your quest.",
-      verificarGPS: "Verify GPS",
-      oEscribe: "Or enter the name:",
-      verificarManual: "Verify Manually",
-      retoTitulo: "Visual Challenges: Sharpen your senses",
-      reto1: "What stands out on the castle’s main façade?",
-      reto2: "How many towers did the castle originally have?",
-      quizTitulo: "Quiz: Discover the message",
-      quiz1: "In which century was this fortress built?",
-      quiz2: "What has the castle housed since the 19th century?",
-      quiz3: "What is the castle's function today?",
-      opciones: {
-        escudos: "Coats of arms", muralla: "Wall", columnas: "Columns",
-        uno: "1", dos: "2", tres: "3",
-        XII: "12th", XIII: "13th", XIV: "14th",
-        discoteca: "Nightclub", cementerio: "Municipal Cemetery", museo: "Museum",
-        centro: "Biosphere Interpretation Center", biblioteca: "Library"
-      },
-      candado: "Treasure Chest Lock",
-      comprobar: "Check Combination",
-      pistaCandado: "The code corresponds to a date that marked a milestone in the castle’s history. Look for it in the images!",
-      cerrarPista: "Close Hint",
-      continuar: "Continue exploration",
-      fragmento: "Message Fragment: Hidden",
-      qr: "QR in town: CASTILLO-1523 (near the entrance).",
-      datoCurioso: "Fun Fact: XIII-century ceramics and coins found here inspired Gonzalo."
-    },
-    // Francés
-    fr: {
-      titulo: "🏰 Château de Gonzalo",
-      verifica: "Vérifiez votre position",
-      indicacion: "Approchez-vous de la porte principale du château pour commencer la quête.",
-      verificarGPS: "Vérifier GPS",
-      oEscribe: "Ou entrez le nom :",
-      verificarManual: "Vérifier manuellement",
-      retoTitulo: "Défis visuels : Aiguisez vos sens",
-      reto1: "Qu'est-ce qui se distingue sur la façade principale du château ?",
-      reto2: "Combien de tours le château avait-il à l'origine ?",
-      quizTitulo: "Quiz : Découvrez le message",
-      quiz1: "En quel siècle cette forteresse a-t-elle été fondée ?",
-      quiz2: "Que le château abrite-t-il depuis le XIXe siècle ?",
-      quiz3: "Quelle est la fonction actuelle du château ?",
-      opciones: {
-        escudos: "Blasons", muralla: "Mur", columnas: "Colonnes",
-        uno: "1", dos: "2", tres: "3",
-        XII: "XIIe", XIII: "XIIIe", XIV: "XIVe",
-        discoteca: "Discothèque", cementerio: "Cimetière municipal", museo: "Musée",
-        centro: "Centre d'interprétation de la biosphère", biblioteca: "Bibliothèque"
-      },
-      candado: "Cadenas du Coffre",
-      comprobar: "Vérifier la combinaison",
-      pistaCandado: "Le code correspond à une date importante dans l’histoire du château. Cherchez-la dans les images !",
-      cerrarPista: "Fermer la piste",
-      continuar: "Continuer l’exploration",
-      fragmento: "Fragment du message : Caché",
-      qr: "QR dans le village : CASTILLO-1523 (près de l'entrée).",
-      datoCurioso: "Le saviez-vous ? Des céramiques et pièces du XIIIe siècle ont inspiré Gonzalo."
-    },
-    // Alemán
-    de: {
-      titulo: "🏰 Gonzalos Burg",
-      verifica: "Standort überprüfen",
-      indicacion: "Gehe zum Burgtor, um die Suche zu starten.",
-      verificarGPS: "GPS überprüfen",
-      oEscribe: "Oder gib den Namen ein:",
-      verificarManual: "Manuell überprüfen",
-      retoTitulo: "Visuelle Rätsel: Schärfe deine Sinne",
-      reto1: "Was fällt an der Hauptfassade der Burg auf?",
-      reto2: "Wie viele Türme hatte die Burg ursprünglich?",
-      quizTitulo: "Quiz: Entdecke die Nachricht",
-      quiz1: "In welchem Jahrhundert wurde die Festung gegründet?",
-      quiz2: "Was beherbergt die Burg seit dem 19. Jahrhundert?",
-      quiz3: "Was ist heute die Funktion der Burg?",
-      opciones: {
-        escudos: "Wappen", muralla: "Mauer", columnas: "Säulen",
-        uno: "1", dos: "2", tres: "3",
-        XII: "12.", XIII: "13.", XIV: "14.",
-        discoteca: "Diskothek", cementerio: "Gemeindefriedhof", museo: "Museum",
-        centro: "Biosphären-Informationszentrum", biblioteca: "Bibliothek"
-      },
-      candado: "Schloss der Truhe",
-      comprobar: "Kombination prüfen",
-      pistaCandado: "Der Code entspricht einem bedeutenden Datum in der Geschichte der Burg. Schau in die Bilder!",
-      cerrarPista: "Hinweis schließen",
-      continuar: "Weiterforschen",
-      fragmento: "Nachrichtenfragment: Versteckt",
-      qr: "QR im Dorf: CASTILLO-1523 (nahe dem Eingang).",
-      datoCurioso: "Wissenswertes: Im 13. Jh. gefundene Keramik und Münzen inspirierten Gonzalo."
+    // --- LOCALSTORAGE ---
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem("castillo-completed", "true");
     }
-  };
+  </script>
+  <script defer>
+    const textosCastillo = {
+      es: {
+        titulo: "🏰 Castillo de Gonzalo",
+        verifica: "Verifica tu ubicación",
+        indicacion: "Acércate a la puerta principal del Castillo de San Martín para iniciar la búsqueda del mensaje.",
+        verificarGPS: "Verificar GPS",
+        oEscribe: "O ingresa el nombre:",
+        verificarManual: "Verificar Manual",
+        retoTitulo: "Retos Visuales: Afina tus sentidos",
+        reto1: "¿Qué destaca en la fachada principal del castillo?",
+        reto2: "¿Cuántas torres tenía originalmente el castillo?",
+        quizTitulo: "Quiz: Descubre el mensaje",
+        quiz1: "¿En qué siglo se funda esta fortificación?",
+        quiz2: "¿Qué alberga el castillo desde el siglo XIX?",
+        quiz3: "¿Qué función tiene actualmente el castillo?",
+        opciones: {
+          escudos: "Escudos", muralla: "Muralla", columnas: "Columnas",
+          uno: "1", dos: "2", tres: "3",
+          XII: "XII", XIII: "XIII", XIV: "XIV",
+          discoteca: "Discoteca", cementerio: "Cementerio municipal", museo: "Museo",
+          centro: "Centro de Interpretación de la Biosfera", biblioteca: "Biblioteca"
+        },
+        candado: "Candado del Cofre",
+        comprobar: "Comprobar Combinación",
+        pistaCandado: "La clave corresponde a una fecha que marcó un hito en la historia del castillo. ¡Búscala en las imágenes!",
+        cerrarPista: "Cerrar Pista",
+        continuar: "Continuar búsqueda",
+        fragmento: "Fragmento del Mensaje: Oculto",
+        qr: "QR en el pueblo: CASTILLO (busca en la entrada principal).",
+        datoCurioso: "Dato Curioso: Cerámicas y monedas del siglo XIII halladas aquí inspiraron a Gonzalo."
+      },
+      en: {
+        titulo: "🏰 Gonzalo's Castle",
+        verifica: "Verify your location",
+        indicacion: "Approach the castle gate to begin your quest.",
+        verificarGPS: "Verify GPS",
+        oEscribe: "Or enter the name:",
+        verificarManual: "Verify Manually",
+        retoTitulo: "Visual Challenges: Sharpen your senses",
+        reto1: "What stands out on the castle’s main façade?",
+        reto2: "How many towers did the castle originally have?",
+        quizTitulo: "Quiz: Discover the message",
+        quiz1: "In which century was this fortress built?",
+        quiz2: "What has the castle housed since the 19th century?",
+        quiz3: "What is the castle's function today?",
+        opciones: {
+          escudos: "Coats of arms", muralla: "Wall", columnas: "Columns",
+          uno: "1", dos: "2", tres: "3",
+          XII: "12th", XIII: "13th", XIV: "14th",
+          discoteca: "Nightclub", cementerio: "Municipal Cemetery", museo: "Museum",
+          centro: "Biosphere Interpretation Center", biblioteca: "Library"
+        },
+        candado: "Treasure Chest Lock",
+        comprobar: "Check Combination",
+        pistaCandado: "The code corresponds to a date that marked a milestone in the castle’s history. Look for it in the images!",
+        cerrarPista: "Close Hint",
+        continuar: "Continue exploration",
+        fragmento: "Message Fragment: Hidden",
+        qr: "QR in town: CASTILLO (near the entrance).",
+        datoCurioso: "Fun Fact: XIII-century ceramics and coins found here inspired Gonzalo."
+      },
+      fr: {
+        titulo: "🏰 Château de Gonzalo",
+        verifica: "Vérifiez votre position",
+        indicacion: "Approchez-vous de la porte principale du château pour commencer la quête.",
+        verificarGPS: "Vérifier GPS",
+        oEscribe: "Ou entrez le nom :",
+        verificarManual: "Vérifier manuellement",
+        retoTitulo: "Défis visuels : Aiguisez vos sens",
+        reto1: "Qu'est-ce qui se distingue sur la façade principale du château ?",
+        reto2: "Combien de tours le château avait-il à l'origine ?",
+        quizTitulo: "Quiz : Découvrez le message",
+        quiz1: "En quel siècle cette forteresse a-t-elle été fondée ?",
+        quiz2: "Que le château abrite-t-il depuis le XIXe siècle ?",
+        quiz3: "Quelle est la fonction actuelle du château ?",
+        opciones: {
+          escudos: "Blasons", muralla: "Mur", columnas: "Colonnes",
+          uno: "1", dos: "2", tres: "3",
+          XII: "XIIe", XIII: "XIIIe", XIV: "XIVe",
+          discoteca: "Discothèque", cementerio: "Cimetière municipal", museo: "Musée",
+          centro: "Centre d'interprétation de la biosphère", biblioteca: "Bibliothèque"
+        },
+        candado: "Cadenas du Coffre",
+        comprobar: "Vérifier la combinaison",
+        pistaCandado: "Le code correspond à une date importante dans l’histoire du château. Cherchez-la dans les images !",
+        cerrarPista: "Fermer la piste",
+        continuar: "Continuer l’exploration",
+        fragmento: "Fragment du message : Caché",
+        qr: "QR dans le village : CASTILLO (près de l'entrée).",
+        datoCurioso: "Le saviez-vous ? Des céramiques et pièces du XIIIe siècle ont inspiré Gonzalo."
+      },
+      de: {
+        titulo: "🏰 Gonzalos Burg",
+        verifica: "Standort überprüfen",
+        indicacion: "Gehe zum Burgtor, um die Suche zu starten.",
+        verificarGPS: "GPS überprüfen",
+        oEscribe: "Oder gib den Namen ein:",
+        verificarManual: "Manuell überprüfen",
+        retoTitulo: "Visuelle Rätsel: Schärfe deine Sinne",
+        reto1: "Was fällt an der Hauptfassade der Burg auf?",
+        reto2: "Wie viele Türme hatte die Burg ursprünglich?",
+        quizTitulo: "Quiz: Entdecke die Nachricht",
+        quiz1: "In welchem Jahrhundert wurde die Festung gegründet?",
+        quiz2: "Was beherbergt die Burg seit dem 19. Jahrhundert?",
+        quiz3: "Was ist heute die Funktion der Burg?",
+        opciones: {
+          escudos: "Wappen", muralla: "Mauer", columnas: "Säulen",
+          uno: "1", dos: "2", tres: "3",
+          XII: "12.", XIII: "13.", XIV: "14.",
+          discoteca: "Diskothek", cementerio: "Gemeindefriedhof", museo: "Museum",
+          centro: "Biosphären-Informationszentrum", biblioteca: "Bibliothek"
+        },
+        candado: "Schloss der Truhe",
+        comprobar: "Kombination prüfen",
+        pistaCandado: "Der Code entspricht einem bedeutenden Datum in der Geschichte der Burg. Schau in die Bilder!",
+        cerrarPista: "Hinweis schließen",
+        continuar: "Weiterforschen",
+        fragmento: "Nachrichtenfragment: Versteckt",
+        qr: "QR im Dorf: CASTILLO (nahe dem Eingang).",
+        datoCurioso: "Wissenswertes: Im 13. Jh. gefundene Keramik und Münzen inspirierten Gonzalo."
+      }
+    };
 
-  function aplicarIdiomaCastillo() {
-    const idioma = localStorage.getItem("idioma") || "es";
-    const t = textosCastillo[idioma];
+    function aplicarIdiomaCastillo() {
+      const idioma = localStorage.getItem("idioma") || "es";
+      const t = textosCastillo[idioma];
 
-    // Títulos y textos generales
-    document.title = t.titulo;
-    document.querySelector("header h1").innerText = t.titulo;
-    document.querySelector("#location-check h2").innerText = t.verifica;
-    document.querySelector("#location-check p").innerText = t.indicacion;
-    document.querySelector("#location-check button:nth-of-type(1)").innerText = t.verificarGPS;
-    document.querySelector("#location-check p:nth-of-type(2)").innerText = t.oEscribe;
-    document.querySelector("#location-check button:nth-of-type(2)").innerText = t.verificarManual;
+      // Títulos y textos generales (siempre visibles)
+      document.title = t.titulo;
+      document.querySelector("header h1").innerText = t.titulo;
+      document.querySelector("#location-check h2").innerText = t.verifica;
+      document.querySelector("#location-check p").innerText = t.indicacion;
+      document.querySelector("#location-check button:nth-of-type(1)").innerText = t.verificarGPS;
+      document.querySelector("#location-check p:nth-of-type(2)").innerText = t.oEscribe;
+      document.querySelector("#location-check button:nth-of-type(2)").innerText = t.verificarManual;
 
-    // Retos visuales
-    const reto = document.querySelector(".visual-challenge");
-    reto.querySelector("h2").innerText = t.retoTitulo;
-    reto.querySelectorAll("p")[0].innerText = t.reto1;
-    reto.querySelectorAll("p")[1].innerText = t.reto2;
-    const botonesVisuales = reto.querySelectorAll("button");
-    botonesVisuales[0].innerText = t.opciones.escudos;
-    botonesVisuales[1].innerText = t.opciones.muralla;
-    botonesVisuales[2].innerText = t.opciones.columnas;
-    botonesVisuales[3].innerText = t.opciones.uno;
-    botonesVisuales[4].innerText = t.opciones.dos;
-    botonesVisuales[5].innerText = t.opciones.tres;
+      // Solo actualizar textos del juego si #game-content está visible
+      if (document.getElementById("game-content").style.display === "block") {
+        // Retos visuales
+        const reto = document.querySelector(".visual-challenge");
+        reto.querySelector("h2").innerText = t.retoTitulo;
+        reto.querySelectorAll("p")[0].innerText = t.reto1;
+        reto.querySelectorAll("p")[1].innerText = t.reto2;
+        const botonesVisuales = reto.querySelectorAll("button");
+        botonesVisuales[0].innerText = t.opciones.escudos;
+        botonesVisuales[1].innerText = t.opciones.muralla;
+        botonesVisuales[2].innerText = t.opciones.columnas;
+        botonesVisuales[3].innerText = t.opciones.uno;
+        botonesVisuales[4].innerText = t.opciones.dos;
+        botonesVisuales[5].innerText = t.opciones.tres;
 
-    // Quiz
-    const quiz = document.querySelector(".quiz");
-    quiz.querySelector("h2").innerText = t.quizTitulo;
-    quiz.querySelectorAll("p")[0].innerText = t.quiz1;
-    quiz.querySelectorAll("p")[1].innerText = t.quiz2;
-    quiz.querySelectorAll("p")[2].innerText = t.quiz3;
-    const botonesQuiz = quiz.querySelectorAll("button");
-    botonesQuiz[0].innerText = t.opciones.XII;
-    botonesQuiz[1].innerText = t.opciones.XIII;
-    botonesQuiz[2].innerText = t.opciones.XIV;
-    botonesQuiz[3].innerText = t.opciones.discoteca;
-    botonesQuiz[4].innerText = t.opciones.cementerio;
-    botonesQuiz[5].innerText = t.opciones.museo;
-    botonesQuiz[6].innerText = t.opciones.museo;
-    botonesQuiz[7].innerText = t.opciones.centro;
-    botonesQuiz[8].innerText = t.opciones.biblioteca;
+        // Quiz
+        const quiz = document.querySelector(".quiz");
+        quiz.querySelector("h2").innerText = t.quizTitulo;
+        quiz.querySelectorAll("p")[0].innerText = t.quiz1;
+        quiz.querySelectorAll("p")[1].innerText = t.quiz2;
+        quiz.querySelectorAll("p")[2].innerText = t.quiz3;
+        const botonesQuiz = quiz.querySelectorAll("button");
+        botonesQuiz[0].innerText = t.opciones.XII;
+        botonesQuiz[1].innerText = t.opciones.XIII;
+        botonesQuiz[2].innerText = t.opciones.XIV;
+        botonesQuiz[3].innerText = t.opciones.discoteca;
+        botonesQuiz[4].innerText = t.opciones.cementerio;
+        botonesQuiz[5].innerText = t.opciones.museo;
+        botonesQuiz[6].innerText = t.opciones.museo;
+        botonesQuiz[7].innerText = t.opciones.centro;
+        botonesQuiz[8].innerText = t.opciones.biblioteca;
 
-    // Candado
-    document.querySelector("#combination-lock h2").innerText = t.candado;
-    document.getElementById("check-combination").innerText = t.comprobar;
-    document.querySelector("#pista-lock p").innerText = t.pistaCandado;
-    document.querySelector("#pista-lock button").innerText = t.cerrarPista;
+        // Candado
+        document.querySelector("#combination-lock h2").innerText = t.candado;
+        document.getElementById("check-combination").innerText = t.comprobar;
+        document.querySelector("#pista-lock p").innerText = t.pistaCandado;
+        document.querySelector("#pista-lock button").innerText = t.cerrarPista;
 
-    // Fragmento final
-    const fragmento = document.getElementById("fragmento-final");
-    fragmento.querySelector("p strong").innerText = t.fragmento;
-    fragmento.querySelectorAll("p")[1].innerText = t.qr;
-    fragmento.querySelectorAll("p")[2].innerText = t.datoCurioso;
+        // Fragmento final
+        const fragmento = document.getElementById("fragmento-final");
+        fragmento.querySelector("p strong").innerText = t.fragmento;
+        fragmento.querySelectorAll("p")[1].innerText = t.qr;
+        fragmento.querySelectorAll("p")[2].innerText = t.datoCurioso;
 
-    document.querySelector("#continue-button button").innerText = t.continuar;
-  }
+        document.querySelector("#continue-button button").innerText = t.continuar;
+      }
+    }
 
-  document.addEventListener("DOMContentLoaded", aplicarIdiomaCastillo);
-</script>
-
+    document.addEventListener("DOMContentLoaded", aplicarIdiomaCastillo);
+  </script>
 </body>
 </html>
