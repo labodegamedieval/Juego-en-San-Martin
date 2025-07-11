@@ -1273,5 +1273,94 @@
       }
     }
   </script>
+
+  <script>
+   (function() {
+   (() => {
+  // 1) Carga idioma y opciones
+  const idioma = localStorage.getItem("idioma") || "es";
+  const opts = textosCastillo[idioma].opciones;
+
+  // 2) Nueva checkVisualAnswer
+  window.checkVisualAnswer = function(selected, key, n) {
+    const correct = opts[key];
+    const result = document.getElementById(`visual-resultado-${n}`);
+    if (!result) return console.error(`#visual-resultado-${n} no encontrado`);
+    if (selected === correct) {
+      result.textContent = "¡Correcto!";
+      playSound("success-sound");
+    } else {
+      result.textContent = "Respuesta incorrecta...";
+      playSound("error-sound");
+    }
+    console.log(`Reto visual ${n}: seleccionado="${selected}", correcto="${correct}"`);
+  };
+
+  // 3) Nueva checkAnswer (quiz)
+  let q1 = false, q2 = false, q3 = false;
+  window.checkAnswer = function(selected, key, n) {
+    const correct = opts[key];
+    const result = document.getElementById(`quiz-resultado-${n}`);
+    if (!result) return console.error(`#quiz-resultado-${n} no encontrado`);
+    if (selected === correct) {
+      result.textContent = "¡Correcto!";
+      playSound("success-sound");
+      if (n === 1) q1 = true;
+      if (n === 2) q2 = true;
+      if (n === 3) q3 = true;
+    } else {
+      result.textContent = "Incorrecto. Vuelve a intentarlo.";
+      playSound("error-sound");
+      if (n === 1) q1 = false;
+      if (n === 2) q2 = false;
+      if (n === 3) q3 = false;
+    }
+    console.log(`Quiz ${n}: seleccionado="${selected}", correcto="${correct}"`);
+    if (q1 && q2 && q3) {
+      document.querySelector('.quiz').style.display = "none";
+      initCombinationLock();
+    }
+  };
+
+  // 4) Función para resetear listeners clonando los botones
+  function resetButtons(selector) {
+    document.querySelectorAll(selector).forEach(btn => {
+      const clone = btn.cloneNode(true);
+      btn.parentNode.replaceChild(clone, btn);
+    });
+  }
+
+  // 5) Resetea todos los botones de retos y quiz
+  resetButtons('#visual-opciones-1 button');
+  resetButtons('#visual-opciones-2 button');
+  resetButtons('#quiz-opciones-1 button');
+  resetButtons('#quiz-opciones-2 button');
+  resetButtons('#quiz-opciones-3 button');
+
+  // 6) Vuelve a enlazar con las claves
+  document.querySelectorAll('#visual-opciones-1 button').forEach(btn => {
+    btn.addEventListener('click', () => checkVisualAnswer(btn.textContent, 'muralla', 1));
+    btn.addEventListener('touchstart', () => checkVisualAnswer(btn.textContent, 'muralla', 1));
+  });
+  document.querySelectorAll('#visual-opciones-2 button').forEach(btn => {
+    btn.addEventListener('click', () => checkVisualAnswer(btn.textContent, 'dos', 2));
+    btn.addEventListener('touchstart', () => checkVisualAnswer(btn.textContent, 'dos', 2));
+  });
+  document.querySelectorAll('#quiz-opciones-1 button').forEach(btn => {
+    btn.addEventListener('click', () => checkAnswer(btn.textContent, 'XIII', 1));
+    btn.addEventListener('touchstart', () => checkAnswer(btn.textContent, 'XIII', 1));
+  });
+  document.querySelectorAll('#quiz-opciones-2 button').forEach(btn => {
+    btn.addEventListener('click', () => checkAnswer(btn.textContent, 'cementerio', 2));
+    btn.addEventListener('touchstart', () => checkAnswer(btn.textContent, 'cementerio', 2));
+  });
+  document.querySelectorAll('#quiz-opciones-3 button').forEach(btn => {
+    btn.addEventListener('click', () => checkAnswer(btn.textContent, 'centro', 3));
+    btn.addEventListener('touchstart', () => checkAnswer(btn.textContent, 'centro', 3));
+  });
+
+  console.log("✅ Snippet aplicado: validación multilenguaje lista.");
+})();
+</script>
 </body>
 </html>
