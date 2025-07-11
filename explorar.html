@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="titulo">🗺️🧭 Explora San Martín del Castañar</title>
+  <title>🗺️🧭 Explora San Martín del Castañar</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     body {
@@ -14,6 +14,7 @@
       padding: 0;
       margin: 0;
     }
+
     .container {
       max-width: 850px;
       margin: auto;
@@ -24,6 +25,11 @@
       box-shadow: 0 0 20px rgba(0,0,0,0.3);
       position: relative;
     }
+
+    header, .progress-container, .map-description, .qr-section, .button-group, footer {
+      transition: opacity 0.3s ease;
+    }
+
     #map {
       height: 400px;
       width: 100%;
@@ -31,11 +37,13 @@
       border-radius: 10px;
       position: relative;
     }
+
     .compass-container {
       display: flex;
       justify-content: flex-end;
       padding-top: 10px;
     }
+
     #compass {
       width: 48px;
       height: 48px;
@@ -46,15 +54,18 @@
       padding: 4px;
       background: white;
     }
+
     .marker-emoji {
       font-size: 36px;
       transition: transform 0.2s ease;
       filter: drop-shadow(0 0 2px #000);
       user-select: none;
     }
+
     .marker-emoji.clicked {
       transform: scale(1.4);
     }
+
     .button-row {
       display: flex;
       flex-wrap: wrap;
@@ -62,6 +73,7 @@
       gap: 12px;
       margin: 20px 0;
     }
+
     .button-row a {
       background: rgba(255, 248, 228, 0.85);
       border: 2px solid #8b5e3c;
@@ -74,6 +86,7 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
       backdrop-filter: blur(2px);
     }
+
     footer {
       text-align: center;
       font-style: italic;
@@ -81,146 +94,244 @@
       margin-top: 40px;
     }
   </style>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-GE0YB9PL8Q');
-  </script>
+  <!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-GE0YB9PL8Q');
+</script>
+
 </head>
 <body>
-  <div class="container">
+  <!-- Código original creado por Alex Román | Abril 2025 -->
+  <!-- Marca registrada digitalmente por @alexroman.leis -->
+
+  <div class="container" id="main-container">
     <header>
-      <h1 data-i18n="titulo">🧙‍♂️🔍 Busca el Mensaje Oculto de Gonzalo</h1>
+      <h1 data-i18n="pageTitle">🧙‍♂️🔍 Busca el Mensaje Oculto de Gonzalo</h1>
     </header>
+
     <div class="progress-container">
       <div class="progress-bar" style="background: #ddd; border-radius: 10px; height: 20px; width: 80%; margin: auto;">
         <div class="progress-fill" id="progress-fill" style="background: #c19a6b; height: 100%; width: 0%;"></div>
       </div>
-      <p id="progress-text" style="text-align:center;" data-i18n="progreso">Paradas completadas: 0/7</p>
+      <p id="progress-text" data-i18n="progressText">Paradas completadas: 0/7</p>
+
       <div class="button-row">
-        <a href="/index.html" data-i18n="inicio">🏠 Inicio</a>
-        <a href="guia.html" data-i18n="guia">📖 Guía</a>
-        <a href="ranking.html" data-i18n="ranking">📊 Ranking</a>
-        <a href="cronica.html" data-i18n="cronica">📜 Crónica</a>
+        <a href="index.html" data-i18n="btnHome">🏠 Inicio</a>
+        <a href="guia.html" data-i18n="btnGuide">📖 Guía</a>
+        <a href="ranking.html" data-i18n="btnRanking">📊 Ranking</a>
+        <a href="cronica.html" data-i18n="btnChronicle">📜 Crónica</a>
       </div>
     </div>
-    <div class="map-explanation">
-      <h2 data-i18n="explicacion_titulo">ℹ️ ¿Cómo funciona este juego?</h2>
-      <p data-i18n="explicacion_1">Este mapa muestra las distintas paradas del recorrido por San Martín del Castañar. En cada parada te espera una prueba o enigma que deberás resolver para desbloquear fragmentos del mensaje oculto de Gonzalo.</p>
-      <p data-i18n="explicacion_2">Pulsa sobre los iconos del mapa para acceder a cada prueba. Algunas paradas se desbloquean al avanzar en el juego. Usa la brújula para orientarte y sigue tu progreso con la barra de arriba.</p>
-    </div>
+
     <div class="map-container">
       <div id="map"></div>
-      <p class="map-description" data-i18n="descripcion_mapa">
-        Mapa interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5222/-6.0645" target="_blank">San Martín del Castañar</a>
-      </p>
+      <p id="map-description">Mapa interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5222/-6.0645" target="_blank">San Martín del Castañar</a></p>
     </div>
     <div class="compass-container">
       <img src="images/flecha.png" id="compass" alt="Brújula" />
     </div>
   </div>
+
   <footer>
-    <p>© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank" data-i18n="reserva">Reserva tu visita</a></p>
+      <p id="footer-text">© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
   </footer>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
+    // Traducciones
     const translations = {
       es: {
-        titulo: "🧙‍♂️🔍 Busca el Mensaje Oculto de Gonzalo",
-        progreso: "Paradas completadas: ",
-        inicio: "🏠 Inicio",
-        guia: "📖 Guía",
-        ranking: "📊 Ranking",
-        cronica: "📜 Crónica",
-        explicacion_titulo: "ℹ️ ¿Cómo funciona este juego?",
-        explicacion_1: "Este mapa muestra las distintas paradas del recorrido por San Martín del Castañar. En cada parada te espera una prueba o enigma que deberás resolver para desbloquear fragmentos del mensaje oculto de Gonzalo.",
-        explicacion_2: "Pulsa sobre los iconos del mapa para acceder a cada prueba. Algunas paradas se desbloquean al avanzar en el juego. Usa la brújula para orientarte y sigue tu progreso con la barra de arriba.",
-        descripcion_mapa: "Mapa interactivo de San Martín del Castañar",
-        reserva: "Reserva tu visita"
+        pageTitle: "🧙‍♂️🔍 Busca el Mensaje Oculto de Gonzalo",
+        progressText: (done, total) => `Paradas completadas: ${done}/${total}`,
+        btnHome: "🏠 Inicio",
+        btnGuide: "📖 Guía",
+        btnRanking: "📊 Ranking",
+        btnChronicle: "📜 Crónica",
+        mapDescriptionHTML: 'Mapa interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5222/-6.0645" target="_blank">San Martín del Castañar</a>',
+        altCompass: "Brújula",
+        footerHTML: '© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>',
+        userHere: "📌 Estás aquí",
+        btnGo: "Ir a la parada",
+        stops: {
+          castillo: "Castillo",
+          plaza: "Plaza de toros",
+          iglesia: "Iglesia",
+          fuente: "Fuente y Portalón",
+          ermita: "Ermita",
+          puente: "Puente",
+          bodega: "Bodega"
+        }
       },
       en: {
-        titulo: "🧙‍♂️🔍 Discover Gonzalo’s Hidden Message",
-        progreso: "Stops completed: ",
-        inicio: "🏠 Home",
-        guia: "📖 Guide",
-        ranking: "📊 Ranking",
-        cronica: "📜 Chronicle",
-        explicacion_titulo: "ℹ️ How does this game work?",
-        explicacion_1: "This map shows the different stops on the route through San Martín del Castañar. At each stop, a challenge or puzzle awaits you to unlock fragments of Gonzalo’s hidden message.",
-        explicacion_2: "Tap the icons on the map to access each challenge. Some stops unlock as you progress. Use the compass to orient yourself and track your progress with the bar above.",
-        descripcion_mapa: "Interactive map of San Martín del Castañar",
-        reserva: "Book your visit"
+        pageTitle: "🧙‍♂️🔍 Find Gonzalo’s Hidden Message",
+        progressText: (done, total) => `Stops completed: ${done}/${total}`,
+        btnHome: "🏠 Home",
+        btnGuide: "📖 Guide",
+        btnRanking: "📊 Ranking",
+        btnChronicle: "📜 Chronicle",
+        mapDescriptionHTML: 'Interactive map of <a href="https://www.openstreetmap.org/#map=17/40.5222/-6.0645" target="_blank">San Martín del Castañar</a>',
+        altCompass: "Compass",
+        footerHTML: '© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserve your visit</a>',
+        userHere: "📌 You are here",
+        btnGo: "Go to stop",
+        stops: {
+          castillo: "Castle",
+          plaza: "Bullring",
+          iglesia: "Church",
+          fuente: "Fountain and Portalón",
+          ermita: "Hermitage",
+          puente: "Bridge",
+          bodega: "Winery"
+        }
       },
       fr: {
-        titulo: "🧙‍♂️🔍 Découvrez le Message Caché de Gonzalo",
-        progreso: "Étapes complétées : ",
-        inicio: "🏠 Accueil",
-        guia: "📖 Guide",
-        ranking: "📊 Classement",
-        cronica: "📜 Chronique",
-        explicacion_titulo: "ℹ️ Comment fonctionne ce jeu ?",
-        explicacion_1: "Cette carte montre les différentes étapes du parcours à San Martín del Castañar. À chaque étape, une énigme vous attend pour débloquer des fragments du message caché de Gonzalo.",
-        explicacion_2: "Appuyez sur les icônes de la carte pour accéder à chaque épreuve. Certaines étapes se débloquent au fur et à mesure. Utilisez la boussole pour vous orienter et suivez votre progression avec la barre ci-dessus.",
-        descripcion_mapa: "Carte interactive de San Martín del Castañar",
-        reserva: "Réservez votre visite"
+        pageTitle: "🧙‍♂️🔍 Trouvez le message caché de Gonzalo",
+        progressText: (done, total) => `Étapes complétées : ${done}/${total}`,
+        btnHome: "🏠 Accueil",
+        btnGuide: "📖 Guide",
+        btnRanking: "📊 Classement",
+        btnChronicle: "📜 Chronique",
+        mapDescriptionHTML: 'Carte interactive de <a href="https://www.openstreetmap.org/#map=17/40.5222/-6.0645" target="_blank">San Martín del Castañar</a>',
+        altCompass: "Boussole",
+        footerHTML: '© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Réservez votre visite</a>',
+        userHere: "📌 Vous êtes ici",
+        btnGo: "Aller à la station",
+        stops: {
+          castillo: "Château",
+          plaza: "Arène",
+          iglesia: "Église",
+          fuente: "Fontaine et Portalón",
+          ermita: "Ermitage",
+          puente: "Pont",
+          bodega: "Cave"
+        }
       },
       de: {
-        titulo: "🧙‍♂️🔍 Finde Gonzalos Versteckte Botschaft",
-        progreso: "Abgeschlossene Stationen: ",
-        inicio: "🏠 Startseite",
-        guia: "📖 Anleitung",
-        ranking: "📊 Rangliste",
-        cronica: "📜 Chronik",
-        explicacion_titulo: "ℹ️ Wie funktioniert dieses Spiel?",
-        explicacion_1: "Diese Karte zeigt die verschiedenen Stationen der Route durch San Martín del Castañar. An jeder Station erwartet dich ein Rätsel, das gelöst werden muss, um Fragmente von Gonzalos geheimer Botschaft freizuschalten.",
-        explicacion_2: "Tippe auf die Symbole auf der Karte, um zu den Herausforderungen zu gelangen. Einige Stationen werden im Verlauf freigeschaltet. Nutze den Kompass zur Orientierung und verfolge deinen Fortschritt mit der Leiste oben.",
-        descripcion_mapa: "Interaktive Karte von San Martín del Castañar",
-        reserva: "Besuch reservieren"
+        pageTitle: "🧙‍♂️🔍 Finde Gonzalos versteckte Nachricht",
+        progressText: (done, total) => `Stationen abgeschlossen: ${done}/${total}`,
+        btnHome: "🏠 Startseite",
+        btnGuide: "📖 Anleitung",
+        btnRanking: "📊 Rangliste",
+        btnChronicle: "📜 Chronik",
+        mapDescriptionHTML: 'Interaktive Karte von <a href="https://www.openstreetmap.org/#map=17/40.5222/-6.0645" target="_blank">San Martín del Castañar</a>',
+        altCompass: "Kompass",
+        footerHTML: '© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reservieren Sie Ihren Besuch</a>',
+        userHere: "📌 Du bist hier",
+        btnGo: "Zur Station gehen",
+        stops: {
+          castillo: "Burg",
+          plaza: "Stierkampfarena",
+          iglesia: "Kirche",
+          fuente: "Brunnen und Portalón",
+          ermita: "Einsiedelei",
+          puente: "Brücke",
+          bodega: "Weinkeller"
+        }
       }
     };
 
-    const lang = localStorage.getItem("language") || "es";
-    const t = translations[lang] || translations.es;
+    const lang = localStorage.getItem('lang') || 'es';
 
-    const stops = {
-      castillo: { coords: [40.5219, -6.0651], icon: "🏰", label: {es: "Castillo", en: "Castle", fr: "Château", de: "Burg"} },
-      plaza:    { coords: [40.5220, -6.0648], icon: "🎯", label: {es: "Plaza", en: "Square", fr: "Place", de: "Platz"} },
-      iglesia:  { coords: [40.5224, -6.0643], icon: "⛪", label: {es: "Iglesia", en: "Church", fr: "Église", de: "Kirche"} },
-      fuente:   { coords: [40.5222, -6.0647], icon: "💧", label: {es: "Fuente", en: "Fountain", fr: "Fontaine", de: "Brunnen"} },
-      ermita:   { coords: [40.5216, -6.0649], icon: "🕍", label: {es: "Ermita", en: "Hermitage", fr: "Chapelle", de: "Kapelle"} },
-      puente:   { coords: [40.5215, -6.0654], icon: "🌉", label: {es: "Puente", en: "Bridge", fr: "Pont", de: "Brücke"} },
-      bodega:   { coords: [40.5218, -6.0642], icon: "🍷", label: {es: "Bodega", en: "Cellar", fr: "Cave", de: "Keller"} }
-    };
+    // Cálculo de progreso:
+    const mainStops = ["castillo", "plaza", "iglesia", "fuente", "ermita", "puente"];
+    const allStops = [...mainStops, "bodega"];
+    let completadas = 0;
 
-    const map = L.map('map').setView([40.5222, -6.0645], 17);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+    allStops.forEach(stop => {
+      if (localStorage.getItem(`${stop}-completed`) === "true") completadas++;
+    });
+    const bodegaDesbloqueada = mainStops.every(stop => localStorage.getItem(`${stop}-completed`) === "true");
+
+    document.getElementById("progress-fill").style.width = `${(completadas / allStops.length) * 100}%`;
+
+    // Map y marcadores:
+    const map = L.map("map").setView([40.522236, -6.064579], 17);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
     }).addTo(map);
 
-    for (const key in stops) {
-      const stop = stops[key];
-      const marker = L.marker(stop.coords, {
-        icon: L.divIcon({ className: 'marker-emoji', html: stop.icon })
-      }).addTo(map);
-      marker.bindPopup(`<b>${stop.label[lang]}</b>`);
+    const stopNamesDict = translations[lang].stops;
+    const popupGo = translations[lang].btnGo;
+    const userHere = translations[lang].userHere;
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const coords = [position.coords.latitude, position.coords.longitude];
+        L.marker(coords).addTo(map).bindPopup(userHere).openPopup();
+        L.circle(coords, {
+          radius: 15,
+          color: "black",
+          fillColor: "#30f",
+          fillOpacity: 0.3
+        }).addTo(map);
+      });
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      document.documentElement.lang = lang;
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        if (t[key]) el.innerHTML = t[key];
-      });
+    const paradas = [
+      { id: "castillo", nombre: "Castillo", coords: [40.520537, -6.063549], icono: "🏰", archivo: "castillo.html" },
+      { id: "plaza", nombre: "Plaza de toros", coords: [40.520685, -6.063465], icono: "🏟️", archivo: "plaza.html" },
+      { id: "iglesia", nombre: "Iglesia", coords: [40.521341, -6.063827], icono: "⛪", archivo: "iglesia.html" },
+      { id: "fuente", nombre: "Fuente y Portalón", coords: [40.522182, -6.064559], icono: "⛲", archivo: "fuente.html" },
+      { id: "ermita", nombre: "Ermita", coords: [40.522765, -6.066472], icono: "🙏", archivo: "ermita.html" },
+      { id: "puente", nombre: "Puente", coords: [40.522526, -6.065782], icono: "🌉", archivo: "puente.html" },
+      { id: "bodega", nombre: "Bodega", coords: [40.521674, -6.064408], icono: "🍷", archivo: "bodega.html" }
+    ];
 
-      const allStops = ["castillo", "plaza", "iglesia", "fuente", "ermita", "puente", "bodega"];
-      let completadas = 0;
-      allStops.forEach(stop => {
-        if (localStorage.getItem(`${stop}-completed`) === "true") completadas++;
+    paradas.forEach(parada => {
+      const completed = localStorage.getItem(`${parada.id}-completed`) === "true";
+      if (parada.id === "bodega" && !bodegaDesbloqueada) return;
+      const iconoFinal = completed ? `✅${parada.icono}` : parada.icono;
+      const markerEl = document.createElement("div");
+      markerEl.className = "marker-emoji";
+      markerEl.textContent = iconoFinal;
+      markerEl.addEventListener("click", () => {
+        markerEl.classList.add("clicked");
+        setTimeout(() => markerEl.classList.remove("clicked"), 300);
       });
-      document.getElementById("progress-text").textContent = `${t.progreso}${completadas}/${allStops.length}`;
+      const customIcon = L.divIcon({ className: "", html: markerEl.outerHTML, iconSize: [40, 40], iconAnchor: [20, 20] });
+      const nameTranslated = stopNamesDict[parada.id];
+      const marker = L.marker(parada.coords, { icon: customIcon }).addTo(map);
+      marker.bindPopup(`<strong>${iconoFinal} ${nameTranslated}</strong><br><button onclick="location.href='${parada.archivo}'">${popupGo}</button>`);
+      marker.on("click", () => map.setView(parada.coords, 18));
     });
+
+    // Brújula:
+    const compass = document.getElementById("compass");
+    function handleOrientation(event) {
+      const alpha = event.alpha;
+      if (typeof alpha === "number") {
+        compass.style.transform = `rotate(${alpha}deg)`;
+      }
+    }
+    function initOrientation() {
+      if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission()
+          .then(state => { if (state === "granted") window.addEventListener("deviceorientation", handleOrientation, true); })
+          .catch(console.error);
+      } else {
+        window.addEventListener("deviceorientation", handleOrientation, true);
+      }
+    }
+    window.addEventListener("click", initOrientation, { once: true });
+
+    // Aplicar traducciones:
+    function translatePage() {
+      document.documentElement.lang = lang;
+      document.querySelector('[data-i18n="pageTitle"]').textContent = translations[lang].pageTitle;
+      document.querySelector('[data-i18n="btnHome"]').textContent = translations[lang].btnHome;
+      document.querySelector('[data-i18n="btnGuide"]').textContent = translations[lang].btnGuide;
+      document.querySelector('[data-i18n="btnRanking"]').textContent = translations[lang].btnRanking;
+      document.querySelector('[data-i18n="btnChronicle"]').textContent = translations[lang].btnChronicle;
+      document.getElementById('progress-text').textContent = translations[lang].progressText(completadas, allStops.length);
+      document.getElementById('map-description').innerHTML = translations[lang].mapDescriptionHTML;
+      document.getElementById('compass').alt = translations[lang].altCompass;
+      document.getElementById('footer-text').innerHTML = translations[lang].footerHTML;
+    }
+    translatePage();
   </script>
 </body>
 </html>
