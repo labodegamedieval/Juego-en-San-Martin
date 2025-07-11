@@ -782,7 +782,7 @@
       if (checkCombinationBtn) {
         checkCombinationBtn.addEventListener('click', (e) => handleButtonClick(e, checkCombination));
         checkCombinationBtn.addEventListener('touchstart', (e) => handleButtonClick(e, checkCombination));
-        console.log("Eventos asignados a botón de comprobar combinación");
+        console.log("Eventos asignados a botón #check-combination");
       } else {
         console.error("Error: Botón #check-combination no encontrado");
       }
@@ -792,7 +792,7 @@
       if (hintBtn) {
         hintBtn.addEventListener('click', (e) => handleButtonClick(e, togglePistaLock));
         hintBtn.addEventListener('touchstart', (e) => handleButtonClick(e, togglePistaLock));
-        console.log("Eventos asignados a botón de pista");
+        console.log("Eventos asignados a botón .hint-btn");
       } else {
         console.error("Error: Botón .hint-btn no encontrado");
       }
@@ -827,7 +827,7 @@
       const btn = event.target;
       btn.disabled = true;
       setTimeout(() => {
-        callback();
+        callback(event); // Pasar el evento al callback
         btn.disabled = false;
       }, 300);
     }
@@ -910,11 +910,7 @@
     }
 
     function togglePistaLock(event) {
-      if (!event) {
-        console.error("Error: Evento no definido en togglePistaLock");
-        return;
-      }
-      event.preventDefault();
+      if (event) event.preventDefault();
       const pistaDiv = document.getElementById("pista-lock");
       if (pistaDiv) {
         const isHidden = pistaDiv.style.display !== "block";
@@ -926,11 +922,8 @@
     }
 
     function checkCombination(event) {
-      if (!event) {
-        console.error("Error: Evento no definido en checkCombination");
-        return;
-      }
-      event.preventDefault();
+      if (event) event.preventDefault();
+      console.log("checkCombination ejecutado, evento recibido:", event ? "sí" : "no");
       const dials = document.querySelectorAll(".dial-select");
       const combinationStatus = document.getElementById("combination-status");
       if (!dials.length || !combinationStatus) {
@@ -1003,11 +996,7 @@
 
     // --- BOTÓN DE MÚSICA ---
     function toggleMusic(event) {
-      if (!event) {
-        console.error("Error: Evento no definido en toggleMusic");
-        return;
-      }
-      event.preventDefault();
+      if (event) event.preventDefault();
       const backgroundMusic = document.getElementById('ambient-sound');
       const musicBtn = document.querySelector('.music-btn');
       if (backgroundMusic && musicBtn) {
