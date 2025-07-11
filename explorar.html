@@ -95,14 +95,13 @@
     }
   </style>
   <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', 'G-GE0YB9PL8Q');
-</script>
-
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-GE0YB9PL8Q');
+  </script>
 </head>
 <body>
   <!-- Código original creado por Alex Román | Abril 2025 -->
@@ -127,6 +126,13 @@
       </div>
     </div>
 
+    <!-- Explicación del juego -->
+    <div class="game-explanation">
+      <h2 data-i18n="explicacion_titulo">ℹ️ ¿Cómo funciona este juego?</h2>
+      <p data-i18n="explicacion_1">Este mapa muestra las distintas paradas del recorrido por San Martín del Castañar. En cada parada te espera una prueba o enigma que deberás resolver para desbloquear fragmentos del mensaje oculto de Gonzalo.</p>
+      <p data-i18n="explicacion_2">Pulsa sobre los iconos del mapa para acceder a cada prueba. Algunas paradas se desbloquean al avanzar en el juego. Usa la brújula para orientarte y sigue tu progreso con la barra de arriba.</p>
+    </div>
+
     <div class="map-container">
       <div id="map"></div>
       <p id="map-description">Mapa interactivo de <a href="https://www.openstreetmap.org/#map=17/40.5222/-6.0645" target="_blank">San Martín del Castañar</a></p>
@@ -137,7 +143,7 @@
   </div>
 
   <footer>
-      <p id="footer-text">© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
+    <p id="footer-text">© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a></p>
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -156,6 +162,9 @@
         footerHTML: '© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserva tu visita</a>',
         userHere: "📌 Estás aquí",
         btnGo: "Ir a la parada",
+        explicacion_titulo: "ℹ️ ¿Cómo funciona este juego?",
+        explicacion_1: "Este mapa muestra las distintas paradas del recorrido por San Martín del Castañar. En cada parada te espera una prueba o enigma que deberás resolver para desbloquear fragmentos del mensaje oculto de Gonzalo.",
+        explicacion_2: "Pulsa sobre los iconos del mapa para acceder a cada prueba. Algunas paradas se desbloquean al avanzar en el juego. Usa la brújula para orientarte y sigue tu progreso con la barra de arriba.",
         stops: {
           castillo: "Castillo",
           plaza: "Plaza de toros",
@@ -178,6 +187,9 @@
         footerHTML: '© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reserve your visit</a>',
         userHere: "📌 You are here",
         btnGo: "Go to stop",
+        explicacion_titulo: "ℹ️ How does this game work?",
+        explicacion_1: "This map shows the different stops on the tour of San Martín del Castañar. At each stop you will face a challenge or puzzle that you must solve to unlock fragments of Gonzalo's hidden message.",
+        explicacion_2: "Click on the map icons to access each challenge. Some stops unlock as you progress in the game. Use the compass to orient yourself and track your progress with the bar above.",
         stops: {
           castillo: "Castle",
           plaza: "Bullring",
@@ -200,6 +212,9 @@
         footerHTML: '© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Réservez votre visite</a>',
         userHere: "📌 Vous êtes ici",
         btnGo: "Aller à la station",
+        explicacion_titulo: "ℹ️ Comment fonctionne ce jeu ?",
+        explicacion_1: "Cette carte montre les différentes étapes du parcours à San Martín del Castañar. À chaque étape, vous trouverez une épreuve ou une énigme que vous devrez résoudre pour débloquer des fragments du message caché de Gonzalo.",
+        explicacion_2: "Cliquez sur les icônes de la carte pour accéder à chaque épreuve. Certaines étapes se débloquent au fur et à mesure que vous avancez dans le jeu. Utilisez la boussole pour vous orienter et suivez votre progression avec la barre en haut.",
         stops: {
           castillo: "Château",
           plaza: "Arène",
@@ -222,6 +237,9 @@
         footerHTML: '© 2025 La Bodega Medieval | <a href="https://www.labodegamedieval.es" target="_blank">Reservieren Sie Ihren Besuch</a>',
         userHere: "📌 Du bist hier",
         btnGo: "Zur Station gehen",
+        explicacion_titulo: "ℹ️ Wie funktioniert dieses Spiel?",
+        explicacion_1: "Diese Karte zeigt die verschiedenen Stationen des Rundgangs durch San Martín del Castañar. An jeder Station erwartet dich eine Aufgabe oder ein Rätsel, das du lösen musst, um Fragmente von Gonzalos versteckter Nachricht freizuschalten.",
+        explicacion_2: "Klicke auf die Symbole in der Karte, um jede Aufgabe zu öffnen. Einige Stationen werden freigeschaltet, wenn du im Spiel vorankommst. Verwende den Kompass zur Orientierung und verfolge deinen Fortschritt mit der Leiste oben.",
         stops: {
           castillo: "Burg",
           plaza: "Stierkampfarena",
@@ -330,6 +348,9 @@
       document.getElementById('map-description').innerHTML = translations[lang].mapDescriptionHTML;
       document.getElementById('compass').alt = translations[lang].altCompass;
       document.getElementById('footer-text').innerHTML = translations[lang].footerHTML;
+      document.querySelector('[data-i18n="explicacion_titulo"]').textContent = translations[lang].explicacion_titulo;
+      document.querySelector('[data-i18n="explicacion_1"]').textContent = translations[lang].explicacion_1;
+      document.querySelector('[data-i18n="explicacion_2"]').textContent = translations[lang].explicacion_2;
     }
     translatePage();
   </script>
