@@ -21,6 +21,8 @@
       background-size: cover;
       font-family: 'Georgia', serif;
       color: #3b241b;
+      margin: 0;
+      padding: 0;
     }
 
     .container {
@@ -43,46 +45,103 @@
       margin-bottom: 20px;
     }
 
-    .carousel {
-      position: relative;
-      text-align: center;
-      margin-bottom: 20px;
+    .music-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #d6c1a1;
+      border: 2px solid #6d4c41;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
     }
 
-    .carousel img {
-      width: 100%;
+    .music-btn:hover {
+      background-color: #cfb68a;
+    }
+
+    #selector-idioma {
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #999;
+      background-color: white;
+      font-family: 'Georgia', serif;
+    }
+
+    /* Carrusel principal */
+    .carousel-container {
+      position: relative;
+      max-width: 100%;
+      overflow: hidden;
+      margin: 20px auto;
       border-radius: 12px;
       border: 3px solid #5a3b2b;
     }
 
-    .carousel p {
+    .carousel-slide {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-item {
+      min-width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      border-radius: 10px;
+      max-height: 400px;
+      object-fit: cover;
+    }
+
+    .carousel-text {
       margin-top: 10px;
       font-style: italic;
+      font-size: 16px;
     }
 
     .carousel-btn {
       position: absolute;
-      top: 40%;
+      top: 50%;
       transform: translateY(-50%);
-      background-color: rgba(255,255,255,0.8);
+      background-color: rgba(0,0,0,0.6);
+      color: white;
       border: none;
-      font-size: 20px;
-      cursor: pointer;
-      padding: 10px;
       border-radius: 50%;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .carousel-btn.prev-slide { left: 10px; }
-    .carousel-btn.next-slide { right: 10px; }
+    .carousel-btn:hover {
+      background-color: rgba(0,0,0,0.8);
+    }
+
+    #prevBtn { left: 10px; }
+    #nextBtn { right: 10px; }
 
     h2 {
       margin-top: 30px;
       font-size: 1.5em;
+      color: #3b241b;
     }
 
     ol {
       margin-left: 20px;
       margin-bottom: 20px;
+    }
+
+    ol li {
+      margin-bottom: 10px;
+      line-height: 1.5;
     }
 
     .info-extra {
@@ -94,6 +153,11 @@
       border-radius: 8px;
     }
 
+    #nombre-jugador {
+      margin: 20px 0;
+      text-align: center;
+    }
+
     input[type="text"] {
       padding: 8px;
       font-size: 16px;
@@ -101,6 +165,7 @@
       border: 1px solid #999;
       width: 70%;
       max-width: 300px;
+      margin: 10px 0;
     }
 
     .action-btn {
@@ -112,6 +177,10 @@
       border-radius: 8px;
       cursor: pointer;
       font-family: 'Georgia', serif;
+    }
+
+    .action-btn:hover {
+      background-color: #cfb68a;
     }
 
     .button-group {
@@ -142,37 +211,63 @@
       margin-top: 40px;
       font-style: italic;
     }
+
+    footer a {
+      color: #5a3b2b;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      header h1 {
+        font-size: 1.5em;
+      }
+
+      .button-group button {
+        padding: 12px 18px;
+        font-size: 16px;
+      }
+
+      input[type="text"] {
+        width: 90%;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="carousel-container" style="position: relative; max-width: 100%; overflow: hidden; margin: 20px auto;">
-  <div class="carousel-slide" id="carousel-slide" style="display: flex; transition: transform 0.5s ease;">
-    <div class="carousel-item" style="min-width: 100%; box-sizing: border-box; padding: 10px;">
-      <img src="images/slide1.jpg" alt="Slide 1" style="width: 100%; border-radius: 10px;">
-      <p class="carousel-text" id="slide-text-1"></p>
+  <!-- Carrusel principal -->
+  <div class="carousel-container">
+    <div class="carousel-slide" id="carousel-slide">
+      <div class="carousel-item">
+        <img src="images/portada.jpg" alt="San Martín del Castañar" />
+        <p class="carousel-text" id="slide-text-1">San Martín del Castañar, un pueblo medieval que esconde un secreto que solo los más curiosos pueden descubrir... ¿te atreves?</p>
+      </div>
+      <div class="carousel-item">
+        <img src="images/gonzalo.jpg" alt="Gonzalo de la Sierra" />
+        <p class="carousel-text" id="slide-text-2">Gonzalo de la Sierra, antiguo bodeguero del siglo XVI, desapareció sin dejar rastro. Pero dejó un mensaje oculto entre los rincones del pueblo. Busca los fragmentos, sigue las pistas y descubre el enigma.</p>
+      </div>
+      <div class="carousel-item">
+        <img src="images/mapa-san-martin.jpg" alt="Mapa del Pueblo" />
+        <p class="carousel-text" id="slide-text-3">Visita cada parada, supera los retos, escanea el QR... y si llegas al final, desvelarás el secreto oculto.</p>
+      </div>
     </div>
-    <div class="carousel-item" style="min-width: 100%; box-sizing: border-box; padding: 10px;">
-      <img src="images/slide2.jpg" alt="Slide 2" style="width: 100%; border-radius: 10px;">
-      <p class="carousel-text" id="slide-text-2"></p>
-    </div>
-    <div class="carousel-item" style="min-width: 100%; box-sizing: border-box; padding: 10px;">
-      <img src="images/slide3.jpg" alt="Slide 3" style="width: 100%; border-radius: 10px;">
-      <p class="carousel-text" id="slide-text-3"></p>
-    </div>
+
+    <button class="carousel-btn" id="prevBtn">❮</button>
+    <button class="carousel-btn" id="nextBtn">❯</button>
   </div>
-
-  <button id="prevBtn" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%);
-    background-color: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; padding: 10px;
-    cursor: pointer; font-size: 18px;">❮</button>
-
-  <button id="nextBtn" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);
-    background-color: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; padding: 10px;
-    cursor: pointer; font-size: 18px;">❯</button>
-</div>
   
   <div class="container">
     <header>
-      <h1 id="titulo"></h1>
+      <h1 id="titulo">🏰 El enigma de Gonzalo de la Sierra</h1>
       <div class="music-control">
         <button class="music-btn" onclick="toggleMusic()">🎵 Música</button>
       </div>
@@ -188,45 +283,35 @@
     </header>
 
     <section>
-      <div class="carousel">
-        <div class="slide active">
-          <img src="images/portada.jpg" alt="San Martín del Castañar" />
-          <p id="slide1"></p>
-        </div>
-        <div class="slide">
-          <img src="images/gonzalo.jpg" alt="Gonzalo de la Sierra" />
-          <p id="slide2"></p>
-        </div>
-        <div class="slide">
-          <img src="images/mapa-san-martin.jpg" alt="Mapa del Pueblo" />
-          <p id="slide3"></p>
-        </div>
-        <button class="carousel-btn prev-slide">←</button>
-        <button class="carousel-btn next-slide">→</button>
+      <h2 id="como">🧾 ¿Cómo funciona el juego?</h2>
+      <ol id="lista-como">
+        <li>Activa el GPS, los datos de tu móvil y recorre el pueblo. ¡No hace falta descargar nada!</li>
+        <li>En EXPLORAR, visita las 6 paradas del mapa y supera los retos en cada una. En CRONICA puedes ver tu progreso y los fragmentos del mensaje. No hay orden pero yo empezaría por el castillo :)</li>
+        <li>Busca y escanea el QR oculto en cada parada para descubrir una pista del misterio.</li>
+        <li>Solo si completas las 6 paradas del mapa, podrás desvelar cuál es la parada final y descubrir el misterio de la desaparición de Gonzalo.</li>
+      </ol>
+
+      <div class="info-extra" id="info-extra">
+        🎮 Este juego es <strong>gratuito</strong> y pensado como una forma divertida de conocer este pueblo tan peculiar y lleno de historia.<br><br>💡 Se trata de una <strong>iniciativa privada</strong>, sin financiación pública, creada por emprendedores que buscan mejorar la experiencia turística de quienes nos visitan.
       </div>
 
-      <h2 id="como"></h2>
-      <ol id="lista-como"></ol>
-
-      <div class="info-extra" id="info-extra"></div>
-
-      <div id="nombre-jugador" style="margin: 20px 0;">
-        <h2 id="antes"></h2>
-        <p id="introduce"></p>
+      <div id="nombre-jugador">
+        <h2 id="antes">📝 Antes de comenzar...</h2>
+        <p id="introduce">Introduce tu nombre o apodo para registrar tu progreso:</p>
         <input type="text" id="nombre-input" placeholder="Ej: Valiente123" />
         <br>
-        <button class="action-btn" onclick="guardarNombreJugador()" id="btnGuardar"></button>
+        <button class="action-btn" onclick="guardarNombreJugador()" id="btnGuardar">Guardar y Empezar</button>
       </div>
 
       <div class="button-group">
-        <button onclick="window.location.href='explorar.html'">🗘️ Explorar</button>
+        <button onclick="window.location.href='explorar.html'">🗺️ Explorar</button>
         <button onclick="window.location.href='guia.html'">📖 Guía Histórica</button>
         <button onclick="window.location.href='cronica.html'">📜 Crónica</button>
         <button onclick="window.location.href='ranking.html'">🏆 Ranking</button>
       </div>
     </section>
 
-    <audio id="background-music" loop autoplay>
+    <audio id="background-music" loop>
       <source src="sounds/musica-medieval.mp3" type="audio/mpeg" />
     </audio>
 
@@ -239,209 +324,207 @@
   </div>
 
   <script>
+    // Textos para diferentes idiomas
     const textos = {
-  es: {
-    titulo: "🏰 El enigma de Gonzalo de la Sierra",
-    slide1: "San Martín del Castañar, un pueblo medieval que esconde un secreto que solo los más curiosos pueden descubrir... ¿te atreves?",
-    slide2: "Gonzalo de la Sierra, antiguo bodeguero del siglo XVI, desapareció sin dejar rastro. Pero dejó un mensaje oculto entre los rincones del pueblo. Busca los fragmentos, sigue las pistas y descubre el enigma.",
-    slide3: "Visita cada parada, supera los retos, escanea el QR... y si llegas al final, desvelarás el secreto oculto.",
-    como: "🧾 ¿Cómo funciona el juego?",
-    lista: [
-      "Activa el GPS, los datos de tu móvil y recorre el pueblo. ¡No hace falta descargar nada!",
-      "En EXPLORAR, visita las 6 paradas del mapa y supera los retos en cada una. En CRONICA puedes ver tu progreso y los fragmentos del mensaje. No hay orden pero yo empezaría por el castillo :)",
-      "Busca y escanea el QR oculto en cada parada para descubrir una pista del misterio.",
-      "Solo si completas las 6 paradas del mapa, podrás desvelar cuál es la parada final y descubrir el misterio de la desaparición de Gonzalo."
-    ],
-    info: "🎮 Este juego es <strong>gratuito</strong> y pensado como una forma divertida de conocer este pueblo tan peculiar y lleno de historia.<br><br>💡 Se trata de una <strong>iniciativa privada</strong>, sin financiación pública, creada por emprendedores que buscan mejorar la experiencia turística de quienes nos visitan.",
-    antes: "📝 Antes de comenzar...",
-    introduce: "Introduce tu nombre o apodo para registrar tu progreso:",
-    btnGuardar: "Guardar y Empezar",
-    btnExplorar: "🗺️ Explorar",
-    btnGuia: "📖 Guía Histórica",
-    btnCronica: "📜 Crónica",
-    btnRanking: "🏆 Ranking"
-  },
-  fr: {
-    titulo: "🏰 L'énigme de Gonzalo de la Sierra",
-    slide1: "San Martín del Castañar, un village médiéval qui cache un secret que seuls les plus curieux peuvent découvrir... Oserez-vous tenter l'aventure ?",
-    slide2: "Gonzalo de la Sierra, ancien vigneron du XVIe siècle, a disparu sans laisser de trace. Mais il a laissé un message caché dans les recoins du village. Cherche les fragments, suis les indices et découvre l’énigme.",
-    slide3: "Visite chaque étape, relève les défis, scanne le QR... et si tu arrives jusqu'au bout, tu révéleras le secret caché.",
-    como: "🧾 Comment fonctionne le jeu ?",
-    lista: [
-      "Active le GPS, les données de ton mobile et explore le village. Pas besoin de télécharger quoi que ce soit !",
-      "Dans EXPLORER, visite les 6 étapes sur la carte et relève les défis dans chacune. Dans CHRONIQUE, tu peux voir ta progression et les fragments du message. Il n'y a pas d’ordre précis, mais je commencerais par le château :)",
-      "Cherche et scanne le QR caché à chaque étape pour découvrir un indice du mystère.",
-      "Ce n’est qu’en complétant les 6 étapes de la carte que tu pourras révéler quelle est l’étape finale et découvrir le mystère de la disparition de Gonzalo."
-    ],
-    info: "🎮 Ce jeu est <strong>gratuit</strong> et conçu comme un moyen amusant de découvrir ce village si particulier et plein d’histoire.<br><br>💡 Il s’agit d’une <strong>initiative privée</strong>, sans financement public, créée par des entrepreneurs qui souhaitent enrichir l’expérience touristique de nos visiteurs.",
-    antes: "📝 Avant de commencer...",
-    introduce: "Entre ton nom ou ton pseudo pour enregistrer ta progression :",
-    btnGuardar: "Enregistrer et Commencer",
-    btnExplorar: "🗺️ Explorer",
-    btnGuia: "📖 Guide Historique",
-    btnCronica: "📜 Chronique",
-    btnRanking: "🏆 Classement"
-  },
-  en: {
-    titulo: "🏰 The Enigma of Gonzalo de la Sierra",
-    slide1: "San Martín del Castañar, a medieval village that hides a secret only the most curious can uncover... dare to try?",
-    slide2: "Gonzalo de la Sierra, a 16th-century winemaker, vanished without a trace. But he left a hidden message among the village's corners. Search for the fragments, follow the clues, and solve the enigma.",
-    slide3: "Visit each stop, complete the challenges, scan the QR... and if you reach the end, you will uncover the hidden secret.",
-    como: "🧾 How does the game work?",
-    lista: [
-      "Enable GPS and mobile data, and walk around the village. No downloads required!",
-      "In EXPLORE, visit the 6 stops on the map and complete the challenges at each one. In CHRONICLE, you can track your progress and view the message fragments. There’s no set order, but I’d start with the castle :)",
-      "Find and scan the hidden QR at each stop to discover a clue to the mystery.",
-      "Only if you complete all 6 stops on the map will the final stop be revealed — and the mystery of Gonzalo’s disappearance solved."
-    ],
-    info: "🎮 This game is <strong>free</strong> and designed as a fun way to explore this unique and historic village.<br><br>💡 It’s a <strong>private initiative</strong>, without public funding, created by entrepreneurs aiming to enhance the visitor experience.",
-    antes: "📝 Before you begin...",
-    introduce: "Enter your name or nickname to track your progress:",
-    btnGuardar: "Save and Start",
-    btnExplorar: "🗺️ Explore",
-    btnGuia: "📖 Historical Guide",
-    btnCronica: "📜 Chronicle",
-    btnRanking: "🏆 Ranking"
-  },
-  de: {
-    titulo: "🏰 Das Rätsel von Gonzalo de la Sierra",
-    slide1: "San Martín del Castañar, ein mittelalterliches Dorf, das ein Geheimnis verbirgt, das nur die Neugierigsten entdecken können... wagst du es?",
-    slide2: "Gonzalo de la Sierra, ein Winzer aus dem 16. Jahrhundert, verschwand spurlos. Doch er hinterließ eine Botschaft, versteckt in den Ecken des Dorfes. Suche die Fragmente, folge den Hinweisen und löse das Rätsel.",
-    slide3: "Besuche jede Station, meistere die Herausforderungen, scanne den QR-Code... und wenn du bis zum Ende kommst, wirst du das verborgene Geheimnis lüften.",
-    como: "🧾 Wie funktioniert das Spiel?",
-    lista: [
-      "Aktiviere GPS und mobile Daten, und erkunde das Dorf. Kein Download erforderlich!",
-      "In ERKUNDEN besuchst du die 6 Stationen auf der Karte und bewältigst die jeweiligen Herausforderungen. In CHRONIK kannst du deinen Fortschritt und die Nachrichtenfragmente sehen. Es gibt keine feste Reihenfolge, aber ich würde mit der Burg beginnen :)",
-      "Suche und scanne an jeder Station den versteckten QR-Code, um einen Hinweis auf das Geheimnis zu erhalten.",
-      "Nur wenn du alle 6 Stationen auf der Karte absolvierst, wird die letzte Station enthüllt — und das Rätsel um Gonzalos Verschwinden gelöst."
-    ],
-    info: "🎮 Dieses Spiel ist <strong>kostenlos</strong> und wurde als unterhaltsame Möglichkeit entwickelt, dieses besondere und geschichtsträchtige Dorf kennenzulernen.<br><br>💡 Es handelt sich um eine <strong>private Initiative</strong> ohne öffentliche Finanzierung, ins Leben gerufen von Unternehmern, die das touristische Erlebnis verbessern möchten.",
-    antes: "📝 Bevor du beginnst...",
-    introduce: "Gib deinen Namen oder Spitznamen ein, um deinen Fortschritt zu speichern:",
-    btnGuardar: "Speichern und Starten",
-    btnExplorar: "🗺️ Erkunden",
-    btnGuia: "📖 Historischer Leitfaden",
-    btnCronica: "📜 Chronik",
-    btnRanking: "🏆 Rangliste"
-  }
-};
+      es: {
+        titulo: "🏰 El enigma de Gonzalo de la Sierra",
+        slide1: "San Martín del Castañar, un pueblo medieval que esconde un secreto que solo los más curiosos pueden descubrir... ¿te atreves?",
+        slide2: "Gonzalo de la Sierra, antiguo bodeguero del siglo XVI, desapareció sin dejar rastro. Pero dejó un mensaje oculto entre los rincones del pueblo. Busca los fragmentos, sigue las pistas y descubre el enigma.",
+        slide3: "Visita cada parada, supera los retos, escanea el QR... y si llegas al final, desvelarás el secreto oculto.",
+        como: "🧾 ¿Cómo funciona el juego?",
+        lista: [
+          "Activa el GPS, los datos de tu móvil y recorre el pueblo. ¡No hace falta descargar nada!",
+          "En EXPLORAR, visita las 6 paradas del mapa y supera los retos en cada una. En CRONICA puedes ver tu progreso y los fragmentos del mensaje. No hay orden pero yo empezaría por el castillo :)",
+          "Busca y escanea el QR oculto en cada parada para descubrir una pista del misterio.",
+          "Solo si completas las 6 paradas del mapa, podrás desvelar cuál es la parada final y descubrir el misterio de la desaparición de Gonzalo."
+        ],
+        info: "🎮 Este juego es <strong>gratuito</strong> y pensado como una forma divertida de conocer este pueblo tan peculiar y lleno de historia.<br><br>💡 Se trata de una <strong>iniciativa privada</strong>, sin financiación pública, creada por emprendedores que buscan mejorar la experiencia turística de quienes nos visitan.",
+        antes: "📝 Antes de comenzar...",
+        introduce: "Introduce tu nombre o apodo para registrar tu progreso:",
+        btnGuardar: "Guardar y Empezar",
+        btnExplorar: "🗺️ Explorar",
+        btnGuia: "📖 Guía Histórica",
+        btnCronica: "📜 Crónica",
+        btnRanking: "🏆 Ranking"
+      },
+      fr: {
+        titulo: "🏰 L'énigme de Gonzalo de la Sierra",
+        slide1: "San Martín del Castañar, un village médiéval qui cache un secret que seuls les plus curieux peuvent découvrir... Oserez-vous tenter l'aventure ?",
+        slide2: "Gonzalo de la Sierra, ancien vigneron du XVIe siècle, a disparu sans laisser de trace. Mais il a laissé un message caché dans les recoins du village. Cherche les fragments, suis les indices et découvre l'énigme.",
+        slide3: "Visite chaque étape, relève les défis, scanne le QR... et si tu arrives jusqu'au bout, tu révéleras le secret caché.",
+        como: "🧾 Comment fonctionne le jeu ?",
+        lista: [
+          "Active le GPS, les données de ton mobile et explore le village. Pas besoin de télécharger quoi que ce soit !",
+          "Dans EXPLORER, visite les 6 étapes sur la carte et relève les défis dans chacune. Dans CHRONIQUE, tu peux voir ta progression et les fragments du message. Il n'y a pas d'ordre précis, mais je commencerais par le château :)",
+          "Cherche et scanne le QR caché à chaque étape pour découvrir un indice du mystère.",
+          "Ce n'est qu'en complétant les 6 étapes de la carte que tu pourras révéler quelle est l'étape finale et découvrir le mystère de la disparition de Gonzalo."
+        ],
+        info: "🎮 Ce jeu est <strong>gratuit</strong> et conçu comme un moyen amusant de découvrir ce village si particulier et plein d'histoire.<br><br>💡 Il s'agit d'une <strong>initiative privée</strong>, sans financement public, créée par des entrepreneurs qui souhaitent enrichir l'expérience touristique de nos visiteurs.",
+        antes: "📝 Avant de commencer...",
+        introduce: "Entre ton nom ou ton pseudo pour enregistrer ta progression :",
+        btnGuardar: "Enregistrer et Commencer",
+        btnExplorar: "🗺️ Explorer",
+        btnGuia: "📖 Guide Historique",
+        btnCronica: "📜 Chronique",
+        btnRanking: "🏆 Classement"
+      },
+      en: {
+        titulo: "🏰 The Enigma of Gonzalo de la Sierra",
+        slide1: "San Martín del Castañar, a medieval village that hides a secret only the most curious can uncover... dare to try?",
+        slide2: "Gonzalo de la Sierra, a 16th-century winemaker, vanished without a trace. But he left a hidden message among the village's corners. Search for the fragments, follow the clues, and solve the enigma.",
+        slide3: "Visit each stop, complete the challenges, scan the QR... and if you reach the end, you will uncover the hidden secret.",
+        como: "🧾 How does the game work?",
+        lista: [
+          "Enable GPS and mobile data, and walk around the village. No downloads required!",
+          "In EXPLORE, visit the 6 stops on the map and complete the challenges at each one. In CHRONICLE, you can track your progress and view the message fragments. There's no set order, but I'd start with the castle :)",
+          "Find and scan the hidden QR at each stop to discover a clue to the mystery.",
+          "Only if you complete all 6 stops on the map will the final stop be revealed — and the mystery of Gonzalo's disappearance solved."
+        ],
+        info: "🎮 This game is <strong>free</strong> and designed as a fun way to explore this unique and historic village.<br><br>💡 It's a <strong>private initiative</strong>, without public funding, created by entrepreneurs aiming to enhance the visitor experience.",
+        antes: "📝 Before you begin...",
+        introduce: "Enter your name or nickname to track your progress:",
+        btnGuardar: "Save and Start",
+        btnExplorar: "🗺️ Explore",
+        btnGuia: "📖 Historical Guide",
+        btnCronica: "📜 Chronicle",
+        btnRanking: "🏆 Ranking"
+      },
+      de: {
+        titulo: "🏰 Das Rätsel von Gonzalo de la Sierra",
+        slide1: "San Martín del Castañar, ein mittelalterliches Dorf, das ein Geheimnis verbirgt, das nur die Neugierigsten entdecken können... wagst du es?",
+        slide2: "Gonzalo de la Sierra, ein Winzer aus dem 16. Jahrhundert, verschwand spurlos. Doch er hinterließ eine Botschaft, versteckt in den Ecken des Dorfes. Suche die Fragmente, folge den Hinweisen und löse das Rätsel.",
+        slide3: "Besuche jede Station, meistere die Herausforderungen, scanne den QR-Code... und wenn du bis zum Ende kommst, wirst du das verborgene Geheimnis lüften.",
+        como: "🧾 Wie funktioniert das Spiel?",
+        lista: [
+          "Aktiviere GPS und mobile Daten, und erkunde das Dorf. Kein Download erforderlich!",
+          "In ERKUNDEN besuchst du die 6 Stationen auf der Karte und bewältigst die jeweiligen Herausforderungen. In CHRONIK kannst du deinen Fortschritt und die Nachrichtenfragmente sehen. Es gibt keine feste Reihenfolge, aber ich würde mit der Burg beginnen :)",
+          "Suche und scanne an jeder Station den versteckten QR-Code, um einen Hinweis auf das Geheimnis zu erhalten.",
+          "Nur wenn du alle 6 Stationen auf der Karte absolvierst, wird die letzte Station enthüllt — und das Rätsel um Gonzalos Verschwinden gelöst."
+        ],
+        info: "🎮 Dieses Spiel ist <strong>kostenlos</strong> und wurde als unterhaltsame Möglichkeit entwickelt, dieses besondere und geschichtsträchtige Dorf kennenzulernen.<br><br>💡 Es handelt sich um eine <strong>private Initiative</strong> ohne öffentliche Finanzierung, ins Leben gerufen von Unternehmern, die das touristische Erlebnis verbessern möchten.",
+        antes: "📝 Bevor du beginnst...",
+        introduce: "Gib deinen Namen oder Spitznamen ein, um deinen Fortschritt zu speichern:",
+        btnGuardar: "Speichern und Starten",
+        btnExplorar: "🗺️ Erkunden",
+        btnGuia: "📖 Historischer Leitfaden",
+        btnCronica: "📜 Chronik",
+        btnRanking: "🏆 Rangliste"
+      }
+    };
 
+    // Variables para el carrusel
+    let currentIndex = 0;
+    const slide = document.getElementById("carousel-slide");
+    const totalSlides = slide.children.length;
+
+    // Función para aplicar el idioma
     function aplicarIdioma() {
-    const idioma = localStorage.getItem("idioma") || "es";
-    const t = textos[idioma];
-    document.getElementById("titulo").innerText = t.titulo;
-    document.getElementById("slide1").innerText = t.slide1;
-    document.getElementById("slide2").innerText = t.slide2;
-    document.getElementById("slide3").innerText = t.slide3;
-    document.getElementById("como").innerText = t.como;
-    const lista = document.getElementById("lista-como");
-    lista.innerHTML = "";
-    t.lista.forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      lista.appendChild(li);
-    });
-    document.getElementById("info-extra").innerHTML = t.info;
-    document.getElementById("antes").innerText = t.antes;
-    document.getElementById("introduce").innerText = t.introduce;
-    document.getElementById("btnGuardar").innerText = t.btnGuardar;
-    document.querySelector(".button-group button:nth-child(1)").innerText = t.btnExplorar;
-    document.querySelector(".button-group button:nth-child(2)").innerText = t.btnGuia;
-    document.querySelector(".button-group button:nth-child(3)").innerText = t.btnCronica;
-    document.querySelector(".button-group button:nth-child(4)").innerText = t.btnRanking;
-  }
-
-  function guardarNombreJugador() {
-    const nombre = document.getElementById("nombre-input").value.trim();
-    if (nombre.length >= 3) {
-      localStorage.setItem("jugador", nombre);
-      document.getElementById("nombre-jugador").style.display = "none";
-      gtag('event', 'jugador_inicio', {
-        'event_category': 'Juego',
-        'event_label': nombre
+      const idioma = localStorage.getItem("idioma") || "es";
+      const t = textos[idioma];
+      
+      // Actualizar elementos del HTML
+      document.getElementById("titulo").innerText = t.titulo;
+      document.getElementById("slide-text-1").innerText = t.slide1;
+      document.getElementById("slide-text-2").innerText = t.slide2;
+      document.getElementById("slide-text-3").innerText = t.slide3;
+      document.getElementById("como").innerText = t.como;
+      
+      // Actualizar lista
+      const lista = document.getElementById("lista-como");
+      lista.innerHTML = "";
+      t.lista.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        lista.appendChild(li);
       });
-    } else {
-      alert("Por favor, escribe al menos 3 caracteres.");
-    }
-  }
-
-  function toggleMusic() {
-    const music = document.getElementById("background-music");
-    const btn = document.querySelector(".music-btn");
-    if (music.paused) {
-      music.play();
-      btn.innerText = "🎵 Pausar Música";
-    } else {
-      music.pause();
-      btn.innerText = "🎵 Reanudar Música";
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    aplicarIdioma();
-    if (localStorage.getItem("jugador")) {
-      document.getElementById("nombre-jugador").style.display = "none";
+      
+      document.getElementById("info-extra").innerHTML = t.info;
+      document.getElementById("antes").innerText = t.antes;
+      document.getElementById("introduce").innerText = t.introduce;
+      document.getElementById("btnGuardar").innerText = t.btnGuardar;
+      
+      // Actualizar botones del grupo
+      const botones = document.querySelectorAll(".button-group button");
+      botones[0].innerText = t.btnExplorar;
+      botones[1].innerText = t.btnGuia;
+      botones[2].innerText = t.btnCronica;
+      botones[3].innerText = t.btnRanking;
+      
+      // Actualizar selector de idioma
+      document.getElementById("selector-idioma").value = idioma;
     }
 
-    // Cambio de idioma en tiempo real
-    document.getElementById("selector-idioma").addEventListener("change", (e) => {
-      localStorage.setItem("idioma", e.target.value);
+    // Función para guardar nombre del jugador
+    function guardarNombreJugador() {
+      const nombre = document.getElementById("nombre-input").value.trim();
+      if (nombre.length >= 3) {
+        localStorage.setItem("jugador", nombre);
+        document.getElementById("nombre-jugador").style.display = "none";
+        
+        // Google Analytics
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'jugador_inicio', {
+            'event_category': 'Juego',
+            'event_label': nombre
+          });
+        }
+      } else {
+        alert("Por favor, escribe al menos 3 caracteres.");
+      }
+    }
+
+    // Función para controlar música
+    function toggleMusic() {
+      const music = document.getElementById("background-music");
+      const btn = document.querySelector(".music-btn");
+      
+      if (music.paused) {
+        music.play().catch(e => {
+          console.log("No se puede reproducir la música automáticamente");
+        });
+        btn.innerText = "🎵 Pausar Música";
+      } else {
+        music.pause();
+        btn.innerText = "🎵 Reanudar Música";
+      }
+    }
+
+    // Funciones del carrusel
+    function updateCarousel() {
+      slide.style.transform = `translateX(${-currentIndex * 100}%)`;
+    }
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % totalSlides;
+      updateCarousel();
+    }
+
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+
+    // Inicialización cuando se carga la página
+    document.addEventListener("DOMContentLoaded", () => {
       aplicarIdioma();
+      
+      // Ocultar sección de nombre si ya existe
+      if (localStorage.getItem("jugador")) {
+        document.getElementById("nombre-jugador").style.display = "none";
+      }
+
+      // Event listeners
+      document.getElementById("selector-idioma").addEventListener("change", (e) => {
+        localStorage.setItem("idioma", e.target.value);
+        aplicarIdioma();
+      });
+
+      document.getElementById("nextBtn").addEventListener("click", nextSlide);
+      document.getElementById("prevBtn").addEventListener("click", prevSlide);
+
+      // Carrusel automático (opcional)
+      setInterval(nextSlide, 5000);
     });
-  });
-</script>
-<script>
-let currentIndex = 0;
-const slide = document.getElementById("carousel-slide");
-const totalSlides = slide.children.length;
-
-document.getElementById("nextBtn").addEventListener("click", () => {
-  currentIndex = (currentIndex + 1) % totalSlides;
-  updateCarousel();
-});
-
-document.getElementById("prevBtn").addEventListener("click", () => {
-  currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-  updateCarousel();
-});
-
-function updateCarousel() {
-  slide.style.transform = "translateX(" + (-currentIndex * 100) + "%)";
-}
-</script>
-  
-<script>
-const idioma = localStorage.getItem("idioma") || "es";
-
-const textosCarrusel = {
-  es: [
-    "San Martín del Castañar, un pueblo medieval que esconde un secreto que solo los más curiosos pueden descubrir... ¿te atreves?",
-    "Gonzalo de la Sierra, antiguo bodeguero del siglo XVI, desapareció sin dejar rastro. Pero dejó un mensaje oculto entre los rincones del pueblo. Busca los fragmentos, sigue las pistas y descubre el enigma.",
-    "Visita cada parada, supera los retos, escanea el QR... y si llegas al final, desvelarás el secreto oculto."
-  ],
-  fr: [
-    "San Martín del Castañar, un village médiéval qui cache un secret que seuls les plus curieux peuvent découvrir... Oserez-vous tenter l'aventure ?",
-    "Gonzalo de la Sierra, ancien vigneron du XVIe siècle, a disparu sans laisser de trace. Mais il a laissé un message caché dans les recoins du village. Cherche les fragments, suis les indices et découvre l’énigme.",
-    "Visite chaque étape, relève les défis, scanne le QR... et si tu arrives jusqu'au bout, tu révéleras le secret caché."
-  ],
-  en: [
-    "San Martín del Castañar, a medieval village that hides a secret only the most curious can uncover... dare to try?",
-    "Gonzalo de la Sierra, a 16th-century winemaker, vanished without a trace. But he left a hidden message among the village's corners. Search for the fragments, follow the clues, and solve the enigma.",
-    "Visit each stop, complete the challenges, scan the QR... and if you reach the end, you will uncover the hidden secret."
-  ],
-  de: [
-    "San Martín del Castañar, ein mittelalterliches Dorf, das ein Geheimnis verbirgt, das nur die Neugierigsten entdecken können... wagst du es?",
-    "Gonzalo de la Sierra, ein Winzer aus dem 16. Jahrhundert, verschwand spurlos. Doch er hinterließ eine Botschaft, versteckt in den Ecken des Dorfes. Suche die Fragmente, folge den Hinweisen und löse das Rätsel.",
-    "Besuche jede Station, meistere die Herausforderungen, scanne den QR-Code... und wenn du bis zum Ende kommst, wirst du das verborgene Geheimnis lüften."
-  ]
-};
-
-const textos = textosCarrusel[idioma] || textosCarrusel["es"];
-textos.forEach((texto, i) => {
-  const el = document.getElementById("slide-text-" + (i + 1));
-  if (el) el.innerHTML = texto;
-});
-</script>
-
+  </script>
 </body>
 </html>
