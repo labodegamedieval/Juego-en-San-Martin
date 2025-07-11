@@ -145,6 +145,31 @@
   </style>
 </head>
 <body>
+  <div class="carousel-container" style="position: relative; max-width: 100%; overflow: hidden; margin: 20px auto;">
+  <div class="carousel-slide" id="carousel-slide" style="display: flex; transition: transform 0.5s ease;">
+    <div class="carousel-item" style="min-width: 100%; box-sizing: border-box; padding: 10px;">
+      <img src="images/slide1.jpg" alt="Slide 1" style="width: 100%; border-radius: 10px;">
+      <p class="carousel-text" id="slide-text-1"></p>
+    </div>
+    <div class="carousel-item" style="min-width: 100%; box-sizing: border-box; padding: 10px;">
+      <img src="images/slide2.jpg" alt="Slide 2" style="width: 100%; border-radius: 10px;">
+      <p class="carousel-text" id="slide-text-2"></p>
+    </div>
+    <div class="carousel-item" style="min-width: 100%; box-sizing: border-box; padding: 10px;">
+      <img src="images/slide3.jpg" alt="Slide 3" style="width: 100%; border-radius: 10px;">
+      <p class="carousel-text" id="slide-text-3"></p>
+    </div>
+  </div>
+
+  <button id="prevBtn" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; padding: 10px;
+    cursor: pointer; font-size: 18px;">❮</button>
+
+  <button id="nextBtn" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; padding: 10px;
+    cursor: pointer; font-size: 18px;">❯</button>
+</div>
+  
   <div class="container">
     <header>
       <h1 id="titulo"></h1>
@@ -365,6 +390,58 @@
     });
   });
 </script>
+<script>
+let currentIndex = 0;
+const slide = document.getElementById("carousel-slide");
+const totalSlides = slide.children.length;
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  currentIndex = (currentIndex + 1) % totalSlides;
+  updateCarousel();
+});
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+  currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+  updateCarousel();
+});
+
+function updateCarousel() {
+  slide.style.transform = "translateX(" + (-currentIndex * 100) + "%)";
+}
+</script>
   
+<script>
+const idioma = localStorage.getItem("idioma") || "es";
+
+const textosCarrusel = {
+  es: [
+    "San Martín del Castañar, un pueblo medieval que esconde un secreto que solo los más curiosos pueden descubrir... ¿te atreves?",
+    "Gonzalo de la Sierra, antiguo bodeguero del siglo XVI, desapareció sin dejar rastro. Pero dejó un mensaje oculto entre los rincones del pueblo. Busca los fragmentos, sigue las pistas y descubre el enigma.",
+    "Visita cada parada, supera los retos, escanea el QR... y si llegas al final, desvelarás el secreto oculto."
+  ],
+  fr: [
+    "San Martín del Castañar, un village médiéval qui cache un secret que seuls les plus curieux peuvent découvrir... Oserez-vous tenter l'aventure ?",
+    "Gonzalo de la Sierra, ancien vigneron du XVIe siècle, a disparu sans laisser de trace. Mais il a laissé un message caché dans les recoins du village. Cherche les fragments, suis les indices et découvre l’énigme.",
+    "Visite chaque étape, relève les défis, scanne le QR... et si tu arrives jusqu'au bout, tu révéleras le secret caché."
+  ],
+  en: [
+    "San Martín del Castañar, a medieval village that hides a secret only the most curious can uncover... dare to try?",
+    "Gonzalo de la Sierra, a 16th-century winemaker, vanished without a trace. But he left a hidden message among the village's corners. Search for the fragments, follow the clues, and solve the enigma.",
+    "Visit each stop, complete the challenges, scan the QR... and if you reach the end, you will uncover the hidden secret."
+  ],
+  de: [
+    "San Martín del Castañar, ein mittelalterliches Dorf, das ein Geheimnis verbirgt, das nur die Neugierigsten entdecken können... wagst du es?",
+    "Gonzalo de la Sierra, ein Winzer aus dem 16. Jahrhundert, verschwand spurlos. Doch er hinterließ eine Botschaft, versteckt in den Ecken des Dorfes. Suche die Fragmente, folge den Hinweisen und löse das Rätsel.",
+    "Besuche jede Station, meistere die Herausforderungen, scanne den QR-Code... und wenn du bis zum Ende kommst, wirst du das verborgene Geheimnis lüften."
+  ]
+};
+
+const textos = textosCarrusel[idioma] || textosCarrusel["es"];
+textos.forEach((texto, i) => {
+  const el = document.getElementById("slide-text-" + (i + 1));
+  if (el) el.innerHTML = texto;
+});
+</script>
+
 </body>
 </html>
