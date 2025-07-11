@@ -527,5 +527,15 @@
       setInterval(nextSlide, 8000);
     });
   </script>
+<script>
+  const selector = document.getElementById("language-select");
+  if (selector) {
+    selector.addEventListener("change", function () {
+      const selectedLang = this.value;
+      localStorage.setItem("language", selectedLang);
+      location.reload();
+    });
+  }
+</script>
 </body>
 </html>
