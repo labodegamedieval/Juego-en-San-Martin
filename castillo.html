@@ -751,32 +751,6 @@
         console.error("Error: Botón de música no encontrado");
       }
 
-      // Botones de retos visuales
-      document.querySelectorAll('#visual-opciones-1 button').forEach(btn => {
-        btn.addEventListener('click', (e) => handleButtonClick(e, () => checkVisualAnswer(btn.textContent, 'Muralla', 2)));
-        btn.addEventListener('touchstart', (e) => handleButtonClick(e, () => checkVisualAnswer(btn.textContent, 'Muralla', 2)));
-      });
-      document.querySelectorAll('#visual-opciones-2 button').forEach(btn => {
-        btn.addEventListener('click', (e) => handleButtonClick(e, () => checkVisualAnswer(btn.textContent, '2', 2)));
-        btn.addEventListener('touchstart', (e) => handleButtonClick(e, () => checkVisualAnswer(btn.textContent, '2', 2)));
-      });
-      console.log("Eventos asignados a botones de retos visuales");
-
-      // Botones de quiz
-      document.querySelectorAll('#quiz-opciones-1 button').forEach(btn => {
-        btn.addEventListener('click', (e) => handleButtonClick(e, () => checkAnswer(btn.textContent, 'XIII', 1)));
-        btn.addEventListener('touchstart', (e) => handleButtonClick(e, () => checkAnswer(btn.textContent, 'XIII', 1)));
-      });
-      document.querySelectorAll('#quiz-opciones-2 button').forEach(btn => {
-        btn.addEventListener('click', (e) => handleButtonClick(e, () => checkAnswer(btn.textContent, 'Cementerio municipal', 2)));
-        btn.addEventListener('touchstart', (e) => handleButtonClick(e, () => checkAnswer(btn.textContent, 'Cementerio municipal', 2)));
-      });
-      document.querySelectorAll('#quiz-opciones-3 button').forEach(btn => {
-        btn.addEventListener('click', (e) => handleButtonClick(e, () => checkAnswer(btn.textContent, 'Centro de Interpretación de la Biosfera', 3)));
-        btn.addEventListener('touchstart', (e) => handleButtonClick(e, () => checkAnswer(btn.textContent, 'Centro de Interpretación de la Biosfera', 3)));
-      });
-      console.log("Eventos asignados a botones de quiz");
-
       // Botón de comprobar combinación
       const checkCombinationBtn = document.getElementById('check-combination');
       if (checkCombinationBtn) {
