@@ -25,6 +25,16 @@
       cursor: pointer;
       z-index: 10;
     }
+    .bitcoin-symbol {
+  position: absolute;
+  font-size: 12px;
+  color: orange;
+  top: 47%;
+  left: 72.5%;
+  z-index: 9;
+  pointer-events: none;
+}
+
   </style>
   <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GE0YB9PL8Q"></script>
@@ -82,6 +92,7 @@
           <p>Observa la imagen y toca el arco central del puente.</p>
           <div class="image-zone">
             <img src="images/A_medieval_stone_bridge_with_a_single_semicircular.png" alt="Puente secreto" />
+            <div class="bitcoin-symbol">₿</div>
             <div class="hidden-hotspot" onclick="revealMessage()" title="¡Has dado en el blanco!"></div>
           </div>
           <button class="action-btn" onclick="showHint()">🕯️ Pista</button>
